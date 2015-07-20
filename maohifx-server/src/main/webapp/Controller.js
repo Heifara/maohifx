@@ -2,6 +2,10 @@ load("fx:base.js");
 load("fx:controls.js");
 load("fx:graphics.js");
 
+var ClientBuilder = javax.ws.rs.client.ClientBuilder;
+var Entity = javax.ws.rs.client.Entity;
+var MediaType = javax.ws.rs.core.MediaType;
+
 var FXMLLoader = javafx.fxml.FXMLLoader;
 var URL = java.net.URL;
 
@@ -93,4 +97,8 @@ function hideShowMenuBarEvent(aEvent) {
 		menuBar.setVisible(true);
 		hideShowMenuBarMenuItem.setText("Masquer la barre de menu");
 	}
+}
+
+function post() {
+	return ClientBuilder.newClient().target("http://localhost:8080/maohifx-server/webapi/post").request().post(Entity.entity(new String("Hello World"), MediaType.APPLICATION_JSON));
 }

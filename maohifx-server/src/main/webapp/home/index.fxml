@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?language javascript?>
+
+<VBox prefHeight="200.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+	<fx:script source="../home/Controller.js" />
+	<fx:script source="../Controller.js" />
+	<children>
+		<Button id="http://localhost:8080/maohifx-server/webapi/fxml?id=home" mnemonicParsing="false" onAction="open(event);" text="Home" />
+		<Button id="" mnemonicParsing="false" onAction="testJSONEvent(event)" text="Test JSON" />
+	</children>
+	<fx:script>
+	</fx:script>
+</VBox>
