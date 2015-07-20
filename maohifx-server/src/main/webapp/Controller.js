@@ -15,7 +15,7 @@ var URL = java.net.URL;
  * @param aEvent
  */
 function newTabEvent(aEvent) {
-	newTab("");
+	newTab("http://localhost:8080/maohifx-server/webapi/fxml?id=home");
 }
 
 /**
