@@ -10,40 +10,6 @@
 <BorderPane fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<fx:script source="../Controller.js" />
 	<top>
-		<MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
-			<menus>
-				<Menu fx:id="file" mnemonicParsing="false" text="File">
-					<items>
-						<MenuItem text="Nouvelle Facture" onAction="newInvoiceEvent()">
-						</MenuItem>
-						<MenuItem mnemonicParsing="false" onAction="newTabEvent(event);" text="Nouvelle onglet">
-							<accelerator>
-								<KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-							</accelerator>
-						</MenuItem>
-						<MenuItem mnemonicParsing="false" onAction="closeCurrentTabEvent(event);" text="Fermet onglet courant">
-							<accelerator>
-								<KeyCodeCombination alt="UP" code="W" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-							</accelerator>
-						</MenuItem>
-					</items>
-				</Menu>
-				<Menu mnemonicParsing="false" text="Edit">
-					<items>
-						<MenuItem mnemonicParsing="false" onAction="refreshCurrentTabEvent(event)" text="Refresh">
-							<accelerator>
-								<KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-							</accelerator>
-						</MenuItem>
-					</items>
-				</Menu>
-				<Menu mnemonicParsing="false" text="Help">
-					<items>
-						<MenuItem mnemonicParsing="false" text="About" onAction="aboutEvent(event)" />
-					</items>
-				</Menu>
-			</menus>
-		</MenuBar>
 	</top>
 	<center>
 		<TabPane fx:id="tabpane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER">

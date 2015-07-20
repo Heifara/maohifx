@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.input.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -21,11 +22,22 @@
 			</rowConstraints>
 			<children>
 				<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="refreshEvent(event);" prefWidth="50.0" text="Refresh" />
-				<TextField fx:id="url" id="url" onAction="refresh(event);" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" />
+				<TextField id="url" fx:id="url" onAction="refresh(event);" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" />
 				<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="homeEvent(event);" prefWidth="50.0" text="Home" GridPane.columnIndex="1" />
 				<MenuButton mnemonicParsing="false" GridPane.columnIndex="3">
 					<items>
-						<MenuItem fx:id="hideShowMenuBarMenuItem" mnemonicParsing="false" onAction="hideShowMenuBarEvent(event);" text="Masquer la barre de menu" />
+						<MenuItem mnemonicParsing="false" onAction="newTabEvent(event);" text="Nouvelle onglet">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+						<MenuItem mnemonicParsing="false" onAction="newInvoiceEvent()" text="Nouvelle Facture" />
+						<MenuItem mnemonicParsing="false" onAction="closeCurrentTabEvent(event);" text="Fermet onglet">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="W" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                <MenuItem mnemonicParsing="false" onAction="aboutEvent(event)" text="A propos" />
 					</items>
 				</MenuButton>
 			</children>

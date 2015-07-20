@@ -46,7 +46,7 @@ function newTab(aUrl) {
 function loadUrl(aUrl, aDefaultUrl) {
 	try {
 		iLoader = new FXMLLoader(new URL(aUrl));
-		iLoader.getNamespace().put("menuBar", menuBar);
+		iLoader.getNamespace().put("mainPane", mainPane);
 		iLoader.getNamespace().put("tabpane", tabpane);
 		iLoader.getNamespace().put("defaultUrl", aDefaultUrl);
 		return iLoader.load();
@@ -91,16 +91,6 @@ function homeEvent(aEvent) {
 
 function aboutEvent(aEvent) {
 	newTab("http://localhost:8080/maohifx-server/webapi/fxml?id=about");
-}
-
-function hideShowMenuBarEvent(aEvent) {
-	if (menuBar.isVisible()) {
-		menuBar.setVisible(false);
-		hideShowMenuBarMenuItem.setText("Afficher la barre de menu");
-	} else {
-		menuBar.setVisible(true);
-		hideShowMenuBarMenuItem.setText("Masquer la barre de menu");
-	}
 }
 
 function post() {
