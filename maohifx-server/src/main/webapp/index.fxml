@@ -14,6 +14,8 @@
 			<menus>
 				<Menu fx:id="file" mnemonicParsing="false" text="File">
 					<items>
+						<MenuItem text="Nouvelle Facture" onAction="newInvoiceEvent()">
+						</MenuItem>
 						<MenuItem mnemonicParsing="false" onAction="newTabEvent(event);" text="Nouvelle onglet">
 							<accelerator>
 								<KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
@@ -27,13 +29,14 @@
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="Edit">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="refreshCurrentTabEvent(event)" text="Refresh">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>
-               </items></Menu>
+					<items>
+						<MenuItem mnemonicParsing="false" onAction="refreshCurrentTabEvent(event)" text="Refresh">
+							<accelerator>
+								<KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+							</accelerator>
+						</MenuItem>
+					</items>
+				</Menu>
 				<Menu mnemonicParsing="false" text="Help">
 					<items>
 						<MenuItem mnemonicParsing="false" text="About" onAction="aboutEvent(event)" />

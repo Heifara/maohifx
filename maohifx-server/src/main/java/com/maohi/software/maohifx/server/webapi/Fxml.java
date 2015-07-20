@@ -35,6 +35,7 @@ public class Fxml {
 		myMap.put("newTab", "newTab");
 		myMap.put("home", "home/index");
 		myMap.put("about", "about/index");
+		myMap.put("invoice", "invoice/index");
 	}
 
 	@Context

@@ -18,6 +18,10 @@ function newTabEvent(aEvent) {
 	newTab("http://localhost:8080/maohifx-server/webapi/fxml?id=home");
 }
 
+function newInvoiceEvent(aEvent) {
+	newTab("http://localhost:8080/maohifx-server/webapi/fxml?id=invoice");
+}
+
 /**
  * Open a new Tab
  * 
