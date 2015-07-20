@@ -7,8 +7,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Multi Chapter Simple Parent Project</name>
-	<modules>
-	</modules>
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -38,4 +36,8 @@
 	</dependencies>
 	<dependencyManagement>
 	</dependencyManagement>
+	<modules>
+		<module>maohifx-server</module>
+		<module>maohifx-client</module>
+	</modules>
 </project>
