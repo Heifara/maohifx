@@ -23,7 +23,7 @@ function newTabEvent(aEvent) {
 function newTab(aUrl) {
 	var iNewTab = new Tab();
 	iNewTab.setText("Nouvelle Onglet");
-	//iNewTab.setContent(loadUrl("http://localhost:8080/webfx/webapi/fxml?id=tab", aUrl));
+	iNewTab.setContent(loadUrl("http://localhost:8080/maohifx-server/webapi/fxml?id=newTab", aUrl));
 
 	tabpane.getTabs().add(iNewTab);
 	tabpane.getSelectionModel().select(tabpane.getTabs().indexOf(iNewTab));
@@ -77,12 +77,12 @@ function refresh() {
 }
 
 function homeEvent(aEvent) {
-	url.setText("http://localhost:8080/webfx/webapi/fxml?id=home");
+	url.setText("http://localhost:8080/maohifx-server/webapi/fxml?id=home");
 	refresh();
 }
 
 function aboutEvent(aEvent) {
-	newTab("http://localhost:8080/webfx/webapi/fxml?id=about");
+	newTab("http://localhost:8080/maohifx-server/webapi/fxml?id=about");
 }
 
 function hideShowMenuBarEvent(aEvent) {

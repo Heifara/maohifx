@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?language javascript?>
+
+<BorderPane fx:id="content" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+	<fx:script source="../Controller.js" />
+	<top>
+		<GridPane BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints hgrow="NEVER" minWidth="0.0" />
+				<ColumnConstraints hgrow="NEVER" minWidth="0.0" />
+				<ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+				<ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+				<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="refreshEvent(event);" prefWidth="50.0" text="Refresh" />
+				<TextField fx:id="url" id="url" onAction="refresh(event);" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" />
+				<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="homeEvent(event);" prefWidth="50.0" text="Home" GridPane.columnIndex="1" />
+				<MenuButton mnemonicParsing="false" GridPane.columnIndex="3">
+					<items>
+						<MenuItem fx:id="hideShowMenuBarMenuItem" mnemonicParsing="false" onAction="hideShowMenuBarEvent(event);" text="Masquer la barre de menu" />
+					</items>
+				</MenuButton>
+			</children>
+		</GridPane>
+	</top>
+	<fx:script>
+		url.setText(defaultUrl);
+		refresh();
+	</fx:script>
+</BorderPane>

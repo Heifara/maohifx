@@ -32,6 +32,7 @@ public class Fxml {
 	static {
 		myMap = new HashMap<String, String>();
 		myMap.put("index", "index");
+		myMap.put("newTab", "newTab");
 	}
 
 	@Context
