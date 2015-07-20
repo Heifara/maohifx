@@ -8,7 +8,6 @@
 	<groupId>com.maohi.software</groupId>
 	<artifactId>maohifx-server</artifactId>
 	<packaging>war</packaging>
-	<name>MaohiFX</name>
 	<build>
 		<finalName>maohifx-server</finalName>
 		<plugins>
