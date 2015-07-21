@@ -51,7 +51,7 @@ function newTab(aUrl) {
 /**
  * Close the current tab
  */
-function closeCurrentTabEvent(aEvent) {
+function closeTabEvent(aEvent) {
 	tabpane.getTabs().remove(tabpane.getTabs().indexOf(tabpane.getSelectionModel().getSelectedItem()))
 	if (tabpane.getTabs().size() == 0) {
 		java.lang.System.exit(0);
@@ -62,14 +62,6 @@ function getNodeById(aId) {
 	return tabpane.getSelectionModel().getSelectedItem().getContent().getScene().lookup(aId);
 }
 
-function refreshCurrentTabEvent(event) {
-	url = getNodeById("#url");
-	content = getNodeById("#content");
-	if (!url.getText().isEmpty()) {
-		content.setCenter(loadUrl(url.getText(), ""));
-	}
-}
-
 /**
  * @param aEvent
  */
@@ -78,6 +70,7 @@ function refreshEvent(aEvent) {
 }
 
 function refresh() {
+	print("refresh");
 	if (!url.getText().isEmpty()) {
 		try {
 			iLoader = new FXMLLoader(new URL(defaultUrl));
@@ -91,6 +84,5 @@ function refresh() {
 			print(e);
 			print(e.getMessage());
 		}
-
 	}
 }

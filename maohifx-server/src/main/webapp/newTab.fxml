@@ -34,9 +34,15 @@
 							</accelerator>
 						</MenuItem>
 						<MenuItem mnemonicParsing="false" onAction="newInvoiceEvent()" text="Nouvelle Facture" />
-						<MenuItem mnemonicParsing="false" onAction="closeCurrentTabEvent(event);" text="Fermet onglet">
+						<MenuItem mnemonicParsing="false" onAction="closeTabEvent(event)" text="Fermet onglet">
 							<accelerator>
 								<KeyCodeCombination alt="UP" code="W" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+							</accelerator>
+						</MenuItem>
+						<SeparatorMenuItem mnemonicParsing="false" />
+						<MenuItem mnemonicParsing="false" onAction="refreshEvent(event)" text="Actualiser">
+							<accelerator>
+								<KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 							</accelerator>
 						</MenuItem>
 						<SeparatorMenuItem mnemonicParsing="false" />
