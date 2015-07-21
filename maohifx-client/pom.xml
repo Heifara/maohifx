@@ -76,5 +76,10 @@
 			<artifactId>jersey-client</artifactId>
 			<version>2.18</version>
 		</dependency>
+		<dependency>
+			<groupId>com.maohi.software</groupId>
+			<artifactId>maohifx.common</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
 	</dependencies>
 </project>

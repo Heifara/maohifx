@@ -2,7 +2,7 @@ load("fx:base.js");
 load("fx:controls.js");
 load("fx:graphics.js");
 
-var JSONItem = com.maohi.software.samples.tableview.json.JSONItem;
+var JSONItem = com.maohi.software.maohifx.common.tableview.JSONItem;
 var String = java.lang.String;
 
 function open(aEvent) {

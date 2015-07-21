@@ -11,7 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.maohi.software.samples.beans.Person;
+import com.maohi.software.maohifx.server.beans.Person;
 
 /**
  * @author heifara
@@ -33,7 +33,7 @@ public class Post {
 		Person iResponse = new Person();
 		iResponse.setFirstName("Toto");
 		iResponse.setLastName("DUPONT");
-		return iResponse ;
+		return iResponse;
 	}
 
 }
