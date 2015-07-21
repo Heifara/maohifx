@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.maohi.software.samples.tableview.json;
+package com.maohi.software.maohifx.common.tableview;
 
 import javafx.beans.NamedArg;
 import javafx.beans.property.ReadOnlyObjectWrapper;

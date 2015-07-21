@@ -2,7 +2,7 @@ load("fx:base.js");
 load("fx:controls.js");
 load("fx:graphics.js");
 
-var SimpleJSONProperty = com.maohi.software.samples.tableview.json.JSONItem;
+var SimpleJSONProperty = com.maohi.software.maohifx.common.tableview.JSONItem;
 var Date = java.util.Date;
 
 function Controller() {

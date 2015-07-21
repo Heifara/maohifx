@@ -6,10 +6,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Tab?>
-<?import com.maohi.software.samples.tableview.json.*?>
+<?import com.maohi.software.maohifx.common.tableview.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
-	<fx:script source="../jsontableview/Controller.js" />
+	<fx:script source="jsontableviewsample.js" />
 	<center>
 		<TableView fx:id="tableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
 			<columns>

@@ -1,4 +1,7 @@
-package com.maohi.software.samples.tableview.json;
+/**
+ * 
+ */
+package com.maohi.software.maohifx.common.tableview;
 
 import java.util.Date;
 
@@ -11,6 +14,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
+/**
+ * @author heifara
+ *
+ */
 public class JSONTableViewSample extends Application {
 
 	private TableView<JSONItem> table = new TableView<JSONItem>();

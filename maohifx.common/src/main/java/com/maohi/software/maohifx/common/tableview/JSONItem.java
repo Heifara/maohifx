@@ -1,4 +1,7 @@
-package com.maohi.software.samples.tableview.json;
+/**
+ * 
+ */
+package com.maohi.software.maohifx.common.tableview;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -6,6 +9,10 @@ import java.util.Map;
 
 import jdk.nashorn.api.scripting.JSObject;
 
+/**
+ * @author heifara
+ *
+ */
 @SuppressWarnings({ "restriction" })
 public class JSONItem {
 
