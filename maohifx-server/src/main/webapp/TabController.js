@@ -5,6 +5,11 @@ load("fx:graphics.js");
 var FXMLLoader = javafx.fxml.FXMLLoader;
 var URL = java.net.URL;
 
+function init() {
+	url.setText(defaultUrl);
+	refresh();
+}
+
 /**
  * Open a new Tab to home
  * 
@@ -25,28 +30,20 @@ function newInvoiceEvent(aEvent) {
  *            the event
  */
 function newTab(aUrl) {
-	var iNewTab = new Tab();
-	iNewTab.setText("Nouvelle Onglet");
-	iNewTab.setContent(loadUrl("http://localhost:8080/maohifx-server/webapi/fxml?id=newTab", aUrl));
-
-	tabpane.getTabs().add(iNewTab);
-	tabpane.getSelectionModel().select(tabpane.getTabs().indexOf(iNewTab));
-}
-
-/**
- * Using the FXMLLoader, load the url and put items
- * 
- * @param aUrl
- *            the url
- */
-function loadUrl(aUrl, aDefaultUrl) {
 	try {
-		iLoader = new FXMLLoader(new URL(aUrl));
+		iLoader = new FXMLLoader(new URL("http://localhost:8080/maohifx-server/webapi/fxml?id=newTab"));
 		iLoader.getNamespace().put("mainPane", mainPane);
 		iLoader.getNamespace().put("tabpane", tabpane);
-		iLoader.getNamespace().put("defaultUrl", aDefaultUrl);
-		return iLoader.load();
+		iLoader.getNamespace().put("defaultUrl", aUrl);
+
+		var iNewTab = new Tab();
+		iNewTab.setText("Nouvelle Onglet");
+		iNewTab.setContent(iLoader.load());
+
+		tabpane.getTabs().add(iNewTab);
+		tabpane.getSelectionModel().select(tabpane.getTabs().indexOf(iNewTab));
 	} catch (e) {
+		print(e);
 		print(e.getMessage());
 	}
 }
@@ -61,10 +58,13 @@ function closeCurrentTabEvent(aEvent) {
 	}
 }
 
+function getNodeById(aId) {
+	return tabpane.getSelectionModel().getSelectedItem().getContent().getScene().lookup(aId);
+}
+
 function refreshCurrentTabEvent(event) {
-	iCurrentTab = tabpane.getSelectionModel().getSelectedItem();
-	url = iCurrentTab.getContent().getScene().lookup("#url");
-	content = iCurrentTab.getContent().getScene().lookup("#content");
+	url = getNodeById("#url");
+	content = getNodeById("#content");
 	if (!url.getText().isEmpty()) {
 		content.setCenter(loadUrl(url.getText(), ""));
 	}
@@ -79,6 +79,18 @@ function refreshEvent(aEvent) {
 
 function refresh() {
 	if (!url.getText().isEmpty()) {
-		content.setCenter(loadUrl(url.getText(), ""));
+		try {
+			iLoader = new FXMLLoader(new URL(defaultUrl));
+			iLoader.getNamespace().put("mainPane", mainPane);
+			iLoader.getNamespace().put("tabpane", tabpane);
+			iLoader.getNamespace().put("toolbar", toolbar);
+			iLoader.getNamespace().put("menuButton", menuButton);
+
+			content.setCenter(iLoader.load());
+		} catch (e) {
+			print(e);
+			print(e.getMessage());
+		}
+
 	}
 }
