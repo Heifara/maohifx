@@ -9,12 +9,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import com.maohi.software.maohifx.common.tableview.*?>
+<?import com.maohi.software.maohifx.client.customcontrol.*?>
 
 <VBox prefHeight="200.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<fx:script source="../home/Controller.js" />
 	<fx:script source="../Controller.js" />
 	<fx:script source="../TabController.js" />
 	<children>
+		<CustomControl text="Hello World!" />
 		<Button id="http://localhost:8080/maohifx-server/webapi/fxml?id=home" mnemonicParsing="false" onAction="open(event);" text="Home" />
 		<Button id="" mnemonicParsing="false" onAction="testJSONEvent(event)" text="Test JSON" />
 		<TableView fx:id="tableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
