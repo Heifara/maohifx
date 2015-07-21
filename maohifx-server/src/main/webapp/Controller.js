@@ -60,6 +60,9 @@ function loadUrl(aUrl, aDefaultUrl) {
  */
 function closeCurrentTabEvent(aEvent) {
 	tabpane.getTabs().remove(tabpane.getTabs().indexOf(tabpane.getSelectionModel().getSelectedItem()))
+	if (tabpane.getTabs().size() == 0) {
+		java.lang.System.exit(0);
+	}
 }
 
 function refreshCurrentTabEvent(event) {
