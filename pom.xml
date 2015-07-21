@@ -39,5 +39,6 @@
 	<modules>
 		<module>maohifx-server</module>
 		<module>maohifx-client</module>
+		<module>maohifx.common</module>
 	</modules>
 </project>
