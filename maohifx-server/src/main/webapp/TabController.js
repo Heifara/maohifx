@@ -73,7 +73,7 @@ function refresh() {
 	print("refresh");
 	if (!url.getText().isEmpty()) {
 		try {
-			iLoader = new FXMLLoader(new URL(defaultUrl));
+			iLoader = new FXMLLoader(new URL(url.getText()));
 			iLoader.getNamespace().put("mainPane", mainPane);
 			iLoader.getNamespace().put("tabpane", tabpane);
 			iLoader.getNamespace().put("toolbar", toolbar);
