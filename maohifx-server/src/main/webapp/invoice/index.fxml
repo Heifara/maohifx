@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
 <?language javascript?>
+<?import javafx.scene.input.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Tab?>
+<?import com.maohi.software.samples.tableview.json.*?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
-	<fx:script source="../invoice/Invoice.js" />
 	<fx:script source="../invoice/Controller.js" />
 	<fx:script source="../TabController.js" />
 	<top>
@@ -35,20 +37,46 @@
 		</GridPane>
 	</top>
 	<center>
-		<TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+		<TableView fx:id="tableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<columns>
-				<TableColumn prefWidth="75.0" text="Code barre" />
-				<TableColumn prefWidth="75.0" text="Désignation" />
-				<TableColumn prefWidth="75.0" text="Quantités" />
-				<TableColumn prefWidth="75.0" text="Prix H.T" />
-				<TableColumn prefWidth="75.0" text="Remise" />
+				<TableColumn prefWidth="25.0" text="">
+					<cellValueFactory>
+						<JSONValueFactory property="position" />
+					</cellValueFactory>
+				</TableColumn>
+				<TableColumn prefWidth="75.0" text="Code barre">
+					<cellValueFactory>
+						<JSONValueFactory property="barcode" />
+					</cellValueFactory>
+				</TableColumn>
+				<TableColumn maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" text="Désignation">
+					<cellValueFactory>
+						<JSONValueFactory property="label" />
+					</cellValueFactory>
+				</TableColumn>
+				<TableColumn prefWidth="75.0" text="Quantités">
+					<cellValueFactory>
+						<JSONValueFactory property="quantity" />
+					</cellValueFactory>
+				</TableColumn>
+				<TableColumn prefWidth="75.0" text="Prix H.T">
+					<cellValueFactory>
+						<JSONValueFactory property="sellingPrice" />
+					</cellValueFactory>
+				</TableColumn>
+				<TableColumn prefWidth="75.0" text="Remise">
+					<cellValueFactory>
+						<JSONValueFactory property="discount" />
+					</cellValueFactory>
+				</TableColumn>
 				<TableColumn prefWidth="75.0" text="Prix T.T.C" />
 				<TableColumn prefWidth="75.0" text="Total" />
 			</columns>
 		</TableView>
 	</center>
 	<fx:script>
-		controller.init();
+		controller = new Controller();
+
 		toolbar.getItems().clear();
 		iSaveButton = new Button();
 		iSaveButton.text = "Enregistrer";
