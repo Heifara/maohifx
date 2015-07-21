@@ -36,6 +36,7 @@ public class Fxml {
 		myMap.put("home", "home/index");
 		myMap.put("about", "about/index");
 		myMap.put("invoice", "invoice/index");
+		myMap.put("jsontableview", "jsontableview/index");
 	}
 
 	@Context

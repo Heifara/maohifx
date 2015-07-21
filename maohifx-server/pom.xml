@@ -96,6 +96,11 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.maohi.software</groupId>
+			<artifactId>maohifx.client</artifactId>
+			<version>${parent.version}</version>
+		</dependency>
 	</dependencies>
 	<properties>
 		<jersey.version>2.18</jersey.version>
