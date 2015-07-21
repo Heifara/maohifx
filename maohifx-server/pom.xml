@@ -5,7 +5,7 @@
 		<artifactId>maohifx</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>maohifx-server</artifactId>
+	<artifactId>maohifx.server</artifactId>
 	<packaging>war</packaging>
 	<build>
 		<finalName>maohifx-server</finalName>

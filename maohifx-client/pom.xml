@@ -5,8 +5,7 @@
 		<artifactId>maohifx</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>com.maohi.software</groupId>
-	<artifactId>maohifx-client</artifactId>
+	<artifactId>maohifx.client</artifactId>
 	<packaging>jar</packaging>
 	<build>
 		<directory>target</directory>
