@@ -11,6 +11,7 @@
 <VBox prefHeight="200.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<fx:script source="../home/Controller.js" />
 	<fx:script source="../Controller.js" />
+	<fx:script source="../TabController.js" />
 	<children>
 		<Button id="http://localhost:8080/maohifx-server/webapi/fxml?id=home" mnemonicParsing="false" onAction="open(event);" text="Home" />
 		<Button id="" mnemonicParsing="false" onAction="testJSONEvent(event)" text="Test JSON" />
