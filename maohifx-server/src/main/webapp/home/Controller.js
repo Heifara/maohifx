@@ -2,8 +2,7 @@ load("fx:base.js");
 load("fx:controls.js");
 load("fx:graphics.js");
 
-var FXMLLoader = javafx.fxml.FXMLLoader;
-var URL = java.net.URL;
+var JSONItem = com.maohi.software.samples.tableview.json.JSONItem;
 var String = java.lang.String;
 
 function open(aEvent) {
@@ -13,6 +12,10 @@ function open(aEvent) {
 
 function testJSONEvent(aEvent) {
 	iResponse = post();
-	print(iResponse.getStatus());
-	print(iResponse.readEntity(String.class));
+	iPerson = iResponse.readEntity(String.class)
+
+	iData = FXCollections.observableArrayList();
+	iData.add(new JSONItem(iPerson));
+	
+	tableView.setItems(iData);
 }
