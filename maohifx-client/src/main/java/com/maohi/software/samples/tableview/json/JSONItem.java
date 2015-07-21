@@ -14,6 +14,12 @@ public class JSONItem {
 	public JSONItem() {
 	}
 
+	public JSONItem(String aJSONObject) {
+		for (String iProperty : aJSONObject.replace("{", "").replace("}", "").split(",")) {
+			this.data.put(iProperty.replace("\"", "").split(":")[0], iProperty.replace("\"", "").split(":")[1]);
+		}
+	}
+
 	public JSONItem(JSObject aObject) {
 		JSObject iJsObject = (JSObject) aObject;
 		for (String iKey : iJsObject.keySet()) {
