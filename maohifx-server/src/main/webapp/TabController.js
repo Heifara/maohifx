@@ -2,6 +2,7 @@ load("fx:base.js");
 load("fx:controls.js");
 load("fx:graphics.js");
 
+var Application = javafx.application.Application;
 var FXMLLoader = javafx.fxml.FXMLLoader;
 var URL = java.net.URL;
 
@@ -10,6 +11,14 @@ function init() {
 
 	url.setText(defaultUrl);
 	refresh();
+}
+
+function applyCaspienEvent(aEvent) {
+	Application.setUserAgentStylesheet("CASPIAN");
+}
+
+function applyModenaEvent(aEvent) {
+	Application.setUserAgentStylesheet("MODENA");
 }
 
 function hideShowAddressPaneEvent(aEvent) {

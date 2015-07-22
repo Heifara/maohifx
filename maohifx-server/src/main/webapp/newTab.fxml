@@ -46,6 +46,12 @@
 									</accelerator>
 								</MenuItem>
 								<SeparatorMenuItem mnemonicParsing="false" />
+                        <Menu mnemonicParsing="false" text="Thème">
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="applyCaspienEvent(event)" text="Caspien" />
+                              <MenuItem mnemonicParsing="false" onAction="applyModenaEvent(event)" text="Modena" />
+                          </items>
+                        </Menu>
 								<MenuItem mnemonicParsing="false" onAction="aboutEvent(event)" text="A propos" />
 							</items>
 							<GridPane.margin>
