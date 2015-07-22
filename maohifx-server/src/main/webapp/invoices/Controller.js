@@ -11,6 +11,14 @@ function Controller() {
 	this.data.add(new JSONItem());
 	this.data.add(new JSONItem());
 	tableView.setItems(this.data);
+
+	iRunnable = iAccelerators = tab.getContent().getScene().getAccelerators()
+	iAccelerators.put(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN), new java.lang.Runnable({
+		run : function() {
+			controller.newInvoiceEvent();
+		}
+	}));
+	print(iAccelerators);
 }
 
 Controller.prototype.searchEvent = function(aEvent) {
@@ -24,3 +32,7 @@ Controller.prototype.newInvoiceEvent = function(aEvent) {
 Controller.prototype.editInvoicesEvent = function(aEvent) {
 }
 
+Controller.prototype.keyTypeEvent = function(aEvent) {
+	print("keyType");
+	print(aEvent);
+}

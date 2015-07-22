@@ -18,7 +18,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="controller.searchEvent(event)" text="Rechercher" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" onAction="controller.searchEvent(event)" text="Rechercher" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="pattern" GridPane.columnSpan="2147483647" />
          </children>
       </GridPane>
