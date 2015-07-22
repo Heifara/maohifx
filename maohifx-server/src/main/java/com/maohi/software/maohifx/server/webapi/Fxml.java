@@ -27,16 +27,17 @@ import javax.ws.rs.core.Response.Status;
  */
 @Path("fxml")
 public class Fxml {
-	private static final HashMap<String, String> myMap;
+	private final HashMap<String, String> fxmls;
 
-	static {
-		myMap = new HashMap<String, String>();
-		myMap.put("index", "index");
-		myMap.put("newTab", "newTab");
-		myMap.put("home", "home/index");
-		myMap.put("about", "about/index");
-		myMap.put("invoice", "invoice/index");
-		myMap.put("jsontableview", "jsontableview/index");
+	public Fxml() {
+		this.fxmls = new HashMap<String, String>();
+		this.fxmls.put("index", "index");
+		this.fxmls.put("newTab", "newTab");
+		this.fxmls.put("home", "home/index");
+		this.fxmls.put("about", "about/index");
+		this.fxmls.put("invoice", "invoice/index");
+		this.fxmls.put("invoices", "invoices/index");
+		this.fxmls.put("jsontableview", "jsontableview/index");
 	}
 
 	@Context
@@ -54,7 +55,7 @@ public class Fxml {
 	 */
 	private Response loadFxml(String aId) {
 		try {
-			return Response.ok().entity(load(new URL("file:///" + context.getRealPath("/" + myMap.get(aId) + ".fxml").replace('\\', '/')))).build();
+			return Response.ok().entity(load(new URL("file:///" + context.getRealPath("/" + this.fxmls.get(aId) + ".fxml").replace('\\', '/')))).build();
 		} catch (URISyntaxException | IOException aException) {
 			aException.printStackTrace();
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
