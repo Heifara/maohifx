@@ -7,7 +7,7 @@ var URL = java.net.URL;
 
 function init() {
 	hideShowAddressPaneEvent();
-	
+
 	url.setText(defaultUrl);
 	refresh();
 }
@@ -46,12 +46,14 @@ function newInvoiceEvent(aEvent) {
  */
 function newTab(aUrl) {
 	try {
+		var iNewTab = new Tab();
+
 		iLoader = new FXMLLoader(new URL("http://localhost:8080/maohifx-server/webapi/fxml?id=newTab"));
 		iLoader.getNamespace().put("mainPane", mainPane);
 		iLoader.getNamespace().put("tabpane", tabpane);
 		iLoader.getNamespace().put("defaultUrl", aUrl);
+		iLoader.getNamespace().put("tab", iNewTab);
 
-		var iNewTab = new Tab();
 		iNewTab.setText("Nouvelle Onglet");
 		iNewTab.setContent(iLoader.load());
 
@@ -91,6 +93,7 @@ function refresh() {
 			iLoader = new FXMLLoader(new URL(url.getText()));
 			iLoader.getNamespace().put("mainPane", mainPane);
 			iLoader.getNamespace().put("tabpane", tabpane);
+			iLoader.getNamespace().put("tab", tab);
 			iLoader.getNamespace().put("toolbar", toolbar);
 			iLoader.getNamespace().put("menuButton", menuButton);
 
