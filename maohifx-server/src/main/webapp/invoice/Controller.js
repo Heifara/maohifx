@@ -1,7 +1,8 @@
 load("fx:base.js");
 load("fx:controls.js");
 load("fx:graphics.js");
-var JSONItem = com.maohi.software.samples.tableview.json.JSONItem;
+
+var JSONItem = com.maohi.software.maohifx.common.tableview.JSONItem;
 
 function Controller() {
 	this.data = FXCollections.observableArrayList();
@@ -12,7 +13,7 @@ function Controller() {
 		label : "1ère essaie de ligne de facture",
 		quantity : 4.0,
 		sellingPrice : 1500.0,
-		discount: 10
+		discount : 10
 	}));
 	this.data.add(new JSONItem({
 		position : 1,
