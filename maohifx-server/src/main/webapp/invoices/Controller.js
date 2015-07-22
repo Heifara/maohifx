@@ -12,13 +12,16 @@ function Controller() {
 	this.data.add(new JSONItem());
 	tableView.setItems(this.data);
 
-	iRunnable = iAccelerators = tab.getContent().getScene().getAccelerators()
-	iAccelerators.put(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN), new java.lang.Runnable({
-		run : function() {
-			controller.newInvoiceEvent();
-		}
-	}));
-	print(iAccelerators);
+	try {
+		iRunnable = iAccelerators = tab.getContent().getScene().getAccelerators()
+		iAccelerators.put(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN), new java.lang.Runnable({
+			run : function() {
+				controller.newInvoiceEvent();
+			}
+		}));
+		print(iAccelerators);
+	} catch (e) {
+	}
 }
 
 Controller.prototype.searchEvent = function(aEvent) {
