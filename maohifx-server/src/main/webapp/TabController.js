@@ -87,7 +87,6 @@ function refreshEvent(aEvent) {
 }
 
 function refresh() {
-	print("refresh")
 	if (!url.getText().isEmpty()) {
 		try {
 			iLoader = new FXMLLoader(new URL(url.getText()));
