@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -11,49 +13,89 @@
 	<fx:script source="../Controller.js" />
 	<fx:script source="../TabController.js" />
 	<top>
-		<GridPane BorderPane.alignment="CENTER">
-			<columnConstraints>
-				<ColumnConstraints hgrow="NEVER" minWidth="0.0" />
-				<ColumnConstraints hgrow="NEVER" minWidth="0.0" />
-				<ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
-				<ColumnConstraints hgrow="NEVER" minWidth="10.0" />
-			</columnConstraints>
-			<rowConstraints>
-				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-			</rowConstraints>
+		<VBox fx:id="topVBox" BorderPane.alignment="CENTER">
 			<children>
-				<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="refreshEvent(event);" prefWidth="50.0" text="Refresh" GridPane.rowIndex="1" />
-				<TextField fx:id="url" onAction="refresh(event);" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-				<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="homeEvent(event);" prefWidth="50.0" text="Home" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-				<MenuButton fx:id="menuButton" mnemonicParsing="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
-					<items>
-						<MenuItem mnemonicParsing="false" onAction="newTabEvent(event);" text="Nouvelle onglet">
-							<accelerator>
-								<KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-							</accelerator>
-						</MenuItem>
-						<MenuItem mnemonicParsing="false" onAction="newInvoiceEvent()" text="Nouvelle Facture" />
-						<MenuItem mnemonicParsing="false" onAction="closeTabEvent(event)" text="Fermet onglet">
-							<accelerator>
-								<KeyCodeCombination alt="UP" code="W" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-							</accelerator>
-						</MenuItem>
-						<SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem mnemonicParsing="false" onAction="refreshEvent(event)" text="Actualiser">
-							<accelerator>
-								<KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-							</accelerator>
-						</MenuItem>
-						<SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem mnemonicParsing="false" onAction="aboutEvent(event)" text="A propos" />
-					</items>
-				</MenuButton>
-				<ToolBar fx:id="toolbar" prefHeight="40.0" prefWidth="200.0" GridPane.columnSpan="2147483647" />
+				<GridPane fx:id="toolPane">
+					<columnConstraints>
+						<ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
+						<ColumnConstraints hgrow="NEVER" />
+					</columnConstraints>
+					<rowConstraints>
+						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+					</rowConstraints>
+					<children>
+						<ToolBar fx:id="toolbar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="200.0" />
+						<MenuButton fx:id="menuButton" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" GridPane.columnIndex="1">
+							<items>
+								<MenuItem mnemonicParsing="false" onAction="newTabEvent(event);" text="Nouvelle onglet">
+									<accelerator>
+										<KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+									</accelerator>
+								</MenuItem>
+								<MenuItem mnemonicParsing="false" onAction="newInvoiceEvent()" text="Nouvelle Facture" />
+								<MenuItem mnemonicParsing="false" onAction="closeTabEvent(event)" text="Fermet onglet">
+									<accelerator>
+										<KeyCodeCombination alt="UP" code="W" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+									</accelerator>
+								</MenuItem>
+								<SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="showHideMenuItem" mnemonicParsing="false" onAction="hideShowAddressPaneEvent(event)" text="Afficher barre d'adresse" />
+								<MenuItem mnemonicParsing="false" onAction="refreshEvent(event)" text="Actualiser">
+									<accelerator>
+										<KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+									</accelerator>
+								</MenuItem>
+								<SeparatorMenuItem mnemonicParsing="false" />
+								<MenuItem mnemonicParsing="false" onAction="aboutEvent(event)" text="A propos" />
+							</items>
+							<GridPane.margin>
+								<Insets />
+							</GridPane.margin>
+						</MenuButton>
+					</children>
+					<VBox.margin>
+						<Insets />
+					</VBox.margin>
+				</GridPane>
+				<GridPane fx:id="addressPane">
+					<columnConstraints>
+						<ColumnConstraints hgrow="NEVER" />
+						<ColumnConstraints hgrow="NEVER" />
+						<ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
+					</columnConstraints>
+					<children>
+						<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="refreshEvent(event);" prefWidth="50.0" text="Refresh">
+							<GridPane.margin>
+								<Insets left="5.0" />
+							</GridPane.margin>
+						</Button>
+						<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="homeEvent(event);" prefWidth="50.0" text="Home" GridPane.columnIndex="1">
+							<GridPane.margin>
+								<Insets left="5.0" right="5.0" />
+							</GridPane.margin>
+						</Button>
+						<TextField fx:id="url" onAction="refresh(event);" GridPane.columnIndex="2" />
+					</children>
+					<rowConstraints>
+						<RowConstraints />
+					</rowConstraints>
+				</GridPane>
 			</children>
-		</GridPane>
+			<BorderPane.margin>
+				<Insets />
+			</BorderPane.margin>
+         <padding>
+            <Insets bottom="10.0" />
+         </padding>
+         <effect>
+            <DropShadow />
+         </effect>
+		</VBox>
 	</top>
 	<fx:script>
 		init();
 	</fx:script>
+   <padding>
+      <Insets bottom="10.0" />
+   </padding>
 </BorderPane>

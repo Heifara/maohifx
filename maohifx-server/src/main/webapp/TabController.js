@@ -6,8 +6,23 @@ var FXMLLoader = javafx.fxml.FXMLLoader;
 var URL = java.net.URL;
 
 function init() {
+	hideShowAddressPaneEvent();
+	
 	url.setText(defaultUrl);
 	refresh();
+}
+
+function hideShowAddressPaneEvent(aEvent) {
+	if (addressPane.isVisible()) {
+		addressPane.setVisible(false);
+		topVBox.getChildren().remove(addressPane);
+		showHideMenuItem.setText("Afficher la barre d'adresse");
+	} else {
+		addressPane.setVisible(true);
+		topVBox.getChildren().add(addressPane);
+		showHideMenuItem.setText("Masquer la barre d'adresse");
+	}
+	topVBox.autosize();
 }
 
 /**
@@ -70,6 +85,7 @@ function refreshEvent(aEvent) {
 }
 
 function refresh() {
+	print("refresh")
 	if (!url.getText().isEmpty()) {
 		try {
 			iLoader = new FXMLLoader(new URL(url.getText()));
