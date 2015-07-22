@@ -1,0 +1,1 @@
+"%JAVA_HOME%/bin/java" -classpath "lib/*" com.maohi.software.maohifx.client.Main
