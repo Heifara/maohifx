@@ -31,7 +31,7 @@ function hideShowAddressPaneEvent(aEvent) {
  * @param aEvent
  */
 function newTabEvent(aEvent) {
-	newTab("http://localhost:8080/maohifx-server/webapi/fxml?id=home");
+	newTab("http://localhost:8080/maohifx-server/webapi/fxml?id=invoices");
 }
 
 function newInvoiceEvent(aEvent) {

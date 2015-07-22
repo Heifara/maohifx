@@ -75,6 +75,8 @@
 		</TableView>
 	</center>
 	<fx:script>
+		tab.setText("Nouvelle Facture");
+	
 		controller = new Controller();
 
 		toolbar.getItems().clear();
