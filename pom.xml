@@ -6,7 +6,6 @@
 	<artifactId>maohifx</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Multi Chapter Simple Parent Project</name>
 	<build>
 		<plugins>
 			<plugin>
