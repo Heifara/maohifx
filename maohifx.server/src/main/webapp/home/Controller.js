@@ -1,6 +1,4 @@
-load("fx:base.js");
-load("fx:controls.js");
-load("fx:graphics.js");
+load("http://localhost:8080/maohifx.server/common.js");
 load("http://localhost:8080/maohifx.server/TabManager.js");
 
 function HomeController() {

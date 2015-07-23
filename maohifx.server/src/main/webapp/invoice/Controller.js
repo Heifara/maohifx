@@ -1,10 +1,6 @@
-load("fx:base.js");
-load("fx:controls.js");
-load("fx:graphics.js");
+load("http://localhost:8080/maohifx.server/common.js");
 
-var JSONItem = com.maohi.software.maohifx.common.tableview.JSONItem;
-
-function Controller() {
+function InvoiceController() {
 	this.data = FXCollections.observableArrayList();
 
 	this.data.add(new JSONItem({
@@ -25,10 +21,10 @@ function Controller() {
 	tableView.setItems(this.data);
 }
 
-Controller.prototype.saveEvent = function() {
+InvoiceController.prototype.saveEvent = function() {
 	print("saved");
 }
 
-Controller.prototype.printEvent = function() {
+InvoiceController.prototype.printEvent = function() {
 	print("printed");
 }

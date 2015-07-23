@@ -38,7 +38,7 @@
 									</accelerator>
 								</MenuItem>
 								<SeparatorMenuItem mnemonicParsing="false" />
-								<MenuItem fx:id="showHideMenuItem" mnemonicParsing="false" onAction="hideShowAddressPaneEvent(event)" text="Afficher barre d'adresse" />
+								<MenuItem fx:id="showHideMenuItem" mnemonicParsing="false" onAction="controller.hideShowAddressPaneEvent(event)" text="Afficher barre d'adresse" />
 								<MenuItem mnemonicParsing="false" onAction="controller.refreshEvent(event)" text="Actualiser">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />

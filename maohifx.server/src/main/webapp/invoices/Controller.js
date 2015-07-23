@@ -1,11 +1,9 @@
-load("fx:base.js");
-load("fx:controls.js");
-load("fx:graphics.js");
-load("http://localhost:8080/maohifx.server/TabController.js");
-load("http://localhost:8080/maohifx.server/Controller.js");
-var JSONItem = com.maohi.software.maohifx.common.tableview.JSONItem;
+load("http://localhost:8080/maohifx.server/common.js");
+load("http://localhost:8080/maohifx.server/TabManager.js");
 
-function Controller() {
+function InvoicesController() {
+	this.tabManager = new TabManager();
+
 	this.data = FXCollections.observableArrayList();
 	this.data.add(new JSONItem());
 	this.data.add(new JSONItem());
@@ -24,18 +22,18 @@ function Controller() {
 	}
 }
 
-Controller.prototype.searchEvent = function(aEvent) {
+InvoicesController.prototype.searchEvent = function(aEvent) {
 	this.data.clear();
 }
 
-Controller.prototype.newInvoiceEvent = function(aEvent) {
-	newTab("http://localhost:8080/maohifx.server/webapi/fxml?id=invoice");
+InvoicesController.prototype.newInvoiceEvent = function(aEvent) {
+	this.tabManager.newTab("http://localhost:8080/maohifx.server/webapi/fxml?id=invoice");
 }
 
-Controller.prototype.editInvoicesEvent = function(aEvent) {
+InvoicesController.prototype.editInvoicesEvent = function(aEvent) {
 }
 
-Controller.prototype.keyTypeEvent = function(aEvent) {
+InvoicesController.prototype.keyTypeEvent = function(aEvent) {
 	print("keyType");
 	print(aEvent);
 }
