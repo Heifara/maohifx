@@ -1,12 +1,22 @@
 load("http://localhost:8080/maohifx.server/common.js");
 
+var refreshing = false;
+
+/**
+ * Control the tab
+ */
 function TabController() {
 	$loader.getNamespace().put("$toolbar", toolbar);
 	$loader.getNamespace().put("$tab", $tab);
 
+	statusBar.setText("");
+
 	urlField.setText($url);
-	content.setCenter($loader.getLoader(urlField.getText()).load());
+	this.refreshEvent();
+	this.hideShowAddressPaneEvent();
 };
+
+TabController.prototype.refreshing = false;
 
 TabController.prototype.newTabEvent = function(aEvent) {
 	iLoader = $loader.getLoader("http://localhost:8080/maohifx.server/webapi/fxml?id=newTab");
@@ -36,7 +46,28 @@ TabController.prototype.closeTabEvent = function(aEvent) {
 }
 
 TabController.prototype.refreshEvent = function(aEvent) {
-	content.setCenter($loader.getLoader(urlField.getText()).load());
+	if (!refreshing) {
+		refreshing = true;
+
+		content.setCenter(null);
+
+		print(System.identityHashCode(statusBar));
+
+		iProgressBar = new ProgressIndicator();
+		statusBar.getRightItems().add(iProgressBar);
+
+		new Thread(new Task({
+			call : function() {
+				Platform.runLater(new Runnable({
+					run : function() {
+						content.setCenter($loader.getLoader(urlField.getText()).load());
+						statusBar.getRightItems().remove(iProgressBar);
+						refreshing = false;
+					}
+				}));
+			}
+		})).start();
+	}
 }
 
 TabController.prototype.applyCaspienEvent = function(aEvent) {
