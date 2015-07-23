@@ -11,8 +11,3 @@ var URL = java.net.URL;
 var JSONItem = com.maohi.software.maohifx.common.tableview.JSONItem;
 
 var System = java.lang.System;
-
-function openTab(aUrl) {
-	iLoader = $loader.getLoader("http://localhost:8080/maohifx.server/webapi/fxml?id=newTab");
-	iLoader.load($tabpane, aUrl);
-}
