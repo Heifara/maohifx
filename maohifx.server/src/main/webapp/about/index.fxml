@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?language javascript?>
+
 <?import javafx.scene.web.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -9,4 +11,7 @@
    <content>
       <TextArea prefHeight="200.0" prefWidth="200.0" />
    </content>
+   <fx:script>
+		$tab.setText("A propos");
+	</fx:script>
 </TitledPane>

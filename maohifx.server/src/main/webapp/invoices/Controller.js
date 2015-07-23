@@ -1,8 +1,7 @@
 load("http://localhost:8080/maohifx.server/common.js");
-load("http://localhost:8080/maohifx.server/TabManager.js");
 
 function InvoicesController() {
-	this.tabManager = new TabManager();
+	$tab.setText("Factures");
 
 	this.data = FXCollections.observableArrayList();
 	this.data.add(new JSONItem());
@@ -27,7 +26,7 @@ InvoicesController.prototype.searchEvent = function(aEvent) {
 }
 
 InvoicesController.prototype.newInvoiceEvent = function(aEvent) {
-	this.tabManager.newTab("http://localhost:8080/maohifx.server/webapi/fxml?id=invoice");
+	ExtFXMLLoader.load($tabpane, "http://localhost:8080/maohifx.server/webapi/fxml?id=invoice");
 }
 
 InvoicesController.prototype.editInvoicesEvent = function(aEvent) {

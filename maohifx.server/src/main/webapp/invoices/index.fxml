@@ -49,8 +49,6 @@
       </GridPane>
    </center>
    <fx:script>
-   		tab.setText("Factures");
-   
 		controller = new InvoicesController();
 	</fx:script>
 </BorderPane>

@@ -1,12 +1,10 @@
 load("http://localhost:8080/maohifx.server/common.js");
-load("http://localhost:8080/maohifx.server/TabManager.js");
 
 function HomeController() {
+	$tab.setText("Home");
 }
 
 HomeController.prototype.openEvent = function(aEvent) {
-	iTabManager = new TabManager();
-
 	iButton = aEvent.getSource();
-	iTabManager.newTab(iButton.getId());
+	ExtFXMLLoader.load($tabpane, iButton.getId());
 }
