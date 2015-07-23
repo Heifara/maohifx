@@ -1,0 +1,5 @@
+#mainPane {
+	-fx-content-display: top;
+	-fx-border-color: black;
+	-fx-border-width: 2;
+}

@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import org.controlsfx.control.*?>
-<?import javafx.scene.input.*?>
+<?language javascript?>
+<?import java.net.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Tab?>
-<?language javascript?>
 
-<BorderPane fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane id="mainPane" fx:id="mainPane" onMouseDragged="controller.onMouseDraggedEvent(event)" onMousePressed="controller.onMousePressedEvent(event);" prefHeight="600.0" prefWidth="800.0" stylesheets="@app.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<fx:script source="http://localhost:8080/maohifx.server/Controller.js" />
 	<top>
 	</top>
 	<center>
-		<TabPane fx:id="tabpane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER">
+		<TabPane fx:id="tabpane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="controller.onMouseClickedEvent(event)" onMouseDragged="controller.onMouseDraggedEvent(event)" onMousePressed="controller.onMousePressedEvent(event);" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER">
 		</TabPane>
 	</center>
-	<bottom>
-		<StatusBar fx:id="statusBar" BorderPane.alignment="CENTER" />
-	</bottom>
 	<fx:script>
 		controller = new MainController();
 	</fx:script>
+	<stylesheets>
+		<URL value="http://localhost:8080/maohifx.server/app.css" />
+	</stylesheets>
 </BorderPane>
