@@ -50,13 +50,13 @@ public class PostTest {
 		Form iForm = new Form();
 		iForm.param("login", "Metallica");
 		iForm.param("password", "Fade To Black");
-		Response iResponse = ClientBuilder.newClient().target("http://localhost:8080/maohifx-server/webapi/post").request().post(Entity.entity(iForm, MediaType.APPLICATION_FORM_URLENCODED));
+		Response iResponse = ClientBuilder.newClient().target("http://localhost:8080/maohifx.server/webapi/post").request().post(Entity.entity(iForm, MediaType.APPLICATION_FORM_URLENCODED));
 		assertTrue(Status.OK.equals(Status.fromStatusCode(iResponse.getStatus())));
 	}
 
 	@Test
 	public void shouldOkFromJSON() throws Exception {
-		Response iResponse = ClientBuilder.newClient().target("http://localhost:8080/maohifx-server/webapi/post").request().post(Entity.entity(new String("Hi"), MediaType.APPLICATION_JSON));
+		Response iResponse = ClientBuilder.newClient().target("http://localhost:8080/maohifx.server/webapi/post").request().post(Entity.entity(new String("Hi"), MediaType.APPLICATION_JSON));
 		assertTrue(Status.OK.equals(Status.fromStatusCode(iResponse.getStatus())));
 	}
 

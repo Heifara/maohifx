@@ -30,13 +30,13 @@ public class GetTest {
 
 	@Test
 	public void shouldOkFromJSON() throws Exception {
-		Response iResponse = ClientBuilder.newClient().target("http://localhost:8080/maohifx-server/webapi/get").request().get();
+		Response iResponse = ClientBuilder.newClient().target("http://localhost:8080/maohifx.server/webapi/get").request().get();
 		assertTrue(Status.OK.equals(Status.fromStatusCode(iResponse.getStatus())));
 	}
 
 	@Test
 	public void shouldOkFromJSONQuery() throws Exception {
-		Response iResponse = ClientBuilder.newClient().target("http://localhost:8080/maohifx-server/webapi/get").queryParam("id", "myId").request().get();
+		Response iResponse = ClientBuilder.newClient().target("http://localhost:8080/maohifx.server/webapi/get").queryParam("id", "myId").request().get();
 		assertTrue(Status.OK.equals(Status.fromStatusCode(iResponse.getStatus())));
 		assertTrue("myId".equals(iResponse.readEntity(String.class)));
 	}

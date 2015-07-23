@@ -1,8 +1,8 @@
 load("fx:base.js");
 load("fx:controls.js");
 load("fx:graphics.js");
-load("http://localhost:8080/maohifx-server/TabController.js");
-load("http://localhost:8080/maohifx-server/Controller.js");
+load("http://localhost:8080/maohifx.server/TabController.js");
+load("http://localhost:8080/maohifx.server/Controller.js");
 
 var JSONItem = com.maohi.software.maohifx.common.tableview.JSONItem;
 var String = java.lang.String;

@@ -1,8 +1,8 @@
 load("fx:base.js");
 load("fx:controls.js");
 load("fx:graphics.js");
-load("http://localhost:8080/maohifx-server/TabController.js");
-load("http://localhost:8080/maohifx-server/Controller.js");
+load("http://localhost:8080/maohifx.server/TabController.js");
+load("http://localhost:8080/maohifx.server/Controller.js");
 var JSONItem = com.maohi.software.maohifx.common.tableview.JSONItem;
 
 function Controller() {
@@ -29,7 +29,7 @@ Controller.prototype.searchEvent = function(aEvent) {
 }
 
 Controller.prototype.newInvoiceEvent = function(aEvent) {
-	newTab("http://localhost:8080/maohifx-server/webapi/fxml?id=invoice");
+	newTab("http://localhost:8080/maohifx.server/webapi/fxml?id=invoice");
 }
 
 Controller.prototype.editInvoicesEvent = function(aEvent) {

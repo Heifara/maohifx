@@ -15,7 +15,7 @@
 	<fx:script source="../home/Controller.js" />
 	<children>
 		<CustomControl text="Hello World!" />
-		<Button id="http://localhost:8080/maohifx-server/webapi/fxml?id=home" mnemonicParsing="false" onAction="open(event);" text="Home" />
+		<Button id="http://localhost:8080/maohifx.server/webapi/fxml?id=home" mnemonicParsing="false" onAction="open(event);" text="Home" />
 		<Button id="" mnemonicParsing="false" onAction="testJSONEvent(event)" text="Test JSON" />
 		<TableView fx:id="tableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
 			<columns>

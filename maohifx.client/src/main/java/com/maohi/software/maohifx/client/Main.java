@@ -28,7 +28,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) {
 		try {
-			FXMLLoader iLoader = new FXMLLoader(new URL("http://localhost:8080/maohifx-server/webapi/fxml?id=index"));
+			FXMLLoader iLoader = new FXMLLoader(new URL("http://localhost:8080/maohifx.server/webapi/fxml?id=index"));
 			Parent root = iLoader.load();
 			stage.setTitle("FXML Welcome");
 			stage.setScene(new Scene(root, 800, 600));

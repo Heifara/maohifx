@@ -40,11 +40,11 @@ function hideShowAddressPaneEvent(aEvent) {
  * @param aEvent
  */
 function newTabEvent(aEvent) {
-	newTab("http://localhost:8080/maohifx-server/webapi/fxml?id=invoices");
+	newTab("http://localhost:8080/maohifx.server/webapi/fxml?id=invoices");
 }
 
 function newInvoiceEvent(aEvent) {
-	newTab("http://localhost:8080/maohifx-server/webapi/fxml?id=invoice");
+	newTab("http://localhost:8080/maohifx.server/webapi/fxml?id=invoice");
 }
 
 /**
@@ -57,7 +57,7 @@ function newTab(aUrl) {
 	try {
 		var iNewTab = new Tab();
 
-		iLoader = new FXMLLoader(new URL("http://localhost:8080/maohifx-server/webapi/fxml?id=newTab"));
+		iLoader = new FXMLLoader(new URL("http://localhost:8080/maohifx.server/webapi/fxml?id=newTab"));
 		iLoader.getNamespace().put("mainPane", mainPane);
 		iLoader.getNamespace().put("tabpane", tabpane);
 		iLoader.getNamespace().put("defaultUrl", aUrl);
