@@ -1,24 +1,31 @@
 load("http://localhost:8080/maohifx.server/common.js");
 
 function TabController() {
-	url.setText($url);
-	this.refreshEvent();
+	$loader.getNamespace().put("$toolbar", toolbar);
+	$loader.getNamespace().put("$tab", $tab);
+
+	urlField.setText($url);
+	content.setCenter($loader.getLoader(urlField.getText()).load());
 };
 
 TabController.prototype.newTabEvent = function(aEvent) {
-	ExtFXMLLoader.load($tabpane, "http://localhost:8080/maohifx.server/webapi/fxml?id=home");
+	iLoader = $loader.getLoader("http://localhost:8080/maohifx.server/webapi/fxml?id=newTab");
+	iLoader.load($tabpane, "http://localhost:8080/maohifx.server/webapi/fxml?id=home");
 }
 
 TabController.prototype.newInvoiceEvent = function(aEvent) {
-	ExtFXMLLoader.load($tabpane, "http://localhost:8080/maohifx.server/webapi/fxml?id=invoice");
+	iLoader = $loader.getLoader("http://localhost:8080/maohifx.server/webapi/fxml?id=newTab");
+	iLoader.load($tabpane, "http://localhost:8080/maohifx.server/webapi/fxml?id=invoice");
 }
 
 TabController.prototype.homeEvent = function(aEvent) {
-	ExtFXMLLoader.load($tabpane, "http://localhost:8080/maohifx.server/webapi/fxml?id=home");
+	iLoader = $loader.getLoader("http://localhost:8080/maohifx.server/webapi/fxml?id=newTab");
+	iLoader.load($tabpane, "http://localhost:8080/maohifx.server/webapi/fxml?id=home");
 }
 
 TabController.prototype.aboutEvent = function(aEvent) {
-	ExtFXMLLoader.load($tabpane, "http://localhost:8080/maohifx.server/webapi/fxml?id=about");
+	iLoader = $loader.getLoader("http://localhost:8080/maohifx.server/webapi/fxml?id=newTab");
+	iLoader.load($tabpane, "http://localhost:8080/maohifx.server/webapi/fxml?id=about");
 }
 
 TabController.prototype.closeTabEvent = function(aEvent) {
@@ -29,10 +36,7 @@ TabController.prototype.closeTabEvent = function(aEvent) {
 }
 
 TabController.prototype.refreshEvent = function(aEvent) {
-	iLoader = ExtFXMLLoader.getLoader(url.getText());
-	iLoader.getNamespace().put("$tab", $tab);
-	iLoader.getNamespace().put("$toolbar", toolbar);
-	content.setCenter(iLoader.load());
+	content.setCenter($loader.getLoader(urlField.getText()).load());
 }
 
 TabController.prototype.applyCaspienEvent = function(aEvent) {

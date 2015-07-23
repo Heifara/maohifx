@@ -1,54 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?language javascript?>
+
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<?language javascript?>
+<?import com.maohi.software.maohifx.common.tableview.*?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
-   	<fx:script source="../invoices/Controller.js" />
-   <top>
-      <GridPane BorderPane.alignment="CENTER">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="NEVER" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" onAction="controller.searchEvent(event)" text="Rechercher" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="pattern" GridPane.columnSpan="2147483647" />
-         </children>
-      </GridPane>
-   </top>
-   <center>
-      <GridPane BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="NEVER" />
-          <ColumnConstraints hgrow="NEVER" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints vgrow="NEVER" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <TableView fx:id="tableView"  prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2147483647">
-              <columns>
-                <TableColumn prefWidth="75.0" text="Date de facture" />
-                <TableColumn prefWidth="75.0" text="Numéro de facture" />
-                  <TableColumn prefWidth="75.0" text="Nom du client" />
-              </columns>
-            </TableView>
-            <Button mnemonicParsing="false" onAction="controller.newInvoiceEvent(event)" text="Nouveau" />
-            <Button mnemonicParsing="false" onAction="controller.editInvoicesEvent(event)" text="Modifier" GridPane.columnIndex="1" />
-         </children>
-      </GridPane>
-   </center>
-   <fx:script>
+	<fx:script source="../invoices/Controller.js" />
+	<top>
+		<GridPane BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints hgrow="NEVER" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+				<Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" onAction="controller.searchEvent(event)" text="Rechercher" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+				<TextField fx:id="pattern" GridPane.columnSpan="2147483647" />
+			</children>
+		</GridPane>
+	</top>
+	<center>
+		<GridPane BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints hgrow="NEVER" />
+				<ColumnConstraints hgrow="NEVER" />
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints vgrow="NEVER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+				<TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2147483647">
+					<columns>
+						<TableColumn prefWidth="75.0" text="Date de facture">
+							<cellValueFactory>
+								<JSONValueFactory property="invoiceNumber" />
+							</cellValueFactory>
+						</TableColumn>
+						<TableColumn prefWidth="75.0" text="Numéro de facture" />
+						<TableColumn prefWidth="75.0" text="Nom du client" />
+					</columns>
+				</TableView>
+				<Button mnemonicParsing="false" onAction="controller.newInvoiceEvent(event)" text="Nouveau" />
+				<Button mnemonicParsing="false" onAction="controller.editInvoicesEvent(event)" text="Modifier" GridPane.columnIndex="1" />
+			</children>
+		</GridPane>
+	</center>
+	<fx:script>
 		controller = new InvoicesController();
 	</fx:script>
 </BorderPane>

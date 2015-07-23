@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
@@ -25,9 +26,14 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) {
 		try {
-			ExtFXMLLoader.getGlobalNamespace().put("$stage", stage);
-			stage.setTitle("FXML Welcome");
-			stage.setScene(new Scene(ExtFXMLLoader.load("http://localhost:8080/maohifx.server/webapi/fxml?id=index"), 800, 600));
+			Scene iScene = new Scene(new BorderPane());
+			stage.setScene(iScene);
+
+			ExtFXMLLoader iParentLoader = new ExtFXMLLoader();
+			iParentLoader.getNamespace().put("$stage", stage);
+			iParentLoader.getNamespace().put("$scene", iScene);
+
+			iScene.setRoot(iParentLoader.getLoader("http://localhost:8080/maohifx.server/webapi/fxml?id=index").load());
 			stage.show();
 		} catch (MalformedURLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());

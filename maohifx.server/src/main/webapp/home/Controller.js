@@ -6,5 +6,5 @@ function HomeController() {
 
 HomeController.prototype.openEvent = function(aEvent) {
 	iButton = aEvent.getSource();
-	ExtFXMLLoader.load($tabpane, iButton.getId());
+	openTab(iButton.getId());
 }

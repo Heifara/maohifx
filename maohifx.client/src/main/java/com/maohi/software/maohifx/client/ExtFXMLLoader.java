@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -19,40 +17,58 @@ import javafx.scene.control.TabPane;
  */
 public class ExtFXMLLoader extends FXMLLoader {
 
+	private final FXMLLoader parent;
+
+	public ExtFXMLLoader() {
+		this.parent = null;
+
+		this.getNamespace().put("$loader", this);
+	}
+
+	protected ExtFXMLLoader(FXMLLoader aParent) {
+		this.parent = aParent;
+
+		this.getNamespace().put("$loader", this);
+	}
+
+	public ExtFXMLLoader getLoader() throws MalformedURLException {
+		return getLoader(this.getParent().getLocation());
+	}
+
+	public ExtFXMLLoader getLoader(String aUrl) throws MalformedURLException {
+		return getLoader(new URL(aUrl));
+	}
+
 	/**
-	 * The location of the fxml to load within the created Tab
+	 * Return a new {@link ExtFXMLLoader} with the namespace of its parent
 	 * 
-	 * @see ExtFXMLLoader#load(TabPane, String)
+	 * @return the new loader
+	 * @throws MalformedURLException
 	 */
-	private static String fxmlTabLocation = "http://localhost:8080/maohifx.server/webapi/fxml?id=newTab";
+	public ExtFXMLLoader getLoader(URL aUrl) throws MalformedURLException {
+		ExtFXMLLoader iChildLoader = new ExtFXMLLoader(this);
+		iChildLoader.setLocation(aUrl);
 
-	/**
-	 * The global namespace shared amongst loaded fxml
-	 */
-	private static ObservableMap<String, Object> globalNamespace = FXCollections.observableHashMap();;
-
-	public static ObservableMap<String, Object> getGlobalNamespace() {
-		return globalNamespace;
-	}
-
-	public static FXMLLoader getLoader(String aUrl) throws MalformedURLException {
-		FXMLLoader iLoader = new FXMLLoader(new URL(aUrl));
-		for (String iKey : globalNamespace.keySet()) {
-			iLoader.getNamespace().put(iKey, globalNamespace.get(iKey));
+		// Give all namespace to child and replace $loader
+		for (String iKey : getNamespace().keySet()) {
+			iChildLoader.getNamespace().put(iKey, getNamespace().get(iKey));
 		}
-		return iLoader;
+		// Replace $loader by the child
+		iChildLoader.getNamespace().put("$loader", iChildLoader);
+		iChildLoader.getNamespace().put("$parentLoader", this);
+
+		return iChildLoader;
 	}
 
-	public static <T> T load(String aUrl) throws IOException {
-		return getLoader(aUrl).load();
+	public FXMLLoader getParent() {
+		return parent;
 	}
 
-	public static void load(TabPane aTabPane, String aUrl) throws IOException {
+	public void load(TabPane aTabPane, String aUrl) throws IOException {
 		Tab iTab = new Tab();
-		FXMLLoader iLoader = getLoader(fxmlTabLocation);
-		iLoader.getNamespace().put("$url", aUrl);
-		iLoader.getNamespace().put("$tab", iTab);
-		iTab.setContent(iLoader.load());
+		this.getNamespace().put("$tab", iTab);
+		this.getNamespace().put("$url", aUrl);
+		iTab.setContent(this.load());
 		aTabPane.getTabs().add(iTab);
 		aTabPane.getSelectionModel().select(aTabPane.getTabs().indexOf(iTab));
 	}
