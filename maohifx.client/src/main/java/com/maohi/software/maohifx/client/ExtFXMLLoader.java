@@ -31,10 +31,24 @@ public class ExtFXMLLoader extends FXMLLoader {
 		this.getNamespace().put("$loader", this);
 	}
 
+	/**
+	 * Return a loader with the parent's location
+	 * 
+	 * @return a loader
+	 * @throws MalformedURLException
+	 */
 	public ExtFXMLLoader getLoader() throws MalformedURLException {
-		return getLoader(this.getParent().getLocation());
+		return getLoader(this.parent.getLocation());
 	}
 
+	/**
+	 * Return a loader with <b>aUrl</b> as location
+	 * 
+	 * @param aUrl
+	 *            the url to load
+	 * @return
+	 * @throws MalformedURLException
+	 */
 	public ExtFXMLLoader getLoader(String aUrl) throws MalformedURLException {
 		return getLoader(new URL(aUrl));
 	}
@@ -60,10 +74,18 @@ public class ExtFXMLLoader extends FXMLLoader {
 		return iChildLoader;
 	}
 
-	public FXMLLoader getParent() {
-		return parent;
-	}
-
+	/**
+	 * Create a new {@link Tab} to add in <b>aTabPane</b>. <br>
+	 * The new {@link Tab} is loaded with the location<br>
+	 * And contains $tab and $url namespaces.<br>
+	 * The loaded Fxml is responsible for handling $url
+	 * 
+	 * @param aTabPane
+	 *            the tabpane
+	 * @param aUrl
+	 *            the url as in $url
+	 * @throws IOException
+	 */
 	public void load(TabPane aTabPane, String aUrl) throws IOException {
 		Tab iTab = new Tab();
 		this.getNamespace().put("$tab", iTab);
