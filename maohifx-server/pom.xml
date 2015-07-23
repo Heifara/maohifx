@@ -32,18 +32,26 @@
 			</testResource>
 		</testResources>
 		<plugins>
+
 			<!-- Tomcat plugin -->
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
-				<configuration>
-					<path>/${project.build.finalName}</path>
-					<update>true</update>
-					<url>http://localhost:8080/manager/text</url>
-					<username>tomcat</username>
-					<password>tomcatuser</password>
-				</configuration>
+				<executions>
+					<execution>
+						<id>tomcat-run</id>
+						<goals>
+							<goal>exec-war-only</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<path>${artifactId}</path>
+							<attachartifactclassifier>exec-war</attachartifactclassifier>
+							<attachartifactclassifiertype>jar</attachartifactclassifiertype>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
