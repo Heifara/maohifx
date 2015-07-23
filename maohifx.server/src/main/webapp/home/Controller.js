@@ -6,5 +6,6 @@ function HomeController() {
 
 HomeController.prototype.openEvent = function(aEvent) {
 	iButton = aEvent.getSource();
-	openTab(iButton.getId());
+	iLoader = $loader.getLoader();
+	iLoader.load($tabpane, iButton.getId());
 }
