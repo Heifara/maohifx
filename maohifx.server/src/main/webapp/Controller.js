@@ -1,20 +1,13 @@
-load("fx:base.js");
-load("fx:controls.js");
-load("fx:graphics.js");
+load("http://localhost:8080/maohifx.server/common.js");
 
-var ClientBuilder = javax.ws.rs.client.ClientBuilder;
-var Entity = javax.ws.rs.client.Entity;
-var MediaType = javax.ws.rs.core.MediaType;
+MainController = function() {
+	statusBar.setText("");
+	statusBar.getLeftItems().clear();
+	statusBar.getLeftItems().add(new Label("Welcome"));
+	statusBar.getLeftItems().add(new Separator(Orientation.VERTICAL));
+	statusBar.getLeftItems().add(new Label("Server: localhost:8080/maohifx.server/"));
 
-function homeEvent(aEvent) {
-	url.setText("http://localhost:8080/maohifx.server/webapi/fxml?id=home");
-	refresh();
-}
+	newTab("");
 
-function aboutEvent(aEvent) {
-	newTab("http://localhost:8080/maohifx.server/webapi/fxml?id=about");
-}
-
-function post() {
-	return ClientBuilder.newClient().target("http://localhost:8080/maohifx.server/webapi/post").request().post(Entity.entity(new String("Hello World"), MediaType.APPLICATION_JSON));
+	print(java.lang.System.identityHashCode(this));
 }
