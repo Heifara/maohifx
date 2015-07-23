@@ -10,8 +10,7 @@
 <?language javascript?>
 
 <BorderPane fx:id="content" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
-	<fx:script source="../Controller.js" />
-	<fx:script source="../TabController.js" />
+	<fx:script source="http://localhost:8080/maohifx.server/tab/TabController.js" />
 	<top>
 		<VBox fx:id="topVBox" BorderPane.alignment="CENTER">
 			<children>
@@ -27,32 +26,32 @@
 						<ToolBar fx:id="toolbar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="200.0" />
 						<MenuButton fx:id="menuButton" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" GridPane.columnIndex="1">
 							<items>
-								<MenuItem mnemonicParsing="false" onAction="newTabEvent(event);" text="Nouvelle onglet">
+								<MenuItem mnemonicParsing="false" onAction="controller.newTabEvent(event);" text="Nouvelle onglet">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</MenuItem>
-								<MenuItem mnemonicParsing="false" onAction="newInvoiceEvent()" text="Nouvelle Facture" />
-								<MenuItem mnemonicParsing="false" onAction="closeTabEvent(event)" text="Fermet onglet">
+								<MenuItem mnemonicParsing="false" onAction="controller.newInvoiceEvent()" text="Nouvelle Facture" />
+								<MenuItem mnemonicParsing="false" onAction="controller.closeTabEvent(event)" text="Fermet onglet">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="W" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</MenuItem>
 								<SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="showHideMenuItem" mnemonicParsing="false" onAction="hideShowAddressPaneEvent(event)" text="Afficher barre d'adresse" />
-								<MenuItem mnemonicParsing="false" onAction="refreshEvent(event)" text="Actualiser">
+								<MenuItem fx:id="showHideMenuItem" mnemonicParsing="false" onAction="hideShowAddressPaneEvent(event)" text="Afficher barre d'adresse" />
+								<MenuItem mnemonicParsing="false" onAction="controller.refreshEvent(event)" text="Actualiser">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</MenuItem>
 								<SeparatorMenuItem mnemonicParsing="false" />
-                        <Menu mnemonicParsing="false" text="Thème">
-                          <items>
-                            <MenuItem mnemonicParsing="false" onAction="applyCaspienEvent(event)" text="Caspien" />
-                              <MenuItem mnemonicParsing="false" onAction="applyModenaEvent(event)" text="Modena" />
-                          </items>
-                        </Menu>
-								<MenuItem mnemonicParsing="false" onAction="aboutEvent(event)" text="A propos" />
+								<Menu mnemonicParsing="false" text="Thème">
+									<items>
+										<MenuItem mnemonicParsing="false" onAction="controller.applyCaspienEvent(event)" text="Caspien" />
+										<MenuItem mnemonicParsing="false" onAction="controller.applyModenaEvent(event)" text="Modena" />
+									</items>
+								</Menu>
+								<MenuItem mnemonicParsing="false" onAction="controller.aboutEvent(event)" text="A propos" />
 							</items>
 							<GridPane.margin>
 								<Insets />
@@ -70,17 +69,17 @@
 						<ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
 					</columnConstraints>
 					<children>
-						<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="refreshEvent(event);" prefWidth="50.0" text="Refresh">
+						<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="controller.refreshEvent(event);" prefWidth="50.0" text="Refresh">
 							<GridPane.margin>
 								<Insets left="5.0" />
 							</GridPane.margin>
 						</Button>
-						<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="homeEvent(event);" prefWidth="50.0" text="Home" GridPane.columnIndex="1">
+						<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="controller.homeEvent(event);" prefWidth="50.0" text="Home" GridPane.columnIndex="1">
 							<GridPane.margin>
 								<Insets left="5.0" right="5.0" />
 							</GridPane.margin>
 						</Button>
-						<TextField fx:id="url" onAction="refresh(event);" GridPane.columnIndex="2" />
+						<TextField fx:id="url" GridPane.columnIndex="2" />
 					</children>
 					<rowConstraints>
 						<RowConstraints />
@@ -90,18 +89,19 @@
 			<BorderPane.margin>
 				<Insets />
 			</BorderPane.margin>
-         <padding>
-            <Insets bottom="10.0" />
-         </padding>
-         <effect>
-            <DropShadow />
-         </effect>
+			<padding>
+				<Insets bottom="10.0" />
+			</padding>
+			<effect>
+				<DropShadow />
+			</effect>
 		</VBox>
 	</top>
 	<fx:script>
-		init();
+		controller = new TabController();
+		controller.refreshEvent();
 	</fx:script>
-   <padding>
-      <Insets bottom="10.0" />
-   </padding>
+	<padding>
+		<Insets bottom="10.0" />
+	</padding>
 </BorderPane>
