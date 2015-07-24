@@ -11,8 +11,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.maohi.software.maohifx.server.beans.Person;
-
 /**
  * @author heifara
  *
@@ -29,11 +27,8 @@ public class Post {
 
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
-	public Person fromJSON(String aString) {
-		Person iResponse = new Person();
-		iResponse.setFirstName("Toto");
-		iResponse.setLastName("DUPONT");
-		return iResponse;
+	public Response fromJSON(String aString) {
+		return Response.ok().entity(aString).build();
 	}
 
 }
