@@ -23,12 +23,14 @@ public class ExtFXMLLoader extends FXMLLoader {
 		this.parent = null;
 
 		this.getNamespace().put("$loader", this);
+		this.getNamespace().put("$http", new RestManager());
 	}
 
 	protected ExtFXMLLoader(FXMLLoader aParent) {
 		this.parent = aParent;
 
 		this.getNamespace().put("$loader", this);
+		this.getNamespace().put("$http", this);
 	}
 
 	/**
