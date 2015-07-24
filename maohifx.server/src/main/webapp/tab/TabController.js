@@ -11,6 +11,10 @@ function TabController() {
 
 	statusBar.setText("");
 
+	this.urlStatus = new Label();
+	this.urlStatus.textProperty().bindBidirectional(urlField.textProperty());
+	statusBar.getLeftItems().add(this.urlStatus)
+
 	urlField.setText($url);
 	this.refreshEvent();
 	this.hideShowAddressPaneEvent();
