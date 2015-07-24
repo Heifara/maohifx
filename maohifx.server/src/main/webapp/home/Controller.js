@@ -3,6 +3,8 @@ load("http://localhost:8080/maohifx.server/common.js");
 function HomeController() {
 	$tab.setText("Home");
 
+	toolbar.getItems().clear()
+	
 	iButton = new Button("Get");
 	iButton.onAction = function() {
 		iResponse = $http.get("http://localhost:8080/maohifx.server/webapi/get");
