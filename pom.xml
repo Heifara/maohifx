@@ -83,6 +83,10 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -142,5 +146,6 @@
 		<module>maohifx.server</module>
 		<module>maohifx.client</module>
 		<module>maohifx.common</module>
+		<module>maohifx.invoice</module>
 	</modules>
 </project>
