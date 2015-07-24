@@ -39,7 +39,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.maohi.software.maohifx.client.Main</mainClass>
+							<mainClass>com.maohi.software.maohifx.client.MaohiFXClient</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

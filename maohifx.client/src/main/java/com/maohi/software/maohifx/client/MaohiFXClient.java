@@ -17,10 +17,10 @@ import javafx.stage.Stage;
  * @author heifara
  *
  */
-public class Main extends Application {
+public class MaohiFXClient extends Application {
 
 	public static void main(String[] args) {
-		Application.launch(Main.class, args);
+		Application.launch(MaohiFXClient.class, args);
 	}
 
 	@Override
