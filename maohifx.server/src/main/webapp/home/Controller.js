@@ -8,7 +8,7 @@ function HomeController() {
 		iResponse = $http.get("http://localhost:8080/maohifx.server/webapi/get");
 		print(iResponse);
 	}
-	$toolbar.getItems().add(iButton);
+	toolbar.getItems().add(iButton);
 
 	iButton = new Button("Get JSON");
 	iButton.onAction = function() {
@@ -21,14 +21,14 @@ function HomeController() {
 		});
 		print(iResponse);
 	}
-	$toolbar.getItems().add(iButton);
+	toolbar.getItems().add(iButton);
 
 	iButton = new Button("Post");
 	iButton.onAction = function() {
 		iResponse = $http.post("http://localhost:8080/maohifx.server/webapi/post");
 		print(iResponse);
 	}
-	$toolbar.getItems().add(iButton);
+	toolbar.getItems().add(iButton);
 
 	iButton = new Button("Post JSON");
 	iButton.onAction = function() {
@@ -38,7 +38,7 @@ function HomeController() {
 		});
 		print(iResponse);
 	}
-	$toolbar.getItems().add(iButton);
+	toolbar.getItems().add(iButton);
 }
 
 HomeController.prototype.openEvent = function(aEvent) {
