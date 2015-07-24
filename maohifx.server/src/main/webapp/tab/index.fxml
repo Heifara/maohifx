@@ -80,7 +80,7 @@
 								<Insets left="5.0" right="5.0" />
 							</GridPane.margin>
 						</Button>
-						<TextField fx:id="urlField" GridPane.columnIndex="2" />
+						<TextField fx:id="urlField" onAction="controller.refreshEvent(event);" GridPane.columnIndex="2" />
 					</children>
 					<rowConstraints>
 						<RowConstraints />
