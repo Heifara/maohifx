@@ -5,8 +5,6 @@ function InvoicesController() {
 	$tab.setText("Factures");
 
 	this.data = FXCollections.observableArrayList();
-	this.data.add(new JSONItem(new Invoice(5)));
-	this.data.add(new JSONItem(new Invoice(10)));
 	tableView.setItems(this.data);
 
 	try {
@@ -23,6 +21,7 @@ function InvoicesController() {
 
 InvoicesController.prototype.searchEvent = function(aEvent) {
 	this.data.clear();
+	this.data.add(new Invoice());
 }
 
 InvoicesController.prototype.newInvoiceEvent = function(aEvent) {

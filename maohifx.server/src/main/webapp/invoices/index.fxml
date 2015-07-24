@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<?import com.maohi.software.maohifx.common.tableview.*?>
+<?import com.maohi.software.maohifx.client.tableview.*?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<fx:script source="../invoices/Controller.js" />
@@ -42,10 +42,14 @@
 					<columns>
 						<TableColumn prefWidth="75.0" text="Date de facture">
 							<cellValueFactory>
-								<JSONValueFactory property="invoiceNumber" />
+								<JSObjectPropertyValueFactory property="invoiceDate" />
 							</cellValueFactory>
 						</TableColumn>
-						<TableColumn prefWidth="75.0" text="Numéro de facture" />
+						<TableColumn prefWidth="75.0" text="Numéro de facture">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="invoiceNumber" />
+							</cellValueFactory>
+						</TableColumn>
 						<TableColumn prefWidth="75.0" text="Nom du client" />
 					</columns>
 				</TableView>
