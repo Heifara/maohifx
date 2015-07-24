@@ -51,8 +51,6 @@ TabController.prototype.refreshEvent = function(aEvent) {
 
 		content.setCenter(null);
 
-		print(System.identityHashCode(statusBar));
-
 		iProgressBar = new ProgressIndicator();
 		statusBar.getRightItems().add(iProgressBar);
 
