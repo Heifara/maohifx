@@ -1,9 +1,17 @@
 load("http://localhost:8080/maohifx.server/common.js");
+load("http://localhost:8080/maohifx.server/invoice/Invoice.js");
 
 function HomeController() {
 	$tab.setText("Home");
 
 	toolbar.getItems().clear()
+
+	iButton = new Button("Save Invoice");
+	iButton.onAction = function() {
+		iInvoice = new Invoice();
+		iInvoice.save();
+	}
+	toolbar.getItems().add(iButton);
 
 	iButton = new Button("Get");
 	iButton.onAction = function() {
