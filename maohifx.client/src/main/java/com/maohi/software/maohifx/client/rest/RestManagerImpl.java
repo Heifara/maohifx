@@ -9,12 +9,14 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.maohi.software.maohifx.client.ExtFXMLLoader;
+import com.maohi.software.maohifx.common.JSObjectUtil;
 
 import jdk.nashorn.api.scripting.JSObject;
 import jdk.nashorn.api.scripting.ScriptUtils;
@@ -24,6 +26,7 @@ import jdk.nashorn.internal.runtime.ScriptObject;
  * @author heifara
  *
  */
+@SuppressWarnings("restriction")
 public class RestManagerImpl {
 
 	private final ExtFXMLLoader loader;
@@ -43,6 +46,10 @@ public class RestManagerImpl {
 			iResponse = iBuilder.get();
 			break;
 
+		case "post":
+			iResponse = iBuilder.post(Entity.json(JSObjectUtil.parse((JSObject) aJsObject.getMember(("data")))));
+			break;
+
 		default:
 			return;
 		}
@@ -51,8 +58,7 @@ public class RestManagerImpl {
 
 		switch (Status.fromStatusCode(iStatus)) {
 		case OK:
-			final Object iEntity = iResponse.readEntity(Object.class);
-			this.executeFunction("success", aJsObject, iStatus, iEntity);
+			this.executeFunction("success", aJsObject, iStatus, iResponse.readEntity(Object.class));
 			break;
 
 		default:
