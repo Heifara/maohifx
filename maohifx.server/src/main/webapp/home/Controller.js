@@ -4,41 +4,65 @@ function HomeController() {
 	$tab.setText("Home");
 
 	toolbar.getItems().clear()
-	
+
 	iButton = new Button("Get");
 	iButton.onAction = function() {
-		iResponse = $http.get("http://localhost:8080/maohifx.server/webapi/get");
-		print(iResponse);
+		$http.get("http://localhost:8080/maohifx.server/webapi/get");
 	}
 	toolbar.getItems().add(iButton);
 
+	iResult = null;
 	iButton = new Button("Get JSON");
 	iButton.onAction = function() {
-		iResponse = $http.get({
+		$http.ajax({
 			url : "http://localhost:8080/maohifx.server/webapi/get",
-			data : {
-				value1 : "test",
-				value2 : 2.2
-			}
+			type : "get",
+			contentType : "application/x-www-form-urlencoded",
+			dataType : "application/json",
+			success : function($result, $status) {
+				print($status);
+				print($result);
+				$tab.setText("Get sccess");
+			},
 		});
-		print(iResponse);
 	}
 	toolbar.getItems().add(iButton);
 
 	iButton = new Button("Post");
 	iButton.onAction = function() {
-		iResponse = $http.post("http://localhost:8080/maohifx.server/webapi/post");
-		print(iResponse);
+		$http.post("http://localhost:8080/maohifx.server/webapi/post");
 	}
 	toolbar.getItems().add(iButton);
 
 	iButton = new Button("Post JSON");
 	iButton.onAction = function() {
-		iResponse = $http.get({
-			url : "http://localhost:8080/maohifx.server/webapi/post",
-			data : ""
+		$http.ajax({
+			url : "http://localhost:8080/maohifx.server/webapi/get",
+			type : "get",
+			contentType : "application/x-www-form-urlencoded",
+			dataType : "application/json",
+			success : function($result, $status) {
+				print($status);
+				print($result);
+				$tab.setText("Get sccess");
+			},
 		});
-		print(iResponse);
+	}
+	toolbar.getItems().add(iButton);
+
+	iButton = new Button("JSON Error");
+	iButton.onAction = function() {
+		$http.ajax({
+			url : "http://localhost:8080/maohifx.server/webapi/unknown",
+			type : "get",
+			contentType : "application/x-www-form-urlencoded",
+			dataType : "application/json",
+			error : function($result, $status) {
+				print($status);
+				print($result);
+				$tab.setText("Get Erreur");
+			},
+		});
 	}
 	toolbar.getItems().add(iButton);
 }

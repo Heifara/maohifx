@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.maohi.software.maohifx.client.rest.RestManagerImpl;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -23,14 +25,12 @@ public class ExtFXMLLoader extends FXMLLoader {
 		this.parent = null;
 
 		this.getNamespace().put("$loader", this);
-		this.getNamespace().put("$http", new RestManager());
 	}
 
-	protected ExtFXMLLoader(FXMLLoader aParent) {
+	protected ExtFXMLLoader(final FXMLLoader aParent) {
 		this.parent = aParent;
 
 		this.getNamespace().put("$loader", this);
-		this.getNamespace().put("$http", this);
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class ExtFXMLLoader extends FXMLLoader {
 	 * @throws MalformedURLException
 	 */
 	public ExtFXMLLoader getLoader() throws MalformedURLException {
-		return getLoader(this.parent.getLocation());
+		return this.getLoader(this.parent.getLocation());
 	}
 
 	/**
@@ -51,8 +51,8 @@ public class ExtFXMLLoader extends FXMLLoader {
 	 * @return
 	 * @throws MalformedURLException
 	 */
-	public ExtFXMLLoader getLoader(String aUrl) throws MalformedURLException {
-		return getLoader(new URL(aUrl));
+	public ExtFXMLLoader getLoader(final String aUrl) throws MalformedURLException {
+		return this.getLoader(new URL(aUrl));
 	}
 
 	/**
@@ -61,13 +61,13 @@ public class ExtFXMLLoader extends FXMLLoader {
 	 * @return the new loader
 	 * @throws MalformedURLException
 	 */
-	public ExtFXMLLoader getLoader(URL aUrl) throws MalformedURLException {
-		ExtFXMLLoader iChildLoader = new ExtFXMLLoader(this);
+	public ExtFXMLLoader getLoader(final URL aUrl) throws MalformedURLException {
+		final ExtFXMLLoader iChildLoader = new ExtFXMLLoader(this);
 		iChildLoader.setLocation(aUrl);
 
 		// Give all namespace to child and replace $loader
-		for (String iKey : getNamespace().keySet()) {
-			iChildLoader.getNamespace().put(iKey, getNamespace().get(iKey));
+		for (final String iKey : this.getNamespace().keySet()) {
+			iChildLoader.getNamespace().put(iKey, this.getNamespace().get(iKey));
 		}
 		// Replace $loader by the child
 		iChildLoader.getNamespace().put("$loader", iChildLoader);
@@ -88,10 +88,11 @@ public class ExtFXMLLoader extends FXMLLoader {
 	 *            the url as in $url
 	 * @throws IOException
 	 */
-	public void load(TabPane aTabPane, String aUrl) throws IOException {
-		Tab iTab = new Tab();
+	public void load(final TabPane aTabPane, final String aUrl) throws IOException {
+		final Tab iTab = new Tab();
 		this.getNamespace().put("$tab", iTab);
 		this.getNamespace().put("$url", aUrl);
+		this.getNamespace().put("$http", new RestManagerImpl(this));
 		iTab.setContent(this.load());
 		aTabPane.getTabs().add(iTab);
 		aTabPane.getSelectionModel().select(aTabPane.getTabs().indexOf(iTab));
