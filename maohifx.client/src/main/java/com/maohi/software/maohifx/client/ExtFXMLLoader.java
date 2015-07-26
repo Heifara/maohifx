@@ -72,6 +72,7 @@ public class ExtFXMLLoader extends FXMLLoader {
 		// Replace $loader by the child
 		iChildLoader.getNamespace().put("$loader", iChildLoader);
 		iChildLoader.getNamespace().put("$parentLoader", this);
+		iChildLoader.getNamespace().put("$http", new RestManagerImpl(iChildLoader));
 
 		return iChildLoader;
 	}
