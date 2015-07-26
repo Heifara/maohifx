@@ -3,6 +3,8 @@
  */
 package com.maohi.software.maohifx.client.tableview;
 
+import java.util.Map;
+
 import javafx.beans.NamedArg;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
@@ -21,10 +23,16 @@ public class JSObjectPropertyValueFactory<T> extends PropertyValueFactory<JSObje
 		super(property);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public ObservableValue<T> call(CellDataFeatures<JSObject, T> aCellDataFeatures) {
-		JSObject iData = aCellDataFeatures.getValue();
-		return new ReadOnlyObjectWrapper<T>(iData.hasMember(getProperty()) ? (T) iData.getMember(getProperty()) : null);
+		if (aCellDataFeatures.getValue() instanceof Map) {
+			Map iData = (Map) aCellDataFeatures.getValue();
+			return (ObservableValue<T>) iData.get(getProperty());
+		} else {
+			JSObject iData = aCellDataFeatures.getValue();
+			return new ReadOnlyObjectWrapper<T>(iData.hasMember(getProperty()) ? (T) iData.getMember(getProperty()) : null);
+		}
 	}
 
 }
