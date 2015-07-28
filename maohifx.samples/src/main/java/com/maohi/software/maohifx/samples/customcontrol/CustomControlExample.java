@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.maohi.software.maohifx.client.customcontrol;
+package com.maohi.software.maohifx.samples.customcontrol;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
