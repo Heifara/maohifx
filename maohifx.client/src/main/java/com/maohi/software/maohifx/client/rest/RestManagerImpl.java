@@ -47,7 +47,7 @@ public class RestManagerImpl {
 			break;
 
 		case "post":
-			iResponse = iBuilder.post(Entity.json(JSObjectUtil.parse((JSObject) aJsObject.getMember(("data")))));
+			iResponse = iBuilder.post(Entity.json((JSObject) aJsObject.getMember(("data"))));
 			break;
 
 		default:
