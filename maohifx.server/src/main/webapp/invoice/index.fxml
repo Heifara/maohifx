@@ -26,7 +26,7 @@
 			</rowConstraints>
 			<children>
 				<Label text="Date" />
-				<DatePicker GridPane.columnIndex="1" />
+				<DatePicker fx:id="invoiceDate" GridPane.columnIndex="1" onAction="controller.updateDataEvent(event)" />
 				<TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
 				<Button mnemonicParsing="false" text="..." GridPane.columnIndex="2" GridPane.rowIndex="1" />
 				<Label text="Client" GridPane.rowIndex="1" />
@@ -36,7 +36,7 @@
 		</GridPane>
 	</top>
 	<center>
-		<TableView fx:id="tableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+		<TableView fx:id="tableView" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<columns>
 				<TableColumn prefWidth="25.0" text="">
 					<cellValueFactory>
@@ -48,25 +48,37 @@
 						<JSObjectPropertyValueFactory property="barcode" />
 					</cellValueFactory>
 				</TableColumn>
-				<TableColumn maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" text="Désignation">
+				<TableColumn fx:id="label" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onEditCommit="controller.onEditCommit(event)" prefWidth="150.0" text="Désignation">
 					<cellValueFactory>
 						<JSObjectPropertyValueFactory property="label" />
 					</cellValueFactory>
+					<cellFactory>
+						<JSObjectCellFactory />
+					</cellFactory>
 				</TableColumn>
 				<TableColumn prefWidth="75.0" text="Quantités">
 					<cellValueFactory>
 						<JSObjectPropertyValueFactory property="quantity" />
 					</cellValueFactory>
+					<cellFactory>
+						<JSObjectCellFactory />
+					</cellFactory>
 				</TableColumn>
 				<TableColumn prefWidth="75.0" text="Prix H.T">
 					<cellValueFactory>
 						<JSObjectPropertyValueFactory property="sellingPrice" />
 					</cellValueFactory>
+					<cellFactory>
+						<JSObjectCellFactory />
+					</cellFactory>
 				</TableColumn>
 				<TableColumn prefWidth="75.0" text="Remise">
 					<cellValueFactory>
 						<JSObjectPropertyValueFactory property="discount" />
 					</cellValueFactory>
+					<cellFactory>
+						<JSObjectCellFactory />
+					</cellFactory>
 				</TableColumn>
 				<TableColumn prefWidth="75.0" text="Prix T.T.C" />
 				<TableColumn prefWidth="75.0" text="Total" />
@@ -75,8 +87,6 @@
 	</center>
 	<fx:script>
 		controller = new InvoiceController();
-
-		$tab.setText("Nouvelle Facture");
 
 		$toolbar.getItems().clear();
 
@@ -95,4 +105,11 @@
 		};
 		$toolbar.getItems().add(iPrintButton);
 	</fx:script>
+	<bottom>
+		<HBox BorderPane.alignment="CENTER">
+			<children>
+				<Button mnemonicParsing="false" onAction="controller.deleteSelectedInvoiceLineEvent(event)" text="Supprimer la ligne" />
+			</children>
+		</HBox>
+	</bottom>
 </BorderPane>

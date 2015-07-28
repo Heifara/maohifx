@@ -7,7 +7,7 @@ MainController = function() {
 
 	$loader.getNamespace().put("$mainPane", mainPane);
 	$loader.getNamespace().put("$tabpane", tabpane);
-	$loader.getLoader("http://localhost:8080/maohifx.server/webapi/fxml?id=newTab").load(tabpane, "http://localhost:8080/maohifx.server/webapi/fxml?id=home");
+	$loader.getLoader("http://localhost:8080/maohifx.server/webapi/fxml?id=newTab").load(tabpane, "http://localhost:8080/maohifx.server/webapi/fxml?id=invoices");
 }
 
 MainController.prototype.onMousePressedEvent = function(aEvent) {

@@ -1,30 +1,62 @@
 load("http://localhost:8080/maohifx.server/common.js");
+load("http://localhost:8080/maohifx.server/bean/Invoice.js");
+load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
 
 function InvoiceController() {
-	this.data = FXCollections.observableArrayList();
+	this.invoice = typeof ($invoice) == "undefined" ? new Invoice() : $invoice;
+	this.invoice.add("Saisir un text ici et appuyer sur ENTER");
+	
+	invoiceNumber.setText(this.invoice.invoiceNumber.get());
 
-	this.data.add({
-		position : 0,
-		barcode : "65165161261",
-		label : "1ère essaie de ligne de facture",
-		quantity : 4.0,
-		sellingPrice : 1500.0,
-		discount : 10
-	});
-	this.data.add({
-		position : 1,
-		barcode : "91919475613",
-		label : "2ème essaie de ligne de facture",
-		quantity : 10.0
-	});
-
-	tableView.setItems(this.data);
+	tableView.setItems(this.invoice.invoiceLines);
+	
+	$tab.setText(this.invoice.getTabTitle());
 }
 
 InvoiceController.prototype.saveEvent = function() {
-	print("saved");
+	this.invoice.save();
+	invoiceNumber.setText(this.invoice.invoiceNumber.get());
+	$tab.setText(this.invoice.getTabTitle());
 }
 
 InvoiceController.prototype.printEvent = function() {
-	print("printed");
+	this.invoice.print();
+}
+
+InvoiceController.prototype.updateDataEvent = function(aEvent) {
+	iSource = aEvent.getSource();
+	switch (iSource.getId()) {
+		case "invoiceDate":
+			this.invoice.invoiceDate.set(iSource.getValue());
+			print(this.invoice.invoiceDate.getValue());
+			break;
+
+		default:
+			break;
+	}
+
+}
+
+InvoiceController.prototype.onEditCommit = function(aEvent) {
+	iCurrentRow = aEvent.getTablePosition().getRow();
+	iInvoiceLine = this.invoice.invoiceLines.get(iCurrentRow);
+
+	iSource = aEvent.getSource();
+	switch (iSource.getId()) {
+		case "label":
+			iInvoiceLine.label.set(aEvent.getNewValue());
+			break;
+
+		default:
+			break;
+	}
+
+	if (iCurrentRow == this.invoice.invoiceLines.size() - 1) {
+		this.invoice.add("Saisir un text ici et appuyer sur ENTER");
+	}
+}
+
+InvoiceController.prototype.deleteSelectedInvoiceLineEvent = function(aEvent) {
+	iSelectedIndex = tableView.getSelectionModel().getSelectedIndex()
+	this.invoice.remove(iSelectedIndex);
 }

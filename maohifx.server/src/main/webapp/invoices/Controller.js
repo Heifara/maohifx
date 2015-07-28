@@ -1,5 +1,6 @@
 load("http://localhost:8080/maohifx.server/common.js");
-load("http://localhost:8080/maohifx.server/invoice/Invoice.js");
+load("http://localhost:8080/maohifx.server/bean/Invoice.js");
+load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
 
 function InvoicesController() {
 	$tab.setText("Factures");
@@ -20,8 +21,28 @@ function InvoicesController() {
 }
 
 InvoicesController.prototype.searchEvent = function(aEvent) {
+	$loader.getNamespace().put("$data", this.data);
 	this.data.clear();
-	this.data.add(new Invoice());
+	$http.ajax({
+		url : "http://localhost:8080/maohifx.server/webapi/invoices",
+		type : "get",
+		contentType : "application/x-www-form-urlencoded",
+		dataType : "application/json",
+		success : function($result, $status) {
+			load("http://localhost:8080/maohifx.server/common.js");
+			load("http://localhost:8080/maohifx.server/bean/Invoice.js");
+			load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
+
+			for ( var item in $result) {
+				iInvoice = new Invoice();
+				iInvoice.parseJSON($result[item]);
+				$data.add(iInvoice);
+			}
+		},
+		error : function($result, $status) {
+			java.lang.System.err.println($status);
+		}
+	});
 }
 
 InvoicesController.prototype.newInvoiceEvent = function(aEvent) {
