@@ -147,5 +147,6 @@
 		<module>maohifx.client</module>
 		<module>maohifx.common</module>
 		<module>maohifx.invoice</module>
+		<module>maohifx.samples</module>
 	</modules>
 </project>
