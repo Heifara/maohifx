@@ -3,8 +3,6 @@
  */
 package com.maohi.software.maohifx.common;
 
-import java.io.File;
-
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -22,7 +20,7 @@ public class HibernateUtil {
 	private static SessionFactory buildSessionFactory() {
 		try {
 			System.out.println(System.getProperty("user.dir"));
-			configuration.configure(new File("../hibernate.cfg.xml"));
+			configuration.configure();
 			final ServiceRegistry iServiceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
 			return configuration.buildSessionFactory(iServiceRegistry);
 		} catch (final Throwable aThrowable) {

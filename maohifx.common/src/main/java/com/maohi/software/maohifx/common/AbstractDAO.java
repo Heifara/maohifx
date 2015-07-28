@@ -40,6 +40,19 @@ public abstract class AbstractDAO<E> {
 	}
 
 	@SuppressWarnings("unchecked")
+	public <T> T next(final Class<T> aType, final String aAttribute) {
+		final Query iQuery = AbstractDAO.session.createQuery(String.format("SELECT MAX(%s) as max FROM %s", aAttribute, this.getAnnotatedClass().getSimpleName()));
+		final T iNext = (T) iQuery.uniqueResult();
+		if (aType.isAssignableFrom(Integer.class)) {
+			return (T) (iNext == null ? new Integer(0) : new Integer((Integer) iNext + 1));
+		} else if (aType.isAssignableFrom(Double.class)) {
+			return (T) (iNext == null ? new Double(0) : new Double((Double) iNext + 1.0));
+		} else {
+			return iNext;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
 	public E read(final Serializable aId) {
 		return (E) AbstractDAO.session.get(this.getAnnotatedClass(), aId);
 	}
