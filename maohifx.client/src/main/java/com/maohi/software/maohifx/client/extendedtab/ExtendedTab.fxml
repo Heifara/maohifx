@@ -1,0 +1,70 @@
+<?import org.controlsfx.control.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.input.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root type="javafx.scene.control.Tab" xmlns:fx="http://javafx.com/fxml">
+	<BorderPane fx:id="content">
+		<left />
+		<top>
+			<VBox fx:id="topVBox" BorderPane.alignment="CENTER">
+				<children>
+					<GridPane fx:id="addressPane">
+						<columnConstraints>
+							<ColumnConstraints hgrow="NEVER" />
+							<ColumnConstraints hgrow="NEVER" />
+							<ColumnConstraints hgrow="ALWAYS" />
+							<ColumnConstraints hgrow="NEVER" />
+						</columnConstraints>
+						<children>
+							<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" text="Refresh">
+								<GridPane.margin>
+									<Insets left="5.0" />
+								</GridPane.margin>
+							</Button>
+							<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" text="Home" GridPane.columnIndex="1">
+								<GridPane.margin>
+									<Insets left="5.0" right="5.0" />
+								</GridPane.margin>
+							</Button>
+							<TextField fx:id="urlField" GridPane.columnIndex="2" />
+							<MenuButton fx:id="menuButton" focusTraversable="false" minWidth="-Infinity" mnemonicParsing="false" GridPane.columnIndex="3">
+								<items>
+									<MenuItem mnemonicParsing="false" text="Nouvelle onglet" onAction="#newTabEvent">
+										<accelerator>
+											<KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+										</accelerator>
+									</MenuItem>
+									<MenuItem mnemonicParsing="false" text="Fermer onglet" onAction="#closeTabEvent">
+										<accelerator>
+											<KeyCodeCombination alt="UP" code="W" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+										</accelerator>
+									</MenuItem>
+								</items>
+								<GridPane.margin>
+									<Insets />
+								</GridPane.margin>
+							</MenuButton>
+						</children>
+					</GridPane>
+				</children>
+				<BorderPane.margin>
+					<Insets />
+				</BorderPane.margin>
+				<padding>
+					<Insets bottom="10.0" />
+				</padding>
+				<effect>
+					<DropShadow />
+				</effect>
+			</VBox>
+		</top>
+		<center />
+		<bottom />
+		<right />
+	</BorderPane>
+</fx:root>

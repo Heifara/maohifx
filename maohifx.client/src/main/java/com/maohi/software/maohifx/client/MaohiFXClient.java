@@ -4,11 +4,14 @@
 package com.maohi.software.maohifx.client;
 
 import java.io.IOException;
+import java.util.List;
 
-import javax.swing.JOptionPane;
+import com.maohi.software.maohifx.client.extendedtab.ExtendedTab;
 
 import javafx.application.Application;
+import javafx.collections.ListChangeListener;
 import javafx.scene.Scene;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -17,9 +20,11 @@ import javafx.stage.Stage;
  * @author heifara
  *
  */
-public class MaohiFXClient extends Application {
+public class MaohiFXClient extends Application implements ListChangeListener<Tab> {
 
 	private final ExtFXMLLoader loader;
+	private Stage stage;
+	private Scene scene;
 	private BorderPane mainPane;
 	private TabPane tabpane;
 
@@ -34,26 +39,44 @@ public class MaohiFXClient extends Application {
 	}
 
 	@Override
+	public void onChanged(final javafx.collections.ListChangeListener.Change<? extends Tab> aChange) {
+		if (aChange.next()) {
+			if (aChange.wasRemoved()) {
+				if (MaohiFXClient.this.tabpane.getTabs().size() == 0) {
+					MaohiFXClient.this.stage.close();
+				}
+			} else if (aChange.wasAdded()) {
+				List<? extends Tab> iSelectedItems = aChange.getAddedSubList();
+				Tab iTab = iSelectedItems.get(0);
+				tabpane.getSelectionModel().select(iTab);
+			} else if (aChange.wasReplaced()) {
+			} else if (aChange.wasUpdated()) {
+			} else if (aChange.wasPermutated()) {
+			}
+		}
+	}
+
+	@Override
 	public void start(final Stage aStage) {
 		try {
-			this.loader.getNamespace().put("$stage", aStage);
-
 			this.mainPane = this.loader.load();
+
+			this.stage = aStage;
+			this.scene = new Scene(this.mainPane);
+
 			this.tabpane = (TabPane) this.mainPane.getCenter();
-			this.loader.getNamespace().put("$mainPane", mainPane);
-			this.loader.getNamespace().put("$tabpane", tabpane);
+			this.tabpane.getTabs().add(new ExtendedTab());
+			this.tabpane.getTabs().addListener(this);
 
-			final Scene iScene = new Scene(this.mainPane);
-			this.loader.getNamespace().put("$scene", iScene);
+			this.loader.getNamespace().put("$stage", this.stage);
+			this.loader.getNamespace().put("$mainPane", this.mainPane);
+			this.loader.getNamespace().put("$tabpane", this.tabpane);
+			this.loader.getNamespace().put("$scene", this.scene);
 
-			aStage.setScene(iScene);
-			aStage.show();
-
-			this.loader.getLoader("http://localhost:8080/maohifx.server/webapi/fxml?id=newTab").load(tabpane, "http://localhost:8080/maohifx.server/webapi/fxml?id=invoices");
-
-		} catch (final IOException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
-			System.exit(4);
+			this.stage.setScene(this.scene);
+			this.stage.show();
+		} catch (final IOException aException) {
+			throw new RuntimeException(aException);
 		}
 	}
 
