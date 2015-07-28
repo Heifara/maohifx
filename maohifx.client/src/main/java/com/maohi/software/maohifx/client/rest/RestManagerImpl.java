@@ -16,7 +16,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.maohi.software.maohifx.client.ExtFXMLLoader;
-import com.maohi.software.maohifx.common.JSObjectUtil;
 
 import jdk.nashorn.api.scripting.JSObject;
 import jdk.nashorn.api.scripting.ScriptUtils;
@@ -92,7 +91,7 @@ public class RestManagerImpl {
 	}
 
 	private JSObject newJSObject(final String aUrl, final String aType) {
-		final JSObject iJSObject = ScriptUtils.wrap(new ScriptObject() {
+		final JSObject iJSObject = (JSObject) ScriptUtils.wrap(new ScriptObject() {
 		});
 		iJSObject.setMember("url", aUrl);
 		iJSObject.setMember("type", aType);
