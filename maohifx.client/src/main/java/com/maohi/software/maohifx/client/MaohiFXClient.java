@@ -4,12 +4,12 @@
 package com.maohi.software.maohifx.client;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import javax.swing.JOptionPane;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -19,28 +19,46 @@ import javafx.stage.Stage;
  */
 public class MaohiFXClient extends Application {
 
-	public static void main(String[] args) {
-		Application.launch(MaohiFXClient.class, args);
+	private final ExtFXMLLoader loader;
+	private BorderPane mainPane;
+	private TabPane tabpane;
+
+	public MaohiFXClient() {
+		this.loader = new ExtFXMLLoader();
+		this.loader.setLocation(this.getClass().getResource("MaohiFXClient.fxml"));
 	}
 
 	@Override
-	public void start(Stage stage) {
+	public void init() throws Exception {
+		super.init();
+	}
+
+	@Override
+	public void start(final Stage aStage) {
 		try {
-			Scene iScene = new Scene(new BorderPane());
-			stage.setScene(iScene);
+			this.loader.getNamespace().put("$stage", aStage);
 
-			ExtFXMLLoader iParentLoader = new ExtFXMLLoader();
-			iParentLoader.getNamespace().put("$stage", stage);
-			iParentLoader.getNamespace().put("$scene", iScene);
+			this.mainPane = this.loader.load();
+			this.tabpane = (TabPane) this.mainPane.getCenter();
+			this.loader.getNamespace().put("$mainPane", mainPane);
+			this.loader.getNamespace().put("$tabpane", tabpane);
 
-			iScene.setRoot(iParentLoader.getLoader("http://localhost:8080/maohifx.server/webapi/fxml?id=index").load());
-			stage.show();
-		} catch (MalformedURLException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
-			System.exit(4);
-		} catch (IOException e) {
+			final Scene iScene = new Scene(this.mainPane);
+			this.loader.getNamespace().put("$scene", iScene);
+
+			aStage.setScene(iScene);
+			aStage.show();
+
+			this.loader.getLoader("http://localhost:8080/maohifx.server/webapi/fxml?id=newTab").load(tabpane, "http://localhost:8080/maohifx.server/webapi/fxml?id=invoices");
+
+		} catch (final IOException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			System.exit(4);
 		}
+	}
+
+	@Override
+	public void stop() throws Exception {
+		super.stop();
 	}
 }

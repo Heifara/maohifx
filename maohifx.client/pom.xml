@@ -40,7 +40,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.maohi.software.maohifx.client.MaohiFXClient</mainClass>
+							<mainClass>com.maohi.software.maohifx.client.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -60,6 +60,10 @@
 		</plugins>
 	</build>
 	<dependencies>
+		<dependency>
+			<groupId>args4j</groupId>
+			<artifactId>args4j</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-client</artifactId>
