@@ -4,7 +4,9 @@
 package com.maohi.software.maohifx.common;
 
 import java.io.Serializable;
+import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 /**
@@ -40,6 +42,13 @@ public abstract class AbstractDAO<E> {
 	@SuppressWarnings("unchecked")
 	public E read(final Serializable aId) {
 		return (E) AbstractDAO.session.get(this.getAnnotatedClass(), aId);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<E> readAll() {
+		final Query iQuery = AbstractDAO.session.createQuery("FROM " + this.getAnnotatedClass().getSimpleName());
+		final List<E> iElements = iQuery.list();
+		return iElements;
 	}
 
 	public void update(final E aEntity) {
