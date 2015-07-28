@@ -1,4 +1,4 @@
-package com.maohi.software.samples.tabpane;
+package com.maohi.software.maohifx.samples.tabpane;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;

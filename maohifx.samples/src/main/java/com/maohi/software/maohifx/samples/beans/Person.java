@@ -1,4 +1,4 @@
-package com.maohi.software.samples.beans;
+package com.maohi.software.maohifx.samples.beans;
 
 import java.util.Date;
 

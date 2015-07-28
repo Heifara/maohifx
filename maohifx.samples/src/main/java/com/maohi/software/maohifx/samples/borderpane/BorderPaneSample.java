@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.maohi.software.samples.borderpane;
+package com.maohi.software.maohifx.samples.borderpane;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
