@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.maohi.software.maohifx.client.extendedtab.ExtendedTab;
 import com.maohi.software.maohifx.client.rest.RestManagerImpl;
 
 import javafx.fxml.FXMLLoader;
@@ -90,11 +91,8 @@ public class ExtFXMLLoader extends FXMLLoader {
 	 * @throws IOException
 	 */
 	public void load(final TabPane aTabPane, final String aUrl) throws IOException {
-		final Tab iTab = new Tab();
-		this.getNamespace().put("$tab", iTab);
-		this.getNamespace().put("$url", aUrl);
-		this.getNamespace().put("$http", new RestManagerImpl(this));
-		iTab.setContent(this.load());
+		final Tab iTab = new ExtendedTab(this, aUrl);
+		
 		aTabPane.getTabs().add(iTab);
 		aTabPane.getSelectionModel().select(aTabPane.getTabs().indexOf(iTab));
 	}

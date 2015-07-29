@@ -65,6 +65,13 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		}
 	}
 
+	public ExtendedTab(final ExtFXMLLoader aParent, final String aUrl) {
+		this(aParent);
+
+		this.url.setText(aUrl);
+		this.refreshTabEvent(new ActionEvent());
+	}
+
 	@Override
 	public void changed(final ObservableValue<? extends TabPane> aObservable, final TabPane aOldValue, final TabPane aNewValue) {
 		if (this.parent == null) {
@@ -116,6 +123,10 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		});
 	}
 
+	public void openEvent(final ActionEvent aEvent) {
+		this.newTabEvent(aEvent);
+	}
+
 	@FXML
 	public void refreshTabEvent(final ActionEvent aEvent) {
 		if (!this.refreshing && !ExtendedTab.this.url.getText().isEmpty()) {
@@ -133,6 +144,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 					try {
 						final ExtFXMLLoader iLoader = ExtendedTab.this.loader.getLoader(ExtendedTab.this.url.getText());
 						iLoader.getNamespace().put("$tab", ExtendedTab.this);
+						iLoader.getNamespace().put("$tabpane", ExtendedTab.this.parent);
 						Platform.runLater(new Runnable() {
 
 							@Override
