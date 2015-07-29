@@ -3,6 +3,8 @@
  */
 package com.maohi.software.maohifx.client.extendedtab;
 
+import com.maohi.software.maohifx.client.ExtFXMLLoader;
+
 import javafx.application.Application;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Scene;
@@ -38,7 +40,7 @@ public class ExtendedTabTest extends Application {
 				}
 			}
 		});
-		iTabPane.getTabs().add(new ExtendedTab());
+		iTabPane.getTabs().add(new ExtendedTab(new ExtFXMLLoader()));
 
 		aStage.setScene(new Scene(iTabPane));
 		aStage.setTitle("ExtendedTab");
