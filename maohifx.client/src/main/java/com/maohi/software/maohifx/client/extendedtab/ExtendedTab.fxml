@@ -9,6 +9,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.ProgressIndicator?>
+<?import com.maohi.software.maohifx.client.link.Link?>
 
 <fx:root type="javafx.scene.control.Tab" xmlns:fx="http://javafx.com/fxml">
 	<graphic>

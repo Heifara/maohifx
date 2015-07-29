@@ -6,11 +6,14 @@ package com.maohi.software.maohifx.client;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.maohi.software.maohifx.client.extendedtab.ExtendedTab;
 import com.maohi.software.maohifx.client.rest.RestManagerImpl;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
@@ -19,6 +22,8 @@ import javafx.scene.control.TabPane;
  *
  */
 public class ExtFXMLLoader extends FXMLLoader {
+
+	public static Map<Node, ExtFXMLLoader> loaders = new HashMap<>();
 
 	private final FXMLLoader parent;
 
@@ -74,7 +79,6 @@ public class ExtFXMLLoader extends FXMLLoader {
 		iChildLoader.getNamespace().put("$loader", iChildLoader);
 		iChildLoader.getNamespace().put("$parentLoader", this);
 		iChildLoader.getNamespace().put("$http", new RestManagerImpl(iChildLoader));
-
 		return iChildLoader;
 	}
 
@@ -92,7 +96,7 @@ public class ExtFXMLLoader extends FXMLLoader {
 	 */
 	public void load(final TabPane aTabPane, final String aUrl) throws IOException {
 		final Tab iTab = new ExtendedTab(this, aUrl);
-		
+
 		aTabPane.getTabs().add(iTab);
 		aTabPane.getSelectionModel().select(aTabPane.getTabs().indexOf(iTab));
 	}

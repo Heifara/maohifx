@@ -15,6 +15,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
@@ -106,7 +107,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		this.tabPaneProperty().addListener(this);
 
 		this.setText("Nouvelle Onglet");
-		
+
 		this.menuButton.setBorder(null);
 		this.menuButton.setBackground(null);
 	}
@@ -151,11 +152,15 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 							@Override
 							public void run() {
 								try {
-									ExtendedTab.this.content.setCenter(iLoader.load());
+									Node iNode = iLoader.load();
+									ExtendedTab.this.content.setCenter(iNode);
+									ExtFXMLLoader.loaders.put(iNode, iLoader);
+
 								} catch (final Exception aException) {
 									final Label iLabel = new Label();
 									iLabel.setText(aException.getMessage());
 									ExtendedTab.this.content.setCenter(iLabel);
+									aException.printStackTrace();
 								}
 
 								ExtendedTab.this.refreshing = false;
@@ -166,9 +171,10 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 						final Label iLabel = new Label();
 						iLabel.setText(aException.getMessage());
 						ExtendedTab.this.content.setCenter(iLabel);
-					} catch (final InterruptedException e) {
+						aException.printStackTrace();
+					} catch (final InterruptedException aException) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						aException.printStackTrace();
 					}
 				}
 			}).start();

@@ -6,6 +6,8 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import com.maohi.software.maohifx.client.tableview.*?>
+<?import com.maohi.software.maohifx.client.link.*?>
+<?import javafx.scene.control.Hyperlink?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<fx:script source="../invoices/Controller.js" />
@@ -53,8 +55,8 @@
 						<TableColumn prefWidth="75.0" text="Nom du client" />
 					</columns>
 				</TableView>
-				<Button mnemonicParsing="false" onAction="controller.newInvoiceEvent(event)" text="Nouveau" />
-				<Button mnemonicParsing="false" onAction="controller.editInvoicesEvent(event)" text="Modifier" GridPane.columnIndex="1" />
+				<Link href="http://localhost:8080/maohifx.server/webapi/fxml?id=invoice" text="Nouveau" GridPane.columnIndex="0" />
+				<Link href="http://localhost:8080/maohifx.server/webapi/fxml?id=invoice" text="Modifier" onAction="controller.editInvoicesEvent(event)" GridPane.columnIndex="1" />
 			</children>
 		</GridPane>
 	</center>

@@ -55,7 +55,7 @@ InvoicesController.prototype.editInvoicesEvent = function(aEvent) {
 
 	iLoader = $loader.getLoader();
 	iLoader.getNamespace().put("$invoice", iInvoice);
-	iLoader.load($tabpane, "http://localhost:8080/maohifx.server/webapi/fxml?id=invoice");
+	iLoader.load($tabpane, aEvent.getSource().getHref());
 }
 
 InvoicesController.prototype.keyTypeEvent = function(aEvent) {
