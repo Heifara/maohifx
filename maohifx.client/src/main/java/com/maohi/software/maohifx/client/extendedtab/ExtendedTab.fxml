@@ -11,7 +11,7 @@
 	<BorderPane fx:id="content">
 		<left />
 		<top>
-			<VBox fx:id="topVBox" BorderPane.alignment="CENTER">
+			<VBox BorderPane.alignment="CENTER">
 				<children>
 					<GridPane fx:id="addressPane">
 						<columnConstraints>
@@ -21,17 +21,17 @@
 							<ColumnConstraints hgrow="NEVER" />
 						</columnConstraints>
 						<children>
-							<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" text="Refresh">
+							<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" text="Refresh" onAction="#refreshTabEvent">
 								<GridPane.margin>
 									<Insets left="5.0" />
 								</GridPane.margin>
 							</Button>
-							<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" text="Home" GridPane.columnIndex="1">
+							<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" text="Home" GridPane.columnIndex="1" onAction="#homeEvent">
 								<GridPane.margin>
 									<Insets left="5.0" right="5.0" />
 								</GridPane.margin>
 							</Button>
-							<TextField fx:id="urlField" GridPane.columnIndex="2" />
+							<TextField fx:id="url" GridPane.columnIndex="2" onAction="#refreshTabEvent" />
 							<MenuButton fx:id="menuButton" focusTraversable="false" minWidth="-Infinity" mnemonicParsing="false" GridPane.columnIndex="3">
 								<items>
 									<MenuItem mnemonicParsing="false" text="Nouvelle onglet" onAction="#newTabEvent">
@@ -43,6 +43,13 @@
 										<accelerator>
 											<KeyCodeCombination alt="UP" code="W" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 										</accelerator>
+									</MenuItem>
+									<MenuItem mnemonicParsing="false" text="Actualiser" onAction="#refreshTabEvent">
+										<accelerator>
+											<KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+										</accelerator>
+									</MenuItem>
+									<MenuItem fx:id="hidShowUrl" mnemonicParsing="false" text="Masquer la barre d'adresse" onAction="#showHideUrl">
 									</MenuItem>
 								</items>
 								<GridPane.margin>

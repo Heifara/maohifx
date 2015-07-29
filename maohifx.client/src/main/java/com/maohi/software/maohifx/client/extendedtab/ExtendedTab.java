@@ -7,15 +7,21 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.maohi.software.maohifx.client.ExtFXMLLoader;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 
 /**
  * @author heifara
@@ -23,18 +29,28 @@ import javafx.scene.control.TabPane;
  */
 public class ExtendedTab extends Tab implements Initializable, ChangeListener<TabPane> {
 
-	private final FXMLLoader loader;
+	private final ExtFXMLLoader loader;
 	private Tab selectedTab;
 	private TabPane parent;
 
-	public ExtendedTab() {
-		this.loader = new FXMLLoader(this.getClass().getResource("ExtendedTab.fxml"));
-		this.loader.setRoot(this);
-		this.loader.setController(this);
+	@FXML
+	private TextField url;
 
-		this.tabPaneProperty().addListener(this);
+	@FXML
+	private BorderPane content;
 
+	@FXML
+	private MenuButton menuButton;
+
+	@FXML
+	private MenuItem hidShowUrl;
+
+	public ExtendedTab(final ExtFXMLLoader aParent) {
 		try {
+			this.loader = aParent.getLoader(this.getClass().getResource("ExtendedTab.fxml"));
+			this.loader.setRoot(this);
+			this.loader.setController(this);
+
 			this.loader.load();
 		} catch (final IOException aException) {
 			throw new RuntimeException(aException);
@@ -49,8 +65,8 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 			this.parent.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
 
 				@Override
-				public void changed(ObservableValue<? extends Tab> aObservable, Tab aOldValue, Tab aNewValue) {
-					selectedTab = aNewValue;
+				public void changed(final ObservableValue<? extends Tab> aObservable, final Tab aOldValue, final Tab aNewValue) {
+					ExtendedTab.this.selectedTab = aNewValue;
 				}
 			});
 		}
@@ -62,14 +78,23 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 			@Override
 			public void run() {
-				parent.getTabs().remove(selectedTab);
+				ExtendedTab.this.parent.getTabs().remove(ExtendedTab.this.selectedTab);
 			}
 		});
 	}
 
+	public void homeEvent(final ActionEvent aEvent) {
+		this.url.setText("http://localhost:8080/maohifx.server/webapi/fxml?id=invoices");
+		this.refreshTabEvent(aEvent);
+	}
+
 	@Override
 	public void initialize(final URL aLocation, final ResourceBundle aResources) {
+		this.tabPaneProperty().addListener(this);
+
 		this.setText("Nouvelle Onglet");
+
+		this.setGraphic(this.menuButton);
 	}
 
 	@FXML
@@ -78,9 +103,41 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 			@Override
 			public void run() {
-				parent.getTabs().add(new ExtendedTab());
+				ExtendedTab.this.parent.getTabs().add(new ExtendedTab(ExtendedTab.this.loader));
 			}
 		});
+	}
+
+	@FXML
+	public void refreshTabEvent(final ActionEvent aEvent) {
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					if (!ExtendedTab.this.url.getText().isEmpty()) {
+						final ExtFXMLLoader iLoader = ExtendedTab.this.loader.getLoader(ExtendedTab.this.url.getText());
+						iLoader.getNamespace().put("$tab", ExtendedTab.this);
+						ExtendedTab.this.content.setCenter(iLoader.load());
+					}
+				} catch (final IOException aException) {
+					final Label iLabel = new Label();
+					iLabel.setText(aException.getMessage());
+					ExtendedTab.this.content.setCenter(iLabel);
+				}
+			}
+		});
+	}
+
+	@FXML
+	public void showHideUrl(final ActionEvent aEvent) {
+		if (this.url.isVisible()) {
+			this.url.setVisible(false);
+			this.hidShowUrl.setText("Afficher la barre d'adresse");
+		} else {
+			this.url.setVisible(true);
+			this.hidShowUrl.setText("Masquer la barre d'adresse");
+		}
 	}
 
 }
