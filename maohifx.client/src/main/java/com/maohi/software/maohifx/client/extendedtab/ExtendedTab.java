@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.controlsfx.control.StatusBar;
-
 import com.maohi.software.maohifx.client.ExtFXMLLoader;
 
 import javafx.application.Platform;
@@ -18,7 +16,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
@@ -45,13 +42,10 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	private BorderPane content;
 
 	@FXML
-	private MenuButton menuButton;
-
-	@FXML
 	private MenuItem hidShowUrl;
 
 	@FXML
-	private StatusBar statusBar;
+	private ProgressIndicator progressIndicator;
 
 	public ExtendedTab(final ExtFXMLLoader aParent) {
 		try {
@@ -108,8 +102,6 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		this.tabPaneProperty().addListener(this);
 
 		this.setText("Nouvelle Onglet");
-
-		this.setGraphic(this.menuButton);
 	}
 
 	@FXML
@@ -130,10 +122,10 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	@FXML
 	public void refreshTabEvent(final ActionEvent aEvent) {
 		if (!this.refreshing && !ExtendedTab.this.url.getText().isEmpty()) {
-			final ProgressIndicator iProgressBar = new ProgressIndicator();
-			this.statusBar.getRightItems().add(iProgressBar);
 
 			this.refreshing = true;
+
+			this.progressIndicator.setVisible(true);
 
 			this.content.setCenter(null);
 
@@ -142,6 +134,8 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 				@Override
 				public void run() {
 					try {
+						Thread.sleep(100);
+
 						final ExtFXMLLoader iLoader = ExtendedTab.this.loader.getLoader(ExtendedTab.this.url.getText());
 						iLoader.getNamespace().put("$tab", ExtendedTab.this);
 						iLoader.getNamespace().put("$tabpane", ExtendedTab.this.parent);
@@ -157,14 +151,17 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 									ExtendedTab.this.content.setCenter(iLabel);
 								}
 
-								ExtendedTab.this.statusBar.getRightItems().remove(iProgressBar);
 								ExtendedTab.this.refreshing = false;
+								ExtendedTab.this.progressIndicator.setVisible(false);
 							}
 						});
 					} catch (final IOException aException) {
 						final Label iLabel = new Label();
 						iLabel.setText(aException.getMessage());
 						ExtendedTab.this.content.setCenter(iLabel);
+					} catch (final InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 				}
 			}).start();
