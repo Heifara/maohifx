@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
@@ -43,6 +44,9 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 	@FXML
 	private MenuItem hidShowUrl;
+
+	@FXML
+	private SplitMenuButton menuButton;
 
 	@FXML
 	private ProgressIndicator progressIndicator;
@@ -102,6 +106,9 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		this.tabPaneProperty().addListener(this);
 
 		this.setText("Nouvelle Onglet");
+		
+		this.menuButton.setBorder(null);
+		this.menuButton.setBackground(null);
 	}
 
 	@FXML

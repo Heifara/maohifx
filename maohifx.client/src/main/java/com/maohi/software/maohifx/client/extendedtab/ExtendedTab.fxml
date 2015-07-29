@@ -12,30 +12,37 @@
 
 <fx:root type="javafx.scene.control.Tab" xmlns:fx="http://javafx.com/fxml">
 	<graphic>
-		<SplitMenuButton fx:id="menuButton" prefHeight="20" prefWidth="60" alignment="CENTER_RIGHT"  focusTraversable="false" onAction="#selectTabEvent">
-			<graphic>
-				<ProgressIndicator fx:id="progressIndicator" visible="false" />
-			</graphic>
-			<items>
-				<MenuItem mnemonicParsing="false" text="Nouvelle onglet" onAction="#newTabEvent">
-					<accelerator>
-						<KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-					</accelerator>
-				</MenuItem>
-				<MenuItem mnemonicParsing="false" text="Fermer onglet" onAction="#closeTabEvent">
-					<accelerator>
-						<KeyCodeCombination alt="UP" code="W" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-					</accelerator>
-				</MenuItem>
-				<MenuItem mnemonicParsing="false" text="Actualiser" onAction="#refreshTabEvent">
-					<accelerator>
-						<KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-					</accelerator>
-				</MenuItem>
-				<MenuItem fx:id="hidShowUrl" mnemonicParsing="false" text="Masquer la barre d'adresse" onAction="#showHideUrl">
-				</MenuItem>
-			</items>
-		</SplitMenuButton>
+		<GridPane fx:id="addressPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0">
+			<columnConstraints>
+				<ColumnConstraints hgrow="NEVER" minWidth="-Infinity" />
+			</columnConstraints>
+			<children>
+				<SplitMenuButton fx:id="menuButton" prefWidth="60" nodeOrientation="RIGHT_TO_LEFT" focusTraversable="false" onAction="#selectTabEvent">
+					<graphic>
+						<ProgressIndicator fx:id="progressIndicator" visible="false" GridPane.columnIndex="1" />
+					</graphic>
+					<items>
+						<MenuItem mnemonicParsing="false" text="Nouvelle onglet" onAction="#newTabEvent">
+							<accelerator>
+								<KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+							</accelerator>
+						</MenuItem>
+						<MenuItem mnemonicParsing="false" text="Fermer onglet" onAction="#closeTabEvent">
+							<accelerator>
+								<KeyCodeCombination alt="UP" code="W" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+							</accelerator>
+						</MenuItem>
+						<MenuItem mnemonicParsing="false" text="Actualiser" onAction="#refreshTabEvent">
+							<accelerator>
+								<KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+							</accelerator>
+						</MenuItem>
+						<MenuItem fx:id="hidShowUrl" mnemonicParsing="false" text="Masquer la barre d'adresse" onAction="#showHideUrl">
+						</MenuItem>
+					</items>
+				</SplitMenuButton>
+			</children>
+		</GridPane>
 	</graphic>
 	<BorderPane fx:id="content">
 		<left />
