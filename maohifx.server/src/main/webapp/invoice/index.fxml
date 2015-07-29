@@ -10,7 +10,10 @@
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<fx:script source="../invoice/Controller.js" />
-	<top>
+	<bottom>
+		<HBox BorderPane.alignment="CENTER" />
+	</bottom>
+	<center>
 		<GridPane BorderPane.alignment="CENTER">
 			<columnConstraints>
 				<ColumnConstraints hgrow="NEVER" />
@@ -20,96 +23,80 @@
 				<ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="100.0" />
 			</columnConstraints>
 			<rowConstraints>
-				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+				<RowConstraints vgrow="NEVER" />
+				<RowConstraints vgrow="NEVER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
 				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
 				<Label text="Date" />
-				<DatePicker fx:id="invoiceDate" GridPane.columnIndex="1" onAction="controller.updateDataEvent(event)" />
+				<DatePicker fx:id="invoiceDate" onAction="controller.updateDataEvent(event)" GridPane.columnIndex="1" />
 				<TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
 				<Button mnemonicParsing="false" text="..." GridPane.columnIndex="2" GridPane.rowIndex="1" />
 				<Label text="Client" GridPane.rowIndex="1" />
 				<Label text="Numéro de facture" GridPane.columnIndex="3" />
 				<TextField fx:id="invoiceNumber" editable="false" GridPane.columnIndex="4" />
+				<TableView fx:id="tableView" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
+					<columns>
+						<TableColumn prefWidth="25.0" text="">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="position" />
+							</cellValueFactory>
+						</TableColumn>
+						<TableColumn prefWidth="75.0" text="Code barre">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="barcode" />
+							</cellValueFactory>
+						</TableColumn>
+						<TableColumn fx:id="label" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onEditCommit="controller.onEditCommit(event)" prefWidth="150.0" text="Désignation">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="label" />
+							</cellValueFactory>
+							<cellFactory>
+								<JSObjectCellFactory />
+							</cellFactory>
+						</TableColumn>
+						<TableColumn prefWidth="75.0" text="Quantités">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="quantity" />
+							</cellValueFactory>
+							<cellFactory>
+								<JSObjectCellFactory />
+							</cellFactory>
+						</TableColumn>
+						<TableColumn prefWidth="75.0" text="Prix H.T">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="sellingPrice" />
+							</cellValueFactory>
+							<cellFactory>
+								<JSObjectCellFactory />
+							</cellFactory>
+						</TableColumn>
+						<TableColumn prefWidth="75.0" text="Remise">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="discount" />
+							</cellValueFactory>
+							<cellFactory>
+								<JSObjectCellFactory />
+							</cellFactory>
+						</TableColumn>
+						<TableColumn prefWidth="75.0" text="Prix T.T.C" />
+						<TableColumn prefWidth="75.0" text="Total" />
+					</columns>
+				</TableView>
+				<Button mnemonicParsing="false" onAction="controller.deleteSelectedInvoiceLineEvent(event)" text="Supprimer la ligne" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
 			</children>
 		</GridPane>
-	</top>
-	<center>
-		<TableView fx:id="tableView" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-			<columns>
-				<TableColumn prefWidth="25.0" text="">
-					<cellValueFactory>
-						<JSObjectPropertyValueFactory property="position" />
-					</cellValueFactory>
-				</TableColumn>
-				<TableColumn prefWidth="75.0" text="Code barre">
-					<cellValueFactory>
-						<JSObjectPropertyValueFactory property="barcode" />
-					</cellValueFactory>
-				</TableColumn>
-				<TableColumn fx:id="label" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onEditCommit="controller.onEditCommit(event)" prefWidth="150.0" text="Désignation">
-					<cellValueFactory>
-						<JSObjectPropertyValueFactory property="label" />
-					</cellValueFactory>
-					<cellFactory>
-						<JSObjectCellFactory />
-					</cellFactory>
-				</TableColumn>
-				<TableColumn prefWidth="75.0" text="Quantités">
-					<cellValueFactory>
-						<JSObjectPropertyValueFactory property="quantity" />
-					</cellValueFactory>
-					<cellFactory>
-						<JSObjectCellFactory />
-					</cellFactory>
-				</TableColumn>
-				<TableColumn prefWidth="75.0" text="Prix H.T">
-					<cellValueFactory>
-						<JSObjectPropertyValueFactory property="sellingPrice" />
-					</cellValueFactory>
-					<cellFactory>
-						<JSObjectCellFactory />
-					</cellFactory>
-				</TableColumn>
-				<TableColumn prefWidth="75.0" text="Remise">
-					<cellValueFactory>
-						<JSObjectPropertyValueFactory property="discount" />
-					</cellValueFactory>
-					<cellFactory>
-						<JSObjectCellFactory />
-					</cellFactory>
-				</TableColumn>
-				<TableColumn prefWidth="75.0" text="Prix T.T.C" />
-				<TableColumn prefWidth="75.0" text="Total" />
-			</columns>
-		</TableView>
 	</center>
+	<top>
+		<ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+			<items>
+				<Button mnemonicParsing="false" onAction="controller.saveEvent(event)" text="Enregistrer" />
+				<Button mnemonicParsing="false" onAction="controller.printEvent(event)" text="Imprimer" />
+			</items>
+		</ToolBar>
+	</top>
 	<fx:script>
 		controller = new InvoiceController();
-
-		$toolbar.getItems().clear();
-
-		iSaveButton = new Button();
-		iSaveButton.text = "Enregistrer";
-		iSaveButton.onAction
-		= function() {
-		controller.saveEvent();
-		};
-		$toolbar.getItems().add(iSaveButton);
-
-		iPrintButton = new Button();
-		iPrintButton.text = "Imprimer";
-		iPrintButton.onAction = function() {
-		controller.printEvent();
-		};
-		$toolbar.getItems().add(iPrintButton);
 	</fx:script>
-	<bottom>
-		<HBox BorderPane.alignment="CENTER">
-			<children>
-				<Button mnemonicParsing="false" onAction="controller.deleteSelectedInvoiceLineEvent(event)" text="Supprimer la ligne" />
-			</children>
-		</HBox>
-	</bottom>
 </BorderPane>

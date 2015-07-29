@@ -5,11 +5,11 @@ load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
 function InvoiceController() {
 	this.invoice = typeof ($invoice) == "undefined" ? new Invoice() : $invoice;
 	this.invoice.add("Saisir un text ici et appuyer sur ENTER");
-	
+
 	invoiceNumber.setText(this.invoice.invoiceNumber.get());
 
 	tableView.setItems(this.invoice.invoiceLines);
-	
+
 	$tab.setText(this.invoice.getTabTitle());
 }
 
@@ -20,7 +20,7 @@ InvoiceController.prototype.saveEvent = function() {
 }
 
 InvoiceController.prototype.printEvent = function() {
-	this.invoice.print();
+	print(this.invoice.invoiceDate.getDate());
 }
 
 InvoiceController.prototype.updateDataEvent = function(aEvent) {
@@ -28,7 +28,6 @@ InvoiceController.prototype.updateDataEvent = function(aEvent) {
 	switch (iSource.getId()) {
 		case "invoiceDate":
 			this.invoice.invoiceDate.set(iSource.getValue());
-			print(this.invoice.invoiceDate.getValue());
 			break;
 
 		default:

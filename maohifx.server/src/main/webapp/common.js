@@ -12,4 +12,6 @@ var System = java.lang.System;
 
 var Thread = java.lang.Thread;
 var Runnable = java.lang.Runnable;
-var StringBuilder = java.lang.StringBuilder; 
+var StringBuilder = java.lang.StringBuilder;
+
+var SimpleLocalDateProperty = com.maohi.software.maohifx.common.SimpleLocalDateProperty;

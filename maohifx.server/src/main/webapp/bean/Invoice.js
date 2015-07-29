@@ -1,7 +1,7 @@
 function Invoice() {
 	this.uuid = new SimpleStringProperty();
 	this.invoiceNumber = new SimpleIntegerProperty();
-	this.invoiceDate = new SimpleObjectProperty();
+	this.invoiceDate = new SimpleLocalDateProperty();
 
 	this.invoiceLines = FXCollections.observableArrayList();
 }
@@ -23,10 +23,8 @@ Invoice.prototype.getTabTitle = function() {
 }
 
 Invoice.prototype.print = function() {
-	for (var iIndex = 0; iIndex < this.invoiceLines.size(); iIndex++) {
-		iInvoiceLine = this.invoiceLines.get(iIndex);
-		iInvoiceLine.toConsole();
-	}
+	iLocalDate = this.invoiceDate.getValue();
+	print();
 }
 
 Invoice.prototype.save = function() {
@@ -39,7 +37,7 @@ Invoice.prototype.save = function() {
 		data : {
 			uuid : this.uuid.get(),
 			number : this.invoiceNumber.get(),
-			date : this.invoiceDate.getValue().toString()
+			date : this.invoiceDate.getDate()
 		},
 		success : function($result, $status) {
 			load("http://localhost:8080/maohifx.server/common.js");
@@ -57,5 +55,5 @@ Invoice.prototype.save = function() {
 Invoice.prototype.parseJSON = function(aJSONObject) {
 	this.uuid.set(aJSONObject.get("uuid"));
 	this.invoiceNumber.set(aJSONObject.get("number"));
-	this.invoiceDate.set(aJSONObject.get("date"));
+	this.invoiceDate.setDate(aJSONObject.get("date"));
 }
