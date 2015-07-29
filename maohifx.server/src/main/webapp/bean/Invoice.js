@@ -2,6 +2,7 @@ function Invoice() {
 	this.uuid = new SimpleStringProperty();
 	this.invoiceNumber = new SimpleIntegerProperty();
 	this.invoiceDate = new SimpleLocalDateProperty();
+	this.customerName = new SimpleStringProperty();
 
 	this.invoiceLines = FXCollections.observableArrayList();
 }
@@ -37,13 +38,13 @@ Invoice.prototype.save = function() {
 		data : {
 			uuid : this.uuid.get(),
 			number : this.invoiceNumber.get(),
-			date : this.invoiceDate.getDate()
+			date : this.invoiceDate.getDate(),
+			customerName: this.customerName.get()
 		},
 		success : function($result, $status) {
 			load("http://localhost:8080/maohifx.server/common.js");
 			load("http://localhost:8080/maohifx.server/bean/Invoice.js");
 			load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
-
 			$invoice.parseJSON($result);
 		},
 		error : function($result, $status) {
@@ -56,4 +57,5 @@ Invoice.prototype.parseJSON = function(aJSONObject) {
 	this.uuid.set(aJSONObject.get("uuid"));
 	this.invoiceNumber.set(aJSONObject.get("number"));
 	this.invoiceDate.setDate(aJSONObject.get("date"));
+	this.customerName.set(aJSONObject.get("customerName"));
 }

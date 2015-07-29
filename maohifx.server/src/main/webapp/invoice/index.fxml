@@ -31,8 +31,7 @@
 			<children>
 				<Label text="Date" />
 				<DatePicker fx:id="invoiceDate" onAction="controller.updateDataEvent(event)" GridPane.columnIndex="1" />
-				<TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-				<Button mnemonicParsing="false" text="..." GridPane.columnIndex="2" GridPane.rowIndex="1" />
+				<TextField fx:id="customerName" onAction="controller.updateDataEvent(event)" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 				<Label text="Client" GridPane.rowIndex="1" />
 				<Label text="Numéro de facture" GridPane.columnIndex="3" />
 				<TextField fx:id="invoiceNumber" editable="false" GridPane.columnIndex="4" />

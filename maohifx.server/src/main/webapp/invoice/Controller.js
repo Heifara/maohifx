@@ -27,7 +27,13 @@ InvoiceController.prototype.updateDataEvent = function(aEvent) {
 	iSource = aEvent.getSource();
 	switch (iSource.getId()) {
 		case "invoiceDate":
+			print(iSource.getValue());
 			this.invoice.invoiceDate.set(iSource.getValue());
+			break;
+			
+		case "customerName":
+			print(iSource.getText());
+			this.invoice.customerName.set(iSource.getText());
 			break;
 
 		default:

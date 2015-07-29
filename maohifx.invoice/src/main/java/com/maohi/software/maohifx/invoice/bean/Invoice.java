@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -33,6 +34,7 @@ public class Invoice implements java.io.Serializable {
 	private Integer number;
 	private Date date;
 	private Set<InvoiceLine> invoiceLines = new HashSet<InvoiceLine>(0);
+	private String customerName;
 
 	public Invoice() {
 	}
@@ -113,6 +115,11 @@ public class Invoice implements java.io.Serializable {
 		return this.creationDate;
 	}
 
+	@Transient
+	public String getCustomerName() {
+		return this.customerName;
+	}
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "date", length = 19)
 	public Date getDate() {
@@ -157,6 +164,10 @@ public class Invoice implements java.io.Serializable {
 
 	public void setCreationDate(final Date creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	public void setCustomerName(final String customerName) {
+		this.customerName = customerName;
 	}
 
 	public void setDate(final Date date) {
