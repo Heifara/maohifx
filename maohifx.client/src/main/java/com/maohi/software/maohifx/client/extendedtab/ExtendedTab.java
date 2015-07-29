@@ -169,6 +169,11 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	}
 
 	@FXML
+	public void selectTabEvent(final ActionEvent aEvent) {
+		this.parent.getSelectionModel().select(this);
+	}
+
+	@FXML
 	public void showHideUrl(final ActionEvent aEvent) {
 		if (this.url.isVisible()) {
 			this.url.setVisible(false);
