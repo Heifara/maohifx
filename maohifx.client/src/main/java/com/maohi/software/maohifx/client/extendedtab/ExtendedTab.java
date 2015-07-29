@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.controlsfx.control.StatusBar;
+
 import com.maohi.software.maohifx.client.ExtFXMLLoader;
 
 import javafx.application.Platform;
@@ -18,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
@@ -33,6 +36,8 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	private Tab selectedTab;
 	private TabPane parent;
 
+	private boolean refreshing;
+
 	@FXML
 	private TextField url;
 
@@ -44,6 +49,9 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 	@FXML
 	private MenuItem hidShowUrl;
+
+	@FXML
+	private StatusBar statusBar;
 
 	public ExtendedTab(final ExtFXMLLoader aParent) {
 		try {
@@ -110,23 +118,45 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 	@FXML
 	public void refreshTabEvent(final ActionEvent aEvent) {
-		Platform.runLater(new Runnable() {
+		if (!this.refreshing && !ExtendedTab.this.url.getText().isEmpty()) {
+			final ProgressIndicator iProgressBar = new ProgressIndicator();
+			this.statusBar.getRightItems().add(iProgressBar);
 
-			@Override
-			public void run() {
-				try {
-					if (!ExtendedTab.this.url.getText().isEmpty()) {
+			this.refreshing = true;
+
+			this.content.setCenter(null);
+
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					try {
 						final ExtFXMLLoader iLoader = ExtendedTab.this.loader.getLoader(ExtendedTab.this.url.getText());
 						iLoader.getNamespace().put("$tab", ExtendedTab.this);
-						ExtendedTab.this.content.setCenter(iLoader.load());
+						Platform.runLater(new Runnable() {
+
+							@Override
+							public void run() {
+								try {
+									ExtendedTab.this.content.setCenter(iLoader.load());
+								} catch (final Exception aException) {
+									final Label iLabel = new Label();
+									iLabel.setText(aException.getMessage());
+									ExtendedTab.this.content.setCenter(iLabel);
+								}
+
+								ExtendedTab.this.statusBar.getRightItems().remove(iProgressBar);
+								ExtendedTab.this.refreshing = false;
+							}
+						});
+					} catch (final IOException aException) {
+						final Label iLabel = new Label();
+						iLabel.setText(aException.getMessage());
+						ExtendedTab.this.content.setCenter(iLabel);
 					}
-				} catch (final IOException aException) {
-					final Label iLabel = new Label();
-					iLabel.setText(aException.getMessage());
-					ExtendedTab.this.content.setCenter(iLabel);
 				}
-			}
-		});
+			}).start();
+		}
 	}
 
 	@FXML

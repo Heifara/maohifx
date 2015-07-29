@@ -71,7 +71,9 @@
 			</VBox>
 		</top>
 		<center />
-		<bottom />
+		<bottom>
+			<StatusBar fx:id="statusBar" BorderPane.alignment="CENTER" text="" />
+		</bottom>
 		<right />
 	</BorderPane>
 </fx:root>
