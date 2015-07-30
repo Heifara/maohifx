@@ -32,12 +32,8 @@ public class Fxml {
 	public Fxml() {
 		this.fxmls = new HashMap<String, String>();
 		this.fxmls.put("index", "index");
-		this.fxmls.put("newTab", "tab/index");
-		this.fxmls.put("home", "home/index");
-		this.fxmls.put("about", "about/index");
 		this.fxmls.put("invoice", "invoice/index");
 		this.fxmls.put("invoices", "invoices/index");
-		this.fxmls.put("jsontableview", "jsontableview/index");
 	}
 
 	@Context
