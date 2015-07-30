@@ -17,9 +17,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
@@ -47,7 +47,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	private MenuItem hidShowUrl;
 
 	@FXML
-	private SplitMenuButton menuButton;
+	private MenuButton menuButton;
 
 	@FXML
 	private ProgressIndicator progressIndicator;
@@ -182,7 +182,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	}
 
 	@FXML
-	public void selectTabEvent(final ActionEvent aEvent) {
+	public void selectTabEvent() {
 		this.parent.getSelectionModel().select(this);
 	}
 

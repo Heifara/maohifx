@@ -10,15 +10,16 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import com.maohi.software.maohifx.client.link.Link?>
+<?import javafx.scene.control.MenuButton?>
 
 <fx:root type="javafx.scene.control.Tab" xmlns:fx="http://javafx.com/fxml">
 	<graphic>
 		<GridPane fx:id="addressPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0">
 			<columnConstraints>
-				<ColumnConstraints hgrow="NEVER" minWidth="-Infinity" />
+				<ColumnConstraints hgrow="NEVER" />
 			</columnConstraints>
 			<children>
-				<SplitMenuButton fx:id="menuButton" prefWidth="60" nodeOrientation="RIGHT_TO_LEFT" focusTraversable="false" onAction="#selectTabEvent">
+				<MenuButton fx:id="menuButton" prefWidth="50" focusTraversable="false" onMouseClicked="#selectTabEvent">
 					<graphic>
 						<ProgressIndicator fx:id="progressIndicator" visible="false" GridPane.columnIndex="1" />
 					</graphic>
@@ -41,7 +42,7 @@
 						<MenuItem fx:id="hidShowUrl" mnemonicParsing="false" text="Masquer la barre d'adresse" onAction="#showHideUrl">
 						</MenuItem>
 					</items>
-				</SplitMenuButton>
+				</MenuButton>
 			</children>
 		</GridPane>
 	</graphic>
