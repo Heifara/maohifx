@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 
 import org.hibernate.Session;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maohi.software.maohifx.common.AbstractDAO;
 import com.maohi.software.maohifx.common.HibernateUtil;
 import com.maohi.software.maohifx.invoice.bean.Invoice;
@@ -38,10 +39,18 @@ public class InvoicesService {
 		HibernateUtil.getConfiguration().addAnnotatedClass(InvoiceLine.class);
 		Session iSession = HibernateUtil.getSessionFactory().openSession();
 		AbstractDAO.setSession(iSession);
-		
+
 		final InvoiceDAO iDAO = new InvoiceDAO();
 		final List<Invoice> iInvoices = iDAO.readAll();
-		return Response.ok(iInvoices).build();
+
+		try {
+			String iJSONObject = new ObjectMapper().writeValueAsString(iInvoices);
+			Response iResponse = Response.ok(iJSONObject).build();
+			return iResponse;
+		} catch (Exception aException) {
+			aException.printStackTrace();
+			return Response.serverError().entity(aException.getMessage()).build();
+		}
 	}
 
 }

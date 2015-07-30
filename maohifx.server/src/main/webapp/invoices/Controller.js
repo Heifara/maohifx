@@ -40,6 +40,7 @@ InvoicesController.prototype.searchEvent = function(aEvent) {
 			}
 		},
 		error : function($result, $status) {
+			java.lang.System.err.println($result);
 			java.lang.System.err.println($status);
 		}
 	});

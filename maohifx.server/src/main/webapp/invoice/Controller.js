@@ -4,11 +4,16 @@ load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
 
 function InvoiceController() {
 	this.invoice = typeof ($invoice) == "undefined" ? new Invoice() : $invoice;
-
+	if (this.invoice.invoiceLines.size() == 0) {
+		this.invoice.add("Saisir texte et ENTER");
+	}
+	
 	invoiceNumber.textProperty().bindBidirectional(this.invoice.invoiceNumber, new NumberStringConverter());
 	invoiceDate.valueProperty().bindBidirectional(this.invoice.invoiceDate);
 	customerName.textProperty().bindBidirectional(this.invoice.customerName);
-	
+
+	tableView.setItems(this.invoice.invoiceLines);
+
 	$tab.setText(this.invoice.getTabTitle());
 }
 
@@ -18,7 +23,7 @@ InvoiceController.prototype.saveEvent = function() {
 }
 
 InvoiceController.prototype.printEvent = function() {
-	print(this.invoice.invoiceDate.getDate());
+	this.invoice.print();
 }
 
 InvoiceController.prototype.onEditCommit = function(aEvent) {

@@ -47,29 +47,37 @@ public class InvoiceService {
 			iInvoice = new ObjectMapper().readValue(aJSONObject, Invoice.class);
 			if (iInvoice.getUuid() == null) {
 				iInvoice.setUuid(UUID.randomUUID().toString());
+				iInvoice.bindInvoiceLines();
+
 				InvoiceDAO iInvoiceDAO = new InvoiceDAO();
 				iInvoiceDAO.beginTransaction();
 				iInvoice.setNumber(iInvoiceDAO.next(Integer.class, "number"));
 				iInvoiceDAO.insert(iInvoice);
 				iInvoiceDAO.commit();
 			} else {
+				iInvoice.bindInvoiceLines();
+
 				InvoiceDAO iInvoiceDAO = new InvoiceDAO();
 				iInvoiceDAO.beginTransaction();
 				iInvoiceDAO.update(iInvoice);
 				iInvoiceDAO.commit();
 			}
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+			String iJSONObject = new ObjectMapper().writeValueAsString(iInvoice);
+			Response iResponse = Response.ok(iJSONObject).build();
+
+			return iResponse;
+		} catch (JsonParseException aException) {
+			aException.printStackTrace();
+			return Response.serverError().entity(aException.getMessage()).build();
+		} catch (JsonMappingException aException) {
+			aException.printStackTrace();
+			return Response.serverError().entity(aException.getMessage()).build();
+		} catch (IOException aException) {
+			aException.printStackTrace();
+			return Response.serverError().entity(aException.getMessage()).build();
 		}
 
-		return Response.ok(iInvoice).build();
 	}
 
 }
