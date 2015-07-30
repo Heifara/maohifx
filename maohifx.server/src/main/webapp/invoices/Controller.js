@@ -53,10 +53,9 @@ InvoicesController.prototype.newInvoiceEvent = function(aEvent) {
 
 InvoicesController.prototype.editInvoicesEvent = function(aEvent) {
 	iInvoice = tableView.getSelectionModel().getSelectedItem();
-
-	iLoader = $loader.getLoader();
-	iLoader.getNamespace().put("$invoice", iInvoice);
-	iLoader.load($tabpane, aEvent.getSource().getHref());
+	iLink = aEvent.getSource();
+	iLink.getNamespace().put("$invoice", iInvoice);
+	iLink.handle(aEvent);
 }
 
 InvoicesController.prototype.keyTypeEvent = function(aEvent) {
