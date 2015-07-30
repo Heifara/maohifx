@@ -1,0 +1,15 @@
+#mainPane {
+	-fx-content-display: top;
+	-fx-border-color: black;
+	-fx-border-width: 2;
+}
+
+.vbox {
+	-fx-background-color: #2f4f4f;
+	-fx-padding: 15.0;
+	-fx-spacing: 10.0;
+}
+
+.extended-tab{
+	-fx-background-color: #2f4f4f;
+}

@@ -16,7 +16,7 @@
 
 <fx:root type="javafx.scene.control.Tab" xmlns:fx="http://javafx.com/fxml">
 	<graphic>
-		<GridPane fx:id="addressPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0">
+		<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0">
 			<columnConstraints>
 				<ColumnConstraints hgrow="NEVER" />
 			</columnConstraints>
@@ -51,7 +51,7 @@
 	<BorderPane fx:id="content">
 		<left />
 		<top>
-			<VBox BorderPane.alignment="CENTER">
+			<VBox fx:id="urlPane" BorderPane.alignment="CENTER">
 				<children>
 					<GridPane fx:id="addressPane">
 						<columnConstraints>
@@ -79,15 +79,6 @@
 						</children>
 					</GridPane>
 				</children>
-				<BorderPane.margin>
-					<Insets />
-				</BorderPane.margin>
-				<padding>
-					<Insets bottom="10.0" />
-				</padding>
-				<effect>
-					<DropShadow />
-				</effect>
 			</VBox>
 		</top>
 		<center />

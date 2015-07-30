@@ -25,6 +25,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 /**
  * @author heifara
@@ -58,6 +59,9 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 	@FXML
 	private Button homeButton;
+
+	@FXML
+	private VBox urlPane;
 
 	public ExtendedTab(final ExtFXMLLoader aParent) {
 		try {
@@ -111,6 +115,8 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 	@Override
 	public void initialize(final URL aLocation, final ResourceBundle aResources) {
+		this.getStyleClass().add("extended-tab");
+		
 		this.tabPaneProperty().addListener(this);
 
 		this.setText("Nouvelle Onglet");
@@ -123,6 +129,8 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 		this.homeButton.setBorder(null);
 		this.homeButton.setBackground(null);
+
+		this.urlPane.getStyleClass().add("vbox");
 	}
 
 	@FXML
