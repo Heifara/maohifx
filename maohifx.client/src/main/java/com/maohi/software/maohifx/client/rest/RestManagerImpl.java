@@ -61,7 +61,7 @@ public class RestManagerImpl {
 			break;
 
 		default:
-			this.executeFunction("error", aJsObject, iStatus, null);
+			this.executeFunction("error", aJsObject, iStatus, iResponse.readEntity(String.class));
 			break;
 		}
 	}
