@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -51,6 +52,12 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 	@FXML
 	private ProgressIndicator progressIndicator;
+
+	@FXML
+	private Button refreshButton;
+
+	@FXML
+	private Button homeButton;
 
 	public ExtendedTab(final ExtFXMLLoader aParent) {
 		try {
@@ -110,6 +117,12 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 		this.menuButton.setBorder(null);
 		this.menuButton.setBackground(null);
+
+		this.refreshButton.setBorder(null);
+		this.refreshButton.setBackground(null);
+
+		this.homeButton.setBorder(null);
+		this.homeButton.setBackground(null);
 	}
 
 	@FXML

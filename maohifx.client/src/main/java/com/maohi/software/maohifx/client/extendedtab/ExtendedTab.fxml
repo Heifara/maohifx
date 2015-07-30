@@ -61,14 +61,14 @@
 							<ColumnConstraints hgrow="NEVER" />
 						</columnConstraints>
 						<children>
-							<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#refreshTabEvent">
+							<Button fx:id="refreshButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#refreshTabEvent">
 								<graphic>
 									<ImageView fitHeight="20" fitWidth="20">
 										<Image url="@refresh.png" />
 									</ImageView>
 								</graphic>
 							</Button>
-							<Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" GridPane.columnIndex="1" onAction="#homeEvent">
+							<Button fx:id="homeButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" GridPane.columnIndex="1" onAction="#homeEvent">
 								<graphic>
 									<ImageView fitHeight="20" fitWidth="20">
 										<Image url="@home.png" />
