@@ -90,5 +90,10 @@
 			<artifactId>maohifx.invoice</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.maohi.software</groupId>
+			<artifactId>maohifx.control</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
 	</dependencies>
 </project>
