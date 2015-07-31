@@ -25,7 +25,18 @@ Invoice.prototype.getTabTitle = function() {
 }
 
 Invoice.prototype.print = function() {
-	print(this.getInvoiceLines());
+	$http.ajax({
+		url : "http://localhost:8080/maohifx.server/webapi/invoice/pdf",
+		type : "get",
+		success : function($result, $status) {
+			print($result);
+			print($status);
+			java.lang.Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + $result);
+		},
+		error : function($result, $status) {
+			print($status);
+		}
+	});
 }
 
 Invoice.prototype.getInvoiceLines = function() {
