@@ -3,6 +3,13 @@
  */
 package com.maohi.software.maohifx.client.rest;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -12,6 +19,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -57,7 +65,19 @@ public class RestManagerImpl {
 
 		switch (Status.fromStatusCode(iStatus)) {
 		case OK:
-			this.executeFunction("success", aJsObject, iStatus, iResponse.readEntity(Object.class));
+			switch (iResponse.getHeaderString("Content-Type")) {
+			case MediaType.APPLICATION_JSON:
+				this.executeFunction("success", aJsObject, iStatus, iResponse.readEntity(Object.class));
+				break;
+
+			case "application/pdf":
+				final File iFile = this.generatePDFFile(iResponse.readEntity(InputStream.class));
+				executeFunction("success", aJsObject, iStatus, iFile);
+				break;
+
+			default:
+				break;
+			}
 			break;
 
 		default:
@@ -78,6 +98,35 @@ public class RestManagerImpl {
 			}
 			iEngine.eval(iMethod);
 			((Invocable) iEngine).invokeFunction(aMethodName, iEntity, iStatus);
+		}
+	}
+
+	private File generatePDFFile(final InputStream aInputStream) {
+		final File iFile = new File("my.pdf");
+
+		try (OutputStream iOutputStream = new FileOutputStream(iFile)) {
+
+			int iRead = 0;
+			final byte[] iBytes = new byte[1024];
+
+			while ((iRead = aInputStream.read(iBytes)) != -1) {
+				iOutputStream.write(iBytes, 0, iRead);
+			}
+
+			iFile.createNewFile();
+
+			return iFile;
+
+		} catch (final FileNotFoundException aException) {
+			// TODO Auto-generated catch block
+			aException.printStackTrace();
+
+			return null;
+		} catch (final IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+			return null;
 		}
 	}
 
