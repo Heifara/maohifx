@@ -2,7 +2,8 @@ function InvoiceLine() {
 	this.uuid = new SimpleStringProperty();
 	this.position = new SimpleIntegerProperty();
 	this.label = new SimpleStringProperty();
-	this.sellingPrice = new SimpleStringProperty();
+	this.sellingPrice = new SimpleDoubleProperty();
+	this.quantity = new SimpleDoubleProperty();
 }
 
 InvoiceLine.prototype.toJSON = function() {
@@ -10,7 +11,7 @@ InvoiceLine.prototype.toJSON = function() {
 		uuid : this.uuid.get(),
 		position : this.position.get(),
 		label : this.label.get(),
-		sellingPrice : this.sellingPrice.get()
+		sellingPrice : this.sellingPrice.get(),
 	};
 }
 
@@ -19,6 +20,7 @@ InvoiceLine.prototype.parseJSON = function(aJSONObject) {
 	this.position.set(aJSONObject.get("position"));
 	this.label.set(aJSONObject.get("label"));
 	this.sellingPrice.set(aJSONObject.get("sellingPrice"));
+	this.quantity.set(aJSONObject.get("quantity"));
 }
 
 InvoiceLine.prototype.toString = function() {
