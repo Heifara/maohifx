@@ -47,7 +47,7 @@
 								<JSObjectPropertyValueFactory property="barcode" />
 							</cellValueFactory>
 						</TableColumn>
-						<TableColumn fx:id="label" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onEditCommit="controller.onEditCommit(event)" prefWidth="150.0" text="Désignation">
+						<TableColumn fx:id="label" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" text="Désignation">
 							<cellValueFactory>
 								<JSObjectPropertyValueFactory property="label" />
 							</cellValueFactory>
