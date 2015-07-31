@@ -4,12 +4,18 @@
 package com.maohi.software.maohifx.server.webapi;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.UUID;
 
+import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -29,19 +35,33 @@ import com.maohi.software.maohifx.invoice.bean.InvoiceLine;
  *
  */
 @Path("invoice")
-@Produces({ MediaType.APPLICATION_JSON })
 public class InvoiceService {
+
+	@Context
+	ServletContext context;
 
 	public InvoiceService() {
 		HibernateUtil.getConfiguration().addAnnotatedClass(Invoice.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(InvoiceLine.class);
-		Session iSession = HibernateUtil.getSessionFactory().openSession();
+		final Session iSession = HibernateUtil.getSessionFactory().openSession();
 		AbstractDAO.setSession(iSession);
+	}
+
+	@GET
+	@Path("pdf")
+	@Produces({ "application/pdf" })
+	public Response pdf() {
+		try {
+			return Response.seeOther(new URL("http://localhost:8080/maohifx.server/my.pdf").toURI()).build();
+		} catch (MalformedURLException | URISyntaxException e) {
+			return Response.serverError().build();
+		}
 	}
 
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
-	public Response save(String aJSONObject) {
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response save(final String aJSONObject) {
 		Invoice iInvoice = null;
 		try {
 			iInvoice = new ObjectMapper().readValue(aJSONObject, Invoice.class);
@@ -49,7 +69,7 @@ public class InvoiceService {
 				iInvoice.setUuid(UUID.randomUUID().toString());
 				iInvoice.bindInvoiceLines();
 
-				InvoiceDAO iInvoiceDAO = new InvoiceDAO();
+				final InvoiceDAO iInvoiceDAO = new InvoiceDAO();
 				iInvoiceDAO.beginTransaction();
 				iInvoice.setNumber(iInvoiceDAO.next(Integer.class, "number"));
 				iInvoiceDAO.insert(iInvoice);
@@ -57,23 +77,23 @@ public class InvoiceService {
 			} else {
 				iInvoice.bindInvoiceLines();
 
-				InvoiceDAO iInvoiceDAO = new InvoiceDAO();
+				final InvoiceDAO iInvoiceDAO = new InvoiceDAO();
 				iInvoiceDAO.beginTransaction();
 				iInvoiceDAO.update(iInvoice);
 				iInvoiceDAO.commit();
 			}
 
-			String iJSONObject = new ObjectMapper().writeValueAsString(iInvoice);
-			Response iResponse = Response.ok(iJSONObject).build();
+			final String iJSONObject = new ObjectMapper().writeValueAsString(iInvoice);
+			final Response iResponse = Response.ok(iJSONObject).build();
 
 			return iResponse;
-		} catch (JsonParseException aException) {
+		} catch (final JsonParseException aException) {
 			aException.printStackTrace();
 			return Response.serverError().entity(aException.getMessage()).build();
-		} catch (JsonMappingException aException) {
+		} catch (final JsonMappingException aException) {
 			aException.printStackTrace();
 			return Response.serverError().entity(aException.getMessage()).build();
-		} catch (IOException aException) {
+		} catch (final IOException aException) {
 			aException.printStackTrace();
 			return Response.serverError().entity(aException.getMessage()).build();
 		}
