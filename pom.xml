@@ -145,6 +145,11 @@
 				<artifactId>hibernate-entitymanager</artifactId>
 				<version>${hibernate.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.controlsfx</groupId>
+				<artifactId>controlsfx</artifactId>
+				<version>8.40.9</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<modules>

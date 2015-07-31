@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<?import com.maohi.software.maohifx.client.tableview.*?>
+<?import com.maohi.software.maohifx.control.*?>
 <?import com.maohi.software.maohifx.client.link.*?>
 <?import javafx.scene.control.Hyperlink?>
 

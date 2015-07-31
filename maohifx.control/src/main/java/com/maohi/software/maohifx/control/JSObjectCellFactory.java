@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.maohi.software.maohifx.client.tableview;
+package com.maohi.software.maohifx.control;
 
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;

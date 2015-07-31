@@ -31,4 +31,10 @@
 			</testResource>
 		</testResources>
 	</build>
+	<dependencies>
+		<dependency>
+			<groupId>org.controlsfx</groupId>
+			<artifactId>controlsfx</artifactId>
+		</dependency>
+	</dependencies>
 </project>
