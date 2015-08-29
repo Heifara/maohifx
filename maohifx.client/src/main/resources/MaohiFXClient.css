@@ -1,15 +1,24 @@
 #mainPane {
 	-fx-content-display: top;
 	-fx-border-color: black;
-	-fx-border-width: 2;
+	-fx-border-width: 2.0;
 }
 
 .vbox {
-	-fx-background-color: #2f4f4f;
-	-fx-padding: 15.0;
-	-fx-spacing: 10.0;
+	-fx-background-color: gray;
+	-fx-padding: 5.0;
+	-fx-spacing: 5.0;
+}
+
+.extended-tab:selected{
+	-fx-background-color: gray;
 }
 
 .extended-tab{
-	-fx-background-color: #2f4f4f;
+	-fx-background-color: white;
+}
+
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: black;
 }
