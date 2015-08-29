@@ -15,6 +15,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * @author heifara
@@ -62,6 +63,7 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 			this.mainPane = this.loader.load();
 
 			this.stage = aStage;
+			this.stage.initStyle(StageStyle.UNDECORATED);
 			this.scene = new Scene(this.mainPane);
 			this.scene.getStylesheets().add("MaohiFXClient.css");
 
