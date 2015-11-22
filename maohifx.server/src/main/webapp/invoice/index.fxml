@@ -43,38 +43,23 @@
 							</cellValueFactory>
 						</TableColumn>
 						<TableColumn prefWidth="75.0" text="Code barre">
-							<cellValueFactory>
-								<JSObjectPropertyValueFactory property="barcode" />
-							</cellValueFactory>
 						</TableColumn>
 						<TableColumn fx:id="label" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" text="Désignation">
-							<cellValueFactory>
-								<JSObjectPropertyValueFactory property="label" />
-							</cellValueFactory>
 							<cellFactory>
 								<JSObjectCellFactory />
 							</cellFactory>
 						</TableColumn>
 						<TableColumn prefWidth="75.0" text="Quantités">
-							<cellValueFactory>
-								<JSObjectPropertyValueFactory property="quantity" />
-							</cellValueFactory>
 							<cellFactory>
 								<JSObjectCellFactory />
 							</cellFactory>
 						</TableColumn>
 						<TableColumn prefWidth="75.0" text="Prix H.T">
-							<cellValueFactory>
-								<JSObjectPropertyValueFactory property="sellingPrice" />
-							</cellValueFactory>
 							<cellFactory>
 								<JSObjectCellFactory />
 							</cellFactory>
 						</TableColumn>
 						<TableColumn prefWidth="75.0" text="Remise">
-							<cellValueFactory>
-								<JSObjectPropertyValueFactory property="discount" />
-							</cellValueFactory>
 							<cellFactory>
 								<JSObjectCellFactory />
 							</cellFactory>
