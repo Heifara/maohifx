@@ -63,7 +63,6 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 			this.mainPane = this.loader.load();
 
 			this.stage = aStage;
-			this.stage.initStyle(StageStyle.UNDECORATED);
 			this.scene = new Scene(this.mainPane);
 			this.scene.getStylesheets().add("MaohiFXClient.css");
 
