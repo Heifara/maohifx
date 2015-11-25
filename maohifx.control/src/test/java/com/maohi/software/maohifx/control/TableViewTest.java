@@ -10,7 +10,6 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.TableCell;
@@ -117,17 +116,7 @@ public class TableViewTest extends Application {
 		this.table.setEditable(true);
 		this.table.setItems(this.data);
 
-		this.filter.setOnKeyReleased(new EventHandler<Event>() {
-
-			@Override
-			public void handle(final Event event) {
-				final String iFilter = TableViewTest.this.filter.getText();
-				if (!iFilter.isEmpty()) {
-					TableViewTest.this.table.select(iFilter);
-				}
-			}
-
-		});
+		this.filter.textProperty().bindBidirectional(this.table.filterProperty());
 
 		final Scene scene = new Scene(new VBox(this.filter, this.table));
 		aStage.setTitle("MyTableView Sample");

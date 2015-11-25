@@ -3,6 +3,10 @@
  */
 package com.maohi.software.maohifx.control;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn;
 
 /**
@@ -10,6 +14,37 @@ import javafx.scene.control.TableColumn;
  *
  */
 public class TableView<S> extends javafx.scene.control.TableView<S> {
+
+	public class FilterChangeListener implements ChangeListener<String> {
+
+		private final TableView<S> tableView;
+
+		public FilterChangeListener(final TableView<S> aTableView) {
+			this.tableView = aTableView;
+		}
+
+		@Override
+		public void changed(final ObservableValue<? extends String> aObservable, final String aOldValue, final String aNewValue) {
+			this.tableView.select(aNewValue);
+		}
+
+	}
+
+	private final StringProperty filter;
+
+	public TableView() {
+		this.filter = new SimpleStringProperty();
+		this.filter.addListener(new FilterChangeListener(this));
+	}
+
+	/**
+	 * Return the filter property
+	 *
+	 * @return the filter property
+	 */
+	public StringProperty filterProperty() {
+		return this.filter;
+	}
 
 	/**
 	 * Return the {@link String} representation of the value at aRow and aColumn
@@ -53,7 +88,7 @@ public class TableView<S> extends javafx.scene.control.TableView<S> {
 	 * @return the index of the first row that match the pattern else return -1
 	 */
 	public int indexOf(final String aPattern) {
-		if (aPattern != null) {
+		if ((aPattern != null) && !aPattern.isEmpty()) {
 			for (int iRow = 0; iRow < this.getItems().size(); iRow++) {
 				for (int iColumn = 0; iColumn < this.getColumns().size(); iColumn++) {
 					final String iText = this.getTextAt(iRow, iColumn);
