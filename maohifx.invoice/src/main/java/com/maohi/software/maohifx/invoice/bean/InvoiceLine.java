@@ -34,7 +34,6 @@ public class InvoiceLine implements java.io.Serializable {
 	private Integer position;
 	private String label;
 	private Double sellingPrice;
-	private String invoiceLinecol;
 
 	public InvoiceLine() {
 	}
@@ -44,7 +43,7 @@ public class InvoiceLine implements java.io.Serializable {
 		this.invoice = invoice;
 	}
 
-	public InvoiceLine(final String uuid, final Invoice invoice, final Date creationDate, final Date updateDate, final Integer position, final String label, final Double sellingPrice, final String invoiceLinecol) {
+	public InvoiceLine(final String uuid, final Invoice invoice, final Date creationDate, final Date updateDate, final Integer position, final String label, final Double sellingPrice) {
 		this.uuid = uuid;
 		this.invoice = invoice;
 		this.creationDate = creationDate;
@@ -52,7 +51,6 @@ public class InvoiceLine implements java.io.Serializable {
 		this.position = position;
 		this.label = label;
 		this.sellingPrice = sellingPrice;
-		this.invoiceLinecol = invoiceLinecol;
 	}
 
 	@Override
@@ -79,13 +77,6 @@ public class InvoiceLine implements java.io.Serializable {
 				return false;
 			}
 		} else if (!this.invoice.equals(other.invoice)) {
-			return false;
-		}
-		if (this.invoiceLinecol == null) {
-			if (other.invoiceLinecol != null) {
-				return false;
-			}
-		} else if (!this.invoiceLinecol.equals(other.invoiceLinecol)) {
 			return false;
 		}
 		if (this.label == null) {
@@ -138,11 +129,6 @@ public class InvoiceLine implements java.io.Serializable {
 		return this.invoice;
 	}
 
-	@Column(name = "invoice_linecol", length = 45)
-	public String getInvoiceLinecol() {
-		return this.invoiceLinecol;
-	}
-
 	@Column(name = "label")
 	public String getLabel() {
 		return this.label;
@@ -176,8 +162,7 @@ public class InvoiceLine implements java.io.Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = (prime * result) + ((this.creationDate == null) ? 0 : this.creationDate.hashCode());
-		//result = (prime * result) + ((this.invoice == null) ? 0 : this.invoice.hashCode());
-		result = (prime * result) + ((this.invoiceLinecol == null) ? 0 : this.invoiceLinecol.hashCode());
+		// result = (prime * result) + ((this.invoice == null) ? 0 : this.invoice.hashCode());
 		result = (prime * result) + ((this.label == null) ? 0 : this.label.hashCode());
 		result = (prime * result) + ((this.position == null) ? 0 : this.position.hashCode());
 		result = (prime * result) + ((this.sellingPrice == null) ? 0 : this.sellingPrice.hashCode());
@@ -192,10 +177,6 @@ public class InvoiceLine implements java.io.Serializable {
 
 	public void setInvoice(final Invoice invoice) {
 		this.invoice = invoice;
-	}
-
-	public void setInvoiceLinecol(final String invoiceLinecol) {
-		this.invoiceLinecol = invoiceLinecol;
 	}
 
 	public void setLabel(final String label) {
@@ -256,10 +237,6 @@ public class InvoiceLine implements java.io.Serializable {
 			builder.append("sellingPrice=");
 			builder.append(this.sellingPrice);
 			builder.append(", ");
-		}
-		if (this.invoiceLinecol != null) {
-			builder.append("invoiceLinecol=");
-			builder.append(this.invoiceLinecol);
 		}
 		builder.append("]");
 		return builder.toString();
