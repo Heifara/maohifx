@@ -17,7 +17,6 @@ import javafx.application.Application;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -47,7 +46,7 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 	}
 
 	@Override
-	public void handle(final Link aLink, final ActionEvent aEvent, final FXMLLoader aLoader, final Node aNode) {
+	public void handle(final Link aLink, final ActionEvent aEvent, final FXMLLoader aLoader) {
 		aLoader.getNamespace().put("$tab", this.tabpane.getSelectionModel().getSelectedItem());
 		aLoader.getNamespace().put("$tabpane", this.tabpane);
 		this.tabpane.getTabs().add(new ExtendedTab(this.loader, aLink.getHref()));

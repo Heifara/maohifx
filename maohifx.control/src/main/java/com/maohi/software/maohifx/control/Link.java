@@ -15,7 +15,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Hyperlink;
 
 /**
@@ -79,15 +78,14 @@ public class Link extends Hyperlink implements Initializable, EventHandler<Actio
 		try {
 			final FXMLLoader iLoader = new FXMLLoader();
 			iLoader.setLocation(new URL(this.href));
-			final Node iNode = null;
 
 			switch (this.target) {
 			case BLANK:
-				blankTarget.handle(this, aEvent, iLoader, iNode);
+				blankTarget.handle(this, aEvent, iLoader);
 				break;
 
 			case SELF:
-				selfTarget.handle(this, aEvent, iLoader, iNode);
+				selfTarget.handle(this, aEvent, iLoader);
 				break;
 
 			default:

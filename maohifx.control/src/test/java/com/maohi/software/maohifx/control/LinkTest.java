@@ -3,6 +3,10 @@
  */
 package com.maohi.software.maohifx.control;
 
+import java.io.IOException;
+
+import javax.swing.JOptionPane;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -13,7 +17,6 @@ import com.maohi.software.maohifx.control.enumerations.HrefTarget;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -61,12 +64,16 @@ public class LinkTest extends Application {
 			}
 
 			@Override
-			public void handle(final Link aLink, final ActionEvent aEvent, final FXMLLoader aLoader, final Node aNode) {
+			public void handle(final Link aLink, final ActionEvent aEvent, final FXMLLoader aLoader) {
 				final Stage iStage = new Stage();
-				iStage.setScene(new Scene(new BorderPane(aNode)));
-				iStage.setTitle(aLink.getText());
-				iStage.sizeToScene();
-				iStage.show();
+				try {
+					iStage.setScene(new Scene(new BorderPane(aLoader.load())));
+					iStage.setTitle(aLink.getText());
+					iStage.sizeToScene();
+					iStage.show();
+				} catch (final IOException aException) {
+					JOptionPane.showMessageDialog(null, aException.getMessage());
+				}
 			}
 		});
 		Link.setHrefTarget(HrefTarget.SELF, new LinkTarget() {
@@ -77,10 +84,14 @@ public class LinkTest extends Application {
 			}
 
 			@Override
-			public void handle(final Link aLink, final ActionEvent aEvent, final FXMLLoader aLoader, final Node aNode) {
+			public void handle(final Link aLink, final ActionEvent aEvent, final FXMLLoader aLoader) {
 				iBorderPane.setBottom(null);
-				iBorderPane.setBottom(aNode);
-				aStage.sizeToScene();
+				try {
+					iBorderPane.setBottom(aLoader.load());
+					aStage.sizeToScene();
+				} catch (final IOException aException) {
+					JOptionPane.showMessageDialog(null, aException.getMessage());
+				}
 			}
 		});
 
