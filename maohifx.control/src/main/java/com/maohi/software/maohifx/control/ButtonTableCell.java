@@ -3,8 +3,9 @@
  */
 package com.maohi.software.maohifx.control;
 
-import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
+import com.maohi.software.maohifx.control.events.CellActionEvent;
+
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -17,10 +18,10 @@ import javafx.scene.control.TableCell;
 public class ButtonTableCell<S, T> extends TableCell<S, T>implements EventHandler<ActionEvent> {
 
 	private Button button;
-	private final SimpleStringProperty text;
+	private final StringProperty text;
 	private final EventHandler<ActionEvent> actionEvent;
 
-	public ButtonTableCell(final SimpleStringProperty aTextProperty, final EventHandler<ActionEvent> aActionEvent) {
+	public ButtonTableCell(final StringProperty aTextProperty, final EventHandler<ActionEvent> aActionEvent) {
 		this.text = aTextProperty;
 		this.actionEvent = aActionEvent;
 	}
@@ -44,13 +45,7 @@ public class ButtonTableCell<S, T> extends TableCell<S, T>implements EventHandle
 	@Override
 	public void handle(final ActionEvent aEvent) {
 		this.getTableView().getSelectionModel().select(this.getTableRow().getIndex());
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				ButtonTableCell.this.actionEvent.handle(aEvent);
-			}
-		});
+		ButtonTableCell.this.actionEvent.handle(new CellActionEvent<S, T>(this, aEvent, this.getTableRow(), this.getTableColumn(), this.getTableRow().getItem(), this.getIndex()));
 	}
 
 	@Override
