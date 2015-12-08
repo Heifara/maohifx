@@ -84,7 +84,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	public ExtendedTab(final FXMLLoader aParent, final String aUrl) {
 		this(aParent);
 
-		this.url.setText(aUrl);
+		this.setUrl(aUrl);
 		this.refreshTabEvent(new ActionEvent());
 	}
 
@@ -207,6 +207,10 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	@FXML
 	public void selectTabEvent() {
 		this.parent.getSelectionModel().select(this);
+	}
+
+	public void setUrl(final String aUrl) {
+		this.url.setText(aUrl);
 	}
 
 	@FXML

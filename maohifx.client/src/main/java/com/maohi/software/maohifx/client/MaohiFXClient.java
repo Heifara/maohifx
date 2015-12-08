@@ -14,6 +14,8 @@ import com.maohi.software.maohifx.control.LinkTarget;
 import com.maohi.software.maohifx.control.enumerations.HrefTarget;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -27,17 +29,23 @@ import javafx.stage.Stage;
  * @author heifara
  *
  */
-public class MaohiFXClient extends Application implements ListChangeListener<Tab>, LinkTarget {
+public class MaohiFXClient extends Application implements ListChangeListener<Tab>, ChangeListener<Tab>, LinkTarget {
 
 	private final FXMLLoader loader;
 	private Stage stage;
 	private Scene scene;
 	private BorderPane mainPane;
 	private TabPane tabpane;
+	private ExtendedTab currentTab;
 
 	public MaohiFXClient() {
 		this.loader = new FXMLLoader();
 		this.loader.setLocation(this.getClass().getResource("MaohiFXClient.fxml"));
+	}
+
+	@Override
+	public void changed(final ObservableValue<? extends Tab> aObservable, final Tab aOldValue, final Tab aNewValue) {
+		this.currentTab = (ExtendedTab) aNewValue;
 	}
 
 	@Override
@@ -47,9 +55,19 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 
 	@Override
 	public void handle(final Link aLink, final ActionEvent aEvent, final FXMLLoader aLoader) {
-		aLoader.getNamespace().put("$tab", this.tabpane.getSelectionModel().getSelectedItem());
-		aLoader.getNamespace().put("$tabpane", this.tabpane);
-		this.tabpane.getTabs().add(new ExtendedTab(this.loader, aLink.getHref()));
+		switch (aLink.getTarget()) {
+		case BLANK:
+			this.tabpane.getTabs().add(new ExtendedTab(this.loader, aLink.getHref()));
+			break;
+
+		case SELF:
+			this.currentTab.setUrl(aLink.getHref());
+			this.currentTab.refreshTabEvent(new ActionEvent());
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	@Override
@@ -85,6 +103,7 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 			this.scene.getStylesheets().add("MaohiFXClient.css");
 
 			this.tabpane = (TabPane) this.mainPane.getCenter();
+			this.tabpane.getSelectionModel().selectedItemProperty().addListener(this);
 			this.tabpane.getTabs().add(new ExtendedTab(this.loader));
 			this.tabpane.getTabs().addListener(this);
 
