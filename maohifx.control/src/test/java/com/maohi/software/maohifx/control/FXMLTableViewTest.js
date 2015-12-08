@@ -18,4 +18,7 @@ function FXMLTableViewTest() {
 	this.data.add(iPerson);
 
 	tableView.setItems(this.data);
+	
+	filter.textProperty().bindBidirectional(tableView.filterProperty());
+
 }
