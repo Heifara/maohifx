@@ -46,18 +46,6 @@ InvoicesController.prototype.searchEvent = function(aEvent) {
 	});
 }
 
-InvoicesController.prototype.newInvoiceEvent = function(aEvent) {
-	iLoader = $loader.getLoader();
-	iLoader.load($tabpane, "http://localhost:8080/maohifx.server/webapi/fxml?id=invoice");
-}
-
-InvoicesController.prototype.editInvoicesEvent = function(aEvent) {
-	iInvoice = tableView.getSelectionModel().getSelectedItem();
-	iLink = aEvent.getSource();
-	iLink.getNamespace().put("$invoice", iInvoice);
-	iLink.handle(aEvent);
-}
-
 InvoicesController.prototype.keyTypeEvent = function(aEvent) {
 	print("keyType");
 	print(aEvent);
