@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.maohi.software.maohifx.client.extendedtab;
 
@@ -116,7 +116,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	@Override
 	public void initialize(final URL aLocation, final ResourceBundle aResources) {
 		this.getStyleClass().add("extended-tab");
-		
+
 		this.tabPaneProperty().addListener(this);
 
 		this.setText("Nouvelle Onglet");
@@ -173,7 +173,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 							@Override
 							public void run() {
 								try {
-									Node iNode = iLoader.load();
+									final Node iNode = iLoader.load();
 									ExtendedTab.this.content.setCenter(iNode);
 									ExtFXMLLoader.loaders.put(iNode, iLoader);
 

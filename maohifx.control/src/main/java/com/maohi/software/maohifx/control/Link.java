@@ -79,7 +79,7 @@ public class Link extends Hyperlink implements Initializable, EventHandler<Actio
 		try {
 			final FXMLLoader iLoader = new FXMLLoader();
 			iLoader.setLocation(new URL(this.href));
-			final Node iNode = iLoader.load();
+			final Node iNode = null;
 
 			switch (this.target) {
 			case BLANK:
