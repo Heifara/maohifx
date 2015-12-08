@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.maohi.software.maohifx.client.rest;
 
@@ -23,8 +23,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.maohi.software.maohifx.client.ExtFXMLLoader;
-
+import javafx.fxml.FXMLLoader;
 import jdk.nashorn.api.scripting.JSObject;
 import jdk.nashorn.api.scripting.ScriptUtils;
 import jdk.nashorn.internal.runtime.ScriptObject;
@@ -36,9 +35,9 @@ import jdk.nashorn.internal.runtime.ScriptObject;
 @SuppressWarnings("restriction")
 public class RestManagerImpl {
 
-	private final ExtFXMLLoader loader;
+	private final FXMLLoader loader;
 
-	public RestManagerImpl(final ExtFXMLLoader aLoader) {
+	public RestManagerImpl(final FXMLLoader aLoader) {
 		this.loader = aLoader;
 	}
 
@@ -72,7 +71,7 @@ public class RestManagerImpl {
 
 			case "application/pdf":
 				final File iFile = this.generatePDFFile(iResponse.readEntity(InputStream.class));
-				executeFunction("success", aJsObject, iStatus, iFile);
+				this.executeFunction("success", aJsObject, iStatus, iFile);
 				break;
 
 			default:
@@ -140,7 +139,7 @@ public class RestManagerImpl {
 	}
 
 	private JSObject newJSObject(final String aUrl, final String aType) {
-		final JSObject iJSObject = (JSObject) ScriptUtils.wrap(new ScriptObject() {
+		final JSObject iJSObject = ScriptUtils.wrap(new ScriptObject() {
 		});
 		iJSObject.setMember("url", aUrl);
 		iJSObject.setMember("type", aType);

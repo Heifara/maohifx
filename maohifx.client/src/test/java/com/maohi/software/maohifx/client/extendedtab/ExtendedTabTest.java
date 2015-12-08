@@ -1,12 +1,11 @@
 /**
- * 
+ *
  */
 package com.maohi.software.maohifx.client.extendedtab;
 
-import com.maohi.software.maohifx.client.ExtFXMLLoader;
-
 import javafx.application.Application;
 import javafx.collections.ListChangeListener;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -18,17 +17,17 @@ import javafx.stage.Stage;
  */
 public class ExtendedTabTest extends Application {
 
-	public static void main(String[] aArgs) {
+	public static void main(final String[] aArgs) {
 		launch(ExtendedTabTest.class);
 	}
 
 	@Override
-	public void start(Stage aStage) throws Exception {
-		TabPane iTabPane = new TabPane();
+	public void start(final Stage aStage) throws Exception {
+		final TabPane iTabPane = new TabPane();
 		iTabPane.getTabs().addListener(new ListChangeListener<Tab>() {
 
 			@Override
-			public void onChanged(javafx.collections.ListChangeListener.Change<? extends Tab> c) {
+			public void onChanged(final javafx.collections.ListChangeListener.Change<? extends Tab> c) {
 				c.next();
 				if (c.wasRemoved()) {
 					System.out.println("removed");
@@ -40,7 +39,7 @@ public class ExtendedTabTest extends Application {
 				}
 			}
 		});
-		iTabPane.getTabs().add(new ExtendedTab(new ExtFXMLLoader()));
+		iTabPane.getTabs().add(new ExtendedTab(new FXMLLoader()));
 
 		aStage.setScene(new Scene(iTabPane));
 		aStage.setTitle("ExtendedTab");

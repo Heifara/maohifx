@@ -29,14 +29,14 @@ import javafx.stage.Stage;
  */
 public class MaohiFXClient extends Application implements ListChangeListener<Tab>, LinkTarget {
 
-	private final ExtFXMLLoader loader;
+	private final FXMLLoader loader;
 	private Stage stage;
 	private Scene scene;
 	private BorderPane mainPane;
 	private TabPane tabpane;
 
 	public MaohiFXClient() {
-		this.loader = new ExtFXMLLoader();
+		this.loader = new FXMLLoader();
 		this.loader.setLocation(this.getClass().getResource("MaohiFXClient.fxml"));
 	}
 

@@ -7,13 +7,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.maohi.software.maohifx.client.ExtFXMLLoader;
+import com.maohi.software.maohifx.client.rest.RestManagerImpl;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -33,7 +34,7 @@ import javafx.scene.layout.VBox;
  */
 public class ExtendedTab extends Tab implements Initializable, ChangeListener<TabPane> {
 
-	private final ExtFXMLLoader loader;
+	private final FXMLLoader loader;
 	private Tab selectedTab;
 	private TabPane parent;
 
@@ -63,11 +64,16 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	@FXML
 	private VBox urlPane;
 
-	public ExtendedTab(final ExtFXMLLoader aParent) {
+	public ExtendedTab(final FXMLLoader aParent) {
 		try {
-			this.loader = aParent.getLoader(this.getClass().getResource("ExtendedTab.fxml"));
+			this.loader = new FXMLLoader();
+			this.loader.setLocation(this.getClass().getResource("ExtendedTab.fxml"));
 			this.loader.setRoot(this);
 			this.loader.setController(this);
+			this.loader.getNamespace().put("$parentLoader", aParent);
+			for (final String iKey : aParent.getNamespace().keySet()) {
+				this.loader.getNamespace().put(iKey, aParent.getNamespace().get(iKey));
+			}
 
 			this.loader.load();
 		} catch (final IOException aException) {
@@ -75,7 +81,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		}
 	}
 
-	public ExtendedTab(final ExtFXMLLoader aParent, final String aUrl) {
+	public ExtendedTab(final FXMLLoader aParent, final String aUrl) {
 		this(aParent);
 
 		this.url.setText(aUrl);
@@ -163,11 +169,11 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 				@Override
 				public void run() {
 					try {
-						Thread.sleep(100);
-
-						final ExtFXMLLoader iLoader = ExtendedTab.this.loader.getLoader(ExtendedTab.this.url.getText());
+						final FXMLLoader iLoader = new FXMLLoader(new URL(ExtendedTab.this.url.getText()));
+						iLoader.getNamespace().put("$loader", iLoader);
 						iLoader.getNamespace().put("$tab", ExtendedTab.this);
 						iLoader.getNamespace().put("$tabpane", ExtendedTab.this.parent);
+						iLoader.getNamespace().put("$http", new RestManagerImpl(iLoader));
 						Platform.runLater(new Runnable() {
 
 							@Override
@@ -175,7 +181,6 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 								try {
 									final Node iNode = iLoader.load();
 									ExtendedTab.this.content.setCenter(iNode);
-									ExtFXMLLoader.loaders.put(iNode, iLoader);
 
 								} catch (final Exception aException) {
 									final Label iLabel = new Label();
@@ -192,9 +197,6 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 						final Label iLabel = new Label();
 						iLabel.setText(aException.getMessage());
 						ExtendedTab.this.content.setCenter(iLabel);
-						aException.printStackTrace();
-					} catch (final InterruptedException aException) {
-						// TODO Auto-generated catch block
 						aException.printStackTrace();
 					}
 				}
