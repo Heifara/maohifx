@@ -4,8 +4,16 @@
 package com.maohi.software.maohifx.client.extendedtab;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import com.maohi.software.maohifx.client.rest.RestManagerImpl;
 
@@ -172,47 +180,58 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	public void run() {
 		try {
 			final URL iUrl = new URL(ExtendedTab.this.url.getText());
-			if (iUrl.getProtocol().equals("fxml")) {
-				final String iPath = iUrl.getPath();
-				final String iBasePath = "/maohifx.server/webapi";
-				final String iId = iPath.replace(iBasePath, "").replaceAll("/", "");
+			final FXMLLoader iLoader = new FXMLLoader();
+			if ((iUrl.getQuery() != null) && !iUrl.getQuery().isEmpty()) {
+				final Client iClient = ClientBuilder.newClient();
+				final WebTarget iTarget = iClient.target(this.toHttp(iUrl, false).toString()).queryParam(iUrl.getQuery().split("=")[0], iUrl.getQuery().split("=")[1]);
+				final Response iResponse = iTarget.request().get();
 
-				final StringBuilder iUrlBuilder = new StringBuilder();
-				iUrlBuilder.append("http://");
-				iUrlBuilder.append(iUrl.getHost());
-				iUrlBuilder.append(iUrl.getPort() != 0 ? ":" + iUrl.getPort() : "");
-				iUrlBuilder.append(iBasePath);
-				iUrlBuilder.append("/fxml?id=" + iId);
+				final int iStatus = iResponse.getStatus();
 
-				final FXMLLoader iLoader = new FXMLLoader(new URL(iUrlBuilder.toString()));
-				iLoader.getNamespace().put("$loader", iLoader);
-				iLoader.getNamespace().put("$tab", ExtendedTab.this);
-				iLoader.getNamespace().put("$tabpane", ExtendedTab.this.parent);
-				iLoader.getNamespace().put("$http", new RestManagerImpl(iLoader));
+				switch (Status.fromStatusCode(iStatus)) {
+				case OK:
+					switch (iResponse.getHeaderString("Content-Type")) {
+					case MediaType.APPLICATION_JSON:
+						final Object iObject = iResponse.readEntity(Object.class);
+						iLoader.getNamespace().put("$item", iObject);
+						break;
 
-				Platform.runLater(new Runnable() {
-
-					@Override
-					public void run() {
-						try {
-							final Node iNode = iLoader.load();
-							ExtendedTab.this.content.setCenter(iNode);
-						} catch (final IOException aException) {
-							final Label iLabel = new Label();
-							iLabel.setText(aException.getMessage());
-							ExtendedTab.this.content.setCenter(iLabel);
-							aException.printStackTrace();
-						}
+					default:
+						throw new Exception(iResponse.readEntity(String.class));
 					}
-				});
-			} else {
+					break;
+
+				default:
+					break;
+				}
 
 			}
+			iLoader.getNamespace().put("$loader", iLoader);
+			iLoader.getNamespace().put("$tab", ExtendedTab.this);
+			iLoader.getNamespace().put("$tabpane", ExtendedTab.this.parent);
+			iLoader.getNamespace().put("$http", new RestManagerImpl(iLoader));
+
+			Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+					try {
+						iLoader.setLocation(ExtendedTab.this.toHttp(iUrl, true));
+						final Node iNode = iLoader.load();
+						ExtendedTab.this.content.setCenter(iNode);
+					} catch (final IOException aException) {
+						final Label iLabel = new Label();
+						iLabel.setText(aException.getMessage());
+						ExtendedTab.this.content.setCenter(iLabel);
+						aException.printStackTrace();
+					}
+				}
+			});
 
 			ExtendedTab.this.refreshing = false;
 			ExtendedTab.this.progressIndicator.setVisible(false);
 
-		} catch (final IOException aException) {
+		} catch (final Exception aException) {
 			final Label iLabel = new Label();
 			iLabel.setText(aException.getMessage());
 			ExtendedTab.this.content.setCenter(iLabel);
@@ -239,6 +258,24 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 			this.url.setVisible(true);
 			this.hidShowUrl.setText("Masquer la barre d'adresse");
 		}
+	}
+
+	public URL toHttp(final URL iUrl, final boolean aForFXMLLoader) throws MalformedURLException {
+		final StringBuilder iURLBuilder = new StringBuilder();
+		iURLBuilder.append("http://");
+		iURLBuilder.append(iUrl.getHost());
+		iURLBuilder.append(iUrl.getPort() != 0 ? ":" + iUrl.getPort() : "");
+
+		if (aForFXMLLoader) {
+			final String iBasePath = "/maohifx.server/webapi";
+			final String iId = iUrl.getPath().substring(iBasePath.length(), iUrl.getPath().length()).replaceAll("/", "");
+			iURLBuilder.append(iBasePath);
+			iURLBuilder.append("/fxml?id=" + iId);
+		} else {
+			iURLBuilder.append(iUrl.getPath());
+		}
+
+		return new URL(iURLBuilder.toString());
 	}
 
 }
