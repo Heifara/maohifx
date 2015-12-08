@@ -8,6 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.control.Hyperlink?>
 <?import com.maohi.software.maohifx.control.LinkCellFactory?>
+<?import com.maohi.software.maohifx.control.ButtonCellFactory?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<fx:script source="../beans/Person.js" />
@@ -41,6 +42,16 @@
 			<children>
 				<TableView fx:id="tableView" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2147483647">
 					<columns>
+						<TableColumn>
+							<cellFactory>
+								<ButtonCellFactory text="Select Row 1" onAction="controller.selectRowOneEvent()" />
+							</cellFactory>
+						</TableColumn>
+						<TableColumn>
+							<cellFactory>
+								<ButtonCellFactory text="Say Hello World" onAction="controller.actionEvent()" />
+							</cellFactory>
+						</TableColumn>
 						<TableColumn prefWidth="75.0" text="First Name">
 							<cellValueFactory>
 								<JSObjectPropertyValueFactory property="firstName" />

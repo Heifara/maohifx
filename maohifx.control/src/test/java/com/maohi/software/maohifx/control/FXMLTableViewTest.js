@@ -6,7 +6,7 @@ function FXMLTableViewTest() {
 	this.data = FXCollections.observableArrayList();
 
 	iPerson = new Person();
-	iPerson.firstName.set("Jacob");	
+	iPerson.firstName.set("Jacob");
 	iPerson.lastName.set("Smith")
 	iPerson.href.set("http://localhost:8080/maohifx.server/webapi/fxml?id=index");
 	this.data.add(iPerson);
@@ -18,7 +18,14 @@ function FXMLTableViewTest() {
 	this.data.add(iPerson);
 
 	tableView.setItems(this.data);
-	
-	filter.textProperty().bindBidirectional(tableView.filterProperty());
 
+	filter.textProperty().bindBidirectional(tableView.filterProperty());
+}
+
+FXMLTableViewTest.prototype.actionEvent = function() {
+	javax.swing.JOptionPane.showMessageDialog(null, "Hello world");
+}
+
+FXMLTableViewTest.prototype.selectRowOneEvent = function() {
+	tableView.select(1);
 }
