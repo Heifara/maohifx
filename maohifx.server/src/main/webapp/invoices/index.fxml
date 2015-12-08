@@ -7,6 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import com.maohi.software.maohifx.control.LinkCellFactory?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<fx:script source="../invoices/Controller.js" />
@@ -39,7 +40,7 @@
 				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
-				<TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2147483647">
+				<TableView fx:id="tableView" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2147483647">
 					<columns>
 						<TableColumn prefWidth="75.0" text="Date de facture">
 							<cellValueFactory>
@@ -50,11 +51,14 @@
 							<cellValueFactory>
 								<JSObjectPropertyValueFactory property="invoiceNumber" />
 							</cellValueFactory>
+							<cellFactory>
+								<LinkCellFactory property="href" target="BLANK" />
+							</cellFactory>
 						</TableColumn>
 						<TableColumn prefWidth="75.0" text="Nom du client" />
 					</columns>
 				</TableView>
-				<Link href="http://localhost:8080/maohifx.server/webapi/fxml?id=invoice" text="Nouveau" GridPane.columnIndex="0" />
+				<Link href="fxml://localhost:8080/maohifx.server/webapi/invoice" text="Nouveau" GridPane.columnIndex="0" />
 			</children>
 		</GridPane>
 	</center>

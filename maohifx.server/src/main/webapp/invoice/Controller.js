@@ -3,7 +3,8 @@ load("http://localhost:8080/maohifx.server/bean/Invoice.js");
 load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
 
 function InvoiceController() {
-	this.invoice = typeof ($invoice) == "undefined" ? new Invoice() : $invoice;
+	this.invoice = new Invoice();
+	this.invoice.parseJSON($item);
 	if (this.invoice.invoiceLines.size() == 0) {
 		this.invoice.add("Saisir texte et ENTER");
 	}

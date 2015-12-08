@@ -4,6 +4,7 @@ function InvoiceLine() {
 	this.label = new SimpleStringProperty();
 	this.sellingPrice = new SimpleDoubleProperty();
 	this.quantity = new SimpleDoubleProperty();
+	this.discount = new SimpleDoubleProperty();
 }
 
 InvoiceLine.prototype.toJSON = function() {

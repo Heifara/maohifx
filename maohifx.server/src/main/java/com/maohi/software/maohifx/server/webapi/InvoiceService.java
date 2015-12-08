@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.maohi.software.maohifx.server.webapi;
 
@@ -15,9 +15,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.hibernate.Session;
 
@@ -45,6 +47,20 @@ public class InvoiceService {
 		HibernateUtil.getConfiguration().addAnnotatedClass(InvoiceLine.class);
 		final Session iSession = HibernateUtil.getSessionFactory().openSession();
 		AbstractDAO.setSession(iSession);
+	}
+
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response fromQueryParam(@QueryParam("uuid") final String aUuid) {
+		try {
+			final InvoiceDAO iInvoiceDAO = new InvoiceDAO();
+			final Invoice iInvoice = iInvoiceDAO.read(aUuid);
+			final String iJSONObject = new ObjectMapper().writeValueAsString(iInvoice);
+			return Response.ok(iJSONObject).build();
+		} catch (final IOException aException) {
+			aException.printStackTrace();
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
 	@GET
