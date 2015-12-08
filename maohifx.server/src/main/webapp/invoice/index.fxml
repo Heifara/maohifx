@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?language javascript?>
-<?import javafx.scene.input.*?>
+
+<?import com.maohi.software.maohifx.control.*?>
+
 <?import java.lang.*?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.input.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Tab?>
-<?import com.maohi.software.maohifx.control.*?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<fx:script source="../invoice/Controller.js" />
-	<bottom>
-		<HBox BorderPane.alignment="CENTER" />
-	</bottom>
 	<center>
-		<GridPane BorderPane.alignment="CENTER">
+		<GridPane vgap="5.0" BorderPane.alignment="CENTER">
 			<columnConstraints>
 				<ColumnConstraints hgrow="NEVER" />
 				<ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="100.0" />
@@ -25,8 +26,8 @@
 			<rowConstraints>
 				<RowConstraints vgrow="NEVER" />
 				<RowConstraints vgrow="NEVER" />
-				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
 				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+				<RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="NEVER" />
 			</rowConstraints>
 			<children>
 				<Label text="Date" />
@@ -35,19 +36,19 @@
 				<Label text="Client" GridPane.rowIndex="1" />
 				<Label text="Numéro de facture" GridPane.columnIndex="3" />
 				<TextField fx:id="invoiceNumber" editable="false" GridPane.columnIndex="4" />
-				<TableView fx:id="tableView" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
+				<TableView fx:id="tableView" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
 					<columns>
-						<TableColumn prefWidth="25.0" text="">
-							<cellValueFactory>
-								<JSObjectPropertyValueFactory property="position" />
-							</cellValueFactory>
+						<TableColumn maxWidth="-1.0" minWidth="50.0" prefWidth="50.0" text="">
+							<cellFactory>
+								<ButtonCellFactory text="Supprimer" onAction="controller.deleteSelectedInvoiceLineEvent(event)" />
+							</cellFactory>
 						</TableColumn>
-						<TableColumn prefWidth="75.0" text="Code barre">
+						<TableColumn maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Code barre">
 							<cellValueFactory>
 								<JSObjectPropertyValueFactory property="barcode" />
 							</cellValueFactory>
 						</TableColumn>
-						<TableColumn prefWidth="150.0" text="Désignation">
+						<TableColumn maxWidth="-1.0" minWidth="200.0" prefWidth="200.0" text="Désignation">
 							<cellValueFactory>
 								<JSObjectPropertyValueFactory property="label" />
 							</cellValueFactory>
@@ -55,7 +56,7 @@
 								<JSObjectCellFactory />
 							</cellFactory>
 						</TableColumn>
-						<TableColumn prefWidth="75.0" text="Quantités">
+						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Quantités">
 							<cellValueFactory>
 								<JSObjectPropertyValueFactory property="quantity" />
 							</cellValueFactory>
@@ -63,21 +64,39 @@
 								<JSObjectCellFactory />
 							</cellFactory>
 						</TableColumn>
-						<TableColumn prefWidth="75.0" text="Prix H.T">
+						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Prix H.T">
 							<cellValueFactory>
 								<JSObjectPropertyValueFactory property="sellingPrice" />
 							</cellValueFactory>
 						</TableColumn>
-						<TableColumn prefWidth="75.0" text="Remise">
+						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Remise">
 							<cellValueFactory>
 								<JSObjectPropertyValueFactory property="discount" />
 							</cellValueFactory>
 						</TableColumn>
-						<TableColumn prefWidth="75.0" text="Prix T.T.C" />
-						<TableColumn prefWidth="75.0" text="Total" />
+						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Prix T.T.C" />
+						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Total" />
 					</columns>
 				</TableView>
-				<Button mnemonicParsing="false" onAction="controller.deleteSelectedInvoiceLineEvent(event)" text="Supprimer la ligne" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+				<TableView fx:id="tableView1" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
+					<columns>
+						<TableColumn prefWidth="150.0" text="Mode de paiement">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="position" />
+							</cellValueFactory>
+						</TableColumn>
+						<TableColumn prefWidth="150.0" text="Montant en XPF">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="position" />
+							</cellValueFactory>
+						</TableColumn>
+						<TableColumn prefWidth="150.0" text="Commentaire">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="position" />
+							</cellValueFactory>
+						</TableColumn>
+					</columns>
+				</TableView>
 			</children>
 		</GridPane>
 	</center>
@@ -86,9 +105,43 @@
 			<items>
 				<Button mnemonicParsing="false" onAction="controller.saveEvent(event)" text="Enregistrer" />
 				<Button mnemonicParsing="false" onAction="controller.printEvent(event)" text="Imprimer" />
+				<Button fx:id="valid" mnemonicParsing="false" onAction="controller.validEvent(aEvent)" text="Valider" />
 			</items>
 		</ToolBar>
 	</top>
+	<bottom>
+		<GridPane BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+				<Label text="Total HT" />
+				<TextField editable="false" GridPane.columnIndex="1" />
+				<Label text="Total Remise" GridPane.columnIndex="2" />
+				<TextField editable="false" GridPane.columnIndex="3" />
+				<Label text="Total Tva" GridPane.columnIndex="4" />
+				<TextField editable="false" GridPane.columnIndex="5" />
+				<Label text="Total TTC" GridPane.columnIndex="6" />
+				<TextField editable="false" GridPane.columnIndex="7" />
+				<Label text="Monnaie à rendre" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+				<TextField editable="false" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+			</children>
+			<BorderPane.margin>
+				<Insets />
+			</BorderPane.margin>
+		</GridPane>
+	</bottom>
 	<fx:script>
 		controller = new InvoiceController();
 	</fx:script>

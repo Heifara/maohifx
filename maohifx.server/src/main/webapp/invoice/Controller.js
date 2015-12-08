@@ -27,7 +27,14 @@ InvoiceController.prototype.printEvent = function() {
 	this.invoice.print();
 }
 
+/**
+ * 
+ * @param aEvent
+ *            the CellActionEvent
+ */
 InvoiceController.prototype.deleteSelectedInvoiceLineEvent = function(aEvent) {
-	iSelectedIndex = tableView.getSelectionModel().getSelectedIndex()
-	this.invoice.remove(iSelectedIndex);
+	this.invoice.remove(aEvent.getIndex());
+	if (this.invoice.invoiceLines.size() == 0) {
+		this.invoice.add("Saisir texte et ENTER");
+	}
 }
