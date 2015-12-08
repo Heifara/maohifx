@@ -3,10 +3,13 @@
  */
 package com.maohi.software.maohifx.control;
 
+import java.io.IOException;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
 
 /**
@@ -35,6 +38,17 @@ public class TableView<S> extends javafx.scene.control.TableView<S> {
 	public TableView() {
 		this.filter = new SimpleStringProperty();
 		this.filter.addListener(new FilterChangeListener(this));
+
+		try {
+			final FXMLLoader iLoader = new FXMLLoader();
+			iLoader.setLocation(this.getClass().getResource("TableView.fxml"));
+			iLoader.setRoot(this);
+			iLoader.setController(this);
+
+			iLoader.load();
+		} catch (final IOException aException) {
+			throw new RuntimeException(aException);
+		}
 	}
 
 	/**
