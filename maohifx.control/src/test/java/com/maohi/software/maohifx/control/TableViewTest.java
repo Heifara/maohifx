@@ -15,16 +15,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 /**
  * @author heifara
@@ -57,45 +54,18 @@ public class TableViewTest extends Application {
 		firstNameCol.setMinWidth(100);
 		firstNameCol.setCellValueFactory(new PropertyValueFactory<Person, String>("firstName"));
 		firstNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
-		firstNameCol.setOnEditCommit(new EventHandler<CellEditEvent<Person, String>>() {
-			@Override
-			public void handle(final CellEditEvent<Person, String> t) {
-				t.getTableView().getItems().get(t.getTablePosition().getRow()).setFirstName(t.getNewValue());
-			}
-		});
 
 		final TableColumn<Person, String> lastNameCol = new TableColumn<Person, String>("Last Name");
 		this.table.getColumns().add(lastNameCol);
 		lastNameCol.setMinWidth(100);
 		lastNameCol.setCellValueFactory(new PropertyValueFactory<Person, String>("lastName"));
 		lastNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
-		lastNameCol.setOnEditCommit(new EventHandler<CellEditEvent<Person, String>>() {
-			@Override
-			public void handle(final CellEditEvent<Person, String> t) {
-				t.getTableView().getItems().get(t.getTablePosition().getRow()).setLastName(t.getNewValue());
-			}
-		});
 
 		final TableColumn<Person, String> ageCol = new TableColumn<Person, String>("Age");
 		this.table.getColumns().add(ageCol);
 		ageCol.setMinWidth(50);
 		ageCol.setCellValueFactory(new PropertyValueFactory<Person, String>("age"));
-		ageCol.setCellFactory(new Callback<TableColumn<Person, String>, TableCell<Person, String>>() {
-
-			@Override
-			public TableCell<Person, String> call(final TableColumn<Person, String> param) {
-				final TableCell<Person, String> cell = new TableCell<Person, String>() {
-
-					@Override
-					protected void updateItem(final String item, final boolean empty) {
-						super.updateItem(item, empty);
-						this.setText(item);
-					}
-
-				};
-				return cell;
-			}
-		});
+		ageCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
 		final TableColumn<Person, String> birthdateCol = new TableColumn<Person, String>("Date de naissance");
 		this.table.getColumns().add(birthdateCol);
@@ -119,12 +89,7 @@ public class TableViewTest extends Application {
 		emailCol.setMinWidth(200);
 		emailCol.setCellValueFactory(new PropertyValueFactory<Person, String>("email"));
 		emailCol.setCellFactory(TextFieldTableCell.forTableColumn());
-		emailCol.setOnEditCommit(new EventHandler<CellEditEvent<Person, String>>() {
-			@Override
-			public void handle(final CellEditEvent<Person, String> t) {
-				t.getTableView().getItems().get(t.getTablePosition().getRow()).setEmail(t.getNewValue());
-			}
-		});
+
 		this.table.setEditable(true);
 		this.table.setItems(this.data);
 
