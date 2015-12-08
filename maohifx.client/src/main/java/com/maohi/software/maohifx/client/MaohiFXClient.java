@@ -62,7 +62,7 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 
 		case SELF:
 			this.currentTab.setUrl(aLink.getHref());
-			this.currentTab.refreshTabEvent(new ActionEvent());
+			this.currentTab.refreshTabEvent(aEvent);
 			break;
 
 		default:
