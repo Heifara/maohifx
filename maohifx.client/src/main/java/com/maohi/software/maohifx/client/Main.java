@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.maohi.software.maohifx.client;
 
@@ -7,10 +7,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
+import java.net.URL;
 
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
+
+import com.maohi.software.maohifx.client.protocole.fxml.URLStreamHandlerFactoryImpl;
 
 import javafx.application.Application;
 
@@ -21,6 +24,8 @@ import javafx.application.Application;
 public class Main {
 
 	public static void main(final String[] args) {
+		URL.setURLStreamHandlerFactory(new URLStreamHandlerFactoryImpl());
+
 		new Main().doMain(args);
 	}
 

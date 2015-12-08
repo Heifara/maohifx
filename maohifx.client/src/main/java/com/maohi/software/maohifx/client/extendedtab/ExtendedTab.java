@@ -32,7 +32,7 @@ import javafx.scene.layout.VBox;
  * @author heifara
  *
  */
-public class ExtendedTab extends Tab implements Initializable, ChangeListener<TabPane> {
+public class ExtendedTab extends Tab implements Initializable, ChangeListener<TabPane>, Runnable {
 
 	private final FXMLLoader loader;
 	private Tab selectedTab;
@@ -115,7 +115,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	}
 
 	public void homeEvent(final ActionEvent aEvent) {
-		this.url.setText("http://localhost:8080/maohifx.server/webapi/fxml?id=invoices");
+		this.url.setText("fxml://localhost:8080/maohifx.server/webapi/invoices/");
 		this.refreshTabEvent(aEvent);
 	}
 
@@ -164,44 +164,61 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 			this.content.setCenter(null);
 
-			new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					try {
-						final FXMLLoader iLoader = new FXMLLoader(new URL(ExtendedTab.this.url.getText()));
-						iLoader.getNamespace().put("$loader", iLoader);
-						iLoader.getNamespace().put("$tab", ExtendedTab.this);
-						iLoader.getNamespace().put("$tabpane", ExtendedTab.this.parent);
-						iLoader.getNamespace().put("$http", new RestManagerImpl(iLoader));
-						Platform.runLater(new Runnable() {
-
-							@Override
-							public void run() {
-								try {
-									final Node iNode = iLoader.load();
-									ExtendedTab.this.content.setCenter(iNode);
-
-								} catch (final Exception aException) {
-									final Label iLabel = new Label();
-									iLabel.setText(aException.getMessage());
-									ExtendedTab.this.content.setCenter(iLabel);
-									aException.printStackTrace();
-								}
-
-								ExtendedTab.this.refreshing = false;
-								ExtendedTab.this.progressIndicator.setVisible(false);
-							}
-						});
-					} catch (final IOException aException) {
-						final Label iLabel = new Label();
-						iLabel.setText(aException.getMessage());
-						ExtendedTab.this.content.setCenter(iLabel);
-						aException.printStackTrace();
-					}
-				}
-			}).start();
+			new Thread(this).start();
 		}
+	}
+
+	@Override
+	public void run() {
+		try {
+			final URL iUrl = new URL(ExtendedTab.this.url.getText());
+			if (iUrl.getProtocol().equals("fxml")) {
+				final String iPath = iUrl.getPath();
+				final String iBasePath = "/maohifx.server/webapi";
+				final String iId = iPath.replace(iBasePath, "").replaceAll("/", "");
+
+				final StringBuilder iUrlBuilder = new StringBuilder();
+				iUrlBuilder.append("http://");
+				iUrlBuilder.append(iUrl.getHost());
+				iUrlBuilder.append(iUrl.getPort() != 0 ? ":" + iUrl.getPort() : "");
+				iUrlBuilder.append(iBasePath);
+				iUrlBuilder.append("/fxml?id=" + iId);
+
+				final FXMLLoader iLoader = new FXMLLoader(new URL(iUrlBuilder.toString()));
+				iLoader.getNamespace().put("$loader", iLoader);
+				iLoader.getNamespace().put("$tab", ExtendedTab.this);
+				iLoader.getNamespace().put("$tabpane", ExtendedTab.this.parent);
+				iLoader.getNamespace().put("$http", new RestManagerImpl(iLoader));
+
+				Platform.runLater(new Runnable() {
+
+					@Override
+					public void run() {
+						try {
+							final Node iNode = iLoader.load();
+							ExtendedTab.this.content.setCenter(iNode);
+						} catch (final IOException aException) {
+							final Label iLabel = new Label();
+							iLabel.setText(aException.getMessage());
+							ExtendedTab.this.content.setCenter(iLabel);
+							aException.printStackTrace();
+						}
+					}
+				});
+			} else {
+
+			}
+
+			ExtendedTab.this.refreshing = false;
+			ExtendedTab.this.progressIndicator.setVisible(false);
+
+		} catch (final IOException aException) {
+			final Label iLabel = new Label();
+			iLabel.setText(aException.getMessage());
+			ExtendedTab.this.content.setCenter(iLabel);
+			aException.printStackTrace();
+		}
+
 	}
 
 	@FXML
