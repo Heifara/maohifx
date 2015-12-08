@@ -107,7 +107,7 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 	public void handle(final KeyEvent aEvent) {
 		if (new KeyCodeCombination(KeyCode.L, KeyCombination.CONTROL_DOWN).match(aEvent)) {
 			final String iAnswer = JOptionPane.showInputDialog("N° de ligne:");
-			if (!iAnswer.isEmpty()) {
+			if ((iAnswer != null) && !iAnswer.isEmpty()) {
 				try {
 					final int iRowIndex = Integer.parseInt(iAnswer);
 					this.select(iRowIndex);
