@@ -5,18 +5,25 @@ package com.maohi.software.maohifx.control;
 
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 
 /**
  * @author heifara
  *
  */
-public class TableView<S> extends javafx.scene.control.TableView<S> {
+public class TableView<S> extends javafx.scene.control.TableView<S>implements EventHandler<KeyEvent> {
 
 	public class FilterChangeListener implements ChangeListener<String> {
 
@@ -38,6 +45,8 @@ public class TableView<S> extends javafx.scene.control.TableView<S> {
 	public TableView() {
 		this.filter = new SimpleStringProperty();
 		this.filter.addListener(new FilterChangeListener(this));
+
+		this.addEventHandler(KeyEvent.KEY_RELEASED, this);
 
 		try {
 			final FXMLLoader iLoader = new FXMLLoader();
@@ -92,6 +101,25 @@ public class TableView<S> extends javafx.scene.control.TableView<S> {
 		}
 
 		return null;
+	}
+
+	@Override
+	public void handle(final KeyEvent aEvent) {
+		if (new KeyCodeCombination(KeyCode.L, KeyCombination.CONTROL_DOWN).match(aEvent)) {
+			final String iAnswer = JOptionPane.showInputDialog("N° de ligne:");
+			if (!iAnswer.isEmpty()) {
+				try {
+					final int iRowIndex = Integer.parseInt(iAnswer);
+					this.select(iRowIndex);
+				} catch (final NumberFormatException aException) {
+				}
+			}
+		} else if (new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN).match(aEvent)) {
+			final String iAnswer = JOptionPane.showInputDialog("Rechercher:");
+			this.select(iAnswer);
+		} else if (new KeyCodeCombination(KeyCode.ESCAPE).match(aEvent)) {
+			this.select(null);
+		}
 	}
 
 	/**
