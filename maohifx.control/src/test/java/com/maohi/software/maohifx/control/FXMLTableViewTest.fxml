@@ -64,6 +64,11 @@
 								<JSObjectPropertyValueFactory property="lastName" />
 							</cellValueFactory>
 						</TableColumn>
+						<TableColumn prefWidth="75.0" text="Age">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="age" />
+							</cellValueFactory>
+						</TableColumn>
 					</columns>
 				</TableView>
 			</children>
