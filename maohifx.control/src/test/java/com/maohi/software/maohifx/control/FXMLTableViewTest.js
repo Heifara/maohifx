@@ -31,3 +31,7 @@ FXMLTableViewTest.prototype.actionEvent = function() {
 FXMLTableViewTest.prototype.selectRowOneEvent = function() {
 	tableView.select(1);
 }
+
+FXMLTableViewTest.prototype.onEditCommitAgeEvent = function() {
+	java.lang.System.out.println("onEditCommitAgeEvent");
+}

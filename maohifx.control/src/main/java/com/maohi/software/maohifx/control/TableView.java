@@ -4,11 +4,7 @@
 package com.maohi.software.maohifx.control;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JOptionPane;
 
@@ -56,13 +52,10 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 	private final StringProperty filter;
 	private TablePosition<S, ?> nextPosition;
 	private TablePosition<S, ?> previousPosition;
-	private final Map<TableColumn<S, ?>, Collection<EventHandler<CellEditEvent<S, ?>>>> editCommits;
 
 	public TableView() {
 		this.filter = new SimpleStringProperty();
 		this.filter.addListener(new FilterChangeListener(this));
-
-		this.editCommits = new HashMap<>();
 
 		this.addEventFilter(KeyEvent.KEY_PRESSED, this);
 
@@ -125,15 +118,6 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 		return this.filter;
 	}
 
-	private Collection<EventHandler<CellEditEvent<S, ?>>> getOnEditCommit(final TableColumn<S, ?> aTableColumn) {
-		Collection<EventHandler<CellEditEvent<S, ?>>> iEventHandlers = this.editCommits.get(aTableColumn);
-		if (iEventHandlers == null) {
-			iEventHandlers = new ArrayList<>();
-			this.editCommits.put(aTableColumn, iEventHandlers);
-		}
-		return iEventHandlers;
-	}
-
 	/**
 	 * Return the {@link String} representation of the value at aRow and aColumn
 	 *
@@ -184,10 +168,6 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 	}
 
 	private void handleCellEditCommit(final CellEditEvent<S, ?> aEvent) {
-		for (final EventHandler<CellEditEvent<S, ?>> iEventHandler : this.editCommits.get(aEvent.getTableColumn())) {
-			iEventHandler.handle(aEvent);
-		}
-
 		this.calcNextAndPreviousPosition(aEvent.getTablePosition());
 		this.editNextPosition();
 		aEvent.consume();
@@ -267,12 +247,7 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 					if (iTableColumn.getCellFactory().getClass().isAnonymousClass()) {
 						iTableColumn.setCellFactory(TextFieldTableCell.forTableColumn(new JSObjectStringConverter<>()));
 					}
-
-					this.getOnEditCommit(iTableColumn).add(iTableColumn.getOnEditCommit());
-					iTableColumn.setOnEditCommit(this);
-
-					iTableColumn.setOnEditStart(this);
-					iTableColumn.setOnEditCancel(this);
+					iTableColumn.addEventHandler(TableColumn.editAnyEvent(), this);
 				}
 			} else if (aChange.wasReplaced()) {
 			} else if (aChange.wasUpdated()) {
