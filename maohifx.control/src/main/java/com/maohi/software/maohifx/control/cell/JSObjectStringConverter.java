@@ -1,4 +1,4 @@
-package com.maohi.software.maohifx.control;
+package com.maohi.software.maohifx.control.cell;
 
 import javafx.util.StringConverter;
 

@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.maohi.software.maohifx.control;
+package com.maohi.software.maohifx.control.cell;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ObjectPropertyBase;

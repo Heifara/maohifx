@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.maohi.software.maohifx.control;
+package com.maohi.software.maohifx.control.cell;
 
 import com.maohi.software.maohifx.control.enumerations.HrefTarget;
 

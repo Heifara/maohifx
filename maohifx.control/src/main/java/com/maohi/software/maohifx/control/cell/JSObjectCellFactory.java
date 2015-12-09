@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.maohi.software.maohifx.control;
+package com.maohi.software.maohifx.control.cell;
 
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;

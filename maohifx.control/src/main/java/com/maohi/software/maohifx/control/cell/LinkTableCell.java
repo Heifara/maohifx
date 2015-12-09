@@ -1,10 +1,11 @@
 /**
  *
  */
-package com.maohi.software.maohifx.control;
+package com.maohi.software.maohifx.control.cell;
 
 import java.util.Map;
 
+import com.maohi.software.maohifx.control.Link;
 import com.maohi.software.maohifx.control.enumerations.HrefTarget;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;

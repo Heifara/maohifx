@@ -3,6 +3,7 @@
 <?language javascript?>
 
 <?import com.maohi.software.maohifx.control.*?>
+<?import com.maohi.software.maohifx.control.cell.*?>
 
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>

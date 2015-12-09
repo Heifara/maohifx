@@ -12,6 +12,8 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 
+import com.maohi.software.maohifx.control.cell.JSObjectStringConverter;
+
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
