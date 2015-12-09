@@ -2,15 +2,26 @@
 
 <?language javascript?>
 
+<?import com.maohi.software.maohifx.control.*?>
+
+<?import javafx.scene.image.*?>
 <?import javafx.scene.web.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
 
-<TitledPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" text="About" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
-   <content>
-      <TextArea prefHeight="200.0" prefWidth="200.0" />
-   </content>
-   <fx:script>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+	<top>
+		<HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+			<children>
+				<Link href="fxml://localhost:8080/maohifx.server/webapi/invoices" target="BLANK" text="Factures" GridPane.columnIndex="1" />
+				<Link href="fxml://localhost:8080/maohifx.server/webapi/contacts" target="BLANK" text="Contacts" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+				<Link href="fxml://localhost:8080/maohifx.server/webapi/products" target="BLANK" text="Produits" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+			</children>
+		</HBox>
+	</top>
+	<fx:script>
+		$tab.setText("Maison");
 	</fx:script>
-</TitledPane>
+</BorderPane>

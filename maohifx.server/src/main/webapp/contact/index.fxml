@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?language javascript?>
+
+<?import com.maohi.software.maohifx.control.*?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.web.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+	<top>
+		<ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+			<items>
+				<Button mnemonicParsing="false" text="Enregistrer" />
+			</items>
+		</ToolBar>
+	</top>
+	<center>
+		<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="10.0" prefWidth="200.0" />
+			</columnConstraints>
+			<children>
+				<Label text="Nom de famille" GridPane.rowIndex="1" />
+				<TextField GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+				<Label text="Deuxième prénom" GridPane.rowIndex="2" />
+				<TextField GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+				<Label text="Prénom" GridPane.rowIndex="3" />
+				<TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+				<CheckBox mnemonicParsing="false" text="Est une société" GridPane.columnIndex="1" />
+			</children>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" />
+			</rowConstraints>
+		</GridPane>
+	</center>
+	<left>
+		<ImageView fx:id="picture" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="TOP_CENTER">
+			<image>
+				<Image url="http://localhost:8080/maohifx.server/contact/noprofile.jpg" />
+			</image>
+		</ImageView>
+	</left>
+	<fx:script>
+		$tab.setText("Contact");
+	</fx:script>
+</BorderPane>

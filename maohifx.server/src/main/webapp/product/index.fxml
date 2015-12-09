@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?language javascript?>
+<?import javafx.scene.*?>
+<?import javafx.scene.effect.*?>
+<?import com.maohi.software.maohifx.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.web.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+	<top>
+		<ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+			<items>
+				<Button mnemonicParsing="false" text="Enregistrer" />
+			</items>
+		</ToolBar>
+	</top>
+	<center>
+		<GridPane hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="100.0" prefWidth="100.0" />
+				<ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="10.0" prefWidth="200.0" />
+				<ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="10.0" prefWidth="200.0" />
+				<ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="10.0" prefWidth="200.0" />
+			</columnConstraints>
+			<children>
+				<Label text="Désignation" />
+				<TextField GridPane.columnIndex="1" GridPane.columnSpan="2147483647" />
+				<Label text="Quantité disponible" GridPane.rowIndex="1" />
+				<TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+				<Label text="Quantité en cours" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+				<TextField GridPane.columnIndex="3" GridPane.rowIndex="1" />
+				<Label text="Prix Unitaire H.T" GridPane.rowIndex="2" />
+				<TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+				<Label text="Prix Unitaire T.T.C" GridPane.rowIndex="4" />
+				<TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
+				<Label text="Taux de Tva" GridPane.rowIndex="3" />
+				<TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+				<BorderPane id="recipee" fx:id="recipee" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" GridPane.rowSpan="2147483647">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></BorderPane>
+			</children>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
+			</rowConstraints>
+		</GridPane>
+	</center>
+	<left>
+		<GridPane BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="150.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="150.0" prefHeight="150.0" vgrow="NEVER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+				<ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+					<image>
+						<Image url="http://localhost:8080/maohifx.server/product/noimage.jpg" />
+					</image>
+				</ImageView>
+				<VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+					<children>
+						<Link href="fxml://localhost:8080/maohifx.server/webapi/productPrices" recipee="#recipee" target="FRAMENAME" text="Tarifs" />
+						<Link text="Gestion des fournisseurs" />
+						<Link text="Conditionnement" />
+						<Link text="Quantités" />
+					</children>
+				</VBox>
+			</children>
+		</GridPane>
+	</left>
+	<fx:script>
+		$tab.setText("Fiche produit");
+	</fx:script>
+</BorderPane>

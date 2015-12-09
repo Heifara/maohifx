@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.maohi.software.maohifx.server.webapi;
 
@@ -29,39 +29,31 @@ import javax.ws.rs.core.Response.Status;
 public class Fxml {
 	private final HashMap<String, String> fxmls;
 
+	@Context
+	ServletContext context;
+
 	public Fxml() {
 		this.fxmls = new HashMap<String, String>();
 		this.fxmls.put("index", "index");
 		this.fxmls.put("invoice", "invoice/index");
 		this.fxmls.put("invoices", "invoices/index");
+		this.fxmls.put("contact", "contact/index");
+		this.fxmls.put("contacts", "contacts/index");
+		this.fxmls.put("product", "product/index");
+		this.fxmls.put("productPrices", "product/prices");
+		this.fxmls.put("products", "products/index");
 	}
-
-	@Context
-	ServletContext context;
 
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response fromQueryParam(@QueryParam("id") String aId) {
-		return loadFxml(aId);
+	public Response fromQueryParam(@QueryParam("id") final String aId) {
+		return this.loadFxml(aId);
 	}
 
-	/**
-	 * @param aId
-	 * @return
-	 */
-	private Response loadFxml(String aId) {
-		try {
-			return Response.ok().entity(load(new URL("file:///" + context.getRealPath("/" + this.fxmls.get(aId) + ".fxml").replace('\\', '/')))).build();
-		} catch (URISyntaxException | IOException aException) {
-			aException.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-		}
-	}
+	private String load(final URL aUrl) throws URISyntaxException, IOException {
+		final StringBuilder iContent = new StringBuilder();
 
-	private String load(URL aUrl) throws URISyntaxException, IOException {
-		StringBuilder iContent = new StringBuilder();
-
-		BufferedReader iBufferedReqder = new BufferedReader(new FileReader(new File(aUrl.toURI())));
+		final BufferedReader iBufferedReqder = new BufferedReader(new FileReader(new File(aUrl.toURI())));
 		String iLine;
 
 		while ((iLine = iBufferedReqder.readLine()) != null) {
@@ -70,5 +62,18 @@ public class Fxml {
 
 		iBufferedReqder.close();
 		return iContent.toString();
+	}
+
+	/**
+	 * @param aId
+	 * @return
+	 */
+	private Response loadFxml(final String aId) {
+		try {
+			return Response.ok().entity(this.load(new URL("file:///" + this.context.getRealPath("/" + this.fxmls.get(aId) + ".fxml").replace('\\', '/')))).build();
+		} catch (URISyntaxException | IOException aException) {
+			aException.printStackTrace();
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 }
