@@ -80,6 +80,16 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 		}
 	}
 
+	private void calcNextAndPreviousPosition(final TablePosition<S, ?> aTablePosition) {
+		if (aTablePosition.getColumn() < (this.getColumns().size() - 1)) {
+			this.nextPosition = new TablePosition<>(this, aTablePosition.getRow(), this.getColumns().get(aTablePosition.getColumn() + 1));
+		}
+
+		if (aTablePosition.getColumn() > 0) {
+			this.previousPosition = new TablePosition<>(this, aTablePosition.getRow(), this.getColumns().get(aTablePosition.getColumn() - 1));
+		}
+	}
+
 	public void editNextPosition() {
 		if ((this.getEditingCell() != null) && (this.nextPosition != null)) {
 			Platform.runLater(new Runnable() {
@@ -174,16 +184,11 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 	}
 
 	private void handleCellEditCommit(final CellEditEvent<S, ?> aEvent) {
-		final TablePosition<S, ?> iTablePosition = aEvent.getTablePosition();
-
-		if (iTablePosition.getColumn() < (this.getColumns().size() - 1)) {
-			this.nextPosition = new TablePosition<>(this, iTablePosition.getRow(), this.getColumns().get(iTablePosition.getColumn() + 1));
+		for (final EventHandler<CellEditEvent<S, ?>> iEventHandler : this.editCommits.get(aEvent.getTableColumn())) {
+			iEventHandler.handle(aEvent);
 		}
 
-		if (iTablePosition.getColumn() > 0) {
-			this.previousPosition = new TablePosition<>(this, iTablePosition.getRow(), this.getColumns().get(iTablePosition.getColumn() - 1));
-		}
-
+		this.calcNextAndPreviousPosition(aEvent.getTablePosition());
 		this.editNextPosition();
 		aEvent.consume();
 	}
@@ -192,10 +197,6 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 		if (aEvent.getEventType().getName().equals("EDIT_START")) {
 			this.handleCellEditStart(aEvent);
 		} else if (aEvent.getEventType().getName().equals("EDIT_COMMIT")) {
-			for (final EventHandler<CellEditEvent<S, ?>> iEventHandler : this.editCommits.get(aEvent.getTableColumn())) {
-				iEventHandler.handle(aEvent);
-			}
-
 			this.handleCellEditCommit(aEvent);
 		} else if (aEvent.getEventType().getName().equals("EDIT_CANCEL")) {
 			this.handleCellEditCancel(aEvent);
@@ -203,15 +204,7 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 	}
 
 	private void handleCellEditStart(final CellEditEvent<S, ?> aEvent) {
-		final TablePosition<S, ?> iTablePosition = aEvent.getTablePosition();
-
-		if (iTablePosition.getColumn() < (this.getColumns().size() - 1)) {
-			this.nextPosition = new TablePosition<>(this, iTablePosition.getRow(), this.getColumns().get(iTablePosition.getColumn() + 1));
-		}
-
-		if (iTablePosition.getColumn() > 0) {
-			this.previousPosition = new TablePosition<>(this, iTablePosition.getRow(), this.getColumns().get(iTablePosition.getColumn() - 1));
-		}
+		this.calcNextAndPreviousPosition(aEvent.getTablePosition());
 	}
 
 	private void handleKeyEvent(final KeyEvent aEvent) {
