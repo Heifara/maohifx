@@ -25,6 +25,7 @@ public class Link extends Hyperlink implements Initializable, EventHandler<Actio
 
 	private static LinkTarget blankTarget;
 	private static LinkTarget selfTarget;
+	private static LinkTarget framenameTarget;
 
 	public static void setHrefTarget(final HrefTarget aHrefTarget, final LinkTarget aLinkTarget) {
 		switch (aHrefTarget) {
@@ -36,6 +37,10 @@ public class Link extends Hyperlink implements Initializable, EventHandler<Actio
 			selfTarget = aLinkTarget;
 			break;
 
+		case FRAMENAME:
+			framenameTarget = aLinkTarget;
+			break;
+
 		default:
 			throw new IllegalArgumentException();
 		}
@@ -44,6 +49,8 @@ public class Link extends Hyperlink implements Initializable, EventHandler<Actio
 	private String href;
 
 	private HrefTarget target;
+
+	private String recipee;
 
 	public Link() {
 		this.target = HrefTarget.SELF;
@@ -69,6 +76,10 @@ public class Link extends Hyperlink implements Initializable, EventHandler<Actio
 		return this.href;
 	}
 
+	public String getRecipee() {
+		return this.recipee;
+	}
+
 	public HrefTarget getTarget() {
 		return this.target;
 	}
@@ -81,11 +92,15 @@ public class Link extends Hyperlink implements Initializable, EventHandler<Actio
 
 			switch (this.target) {
 			case BLANK:
-				blankTarget.handle(this, aEvent, iLoader);
+				blankTarget.handle(this, aEvent, iLoader, null);
 				break;
 
 			case SELF:
-				selfTarget.handle(this, aEvent, iLoader);
+				selfTarget.handle(this, aEvent, iLoader, null);
+				break;
+
+			case FRAMENAME:
+				framenameTarget.handle(this, aEvent, iLoader, this.recipee);
 				break;
 
 			default:
@@ -103,6 +118,10 @@ public class Link extends Hyperlink implements Initializable, EventHandler<Actio
 
 	public void setHref(final String aHref) {
 		this.href = aHref;
+	}
+
+	public void setRecipee(final String recipee) {
+		this.recipee = recipee;
 	}
 
 	public void setTarget(final HrefTarget target) {

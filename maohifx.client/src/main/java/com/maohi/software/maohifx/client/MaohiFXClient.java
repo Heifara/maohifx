@@ -54,7 +54,7 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 	}
 
 	@Override
-	public void handle(final Link aLink, final ActionEvent aEvent, final FXMLLoader aLoader) {
+	public void handle(final Link aLink, final ActionEvent aEvent, final FXMLLoader aLoader, final String aRecipeeId) {
 		switch (aLink.getTarget()) {
 		case BLANK:
 			this.tabpane.getTabs().add(new ExtendedTab(this.loader, aLink.getHref()));
@@ -63,6 +63,11 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 		case SELF:
 			this.currentTab.setUrl(aLink.getHref());
 			this.currentTab.refreshTabEvent(aEvent);
+			break;
+
+		case FRAMENAME:
+			this.currentTab.load(aLoader, aLink.getHref(), aRecipeeId);
+
 			break;
 
 		default:
@@ -117,6 +122,7 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 
 			Link.setHrefTarget(HrefTarget.BLANK, this);
 			Link.setHrefTarget(HrefTarget.SELF, this);
+			Link.setHrefTarget(HrefTarget.FRAMENAME, this);
 		} catch (final IOException aException) {
 			throw new RuntimeException(aException);
 		}

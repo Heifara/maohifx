@@ -38,7 +38,7 @@ public class FXMLTableViewTest extends Application {
 			}
 
 			@Override
-			public void handle(final Link aLink, final ActionEvent aEvent, final FXMLLoader aLoader) {
+			public void handle(final Link aLink, final ActionEvent aEvent, final FXMLLoader aLoader, final String aRecipeeId) {
 				try {
 					final Stage iStage = new Stage();
 					iStage.setScene(new Scene(new BorderPane(aLoader.load())));
@@ -57,7 +57,7 @@ public class FXMLTableViewTest extends Application {
 			}
 
 			@Override
-			public void handle(final Link aLink, final ActionEvent aEvent, final FXMLLoader aLoader) {
+			public void handle(final Link aLink, final ActionEvent aEvent, final FXMLLoader aLoader, final String aRecipeeId) {
 				try {
 					aStage.setScene(new Scene(new BorderPane(aLoader.load())));
 					aStage.setTitle(aLink.getText());

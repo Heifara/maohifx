@@ -64,7 +64,7 @@ public class LinkTest extends Application {
 			}
 
 			@Override
-			public void handle(final Link aLink, final ActionEvent aEvent, final FXMLLoader aLoader) {
+			public void handle(final Link aLink, final ActionEvent aEvent, final FXMLLoader aLoader, final String aRecipeeId) {
 				final Stage iStage = new Stage();
 				try {
 					iStage.setScene(new Scene(new BorderPane(aLoader.load())));
@@ -84,7 +84,7 @@ public class LinkTest extends Application {
 			}
 
 			@Override
-			public void handle(final Link aLink, final ActionEvent aEvent, final FXMLLoader aLoader) {
+			public void handle(final Link aLink, final ActionEvent aEvent, final FXMLLoader aLoader, final String aRecipeeId) {
 				iBorderPane.setBottom(null);
 				try {
 					iBorderPane.setBottom(aLoader.load());

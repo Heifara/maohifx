@@ -14,6 +14,6 @@ public interface LinkTarget {
 
 	void error(Link link, ActionEvent aEvent, Throwable aException);
 
-	void handle(Link link, ActionEvent aEvent, FXMLLoader aLoader);
+	void handle(Link link, ActionEvent aEvent, FXMLLoader aLoader, String aRecipeeId);
 
 }

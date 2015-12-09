@@ -160,6 +160,36 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		this.urlPane.getStyleClass().add("vbox");
 	}
 
+	public void load(final FXMLLoader aLoader, final String aURL, final String aRecipeeId) {
+		final Node iRecipee = this.getContent().lookup(aRecipeeId);
+
+		try {
+			final URL iUrl = this.toHttp(new URL(aURL), true);
+			aLoader.setLocation(iUrl);
+			final Node iNode = aLoader.load();
+			this.load(iRecipee, iNode);
+		} catch (final Exception aException) {
+			this.load(iRecipee, aException.getMessage());
+		}
+
+	}
+
+	private void load(final Node aRecipee, final Object aObject) {
+		if (aRecipee instanceof BorderPane) {
+			final BorderPane iBorderPane = (BorderPane) aRecipee;
+
+			if (aObject instanceof String) {
+				iBorderPane.setCenter(new Label((String) aObject));
+			} else if (aObject instanceof Node) {
+				iBorderPane.setCenter((Node) aObject);
+			} else {
+				throw new IllegalArgumentException();
+			}
+		} else {
+			throw new IllegalArgumentException();
+		}
+	}
+
 	@FXML
 	public void newTabEvent(final ActionEvent aEvent) {
 		Platform.runLater(new Runnable() {
