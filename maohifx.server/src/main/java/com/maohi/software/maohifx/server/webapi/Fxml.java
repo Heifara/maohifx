@@ -5,8 +5,9 @@ package com.maohi.software.maohifx.server.webapi;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
@@ -53,14 +54,14 @@ public class Fxml {
 	private String load(final URL aUrl) throws URISyntaxException, IOException {
 		final StringBuilder iContent = new StringBuilder();
 
-		final BufferedReader iBufferedReqder = new BufferedReader(new FileReader(new File(aUrl.toURI())));
+		final BufferedReader iBufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(aUrl.toURI())), "UTF8"));
 		String iLine;
 
-		while ((iLine = iBufferedReqder.readLine()) != null) {
+		while ((iLine = iBufferedReader.readLine()) != null) {
 			iContent.append(iLine);
 		}
 
-		iBufferedReqder.close();
+		iBufferedReader.close();
 		return iContent.toString();
 	}
 
