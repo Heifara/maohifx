@@ -4,10 +4,15 @@
 package com.maohi.software.maohifx.control;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -48,12 +53,15 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 	private final StringProperty filter;
 	private TablePosition<S, ?> nextPosition;
 	private TablePosition<S, ?> previousPosition;
+	private final Map<TableColumn<S, ?>, Collection<EventHandler<CellEditEvent<S, ?>>>> editCommits;
 
 	public TableView() {
 		this.filter = new SimpleStringProperty();
 		this.filter.addListener(new FilterChangeListener(this));
 
-		this.setEventHandler(Event.ANY, this);
+		this.editCommits = new HashMap<>();
+
+		this.addEventFilter(KeyEvent.KEY_PRESSED, this);
 
 		this.getColumns().addListener(this);
 
@@ -69,6 +77,32 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 		}
 	}
 
+	public void editNextPosition() {
+		if ((this.getEditingCell() != null) && (this.nextPosition != null)) {
+			Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+					TableView.this.getFocusModel().focus(TableView.this.nextPosition);
+					TableView.this.edit(TableView.this.nextPosition.getRow(), TableView.this.nextPosition.getTableColumn());
+				}
+			});
+		}
+	}
+
+	public void editPreviousPosition() {
+		if ((this.getEditingCell() != null) && (this.previousPosition != null)) {
+			Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+					TableView.this.getFocusModel().focus(TableView.this.previousPosition);
+					TableView.this.edit(TableView.this.previousPosition.getRow(), TableView.this.previousPosition.getTableColumn());
+				}
+			});
+		}
+	}
+
 	/**
 	 * Return the filter property
 	 *
@@ -76,6 +110,15 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 	 */
 	public StringProperty filterProperty() {
 		return this.filter;
+	}
+
+	private Collection<EventHandler<CellEditEvent<S, ?>>> getOnEditCommit(final TableColumn<S, ?> aTableColumn) {
+		Collection<EventHandler<CellEditEvent<S, ?>>> iEventHandlers = this.editCommits.get(aTableColumn);
+		if (iEventHandlers == null) {
+			iEventHandlers = new ArrayList<>();
+			this.editCommits.put(aTableColumn, iEventHandlers);
+		}
+		return iEventHandlers;
 	}
 
 	/**
@@ -129,16 +172,27 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 
 	private void handleCellEditCommit(final CellEditEvent<S, ?> aEvent) {
 		final TablePosition<S, ?> iTablePosition = aEvent.getTablePosition();
-		this.nextPosition = new TablePosition<>(this, iTablePosition.getRow(), this.getColumns().get(iTablePosition.getColumn() + 1));
-		this.previousPosition = new TablePosition<>(this, iTablePosition.getRow(), this.getColumns().get(iTablePosition.getColumn() - 1));
 
-		this.edit(this.nextPosition.getRow(), this.nextPosition.getTableColumn());
+		if (iTablePosition.getColumn() < (this.getColumns().size() - 1)) {
+			this.nextPosition = new TablePosition<>(this, iTablePosition.getRow(), this.getColumns().get(iTablePosition.getColumn() + 1));
+		}
+
+		if (iTablePosition.getColumn() > 0) {
+			this.previousPosition = new TablePosition<>(this, iTablePosition.getRow(), this.getColumns().get(iTablePosition.getColumn() - 1));
+		}
+
+		this.editNextPosition();
+		aEvent.consume();
 	}
 
 	private void handleCellEditEvent(final CellEditEvent<S, ?> aEvent) {
 		if (aEvent.getEventType().getName().equals("EDIT_START")) {
 			this.handleCellEditStart(aEvent);
 		} else if (aEvent.getEventType().getName().equals("EDIT_COMMIT")) {
+			for (final EventHandler<CellEditEvent<S, ?>> iEventHandler : this.editCommits.get(aEvent.getTableColumn())) {
+				iEventHandler.handle(aEvent);
+			}
+
 			this.handleCellEditCommit(aEvent);
 		} else if (aEvent.getEventType().getName().equals("EDIT_CANCEL")) {
 			this.handleCellEditCancel(aEvent);
@@ -146,8 +200,15 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 	}
 
 	private void handleCellEditStart(final CellEditEvent<S, ?> aEvent) {
-		// TODO Auto-generated method stub
+		final TablePosition<S, ?> iTablePosition = aEvent.getTablePosition();
 
+		if (iTablePosition.getColumn() < (this.getColumns().size() - 1)) {
+			this.nextPosition = new TablePosition<>(this, iTablePosition.getRow(), this.getColumns().get(iTablePosition.getColumn() + 1));
+		}
+
+		if (iTablePosition.getColumn() > 0) {
+			this.previousPosition = new TablePosition<>(this, iTablePosition.getRow(), this.getColumns().get(iTablePosition.getColumn() - 1));
+		}
 	}
 
 	private void handleKeyEvent(final KeyEvent aEvent) {
@@ -163,19 +224,13 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 		} else if (new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN).match(aEvent)) {
 			final String iAnswer = JOptionPane.showInputDialog("Rechercher:");
 			this.select(iAnswer);
-		} else if (new KeyCodeCombination(KeyCode.TAB).match(aEvent)) {
-			if (this.nextPosition != null) {
-				this.edit(this.nextPosition.getRow(), this.nextPosition.getTableColumn());
-			}
 		} else if (new KeyCodeCombination(KeyCode.ENTER).match(aEvent)) {
-			if (this.nextPosition != null) {
-				this.edit(this.nextPosition.getRow(), this.nextPosition.getTableColumn());
-			}
-		} else if (new KeyCodeCombination(KeyCode.ENTER, KeyCombination.CONTROL_ANY).match(aEvent)) {
-			if (this.previousPosition != null) {
-				this.edit(this.previousPosition.getRow(), this.previousPosition.getTableColumn());
-			}
-
+		} else if (new KeyCodeCombination(KeyCode.TAB).match(aEvent)) {
+			aEvent.consume();
+			this.editNextPosition();
+		} else if (new KeyCodeCombination(KeyCode.TAB, KeyCombination.SHIFT_ANY).match(aEvent)) {
+			aEvent.consume();
+			this.editPreviousPosition();
 		} else if (new KeyCodeCombination(KeyCode.ESCAPE).match(aEvent)) {
 			this.select(null);
 		}
@@ -213,7 +268,9 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 			} else if (aChange.wasAdded()) {
 				final List<? extends TableColumn<S, ?>> iAddedTableColumns = aChange.getAddedSubList();
 				for (final TableColumn iTableColumn : iAddedTableColumns) {
+					this.getOnEditCommit(iTableColumn).add(iTableColumn.getOnEditCommit());
 					iTableColumn.setOnEditCommit(this);
+
 					iTableColumn.setOnEditStart(this);
 					iTableColumn.setOnEditCancel(this);
 				}

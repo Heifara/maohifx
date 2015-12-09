@@ -44,12 +44,15 @@
 					<columns>
 						<TableColumn>
 							<cellFactory>
-								<ButtonCellFactory text="Select Row 1" onAction="controller.selectRowOneEvent()" />
+								<ButtonCellFactory text="Say Hello World" onAction="controller.actionEvent()" />
 							</cellFactory>
 						</TableColumn>
-						<TableColumn>
+						<TableColumn prefWidth="75.0" text="link">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="href" />
+							</cellValueFactory>
 							<cellFactory>
-								<ButtonCellFactory text="Say Hello World" onAction="controller.actionEvent()" />
+								<LinkCellFactory property="href" target="SELF" />
 							</cellFactory>
 						</TableColumn>
 						<TableColumn prefWidth="75.0" text="First Name">
@@ -57,7 +60,7 @@
 								<JSObjectPropertyValueFactory property="firstName" />
 							</cellValueFactory>
 							<cellFactory>
-								<LinkCellFactory property="href" target="SELF" />
+								<JSObjectCellFactory />
 							</cellFactory>
 						</TableColumn>
 						<TableColumn prefWidth="75.0" text="Last Name">
@@ -65,7 +68,7 @@
 								<JSObjectPropertyValueFactory property="lastName" />
 							</cellValueFactory>
 							<cellFactory>
-								<LinkCellFactory property="href" target="BLANK" />
+								<JSObjectCellFactory />
 							</cellFactory>
 						</TableColumn>
 					</columns>

@@ -3,8 +3,6 @@
  */
 package com.maohi.software.maohifx.control;
 
-import javax.swing.JOptionPane;
-
 import com.maohi.software.maohifx.beans.Person;
 
 import javafx.application.Application;
@@ -12,8 +10,6 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
@@ -39,16 +35,6 @@ public class TableViewTest extends Application {
 
 	@Override
 	public void start(final Stage aStage) throws Exception {
-		final TableColumn<Person, Boolean> displayEmailCol = new TableColumn<Person, Boolean>("");
-		this.table.getColumns().add(displayEmailCol);
-		displayEmailCol.setCellFactory(new ButtonCellFactory<Person, Boolean>("Say Hello World", new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(final ActionEvent aEvent) {
-				JOptionPane.showMessageDialog(null, "Hello world");
-			}
-		}));
-
 		final TableColumn<Person, String> firstNameCol = new TableColumn<Person, String>("First Name");
 		this.table.getColumns().add(firstNameCol);
 		firstNameCol.setMinWidth(100);
