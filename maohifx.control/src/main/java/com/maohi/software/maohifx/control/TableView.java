@@ -24,6 +24,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TablePosition;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -268,6 +269,10 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 			} else if (aChange.wasAdded()) {
 				final List<? extends TableColumn<S, ?>> iAddedTableColumns = aChange.getAddedSubList();
 				for (final TableColumn iTableColumn : iAddedTableColumns) {
+					if (iTableColumn.getCellFactory().getClass().isAnonymousClass()) {
+						iTableColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+					}
+
 					this.getOnEditCommit(iTableColumn).add(iTableColumn.getOnEditCommit());
 					iTableColumn.setOnEditCommit(this);
 

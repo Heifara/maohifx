@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?language javascript?>
+
 <?import com.maohi.software.maohifx.control.*?>
-<?import com.maohi.software.maohifx.client.link.*?>
+
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.control.Hyperlink?>
-<?import com.maohi.software.maohifx.control.LinkCellFactory?>
-<?import com.maohi.software.maohifx.control.ButtonCellFactory?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<fx:script source="../beans/Person.js" />
@@ -55,21 +54,15 @@
 								<LinkCellFactory property="href" target="SELF" />
 							</cellFactory>
 						</TableColumn>
-						<TableColumn prefWidth="75.0" text="First Name">
+						<TableColumn editable="false" prefWidth="75.0" text="First Name">
 							<cellValueFactory>
 								<JSObjectPropertyValueFactory property="firstName" />
 							</cellValueFactory>
-							<cellFactory>
-								<JSObjectCellFactory />
-							</cellFactory>
 						</TableColumn>
 						<TableColumn prefWidth="75.0" text="Last Name">
 							<cellValueFactory>
 								<JSObjectPropertyValueFactory property="lastName" />
 							</cellValueFactory>
-							<cellFactory>
-								<JSObjectCellFactory />
-							</cellFactory>
 						</TableColumn>
 					</columns>
 				</TableView>
