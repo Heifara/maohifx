@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Hyperlink;
 
 /**
@@ -22,6 +23,41 @@ import javafx.scene.control.Hyperlink;
  *
  */
 public class Link extends Hyperlink implements Initializable, EventHandler<ActionEvent> {
+
+	/**
+	 * @author heifara
+	 *
+	 */
+	public static interface LinkTarget {
+
+		/**
+		 * Executed when an error occurred
+		 *
+		 * @param aLink
+		 *            the link component
+		 * @param aEvent
+		 *            the event from the {@link EventHandler}
+		 * @param aException
+		 *            the exception
+		 */
+		void error(Link aLink, ActionEvent aEvent, Throwable aException);
+
+		/**
+		 * Executed when success
+		 *
+		 * @param aLink
+		 *            the link component
+		 * @param aEvent
+		 *            the event from the {@link EventHandler}
+		 * @param aLoader
+		 *            the loader used to locate the item
+		 * @param aRecipeId
+		 *            the {@link Node} id where the {@link Node} should be display. <br>
+		 *            Will be null in all {@link HrefTarget} except {@link HrefTarget#FRAMENAME}
+		 */
+		void handle(Link aLink, ActionEvent aEvent, FXMLLoader aLoader, String aRecipeId);
+
+	}
 
 	private static LinkTarget blankTarget;
 	private static LinkTarget selfTarget;

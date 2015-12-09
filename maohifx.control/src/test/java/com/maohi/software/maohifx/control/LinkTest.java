@@ -12,6 +12,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import com.maohi.software.maohifx.control.Link.LinkTarget;
 import com.maohi.software.maohifx.control.enumerations.HrefTarget;
 
 import javafx.application.Application;

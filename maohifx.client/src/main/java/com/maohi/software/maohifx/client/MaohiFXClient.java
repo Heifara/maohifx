@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 import com.maohi.software.maohifx.client.extendedtab.ExtendedTab;
 import com.maohi.software.maohifx.control.Link;
-import com.maohi.software.maohifx.control.LinkTarget;
+import com.maohi.software.maohifx.control.Link.LinkTarget;
 import com.maohi.software.maohifx.control.enumerations.HrefTarget;
 
 import javafx.application.Application;

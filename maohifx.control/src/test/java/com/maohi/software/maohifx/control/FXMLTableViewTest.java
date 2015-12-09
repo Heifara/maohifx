@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
+import com.maohi.software.maohifx.control.Link.LinkTarget;
 import com.maohi.software.maohifx.control.enumerations.HrefTarget;
 
 import javafx.application.Application;
