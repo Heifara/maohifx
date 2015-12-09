@@ -74,11 +74,9 @@ public class LinkTableCell<S, T> extends TableCell<S, T> {
 		}
 		super.startEdit();
 
-		this.getLink().setText(this.converter.toString(this.getItem()));
 		this.getLink().setHref(this.getHref());
 		this.getLink().setTarget(this.target);
 
-		this.setGraphic(this.link);
 		this.setText(null);
 	}
 
@@ -90,8 +88,9 @@ public class LinkTableCell<S, T> extends TableCell<S, T> {
 			this.setText(null);
 			this.getLink().setText("");
 		} else {
-			this.setText(this.converter.toString(aItem));
+			this.setText(null);
 			this.getLink().setText(this.converter.toString(aItem));
+			this.setGraphic(this.getLink());
 		}
 	}
 
