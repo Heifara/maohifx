@@ -270,7 +270,7 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 				final List<? extends TableColumn<S, ?>> iAddedTableColumns = aChange.getAddedSubList();
 				for (final TableColumn iTableColumn : iAddedTableColumns) {
 					if (iTableColumn.getCellFactory().getClass().isAnonymousClass()) {
-						iTableColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+						iTableColumn.setCellFactory(TextFieldTableCell.forTableColumn(new JSObjectStringConverter<>()));
 					}
 
 					this.getOnEditCommit(iTableColumn).add(iTableColumn.getOnEditCommit());
