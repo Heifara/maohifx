@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.sun.javafx.event.EventHandlerManager;
 
+import javafx.application.Platform;
 import javafx.beans.NamedArg;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -68,8 +69,14 @@ public class JSObjectPropertyValueFactory<T> extends PropertyValueFactory<JSObje
 	@Override
 	public void handle(final CellEditEvent<JSObject, T> aEvent) {
 		if ((aEvent instanceof CellEditEvent) && (this.getOnEditCommit() != null)) {
-			final EventHandler<CellEditEvent<JSObject, T>> iOnEditCommit = this.getOnEditCommit();
-			iOnEditCommit.handle(aEvent);
+			Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+					final EventHandler<CellEditEvent<JSObject, T>> iOnEditCommit = JSObjectPropertyValueFactory.this.getOnEditCommit();
+					iOnEditCommit.handle(aEvent);
+				}
+			});
 		}
 	}
 
