@@ -4,7 +4,11 @@ load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
 
 function InvoiceController() {
 	this.invoice = new Invoice();
-	// this.invoice.parseJSON($item);
+
+	if (typeof ($item) != "undefined") {
+		this.invoice.parseJSON($item);
+	}
+
 	if (this.invoice.invoiceLines.size() == 0) {
 		this.invoice.add("Saisir texte et ENTER");
 	}
