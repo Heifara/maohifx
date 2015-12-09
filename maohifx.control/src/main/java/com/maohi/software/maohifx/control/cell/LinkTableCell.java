@@ -41,10 +41,8 @@ public class LinkTableCell<S, T> extends TableCell<S, T> {
 		this.setGraphic(this.getLink());
 	}
 
-	private String getHref() {
+	private String getHref(final Object iItem) {
 		SimpleStringProperty iHref = new SimpleStringProperty();
-		final TableRow<?> iTableRow = (TableRow<?>) this.getParent();
-		final Object iItem = iTableRow.getItem();
 		if (iItem instanceof Map) {
 			final Map<?, ?> iData = (Map<?, ?>) iItem;
 			iHref = (SimpleStringProperty) iData.get(this.property);
@@ -75,10 +73,12 @@ public class LinkTableCell<S, T> extends TableCell<S, T> {
 		}
 		super.startEdit();
 
-		this.getLink().setHref(this.getHref());
-		this.getLink().setTarget(this.target);
-
 		this.setText(null);
+
+		final TableRow<?> iTableRow = (TableRow<?>) this.getParent();
+		this.getLink().setHref(this.getHref(iTableRow.getItem()));
+		this.getLink().setTarget(this.target);
+		this.setGraphic(this.getLink());
 	}
 
 	@Override
@@ -87,11 +87,12 @@ public class LinkTableCell<S, T> extends TableCell<S, T> {
 
 		if (aEmpty) {
 			this.setText(null);
-			this.getLink().setText("");
+			this.getLink().setText(null);
+			this.setGraphic(null);
 		} else {
-			this.setText(null);
+			this.setText(this.converter.toString(aItem));
 			this.getLink().setText(this.converter.toString(aItem));
-			this.setGraphic(this.getLink());
+			this.getLink().setTarget(this.target);
 		}
 	}
 
