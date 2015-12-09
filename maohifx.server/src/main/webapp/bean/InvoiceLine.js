@@ -5,6 +5,13 @@ function InvoiceLine() {
 	this.sellingPrice = new SimpleDoubleProperty();
 	this.quantity = new SimpleDoubleProperty();
 	this.discount = new SimpleDoubleProperty();
+	this.tvaRate = new SimpleDoubleProperty();
+	this.sellingPriceWithTaxes = Bindings.multiply(this.sellingPrice, this.tvaRate.divide(100).add(1));
+
+	this.tvaAmount = Bindings.multiply(this.sellingPrice, this.tvaRate.divide(100));
+	this.discountAmount = Bindings.multiply(this.sellingPrice, this.discount.divide(100));
+
+	this.totalAmount = Bindings.multiply(this.sellingPrice, this.quantity).add(this.tvaAmount).subtract(this.discountAmount);
 }
 
 InvoiceLine.prototype.toJSON = function() {

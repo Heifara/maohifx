@@ -5,7 +5,32 @@ function Invoice() {
 	this.customerName = new SimpleStringProperty();
 	this.href = new SimpleStringProperty();
 
+	this.totalWithNoTaxes = new SimpleDoubleProperty();
+	this.totalTva = new SimpleDoubleProperty();
+	this.totalDiscount = new SimpleDoubleProperty();
+	this.totalWithTaxes = new SimpleDoubleProperty();
+	this.totalChange = new SimpleDoubleProperty();
+
 	this.invoiceLines = FXCollections.observableArrayList();
+}
+
+Invoice.prototype.updateTotals = function() {
+	iTotalWithNoTaxes = 0.0;
+	iTotalTva = 0.0;
+	iTotalDiscount = 0.0;
+	iTotalWithTaxes = 0.0;
+	for (iIndex in this.invoiceLines) {
+		iInvoiceLine = this.invoiceLines.get(iIndex);
+		iTotalWithNoTaxes += iInvoiceLine.sellingPrice.get() * iInvoiceLine.quantity.get();
+		iTotalTva += iInvoiceLine.tvaAmount.get();
+		iTotalDiscount += iInvoiceLine.discountAmount.get();
+		iTotalWithTaxes += iInvoiceLine.totalAmount.get();
+	}
+
+	this.totalWithNoTaxes.set(iTotalWithNoTaxes);
+	this.totalTva.set(iTotalTva);
+	this.totalDiscount.set(iTotalDiscount);
+	this.totalWithTaxes.set(iTotalWithTaxes);
 }
 
 Invoice.prototype.add = function(aText) {
@@ -13,12 +38,21 @@ Invoice.prototype.add = function(aText) {
 	iInvoiceLine.uuid.set(java.util.UUID.randomUUID().toString());
 	iInvoiceLine.label.set(aText);
 	iInvoiceLine.position.set(this.invoiceLines.size());
+	iInvoiceLine.quantity.set(1.0);
+	this.addInvoiceLine(iInvoiceLine);
+}
+
+Invoice.prototype.addInvoiceLine = function(aInvoiceLine) {
+
 	this.invoiceLines.add(iInvoiceLine);
+
+	this.updateTotals();
 }
 
 Invoice.prototype.remove = function(aIndex) {
-	print(aIndex);
 	this.invoiceLines.remove(aIndex);
+
+	this.updateTotals();
 }
 
 Invoice.prototype.getTabTitle = function() {
@@ -92,6 +126,6 @@ Invoice.prototype.parseJSON = function(aJSONObject) {
 	for ( var iIndex in iArray) {
 		iInvoiceLine = new InvoiceLine();
 		iInvoiceLine.parseJSON(iArray[iIndex]);
-		this.invoiceLines.add(iInvoiceLine);
+		this.addInvoiceLine(iInvoiceLine);
 	}
 }

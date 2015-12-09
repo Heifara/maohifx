@@ -3,6 +3,7 @@
 <?language javascript?>
 
 <?import com.maohi.software.maohifx.control.*?>
+<?import com.maohi.software.maohifx.control.cell.*?>
 
 <?import java.lang.*?>
 
@@ -52,30 +53,46 @@
 							<cellValueFactory>
 								<JSObjectPropertyValueFactory property="label" />
 							</cellValueFactory>
-							<cellFactory>
-								<JSObjectCellFactory />
-							</cellFactory>
 						</TableColumn>
 						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Quantités">
 							<cellValueFactory>
-								<JSObjectPropertyValueFactory property="quantity" />
+								<JSObjectPropertyValueFactory property="quantity" onEditCommit="controller.updateInvoiceEvent(event)" />
+							</cellValueFactory>
+						</TableColumn>
+						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Prix H.T">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="sellingPrice" onEditCommit="controller.updateInvoiceEvent(event)" />
 							</cellValueFactory>
 							<cellFactory>
 								<JSObjectCellFactory />
 							</cellFactory>
 						</TableColumn>
-						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Prix H.T">
-							<cellValueFactory>
-								<JSObjectPropertyValueFactory property="sellingPrice" />
-							</cellValueFactory>
-						</TableColumn>
 						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Remise">
 							<cellValueFactory>
-								<JSObjectPropertyValueFactory property="discount" />
+								<JSObjectPropertyValueFactory property="discount" onEditCommit="controller.updateInvoiceEvent(event)" />
+							</cellValueFactory>
+							<cellFactory>
+								<JSObjectCellFactory />
+							</cellFactory>
+						</TableColumn>
+						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Tva">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="tvaRate" onEditCommit="controller.updateInvoiceEvent(event)" />
+							</cellValueFactory>
+							<cellFactory>
+								<JSObjectCellFactory />
+							</cellFactory>
+						</TableColumn>
+						<TableColumn editable="false" maxWidth="75.0" prefWidth="75.0" text="Prix T.T.C">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="sellingPriceWithTaxes" />
 							</cellValueFactory>
 						</TableColumn>
-						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Prix T.T.C" />
-						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Total" />
+						<TableColumn editable="false" maxWidth="75.0" prefWidth="75.0" text="Total">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="totalAmount" />
+							</cellValueFactory>
+						</TableColumn>
 					</columns>
 				</TableView>
 				<TableView fx:id="tableView1" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
@@ -127,15 +144,15 @@
 			</rowConstraints>
 			<children>
 				<Label text="Total HT" />
-				<TextField editable="false" GridPane.columnIndex="1" />
+				<TextField fx:id="totalWithNoTaxes" editable="false" GridPane.columnIndex="1" />
 				<Label text="Total Remise" GridPane.columnIndex="2" />
-				<TextField editable="false" GridPane.columnIndex="3" />
+				<TextField fx:id="totalDiscount" editable="false" GridPane.columnIndex="3" />
 				<Label text="Total Tva" GridPane.columnIndex="4" />
-				<TextField editable="false" GridPane.columnIndex="5" />
+				<TextField fx:id="totalTva" editable="false" GridPane.columnIndex="5" />
 				<Label text="Total TTC" GridPane.columnIndex="6" />
-				<TextField editable="false" GridPane.columnIndex="7" />
+				<TextField fx:id="totalWithTaxes" editable="false" GridPane.columnIndex="7" />
 				<Label text="Monnaie à rendre" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-				<TextField editable="false" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+				<TextField fx:id="totalChange" editable="false" GridPane.columnIndex="7" GridPane.rowIndex="1" />
 			</children>
 			<BorderPane.margin>
 				<Insets />
