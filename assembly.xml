@@ -17,8 +17,12 @@
 			<directory>../package</directory>
 			<outputDirectory>/</outputDirectory>
 			<includes>
-				<include>*.bat</include>
+				<include>start.exe</include>
+				<include>config.ini</include>
 			</includes>
+			<excludes>
+				<exclude>*.bat</exclude>
+			</excludes>
 		</fileSet>
 	</fileSets>
 	<dependencySets>
