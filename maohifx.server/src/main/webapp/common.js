@@ -6,8 +6,7 @@ var Application = javafx.application.Application;
 var FXMLLoader = javafx.fxml.FXMLLoader;
 var URL = java.net.URL;
 
-var JSONItem = com.maohi.software.maohifx.common.tableview.JSONItem;
-
+var File = java.io.File;
 var System = java.lang.System;
 
 var Thread = java.lang.Thread;
