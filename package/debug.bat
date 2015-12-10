@@ -1,0 +1,1 @@
+C:\Progra~1\Java\jre1.8.0_66\bin\java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5044 -classpath "lib/*" com.maohi.software.maohifx.client.Main
