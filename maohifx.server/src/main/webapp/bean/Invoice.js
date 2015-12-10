@@ -93,7 +93,6 @@ Invoice.prototype.getInvoiceLines = function() {
 		iArrayList.add(this.invoiceLines.get(index).toJSON());
 	}
 
-	print(iArrayList);
 	return iArrayList;
 }
 
@@ -110,9 +109,13 @@ Invoice.prototype.save = function() {
 			load("http://localhost:8080/maohifx.server/bean/Invoice.js");
 			load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
 			$invoice.parseJSON($result);
+
+			alert("Save success!");
 		},
 		error : function($result, $status) {
 			print($status);
+
+			alert("Save error!");
 		}
 	});
 }

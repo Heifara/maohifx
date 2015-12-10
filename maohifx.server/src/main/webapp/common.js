@@ -15,3 +15,7 @@ var StringBuilder = java.lang.StringBuilder;
 
 var SimpleLocalDateProperty = com.maohi.software.maohifx.common.SimpleLocalDateProperty;
 var JSObjectStringConverter = com.maohi.software.maohifx.control.cell.JSObjectStringConverter;
+
+function alert(aText) {
+	javax.swing.JOptionPane.showMessageDialog(null, aText);
+}
