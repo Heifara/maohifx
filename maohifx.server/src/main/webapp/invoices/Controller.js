@@ -3,7 +3,9 @@ load("http://localhost:8080/maohifx.server/bean/Invoice.js");
 load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
 
 function InvoicesController() {
-	$tab.setText("Factures");
+	if (typeof ($tab) != 'undefined') {
+		$tab.setText("Factures");
+	}
 
 	this.data = FXCollections.observableArrayList();
 	tableView.setItems(this.data);
