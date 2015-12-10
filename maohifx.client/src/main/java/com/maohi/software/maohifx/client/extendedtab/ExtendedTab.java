@@ -32,6 +32,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -160,21 +161,21 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		this.urlPane.getStyleClass().add("vbox");
 	}
 
-	public void load(final FXMLLoader aLoader, final String aURL, final String aRecipeeId) {
-		final Node iRecipee = this.getContent().lookup(aRecipeeId);
+	public void load(final FXMLLoader aLoader, final String aText, final String aURL, final String aRecipeId) {
+		final Node iRecipee = this.getContent().lookup(aRecipeId);
 
 		try {
 			final URL iUrl = this.toHttp(new URL(aURL), true);
 			aLoader.setLocation(iUrl);
 			final Node iNode = aLoader.load();
-			this.load(iRecipee, iNode);
+			this.load(iRecipee, aText, iNode);
 		} catch (final Exception aException) {
-			this.load(iRecipee, aException.getMessage());
+			this.load(iRecipee, aText, aException.getMessage());
 		}
 
 	}
 
-	private void load(final Node aRecipee, final Object aObject) {
+	private void load(final Node aRecipee, final String aText, final Object aObject) {
 		if (aRecipee instanceof BorderPane) {
 			final BorderPane iBorderPane = (BorderPane) aRecipee;
 
@@ -182,6 +183,23 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 				iBorderPane.setCenter(new Label((String) aObject));
 			} else if (aObject instanceof Node) {
 				iBorderPane.setCenter((Node) aObject);
+			} else {
+				throw new IllegalArgumentException();
+			}
+		} else if (aRecipee instanceof TabPane) {
+			final TabPane iTabPane = (TabPane) aRecipee;
+			iTabPane.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
+			final Tab iTab = new Tab();
+			iTabPane.getTabs().add(iTab);
+
+			iTab.setText(aText);
+			iTab.setClosable(true);
+
+			if (aObject instanceof String) {
+				iTab.setContent(new Label((String) aObject));
+			} else if (aObject instanceof Node) {
+				iTab.setContent((Node) aObject);
+
 			} else {
 				throw new IllegalArgumentException();
 			}

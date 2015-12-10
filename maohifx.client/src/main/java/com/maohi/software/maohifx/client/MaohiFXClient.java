@@ -66,7 +66,7 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 			break;
 
 		case FRAMENAME:
-			this.currentTab.load(aLoader, aLink.getHref(), aRecipeeId);
+			this.currentTab.load(aLoader, aLink.getText(), aLink.getHref(), aRecipeeId);
 
 			break;
 
