@@ -249,6 +249,13 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 				}
 
 			}
+			final FXMLLoader iParentLoader = (FXMLLoader) this.loader.getNamespace().get("$parentLoader");
+			if (iParentLoader != null) {
+				for (final String iKey : iParentLoader.getNamespace().keySet()) {
+					iLoader.getNamespace().put(iKey, iParentLoader.getNamespace().get(iKey));
+				}
+			}
+
 			iLoader.getNamespace().put("$loader", iLoader);
 			iLoader.getNamespace().put("$tab", ExtendedTab.this);
 			iLoader.getNamespace().put("$tabpane", ExtendedTab.this.parent);
