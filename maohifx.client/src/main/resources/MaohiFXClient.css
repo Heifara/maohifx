@@ -1,11 +1,8 @@
 .tab-pane .tab-header-background {
-	-fx-background-color: white;
 	-fx-background-image: url("background.jpg");
 }
 
 .tab-pane .tab-content-area {
-	-fx-background-color: white;
-	-fx-background-image: url("background.jpg");
 }
 
 .extended-tab{
