@@ -2,10 +2,11 @@
 
 <?language javascript?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+
 <?import com.maohi.software.maohifx.control.*?>
 <?import com.maohi.software.maohifx.control.cell.*?>
-
-<?import java.lang.*?>
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.input.*?>
@@ -14,6 +15,9 @@
 <?import javafx.scene.control.Tab?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+	<stylesheets>
+		<URL value="@../app.css" />
+	</stylesheets>
 	<fx:script source="../invoice/Controller.js" />
 	<center>
 		<GridPane vgap="5.0" BorderPane.alignment="CENTER">
@@ -120,7 +124,7 @@
 	<top>
 		<ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<items>
-				<Button mnemonicParsing="false" onAction="controller.saveEvent(event)" text="Enregistrer" />
+				<Button id="save-button" mnemonicParsing="false" onAction="controller.saveEvent(event)" text="Enregistrer" />
 				<Button mnemonicParsing="false" onAction="controller.printEvent(event)" text="Imprimer" />
 				<Button fx:id="valid" mnemonicParsing="false" onAction="controller.validEvent(aEvent)" text="Valider" />
 			</items>

@@ -2,16 +2,20 @@
 
 <?language javascript?>
 
-<?import com.maohi.software.maohifx.control.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
 
+<?import com.maohi.software.maohifx.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.web.*?>
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.image.Image?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+	<stylesheets>
+		<URL value="@../app.css" />
+	</stylesheets>
 	<top>
 		<HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<children>
