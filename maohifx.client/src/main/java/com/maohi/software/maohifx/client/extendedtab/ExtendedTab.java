@@ -162,6 +162,8 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	}
 
 	public void load(final FXMLLoader aLoader, final String aText, final String aURL, final String aRecipeId) {
+		this.populateLoaderNamespace(aLoader, true, true);
+
 		final Node iRecipee = this.getContent().lookup(aRecipeId);
 
 		try {
@@ -187,11 +189,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 				throw new IllegalArgumentException();
 			}
 		} else if (aRecipee instanceof TabPane) {
-			final TabPane iTabPane = (TabPane) aRecipee;
-			iTabPane.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
 			final Tab iTab = new Tab();
-			iTabPane.getTabs().add(iTab);
-
 			iTab.setText(aText);
 			iTab.setClosable(true);
 
@@ -199,10 +197,14 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 				iTab.setContent(new Label((String) aObject));
 			} else if (aObject instanceof Node) {
 				iTab.setContent((Node) aObject);
-
 			} else {
 				throw new IllegalArgumentException();
 			}
+
+			final TabPane iTabPane = (TabPane) aRecipee;
+			iTabPane.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
+			iTabPane.getTabs().add(iTab);
+			iTabPane.getSelectionModel().select(iTabPane.getTabs().indexOf(iTab));
 		} else {
 			throw new IllegalArgumentException();
 		}
@@ -221,6 +223,25 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 	public void openEvent(final ActionEvent aEvent) {
 		this.newTabEvent(aEvent);
+	}
+
+	private void populateLoaderNamespace(final FXMLLoader aLoader, final boolean aIgnoreTab, final boolean aIgnoreTabPane) {
+		final FXMLLoader iParentLoader = (FXMLLoader) this.loader.getNamespace().get("$parentLoader");
+		if (iParentLoader != null) {
+			for (final String iKey : iParentLoader.getNamespace().keySet()) {
+				aLoader.getNamespace().put(iKey, iParentLoader.getNamespace().get(iKey));
+			}
+		}
+
+		aLoader.getNamespace().put("$loader", aLoader);
+
+		if (!aIgnoreTab) {
+			aLoader.getNamespace().put("$tab", ExtendedTab.this);
+		}
+		if (!aIgnoreTabPane) {
+			aLoader.getNamespace().put("$tabpane", ExtendedTab.this.parent);
+		}
+		aLoader.getNamespace().put("$http", new RestManagerImpl(aLoader));
 	}
 
 	@FXML
@@ -267,18 +288,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 				}
 
 			}
-			final FXMLLoader iParentLoader = (FXMLLoader) this.loader.getNamespace().get("$parentLoader");
-			if (iParentLoader != null) {
-				for (final String iKey : iParentLoader.getNamespace().keySet()) {
-					iLoader.getNamespace().put(iKey, iParentLoader.getNamespace().get(iKey));
-				}
-			}
-
-			iLoader.getNamespace().put("$loader", iLoader);
-			iLoader.getNamespace().put("$tab", ExtendedTab.this);
-			iLoader.getNamespace().put("$tabpane", ExtendedTab.this.parent);
-			iLoader.getNamespace().put("$http", new RestManagerImpl(iLoader));
-
+			this.populateLoaderNamespace(iLoader, false, false);
 			Platform.runLater(new Runnable() {
 
 				@Override
