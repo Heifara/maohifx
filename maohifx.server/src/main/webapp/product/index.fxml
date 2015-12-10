@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?language javascript?>
+<?import com.maohi.software.maohifx.control.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.effect.*?>
-<?import com.maohi.software.maohifx.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.web.*?>
 <?import java.lang.*?>
@@ -12,10 +13,11 @@
 <?import javafx.scene.image.Image?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+	<fx:script source="../product/Controller.js" />
 	<top>
 		<ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<items>
-				<Button mnemonicParsing="false" text="Enregistrer" />
+				<Button mnemonicParsing="false" onAction="controller.saveEvent(event)" text="Enregistrer" />
 			</items>
 		</ToolBar>
 	</top>
@@ -29,26 +31,44 @@
 			</columnConstraints>
 			<children>
 				<Label text="Désignation" />
-				<TextField GridPane.columnIndex="1" GridPane.columnSpan="2147483647" />
+				<TextField fx:id="designation" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" />
 				<Label text="Quantité disponible" GridPane.rowIndex="1" />
-				<TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+				<TextField fx:id="availableQuantity" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 				<Label text="Quantité en cours" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-				<TextField GridPane.columnIndex="3" GridPane.rowIndex="1" />
-				<Label text="Prix Unitaire H.T" GridPane.rowIndex="2" />
-				<TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-				<Label text="Prix Unitaire T.T.C" GridPane.rowIndex="4" />
-				<TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-				<Label text="Taux de Tva" GridPane.rowIndex="3" />
-				<TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-				<BorderPane id="recipee" fx:id="recipee" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" GridPane.rowSpan="2147483647">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></BorderPane>
+				<TextField fx:id="currentQuantity" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+				<BorderPane GridPane.columnSpan="2147483647" GridPane.rowIndex="2" GridPane.rowSpan="2147483647">
+					<center>
+						<TabPane fx:id="recipe" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+							<tabs>
+								<Tab closable="false" text="Tarifs">
+									<content>
+										<GridPane>
+											<columnConstraints>
+												<ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
+												<ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
+											</columnConstraints>
+											<rowConstraints>
+												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+											</rowConstraints>
+											<children>
+												<Label text="Prix Unitaire H.T" />
+												<TextField fx:id="sellingPrice" GridPane.columnIndex="1" />
+												<Label text="Taux de Tva" GridPane.rowIndex="1" />
+												<TextField fx:id="tvaRate" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+												<Label text="Prix Unitaire T.T.C" GridPane.rowIndex="2" />
+												<TextField fx:id="sellingPriceWithTaxes" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+											</children>
+										</GridPane>
+									</content>
+								</Tab>
+							</tabs>
+						</TabPane>
+					</center>
+				</BorderPane>
 			</children>
 			<rowConstraints>
-				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" />
-				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" />
-				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" />
 				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" />
 				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" />
 				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
@@ -56,32 +76,36 @@
 		</GridPane>
 	</center>
 	<left>
-		<GridPane BorderPane.alignment="CENTER">
+		<GridPane hgap="5.0" vgap="5.0" BorderPane.alignment="CENTER">
 			<columnConstraints>
-				<ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="150.0" />
+				<ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="150.0" minWidth="10.0" prefWidth="150.0" />
 			</columnConstraints>
 			<rowConstraints>
-				<RowConstraints minHeight="150.0" prefHeight="150.0" vgrow="NEVER" />
-				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+				<RowConstraints minHeight="150.0" prefHeight="150.0" valignment="CENTER" vgrow="NEVER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
-				<ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+				<ImageView fx:id="picture" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
 					<image>
 						<Image url="http://localhost:8080/maohifx.server/product/noimage.jpg" />
 					</image>
+					<effect>
+						<InnerShadow />
+					</effect>
 				</ImageView>
-				<VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
-					<children>
-						<Link href="fxml://localhost:8080/maohifx.server/webapi/productPrices" recipee="#recipee" target="FRAMENAME" text="Tarifs" />
-						<Link text="Gestion des fournisseurs" />
-						<Link text="Conditionnement" />
-						<Link text="Quantités" />
-					</children>
+				<Button mnemonicParsing="false" onAction="controller.changeImageEvent(event)" text="Changer image" GridPane.rowIndex="1" />
+				<VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
+					<Link href="fxml://localhost:8080/maohifx.server/webapi/products" recipee="#recipe" target="FRAMENAME" text="Liste des ventes" />
+					<Link href="fxml://localhost:8080/maohifx.server/webapi/invoices" recipee="#recipe" target="FRAMENAME" text="Liste des factures" />
 				</VBox>
 			</children>
+			<BorderPane.margin>
+				<Insets right="5.0" top="5.0" />
+			</BorderPane.margin>
 		</GridPane>
 	</left>
 	<fx:script>
-		$tab.setText("Fiche produit");
+		controller = new ProductController();
 	</fx:script>
 </BorderPane>
