@@ -49,6 +49,6 @@
 		</GridPane>
 	</center>
 	<fx:script>
-		$tab.setText("Produits");
+		if(typeof($tab) != 'undefined') $tab.setText("Produits");
 	</fx:script>
 </BorderPane>
