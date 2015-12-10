@@ -13,6 +13,26 @@
     -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
 }
 
+.text-field {
+	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
+}
+
+.text-field:hover {
+	-fx-background-color: skyblue;
+}
+
+.button {
+	-fx-background-color: 
+        #a6b5c9,
+        linear-gradient(#303842 0.0%, #3e5577 20.0%, #375074 100.0%),
+        linear-gradient(#768aa5 0.0%, #849cbb 5.0%, #5877a2 50.0%, #486a9a 51.0%, #4a6c9b 100.0%);
+    -fx-background-insets: 0.0 0.0 -1.0 0.0,0.0,1.0;
+    -fx-background-radius: 5.0,5.0,4.0;
+    -fx-text-fill: #242d35;
+    -fx-font-family: "Helvetica";
+    -fx-text-fill: white;
+}
+
 .tool-bar {
     -fx-background-color: linear-gradient(#98a8bd 0.0%, #8195af 25.0%, #6d86a4 100.0%);
 }
@@ -40,12 +60,21 @@
 }
 
 .table-view .column-header, .table-view .filler {
+	-fx-background-color: 
+        #a6b5c9,
+        linear-gradient(#303842 0.0%, #3e5577 20.0%, #375074 100.0%),
+        linear-gradient(#768aa5 0.0%, #849cbb 5.0%, #5877a2 50.0%, #486a9a 51.0%, #4a6c9b 100.0%);
+    -fx-background-insets: 0.0 0.0 -1.0 0.0,0.0,1.0;
+    -fx-text-fill: #242d35;
+    -fx-font-family: "Helvetica";
+    -fx-text-fill: white;
 }
 
 .table-view .column-header .label {
 }
 
 .table-view:focused .table-row-cell:filled:focused:selected {
+	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 )
 }
 
 .table-view .table-row-cell {
