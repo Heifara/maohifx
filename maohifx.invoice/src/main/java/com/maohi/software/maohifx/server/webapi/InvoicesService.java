@@ -19,8 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maohi.software.maohifx.common.AbstractDAO;
 import com.maohi.software.maohifx.common.HibernateUtil;
 import com.maohi.software.maohifx.invoice.bean.Invoice;
-import com.maohi.software.maohifx.invoice.bean.InvoiceDAO;
 import com.maohi.software.maohifx.invoice.bean.InvoiceLine;
+import com.maohi.software.maohifx.invoice.dao.InvoiceDAO;
 
 /**
  * @author heifara

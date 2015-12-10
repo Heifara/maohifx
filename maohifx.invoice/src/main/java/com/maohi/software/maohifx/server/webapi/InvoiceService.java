@@ -29,8 +29,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maohi.software.maohifx.common.AbstractDAO;
 import com.maohi.software.maohifx.common.HibernateUtil;
 import com.maohi.software.maohifx.invoice.bean.Invoice;
-import com.maohi.software.maohifx.invoice.bean.InvoiceDAO;
 import com.maohi.software.maohifx.invoice.bean.InvoiceLine;
+import com.maohi.software.maohifx.invoice.dao.InvoiceDAO;
 
 /**
  * @author heifara
@@ -83,7 +83,7 @@ public class InvoiceService {
 			iInvoice = new ObjectMapper().readValue(aJSONObject, Invoice.class);
 			if (iInvoice.getUuid() == null) {
 				iInvoice.setUuid(UUID.randomUUID().toString());
-				iInvoice.bindInvoiceLines();
+				iInvoice.bindChildren();
 
 				final InvoiceDAO iInvoiceDAO = new InvoiceDAO();
 				iInvoiceDAO.beginTransaction();
@@ -91,7 +91,7 @@ public class InvoiceService {
 				iInvoiceDAO.insert(iInvoice);
 				iInvoiceDAO.commit();
 			} else {
-				iInvoice.bindInvoiceLines();
+				iInvoice.bindChildren();
 
 				final InvoiceDAO iInvoiceDAO = new InvoiceDAO();
 				iInvoiceDAO.beginTransaction();

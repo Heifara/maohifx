@@ -1,4 +1,4 @@
-package com.maohi.software.maohifx.invoice.bean;
+package com.maohi.software.maohifx.invoice.dao;
 
 import static org.junit.Assert.assertTrue;
 
@@ -13,6 +13,10 @@ import org.junit.Test;
 
 import com.maohi.software.maohifx.common.AbstractDAO;
 import com.maohi.software.maohifx.common.HibernateUtil;
+import com.maohi.software.maohifx.invoice.bean.Invoice;
+import com.maohi.software.maohifx.invoice.bean.InvoiceLine;
+import com.maohi.software.maohifx.invoice.bean.InvoicePaymentLine;
+import com.maohi.software.maohifx.invoice.bean.PaymentMode;
 
 /**
  * @author heifara
@@ -24,7 +28,9 @@ public class InvoiceDAOTest {
 	public static void setUpBeforeClass() throws Exception {
 		HibernateUtil.getConfiguration().addAnnotatedClass(Invoice.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(InvoiceLine.class);
-		Session iSession = HibernateUtil.getSessionFactory().openSession();
+		HibernateUtil.getConfiguration().addAnnotatedClass(InvoicePaymentLine.class);
+		HibernateUtil.getConfiguration().addAnnotatedClass(PaymentMode.class);
+		final Session iSession = HibernateUtil.getSessionFactory().openSession();
 		AbstractDAO.setSession(iSession);
 	}
 
