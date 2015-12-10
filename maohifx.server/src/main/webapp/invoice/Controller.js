@@ -2,19 +2,15 @@ load("http://localhost:8080/maohifx.server/common.js");
 load("http://localhost:8080/maohifx.server/bean/Invoice.js");
 load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
 
-function test() {
-	System.out.println("test")
-}
-
 function InvoiceController() {
 	this.invoice = new Invoice();
 
-	if (typeof ($tab) != 'undefined') {
-		$tab.setText(this.invoice.getTabTitle());
-	}
-
 	if (typeof ($item) != "undefined") {
 		this.invoice.parseJSON($item);
+	}
+
+	if (typeof ($tab) != 'undefined') {
+		$tab.setText(this.invoice.getTabTitle());
 	}
 
 	if (this.invoice.invoiceLines.size() == 0) {
