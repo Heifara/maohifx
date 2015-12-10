@@ -1,5 +1,11 @@
 .tab-pane .tab-header-background {
 	-fx-background-color: white;
+	-fx-background-image: url("background.jpg");
+}
+
+.tab-pane .tab-content-area {
+	-fx-background-color: white;
+	-fx-background-image: url("background.jpg");
 }
 
 .extended-tab{
@@ -8,6 +14,8 @@
 
 .extended-tab .tab-label { 
     -fx-text-fill: white;
+    -fx-font-size: 14.0px;
+    -fx-font-family: "Arial Narrow";
 }
 
 .extended-tab:selected{
@@ -17,12 +25,14 @@
 .extended-tab:selected .tab-label{
 	-fx-background-color: white;
 	-fx-text-fill: black;
+	-fx-background-image: url("background.jpg");
 }
 
 #urlPane {
 	-fx-background-color: white;
 	-fx-padding: 5.0;
 	-fx-spacing: 5.0;
+	-fx-background-image: url("background.jpg");
 }
 
 #home {
@@ -49,5 +59,3 @@
 	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 )
 }
 
-#content {
-}
