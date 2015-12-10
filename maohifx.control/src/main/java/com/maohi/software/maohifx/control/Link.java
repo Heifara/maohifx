@@ -91,6 +91,8 @@ public class Link extends Hyperlink implements Initializable, EventHandler<Actio
 	public Link() {
 		this.target = HrefTarget.SELF;
 
+		this.getStyleClass().add("link");
+
 		try {
 			final FXMLLoader iLoader = new FXMLLoader();
 			iLoader.setLocation(this.getClass().getResource("Link.fxml"));
@@ -118,6 +120,11 @@ public class Link extends Hyperlink implements Initializable, EventHandler<Actio
 
 	public HrefTarget getTarget() {
 		return this.target;
+	}
+
+	@Override
+	public String getUserAgentStylesheet() {
+		return Link.class.getResource("link.css").toExternalForm();
 	}
 
 	@Override
