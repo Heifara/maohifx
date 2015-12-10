@@ -34,8 +34,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
@@ -140,22 +138,6 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 		this.menuButton.setBorder(null);
 		this.menuButton.setBackground(null);
-
-		final URL iRefreshButton = this.getClass().getResource("refresh.png");
-		if (iRefreshButton != null) {
-			this.refreshButton.setBackground(null);
-			this.refreshButton.setBorder(null);
-			this.refreshButton.setGraphic(new ImageView(new Image(iRefreshButton.toString(), false)));
-		}
-
-		final URL iHomeUrl = this.getClass().getResource("home.png");
-		if (iHomeUrl != null) {
-			this.homeButton.setBackground(null);
-			this.homeButton.setBorder(null);
-			this.homeButton.setGraphic(new ImageView(new Image(iHomeUrl.toString(), false)));
-		}
-
-		this.urlPane.getStyleClass().add("vbox");
 	}
 
 	public void load(final FXMLLoader aLoader, final String aText, final String aURL, final String aRecipeId) {

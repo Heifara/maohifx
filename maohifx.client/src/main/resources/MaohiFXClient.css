@@ -1,24 +1,53 @@
-#mainPane {
-	-fx-content-display: top;
-	-fx-border-color: black;
-	-fx-border-width: 2.0;
+.tab-pane .tab-header-background {
+	-fx-background-color: white;
 }
 
-.vbox {
+.extended-tab{
 	-fx-background-color: gray;
+}
+
+.extended-tab .tab-label { 
+    -fx-text-fill: white;
+}
+
+.extended-tab:selected{
+	-fx-background-color: white;
+}
+
+.extended-tab:selected .tab-label{
+	-fx-background-color: white;
+	-fx-text-fill: black;
+}
+
+#urlPane {
+	-fx-background-color: white;
 	-fx-padding: 5.0;
 	-fx-spacing: 5.0;
 }
 
-.extended-tab:selected{
-	-fx-background-color: gray;
-}
-
-.extended-tab{
+#home {
+	-fx-graphic: url("home.png");
+	-fx-border-width: 0.0px;
 	-fx-background-color: white;
+	-fx-background-radius: 20.0px;
+	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 )
 }
 
-.tab .tab-label { 
-    -fx-alignment: CENTER;
-    -fx-text-fill: black;
+#refresh {
+	-fx-graphic: url("refresh.png");
+	-fx-border-width: 0.0px;
+	-fx-background-color: white;
+	-fx-background-radius: 20.0px;
+	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 )
+}
+
+#url {
+	-fx-font-family: "Arial Narrow";
+	-fx-font-size: 16.0px;
+	-fx-background-color: white;
+	-fx-background-radius: 20.0px;
+	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 )
+}
+
+#content {
 }

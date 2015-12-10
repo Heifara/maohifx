@@ -49,10 +49,10 @@
 			</children>
 		</GridPane>
 	</graphic>
-	<BorderPane fx:id="content">
+	<BorderPane id="content" fx:id="content">
 		<left />
 		<top>
-			<VBox fx:id="urlPane" BorderPane.alignment="CENTER">
+			<VBox id="urlPane" fx:id="urlPane" BorderPane.alignment="CENTER">
 				<children>
 					<GridPane fx:id="addressPane">
 						<columnConstraints>
@@ -62,21 +62,11 @@
 							<ColumnConstraints hgrow="NEVER" />
 						</columnConstraints>
 						<children>
-							<Button fx:id="refreshButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#refreshTabEvent">
-								<graphic>
-									<ImageView fitHeight="20" fitWidth="20">
-										<Image url="@refresh.png" />
-									</ImageView>
-								</graphic>
+							<Button id="refresh" fx:id="refreshButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#refreshTabEvent">
 							</Button>
-							<Button fx:id="homeButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" GridPane.columnIndex="1" onAction="#homeEvent">
-								<graphic>
-									<ImageView fitHeight="20" fitWidth="20">
-										<Image url="@home.png" />
-									</ImageView>
-								</graphic>
+							<Button id="home" fx:id="homeButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" GridPane.columnIndex="1" onAction="#homeEvent">
 							</Button>
-							<TextField fx:id="url" GridPane.columnIndex="2" maxHeight="Infinity" onAction="#refreshTabEvent" />
+							<TextField id="url" fx:id="url" GridPane.columnIndex="2" maxHeight="Infinity" onAction="#refreshTabEvent" />
 						</children>
 					</GridPane>
 				</children>
