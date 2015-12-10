@@ -22,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -104,6 +105,7 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 			this.mainPane = this.loader.load();
 
 			this.stage = aStage;
+			this.stage.getIcons().add(new Image("app.png"));
 			this.scene = new Scene(this.mainPane, 800, 600);
 			this.scene.getStylesheets().add("MaohiFXClient.css");
 
