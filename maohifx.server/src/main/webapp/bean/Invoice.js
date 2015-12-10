@@ -33,11 +33,11 @@ Invoice.prototype.updateTotals = function() {
 	this.totalWithTaxes.set(iTotalWithTaxes);
 }
 
-Invoice.prototype.add = function(aText) {
+Invoice.prototype.add = function() {
 	iInvoiceLine = new InvoiceLine();
 	iInvoiceLine.uuid.set(java.util.UUID.randomUUID().toString());
-	iInvoiceLine.label.set(aText);
 	iInvoiceLine.position.set(this.invoiceLines.size());
+	iInvoiceLine.label.set("");
 	iInvoiceLine.quantity.set(1.0);
 	this.addInvoiceLine(iInvoiceLine);
 }
@@ -72,6 +72,19 @@ Invoice.prototype.print = function() {
 			print($status);
 		}
 	});
+}
+
+Invoice.prototype.getLastInvoiceLine = function() {
+	if (this.invoiceLines.size() == 0) {
+		return null;
+	}
+	return this.invoiceLines.get(this.invoiceLines.size() - 1);
+}
+
+Invoice.prototype.removeLastInvoiceLine = function() {
+	if (this.invoiceLines.size() > 0) {
+		this.invoiceLines.remove(this.invoiceLines.size() - 1);
+	}
 }
 
 Invoice.prototype.getInvoiceLines = function() {

@@ -2,15 +2,25 @@ load("http://localhost:8080/maohifx.server/common.js");
 load("http://localhost:8080/maohifx.server/bean/Invoice.js");
 load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
 
+function test() {
+	System.out.println("test")
+}
+
 function InvoiceController() {
 	this.invoice = new Invoice();
+
+	if (typeof ($tab) != 'undefined') {
+		$tab.setText(this.invoice.getTabTitle());
+	}
 
 	if (typeof ($item) != "undefined") {
 		this.invoice.parseJSON($item);
 	}
 
 	if (this.invoice.invoiceLines.size() == 0) {
-		this.invoice.add("Saisir texte et ENTER");
+		this.invoice.add();
+	} else {
+		this.addItemEvent();
 	}
 
 	invoiceNumber.textProperty().bindBidirectional(this.invoice.invoiceNumber, new NumberStringConverter());
@@ -23,8 +33,16 @@ function InvoiceController() {
 	totalChange.textProperty().bindBidirectional(this.invoice.totalChange, new JSObjectStringConverter());
 
 	tableView.setItems(this.invoice.invoiceLines);
+}
 
-	$tab.setText(this.invoice.getTabTitle());
+InvoiceController.prototype.addItemEvent = function(aEvent) {
+	iInvoiceLine = this.invoice.getLastInvoiceLine();
+	if (iInvoiceLine == null) {
+		this.invoice.add();
+	}
+	if (!iInvoiceLine.label.get().isEmpty()) {
+		this.invoice.add();
+	}
 }
 
 InvoiceController.prototype.updateInvoiceEvent = function(aEvent) {
@@ -32,7 +50,15 @@ InvoiceController.prototype.updateInvoiceEvent = function(aEvent) {
 }
 
 InvoiceController.prototype.saveEvent = function() {
+	iInvoiceLine = this.invoice.getLastInvoiceLine();
+	if (iInvoiceLine.label.get().isEmpty()) {
+		this.invoice.removeLastInvoiceLine();
+	}
+
 	this.invoice.save();
+
+	this.addItemEvent();
+
 	$tab.setText(this.invoice.getTabTitle());
 }
 
@@ -47,7 +73,5 @@ InvoiceController.prototype.printEvent = function() {
  */
 InvoiceController.prototype.deleteSelectedInvoiceLineEvent = function(aEvent) {
 	this.invoice.remove(aEvent.getIndex());
-	if (this.invoice.invoiceLines.size() == 0) {
-		this.invoice.add("Saisir texte et ENTER");
-	}
+	this.addItemEvent(aEvent);
 }

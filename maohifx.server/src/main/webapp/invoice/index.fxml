@@ -51,7 +51,7 @@
 						</TableColumn>
 						<TableColumn maxWidth="-1.0" minWidth="200.0" prefWidth="200.0" text="Désignation">
 							<cellValueFactory>
-								<JSObjectPropertyValueFactory property="label" />
+								<JSObjectPropertyValueFactory onEditCommit="controller.addItemEvent(event)" property="label" />
 							</cellValueFactory>
 						</TableColumn>
 						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Quantités">
