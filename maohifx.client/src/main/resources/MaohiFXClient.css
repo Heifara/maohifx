@@ -25,6 +25,10 @@
 	-fx-background-image: url("background.jpg");
 }
 
+.button:pressed {
+	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 )
+}
+
 #urlPane {
 	-fx-background-color: white;
 	-fx-padding: 5.0;
@@ -37,15 +41,13 @@
 	-fx-border-width: 0.0px;
 	-fx-background-color: white;
 	-fx-background-radius: 20.0px;
-	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 )
 }
 
 #refresh {
 	-fx-graphic: url("refresh.png");
 	-fx-border-width: 0.0px;
-	-fx-background-color: white;
 	-fx-background-radius: 20.0px;
-	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 )
+	-fx-background-color: white;
 }
 
 #url {
