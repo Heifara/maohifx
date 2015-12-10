@@ -25,7 +25,7 @@
 	<top>
 		<ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<items>
-				<Button mnemonicParsing="false" onAction="controller.saveEvent(event)" text="Enregistrer" />
+				<Button id="save-button" mnemonicParsing="false" onAction="controller.saveEvent(event)" />
 			</items>
 		</ToolBar>
 	</top>

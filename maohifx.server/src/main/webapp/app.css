@@ -3,13 +3,28 @@
 }
 
 .tab-pane .tab-content-area {
+	-fx-background-color: 
+        #a6b5c9,
+        linear-gradient(#303842 0.0%, #3e5577 20.0%, #375074 100.0%),
+        linear-gradient(#768aa5 0.0%, #849cbb 5.0%, #5877a2 50.0%, #486a9a 51.0%, #4a6c9b 100.0%);
+}
+
+.link {
+	-fx-font-family: "Helvetica";
+	-fx-font-size: 12.0px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.link:hover {
+	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
 }
 
 .label {
 	-fx-font-color: white;
     -fx-font-size: 12.0px;
     -fx-font-weight: bold;
-    -fx-text-fill: black;
+    -fx-text-fill: white;
     -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
 }
 
@@ -18,19 +33,10 @@
 }
 
 .text-field:hover {
-	-fx-background-color: skyblue;
+	-fx-background-color: lightblue;
 }
 
 .button {
-	-fx-background-color: 
-        #a6b5c9,
-        linear-gradient(#303842 0.0%, #3e5577 20.0%, #375074 100.0%),
-        linear-gradient(#768aa5 0.0%, #849cbb 5.0%, #5877a2 50.0%, #486a9a 51.0%, #4a6c9b 100.0%);
-    -fx-background-insets: 0.0 0.0 -1.0 0.0,0.0,1.0;
-    -fx-background-radius: 5.0,5.0,4.0;
-    -fx-text-fill: #242d35;
-    -fx-font-family: "Helvetica";
-    -fx-text-fill: white;
 }
 
 .tool-bar {
@@ -44,7 +50,7 @@
         linear-gradient(#768aa5 0.0%, #849cbb 5.0%, #5877a2 50.0%, #486a9a 51.0%, #4a6c9b 100.0%);
     -fx-background-insets: 0.0 0.0 -1.0 0.0,0.0,1.0;
     -fx-background-radius: 5.0,5.0,4.0;
-    -fx-padding: 7.0 30.0 7.0 30.0;
+    -fx-padding: 3.0 10.0 3.0 10.0;
     -fx-text-fill: #242d35;
     -fx-font-family: "Helvetica";
     -fx-text-fill: white;
@@ -54,6 +60,18 @@
 }
 
 .table-view .button {
+	-fx-background-color: 
+        #a6b5c9,
+        linear-gradient(#303842 0.0%, #3e5577 20.0%, #375074 100.0%),
+        linear-gradient(#768aa5 0.0%, #849cbb 5.0%, #5877a2 50.0%, #486a9a 51.0%, #4a6c9b 100.0%);
+    -fx-background-insets: 0.0 0.0 -1.0 0.0,0.0,1.0;
+    -fx-background-radius: 5.0,5.0,4.0;
+    -fx-text-fill: #242d35;
+    -fx-font-family: "Helvetica";
+    -fx-text-fill: white;
+}
+
+.table-view .link {
 }
 
 .table-view .column-header-background {
@@ -67,10 +85,10 @@
     -fx-background-insets: 0.0 0.0 -1.0 0.0,0.0,1.0;
     -fx-text-fill: #242d35;
     -fx-font-family: "Helvetica";
-    -fx-text-fill: white;
 }
 
 .table-view .column-header .label {
+    -fx-text-fill: white;
 }
 
 .table-view:focused .table-row-cell:filled:focused:selected {
@@ -82,4 +100,56 @@
 
 .table-view .table-row-cell:hover {
 	-fx-background-color: skyblue;
+}
+
+#save-button {
+	-fx-graphic: url("save-icon.png");
+}
+
+#delete-button {
+	-fx-graphic: url("delete-icon.png");
+}
+
+#save-button:hover {
+	-fx-background-color: white;
+	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
+	-fx-background-radius: 40.0px;
+}
+
+#print-button {
+	-fx-graphic: url("print-icon.png");
+}
+
+#print-button:hover {
+	-fx-background-color: white;
+	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
+	-fx-background-radius: 40.0px;
+}
+
+#valid-button {
+	-fx-graphic: url("valid-icon.png");
+}
+
+#valid-button:hover {
+	-fx-background-color: white;
+	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
+	-fx-background-radius: 40.0px;
+}
+
+#print-button:hover {
+	-fx-background-color: white;
+	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
+	-fx-background-radius: 40.0px;
+}
+
+#search-button {
+	-fx-graphic: url("search-icon.png");
+	-fx-border-width: 0.0px;
+	-fx-background-color: null;
+}
+
+#search-button:pressed {
+	-fx-background-color: white;
+	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
+	-fx-background-radius: 40.0px;
 }
