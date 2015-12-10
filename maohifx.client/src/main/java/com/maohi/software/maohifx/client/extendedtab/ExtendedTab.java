@@ -141,9 +141,6 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		this.menuButton.setBorder(null);
 		this.menuButton.setBackground(null);
 
-		final URL iFxml = this.getClass().getResource("ExtendedTab.fxml");
-		System.out.println(iFxml.toString());
-
 		final URL iRefreshButton = this.getClass().getResource("refresh.png");
 		if (iRefreshButton != null) {
 			this.refreshButton.setBackground(null);
