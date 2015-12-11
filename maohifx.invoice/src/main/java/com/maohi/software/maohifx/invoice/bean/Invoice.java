@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -87,18 +88,18 @@ public class Invoice implements java.io.Serializable {
 		} else if (!this.creationDate.equals(other.creationDate)) {
 			return false;
 		}
+		if (this.customerName == null) {
+			if (other.customerName != null) {
+				return false;
+			}
+		} else if (!this.customerName.equals(other.customerName)) {
+			return false;
+		}
 		if (this.date == null) {
 			if (other.date != null) {
 				return false;
 			}
 		} else if (!this.date.equals(other.date)) {
-			return false;
-		}
-		if (this.invoiceLines == null) {
-			if (other.invoiceLines != null) {
-				return false;
-			}
-		} else if (!this.invoiceLines.equals(other.invoiceLines)) {
 			return false;
 		}
 		if (this.number == null) {
@@ -142,12 +143,12 @@ public class Invoice implements java.io.Serializable {
 		return this.date;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice", cascade = CascadeType.ALL)
 	public Set<InvoiceLine> getInvoiceLines() {
 		return this.invoiceLines;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice", cascade = CascadeType.ALL)
 	public Set<InvoicePaymentLine> getInvoicePaymentLines() {
 		return this.invoicePaymentLines;
 	}
@@ -168,6 +169,19 @@ public class Invoice implements java.io.Serializable {
 	@Column(name = "uuid", unique = true, nullable = false)
 	public String getUuid() {
 		return this.uuid;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = (prime * result) + ((this.creationDate == null) ? 0 : this.creationDate.hashCode());
+		result = (prime * result) + ((this.customerName == null) ? 0 : this.customerName.hashCode());
+		result = (prime * result) + ((this.date == null) ? 0 : this.date.hashCode());
+		result = (prime * result) + ((this.number == null) ? 0 : this.number.hashCode());
+		result = (prime * result) + ((this.updateDate == null) ? 0 : this.updateDate.hashCode());
+		result = (prime * result) + ((this.uuid == null) ? 0 : this.uuid.hashCode());
+		return result;
 	}
 
 	public void setCreationDate(final Date creationDate) {

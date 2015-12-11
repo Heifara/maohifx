@@ -44,6 +44,45 @@ public class PaymentMode implements java.io.Serializable {
 		this.invoicePaymentLines = invoicePaymentLines;
 	}
 
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final PaymentMode other = (PaymentMode) obj;
+		if (this.creationDate == null) {
+			if (other.creationDate != null) {
+				return false;
+			}
+		} else if (!this.creationDate.equals(other.creationDate)) {
+			return false;
+		}
+		if (this.id != other.id) {
+			return false;
+		}
+		if (this.label == null) {
+			if (other.label != null) {
+				return false;
+			}
+		} else if (!this.label.equals(other.label)) {
+			return false;
+		}
+		if (this.updateDate == null) {
+			if (other.updateDate != null) {
+				return false;
+			}
+		} else if (!this.updateDate.equals(other.updateDate)) {
+			return false;
+		}
+		return true;
+	}
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "creation_date", length = 19)
 	public Date getCreationDate() {
@@ -71,6 +110,17 @@ public class PaymentMode implements java.io.Serializable {
 	@Column(name = "update_date", length = 19)
 	public Date getUpdateDate() {
 		return this.updateDate;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = (prime * result) + ((this.creationDate == null) ? 0 : this.creationDate.hashCode());
+		result = (prime * result) + this.id;
+		result = (prime * result) + ((this.label == null) ? 0 : this.label.hashCode());
+		result = (prime * result) + ((this.updateDate == null) ? 0 : this.updateDate.hashCode());
+		return result;
 	}
 
 	public void setCreationDate(final Date creationDate) {

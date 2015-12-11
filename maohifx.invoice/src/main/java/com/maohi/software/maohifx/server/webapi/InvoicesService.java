@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.maohi.software.maohifx.server.webapi;
 
@@ -20,6 +20,8 @@ import com.maohi.software.maohifx.common.AbstractDAO;
 import com.maohi.software.maohifx.common.HibernateUtil;
 import com.maohi.software.maohifx.invoice.bean.Invoice;
 import com.maohi.software.maohifx.invoice.bean.InvoiceLine;
+import com.maohi.software.maohifx.invoice.bean.InvoicePaymentLine;
+import com.maohi.software.maohifx.invoice.bean.PaymentMode;
 import com.maohi.software.maohifx.invoice.dao.InvoiceDAO;
 
 /**
@@ -37,17 +39,19 @@ public class InvoicesService {
 	public Response search(final String aPattern) {
 		HibernateUtil.getConfiguration().addAnnotatedClass(Invoice.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(InvoiceLine.class);
-		Session iSession = HibernateUtil.getSessionFactory().openSession();
+		HibernateUtil.getConfiguration().addAnnotatedClass(InvoicePaymentLine.class);
+		HibernateUtil.getConfiguration().addAnnotatedClass(PaymentMode.class);
+		final Session iSession = HibernateUtil.getSessionFactory().openSession();
 		AbstractDAO.setSession(iSession);
 
 		final InvoiceDAO iDAO = new InvoiceDAO();
 		final List<Invoice> iInvoices = iDAO.readAll();
 
 		try {
-			String iJSONObject = new ObjectMapper().writeValueAsString(iInvoices);
-			Response iResponse = Response.ok(iJSONObject).build();
+			final String iJSONObject = new ObjectMapper().writeValueAsString(iInvoices);
+			final Response iResponse = Response.ok(iJSONObject).build();
 			return iResponse;
-		} catch (Exception aException) {
+		} catch (final Exception aException) {
 			aException.printStackTrace();
 			return Response.serverError().entity(aException.getMessage()).build();
 		}
