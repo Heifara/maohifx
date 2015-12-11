@@ -33,6 +33,7 @@ import com.maohi.software.maohifx.invoice.bean.InvoiceLine;
 import com.maohi.software.maohifx.invoice.bean.InvoicePaymentLine;
 import com.maohi.software.maohifx.invoice.bean.PaymentMode;
 import com.maohi.software.maohifx.invoice.dao.InvoiceDAO;
+import com.maohi.software.maohifx.invoice.dao.PaymentModeDAO;
 
 /**
  * @author heifara
@@ -85,6 +86,28 @@ public class InvoiceService {
 		Invoice iInvoice = null;
 		try {
 			iInvoice = new ObjectMapper().readValue(aJSONObject, Invoice.class);
+
+			final PaymentModeDAO iDAO = new PaymentModeDAO();
+			for (final InvoicePaymentLine iInvoicePaymentLine : iInvoice.getInvoicePaymentLines()) {
+				final PaymentMode iPaymentMode = iInvoicePaymentLine.getPaymentMode();
+				final PaymentMode iValidPaymentMode;
+				switch (iPaymentMode.getLabel()) {
+				case "CASH":
+					iValidPaymentMode = iDAO.read(2);
+					break;
+
+				case "CHEQUE":
+					iValidPaymentMode = iDAO.read(1);
+					break;
+
+				default:
+					iValidPaymentMode = null;
+					break;
+				}
+
+				iInvoicePaymentLine.setPaymentMode(iValidPaymentMode);
+			}
+
 			if (iInvoice.getUuid() == null) {
 				iInvoice.setUuid(UUID.randomUUID().toString());
 				iInvoice.bindChildren();
