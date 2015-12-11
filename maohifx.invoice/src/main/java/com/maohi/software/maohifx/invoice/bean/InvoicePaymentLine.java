@@ -3,6 +3,7 @@ package com.maohi.software.maohifx.invoice.bean;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -133,7 +134,7 @@ public class InvoicePaymentLine implements java.io.Serializable {
 		return this.invoice;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "payment_mode", nullable = false)
 	public PaymentMode getPaymentMode() {
 		return this.paymentMode;
