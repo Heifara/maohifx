@@ -73,7 +73,7 @@
 						</TableColumn>
 						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Remise">
 							<cellValueFactory>
-								<JSObjectPropertyValueFactory property="discount" onEditCommit="controller.updateInvoiceEvent(event)" />
+								<JSObjectPropertyValueFactory property="discountRate" onEditCommit="controller.updateInvoiceEvent(event)" />
 							</cellValueFactory>
 							<cellFactory>
 								<JSObjectCellFactory />

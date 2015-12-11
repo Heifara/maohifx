@@ -14,6 +14,32 @@ function Invoice() {
 	this.invoiceLines = FXCollections.observableArrayList();
 }
 
+Invoice.prototype.toJSON = function() {
+	return {
+		uuid : this.uuid.get(),
+		number : this.invoiceNumber.get(),
+		date : this.invoiceDate.getDate(),
+		customerName : this.customerName.get(),
+		invoiceLines : this.getInvoiceLines()
+	}
+}
+
+Invoice.prototype.parseJSON = function(aJSONObject) {
+	this.uuid.set(aJSONObject.get("uuid"));
+	this.invoiceNumber.set(aJSONObject.get("number"));
+	this.invoiceDate.setDate(aJSONObject.get("date"));
+	this.customerName.set(aJSONObject.get("customerName"));
+	this.href.set("http://localhost:8080/maohifx.server/webapi/invoice?uuid=" + this.uuid.get() + "");
+
+	this.invoiceLines.clear();
+	iArray = aJSONObject.get("invoiceLines");
+	for ( var iIndex in iArray) {
+		iInvoiceLine = new InvoiceLine();
+		iInvoiceLine.parseJSON(iArray[iIndex]);
+		this.addInvoiceLine(iInvoiceLine);
+	}
+}
+
 Invoice.prototype.updateTotals = function() {
 	iTotalWithNoTaxes = 0.0;
 	iTotalTva = 0.0;
@@ -113,35 +139,11 @@ Invoice.prototype.save = function() {
 			alert("Save success!");
 		},
 		error : function($result, $status) {
+			load("http://localhost:8080/maohifx.server/common.js");
+
 			print($status);
 
 			alert("Save error!");
 		}
 	});
-}
-
-Invoice.prototype.toJSON = function() {
-	return {
-		uuid : this.uuid.get(),
-		number : this.invoiceNumber.get(),
-		date : this.invoiceDate.getDate(),
-		customerName : this.customerName.get(),
-		invoiceLines : this.getInvoiceLines()
-	}
-}
-
-Invoice.prototype.parseJSON = function(aJSONObject) {
-	this.uuid.set(aJSONObject.get("uuid"));
-	this.invoiceNumber.set(aJSONObject.get("number"));
-	this.invoiceDate.setDate(aJSONObject.get("date"));
-	this.customerName.set(aJSONObject.get("customerName"));
-	this.href.set("http://localhost:8080/maohifx.server/webapi/invoice?uuid=" + this.uuid.get() + "");
-
-	this.invoiceLines.clear();
-	iArray = aJSONObject.get("invoiceLines");
-	for ( var iIndex in iArray) {
-		iInvoiceLine = new InvoiceLine();
-		iInvoiceLine.parseJSON(iArray[iIndex]);
-		this.addInvoiceLine(iInvoiceLine);
-	}
 }
