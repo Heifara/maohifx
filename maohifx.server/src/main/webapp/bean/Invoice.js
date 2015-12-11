@@ -39,7 +39,7 @@ Invoice.prototype.parseJSON = function(aJSONObject) {
 	for ( var iIndex in iArray) {
 		iInvoiceLine = new InvoiceLine();
 		iInvoiceLine.parseJSON(iArray[iIndex]);
-		this.addInvoiceLine(iInvoiceLine);
+		this.invoiceLines.add(iInvoiceLine);
 	}
 
 	this.invoicePaymentLines.clear();
@@ -87,14 +87,7 @@ Invoice.prototype.addInvoiceLine = function() {
 	iInvoiceLine.discountRate.set(0.0);
 	iInvoiceLine.tvaRate.set(0.0);
 
-	this.addInvoiceLine(aInvoiceLine);
-}
-
-Invoice.prototype.addInvoiceLine = function(aInvoiceLine) {
-
 	this.invoiceLines.add(iInvoiceLine);
-
-	this.updateTotals();
 }
 
 Invoice.prototype.addInvoicePaymentLine = function() {

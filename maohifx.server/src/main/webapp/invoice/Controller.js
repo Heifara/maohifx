@@ -17,6 +17,8 @@ function InvoiceController() {
 
 	this.addInvoiceLineEvent();
 	this.addInvoicePaymentLineEvent();
+	
+	this.invoice.updateTotals();
 
 	invoiceNumber.textProperty().bindBidirectional(this.invoice.invoiceNumber, new NumberStringConverter());
 	invoiceDate.valueProperty().bindBidirectional(this.invoice.invoiceDate);
@@ -78,5 +80,4 @@ InvoiceController.prototype.printEvent = function() {
  */
 InvoiceController.prototype.deleteSelectedInvoiceLineEvent = function(aEvent) {
 	this.invoice.remove(aEvent.getIndex());
-	this.addItemEvent(aEvent);
 }
