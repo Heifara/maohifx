@@ -40,11 +40,6 @@
 				<TextField fx:id="invoiceNumber" editable="false" GridPane.columnIndex="4" />
 				<TableView fx:id="invoiceLines" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
 					<columns>
-						<TableColumn maxWidth="-1.0" minWidth="50.0" prefWidth="50.0" text="">
-							<cellFactory>
-								<ButtonCellFactory onAction="controller.deleteSelectedInvoiceLineEvent(event)" text="Supprimer" />
-							</cellFactory>
-						</TableColumn>
 						<TableColumn maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Code barre">
 							<cellValueFactory>
 								<JSObjectPropertyValueFactory property="barcode" />

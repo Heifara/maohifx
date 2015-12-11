@@ -101,10 +101,14 @@ Invoice.prototype.addInvoicePaymentLine = function() {
 	this.invoicePaymentLines.add(iInvoicePaymentLine)
 }
 
-Invoice.prototype.remove = function(aIndex) {
+Invoice.prototype.removeInvoiceLine = function(aIndex) {
 	this.invoiceLines.remove(aIndex);
 
 	this.updateTotals();
+}
+
+Invoice.prototype.removeInvoicePaymentLine = function(aIndex) {
+	this.invoicePaymentLines.remove(aIndex);
 }
 
 Invoice.prototype.getTabTitle = function() {

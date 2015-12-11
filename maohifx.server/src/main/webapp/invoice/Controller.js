@@ -17,7 +17,7 @@ function InvoiceController() {
 
 	this.addInvoiceLineEvent();
 	this.addInvoicePaymentLineEvent();
-	
+
 	this.invoice.updateTotals();
 
 	invoiceNumber.textProperty().bindBidirectional(this.invoice.invoiceNumber, new NumberStringConverter());
@@ -30,7 +30,26 @@ function InvoiceController() {
 	totalChange.textProperty().bindBidirectional(this.invoice.totalChange, new JSObjectStringConverter());
 
 	invoiceLines.setItems(this.invoice.invoiceLines);
+	invoiceLines.setContextMenu(new ContextMenu());
+	iRemoveInvoiceLineMenuItem = new MenuItem("Supprimer");
+	iRemoveInvoiceLineMenuItem.onAction = new javafx.event.EventHandler({
+		handle : function(aActionEvent) {
+			controller.removeInvoiceLineEvent(aActionEvent);
+		}
+	});
+	invoiceLines.getContextMenu().getItems().add(iRemoveInvoiceLineMenuItem);
+
 	invoicePaymentLines.setItems(this.invoice.invoicePaymentLines);
+
+	invoicePaymentLines.setContextMenu(new ContextMenu());
+
+	iRemoveInvoicePaymentLineMenuItem = new MenuItem("Supprimer");
+	iRemoveInvoicePaymentLineMenuItem.onAction = new javafx.event.EventHandler({
+		handle : function(aActionEvent) {
+			controller.removeInvoicePaymentLineEvent();
+		}
+	});
+	invoicePaymentLines.getContextMenu().getItems().add(iRemoveInvoicePaymentLineMenuItem);
 }
 
 InvoiceController.prototype.addInvoiceLineEvent = function(aEvent) {
@@ -73,11 +92,20 @@ InvoiceController.prototype.printEvent = function() {
 	this.invoice.print();
 }
 
-/**
- * 
- * @param aEvent
- *            the CellActionEvent
- */
-InvoiceController.prototype.deleteSelectedInvoiceLineEvent = function(aEvent) {
-	this.invoice.remove(aEvent.getIndex());
+InvoiceController.prototype.removeInvoicePaymentLineEvent = function(aEvent) {
+	iIndex = invoicePaymentLines.getSelectionModel().getSelectedIndex();
+	if (iIndex > -1) {
+		this.invoice.removeInvoicePaymentLine(iIndex);
+	}
+
+	this.addInvoicePaymentLineEvent(aEvent);
+}
+
+InvoiceController.prototype.removeInvoiceLineEvent = function(aEvent) {
+	iIndex = invoiceLines.getSelectionModel().getSelectedIndex();
+	if (iIndex > -1) {
+		this.invoice.removeInvoiceLine(iIndex);
+	}
+
+	this.addInvoiceLineEvent(aEvent);
 }
