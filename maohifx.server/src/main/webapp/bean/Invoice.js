@@ -9,9 +9,11 @@ function Invoice() {
 	this.totalTva = new SimpleDoubleProperty();
 	this.totalDiscount = new SimpleDoubleProperty();
 	this.totalWithTaxes = new SimpleDoubleProperty();
+	this.totalPaidAmount = new SimpleDoubleProperty();
 	this.totalChange = new SimpleDoubleProperty();
 
 	this.invoiceLines = FXCollections.observableArrayList();
+	this.invoicePaymentLines = FXCollections.observableArrayList();
 }
 
 Invoice.prototype.toJSON = function() {
@@ -20,7 +22,8 @@ Invoice.prototype.toJSON = function() {
 		number : this.invoiceNumber.get(),
 		date : this.invoiceDate.getDate(),
 		customerName : this.customerName.get(),
-		invoiceLines : this.getInvoiceLines()
+		invoiceLines : this.getInvoiceLines(),
+		invoicePaymentLines : this.getInvoicePaymentLines(),
 	}
 }
 
@@ -38,6 +41,14 @@ Invoice.prototype.parseJSON = function(aJSONObject) {
 		iInvoiceLine.parseJSON(iArray[iIndex]);
 		this.addInvoiceLine(iInvoiceLine);
 	}
+
+	this.invoicePaymentLines.clear();
+	iArray = aJSONObject.get("invoicePaymentLines");
+	for ( var iIndex in iArray) {
+		iInvoicePaymentLine = new InvoicePaymentLine();
+		iInvoicePaymentLine.parseJSON(iArray[iIndex]);
+		this.invoicePaymentLines.add(iInvoicePaymentLine);
+	}
 }
 
 Invoice.prototype.updateTotals = function() {
@@ -53,19 +64,30 @@ Invoice.prototype.updateTotals = function() {
 		iTotalWithTaxes += iInvoiceLine.totalAmount.get();
 	}
 
+	iTotalPaidAmount = 0.0;
+	for (iIndex in this.invoicePaymentLines) {
+		iInvoicePaymentLine = this.invoicePaymentLines.get(iIndex);
+		iTotalPaidAmount += iInvoicePaymentLine.amount.get();
+	}
+
 	this.totalWithNoTaxes.set(iTotalWithNoTaxes);
 	this.totalTva.set(iTotalTva);
 	this.totalDiscount.set(iTotalDiscount);
 	this.totalWithTaxes.set(iTotalWithTaxes);
+	this.totalChange.set(iTotalPaidAmount - iTotalWithTaxes);
 }
 
-Invoice.prototype.add = function() {
+Invoice.prototype.addInvoiceLine = function() {
 	iInvoiceLine = new InvoiceLine();
 	iInvoiceLine.uuid.set(java.util.UUID.randomUUID().toString());
 	iInvoiceLine.position.set(this.invoiceLines.size());
 	iInvoiceLine.label.set("");
 	iInvoiceLine.quantity.set(1.0);
-	this.addInvoiceLine(iInvoiceLine);
+	iInvoiceLine.sellingPrice.set(0.0);
+	iInvoiceLine.discountRate.set(0.0);
+	iInvoiceLine.tvaRate.set(0.0);
+
+	this.addInvoiceLine(aInvoiceLine);
 }
 
 Invoice.prototype.addInvoiceLine = function(aInvoiceLine) {
@@ -73,6 +95,17 @@ Invoice.prototype.addInvoiceLine = function(aInvoiceLine) {
 	this.invoiceLines.add(iInvoiceLine);
 
 	this.updateTotals();
+}
+
+Invoice.prototype.addInvoicePaymentLine = function() {
+	iInvoicePaymentLine = new InvoicePaymentLine();
+	iInvoicePaymentLine.uuid.set(java.util.UUID.randomUUID().toString());
+	iInvoicePaymentLine.position.set(this.invoicePaymentLines.size());
+	iInvoicePaymentLine.mode.set("");
+	iInvoicePaymentLine.comment.set("");
+	iInvoicePaymentLine.amount.set(0.0);
+
+	this.invoicePaymentLines.add(iInvoicePaymentLine)
 }
 
 Invoice.prototype.remove = function(aIndex) {
@@ -107,9 +140,22 @@ Invoice.prototype.getLastInvoiceLine = function() {
 	return this.invoiceLines.get(this.invoiceLines.size() - 1);
 }
 
+Invoice.prototype.getLastInvoicePaymentLine = function() {
+	if (this.invoicePaymentLines.size() == 0) {
+		return null;
+	}
+	return this.invoicePaymentLines.get(this.invoicePaymentLines.size() - 1);
+}
+
 Invoice.prototype.removeLastInvoiceLine = function() {
 	if (this.invoiceLines.size() > 0) {
 		this.invoiceLines.remove(this.invoiceLines.size() - 1);
+	}
+}
+
+Invoice.prototype.removeLastInvoicePaymentLine = function() {
+	if (this.invoicePaymentLines.size() > 0) {
+		this.invoicePaymentLines.remove(this.invoicePaymentLines.size() - 1);
 	}
 }
 
@@ -117,6 +163,15 @@ Invoice.prototype.getInvoiceLines = function() {
 	iArrayList = new java.util.ArrayList();
 	for ( var index in this.invoiceLines) {
 		iArrayList.add(this.invoiceLines.get(index).toJSON());
+	}
+
+	return iArrayList;
+}
+
+Invoice.prototype.getInvoicePaymentLines = function() {
+	iArrayList = new java.util.ArrayList();
+	for ( var index in this.invoicePaymentLines) {
+		iArrayList.add(this.invoicePaymentLines.get(index).toJSON());
 	}
 
 	return iArrayList;

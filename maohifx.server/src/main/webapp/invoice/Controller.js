@@ -1,6 +1,8 @@
 load("http://localhost:8080/maohifx.server/common.js");
 load("http://localhost:8080/maohifx.server/bean/Invoice.js");
 load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
+load("http://localhost:8080/maohifx.server/bean/InvoicePaymentLine.js");
+load("http://localhost:8080/maohifx.server/bean/PaymentMode.js");
 
 function InvoiceController() {
 	this.invoice = new Invoice();
@@ -13,11 +15,8 @@ function InvoiceController() {
 		$tab.setText(this.invoice.getTabTitle());
 	}
 
-	if (this.invoice.invoiceLines.size() == 0) {
-		this.invoice.add();
-	} else {
-		this.addItemEvent();
-	}
+	this.addInvoiceLineEvent();
+	this.addInvoicePaymentLineEvent();
 
 	invoiceNumber.textProperty().bindBidirectional(this.invoice.invoiceNumber, new NumberStringConverter());
 	invoiceDate.valueProperty().bindBidirectional(this.invoice.invoiceDate);
@@ -28,16 +27,25 @@ function InvoiceController() {
 	totalWithTaxes.textProperty().bindBidirectional(this.invoice.totalWithTaxes, new JSObjectStringConverter());
 	totalChange.textProperty().bindBidirectional(this.invoice.totalChange, new JSObjectStringConverter());
 
-	tableView.setItems(this.invoice.invoiceLines);
+	invoiceLines.setItems(this.invoice.invoiceLines);
+	invoicePaymentLines.setItems(this.invoice.invoicePaymentLines);
 }
 
-InvoiceController.prototype.addItemEvent = function(aEvent) {
+InvoiceController.prototype.addInvoiceLineEvent = function(aEvent) {
 	iInvoiceLine = this.invoice.getLastInvoiceLine();
 	if (iInvoiceLine == null) {
-		this.invoice.add();
+		this.invoice.addInvoiceLine();
+	} else if (!iInvoiceLine.label.get().isEmpty()) {
+		this.invoice.addInvoiceLine();
 	}
-	if (!iInvoiceLine.label.get().isEmpty()) {
-		this.invoice.add();
+}
+
+InvoiceController.prototype.addInvoicePaymentLineEvent = function(aEvent) {
+	iInvoicePaymentLine = this.invoice.getLastInvoicePaymentLine();
+	if (iInvoicePaymentLine == null) {
+		this.invoice.addInvoicePaymentLine();
+	} else if (!iInvoicePaymentLine.mode.get().isEmpty()) {
+		this.invoice.addInvoicePaymentLine();
 	}
 }
 
@@ -51,11 +59,12 @@ InvoiceController.prototype.saveEvent = function() {
 		this.invoice.removeLastInvoiceLine();
 	}
 
+	iInvoicePaymentLine = this.invoice.getLastInvoicePaymentLine();
+	if (iInvoicePaymentLine.mode.get().isEmpty()) {
+		this.invoice.removeLastInvoicePaymentLine();
+	}
+
 	this.invoice.save();
-
-	this.addItemEvent();
-
-	$tab.setText(this.invoice.getTabTitle());
 }
 
 InvoiceController.prototype.printEvent = function() {

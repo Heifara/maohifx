@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?language javascript?>
-
 <?import java.lang.*?>
 <?import java.net.*?>
-
 <?import com.maohi.software.maohifx.control.*?>
 <?import com.maohi.software.maohifx.control.cell.*?>
-
 <?import javafx.geometry.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.control.*?>
@@ -32,7 +29,7 @@
 				<RowConstraints vgrow="NEVER" />
 				<RowConstraints vgrow="NEVER" />
 				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-				<RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="NEVER" />
+				<RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="NEVER" />
 			</rowConstraints>
 			<children>
 				<Label text="Date" />
@@ -41,11 +38,11 @@
 				<Label text="Client" GridPane.rowIndex="1" />
 				<Label text="Numéro de facture" GridPane.columnIndex="3" />
 				<TextField fx:id="invoiceNumber" editable="false" GridPane.columnIndex="4" />
-				<TableView fx:id="tableView" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+				<TableView fx:id="invoiceLines" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
 					<columns>
 						<TableColumn maxWidth="-1.0" minWidth="50.0" prefWidth="50.0" text="">
 							<cellFactory>
-								<ButtonCellFactory text="Supprimer" onAction="controller.deleteSelectedInvoiceLineEvent(event)" />
+								<ButtonCellFactory onAction="controller.deleteSelectedInvoiceLineEvent(event)" text="Supprimer" />
 							</cellFactory>
 						</TableColumn>
 						<TableColumn maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Code barre">
@@ -55,17 +52,17 @@
 						</TableColumn>
 						<TableColumn maxWidth="-1.0" minWidth="200.0" prefWidth="200.0" text="Désignation">
 							<cellValueFactory>
-								<JSObjectPropertyValueFactory onEditCommit="controller.addItemEvent(event)" property="label" />
+								<JSObjectPropertyValueFactory onEditCommit="controller.addInvoiceLineEvent(event)" property="label" />
 							</cellValueFactory>
 						</TableColumn>
 						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Quantités">
 							<cellValueFactory>
-								<JSObjectPropertyValueFactory property="quantity" onEditCommit="controller.updateInvoiceEvent(event)" />
+								<JSObjectPropertyValueFactory onEditCommit="controller.updateInvoiceEvent(event)" property="quantity" />
 							</cellValueFactory>
 						</TableColumn>
 						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Prix H.T">
 							<cellValueFactory>
-								<JSObjectPropertyValueFactory property="sellingPrice" onEditCommit="controller.updateInvoiceEvent(event)" />
+								<JSObjectPropertyValueFactory onEditCommit="controller.updateInvoiceEvent(event)" property="sellingPrice" />
 							</cellValueFactory>
 							<cellFactory>
 								<JSObjectCellFactory />
@@ -73,7 +70,7 @@
 						</TableColumn>
 						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Remise">
 							<cellValueFactory>
-								<JSObjectPropertyValueFactory property="discountRate" onEditCommit="controller.updateInvoiceEvent(event)" />
+								<JSObjectPropertyValueFactory onEditCommit="controller.updateInvoiceEvent(event)" property="discountRate" />
 							</cellValueFactory>
 							<cellFactory>
 								<JSObjectCellFactory />
@@ -81,7 +78,7 @@
 						</TableColumn>
 						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Tva">
 							<cellValueFactory>
-								<JSObjectPropertyValueFactory property="tvaRate" onEditCommit="controller.updateInvoiceEvent(event)" />
+								<JSObjectPropertyValueFactory onEditCommit="controller.updateInvoiceEvent(event)" property="tvaRate" />
 							</cellValueFactory>
 							<cellFactory>
 								<JSObjectCellFactory />
@@ -99,21 +96,21 @@
 						</TableColumn>
 					</columns>
 				</TableView>
-				<TableView fx:id="tableView1" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
+				<TableView fx:id="invoicePaymentLines" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
 					<columns>
 						<TableColumn prefWidth="150.0" text="Mode de paiement">
 							<cellValueFactory>
-								<JSObjectPropertyValueFactory property="position" />
+								<JSObjectPropertyValueFactory property="mode" onEditCommit="controller.addInvoicePaymentLineEvent(event)" />
 							</cellValueFactory>
 						</TableColumn>
 						<TableColumn prefWidth="150.0" text="Montant en XPF">
 							<cellValueFactory>
-								<JSObjectPropertyValueFactory property="position" />
+								<JSObjectPropertyValueFactory property="amount" onEditCommit="controller.updateInvoiceEvent(event)" />
 							</cellValueFactory>
 						</TableColumn>
 						<TableColumn prefWidth="150.0" text="Commentaire">
 							<cellValueFactory>
-								<JSObjectPropertyValueFactory property="position" />
+								<JSObjectPropertyValueFactory property="comment" />
 							</cellValueFactory>
 						</TableColumn>
 					</columns>

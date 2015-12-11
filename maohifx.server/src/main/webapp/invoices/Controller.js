@@ -1,6 +1,8 @@
 load("http://localhost:8080/maohifx.server/common.js");
 load("http://localhost:8080/maohifx.server/bean/Invoice.js");
 load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
+load("http://localhost:8080/maohifx.server/bean/InvoicePaymentLine.js");
+load("http://localhost:8080/maohifx.server/bean/PaymentMode.js");
 
 function InvoicesController() {
 	if (typeof ($tab) != 'undefined') {
@@ -34,6 +36,8 @@ InvoicesController.prototype.searchEvent = function(aEvent) {
 			load("http://localhost:8080/maohifx.server/common.js");
 			load("http://localhost:8080/maohifx.server/bean/Invoice.js");
 			load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
+			load("http://localhost:8080/maohifx.server/bean/InvoicePaymentLine.js");
+			load("http://localhost:8080/maohifx.server/bean/PaymentMode.js");
 
 			for ( var item in $result) {
 				iInvoice = new Invoice();
