@@ -7,16 +7,16 @@ import javafx.beans.property.SimpleStringProperty;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class Person {
-	private SimpleStringProperty firstName = new SimpleStringProperty();
-	private SimpleStringProperty lastName = new SimpleStringProperty();
-	private SimpleStringProperty email = new SimpleStringProperty();
-	private SimpleObjectProperty age = new SimpleObjectProperty();
+	private final SimpleStringProperty firstName = new SimpleStringProperty();
+	private final SimpleStringProperty lastName = new SimpleStringProperty();
+	private final SimpleStringProperty email = new SimpleStringProperty();
+	private final SimpleObjectProperty age = new SimpleObjectProperty();
 	private Date birthdate = new Date();
 
 	public Person() {
 	}
 
-	public Person(String firstName, String lastName, String email) {
+	public Person(final String firstName, final String lastName, final String email) {
 		super();
 		this.firstName.set(firstName);
 		this.lastName.set(lastName);
@@ -25,42 +25,47 @@ public class Person {
 	}
 
 	public Object getAge() {
-		return age.get();
+		return this.age.get();
 	}
 
 	public Date getBirthdate() {
-		return birthdate;
+		return this.birthdate;
 	}
 
 	public String getEmail() {
-		return email.get();
+		return this.email.get();
 	}
 
 	public String getFirstName() {
-		return firstName.get();
+		return this.firstName.get();
 	}
 
 	public String getLastName() {
-		return lastName.get();
+		return this.lastName.get();
 	}
 
-	public void setAge(Object age) {
+	public void setAge(final Object age) {
 		this.age.set(age);
 	}
 
-	public void setBirthdate(Date birthdate) {
+	public void setBirthdate(final Date birthdate) {
 		this.birthdate = birthdate;
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(final String email) {
 		this.email.set(email);
 	}
 
-	public void setFirstName(String firstName) {
+	public void setFirstName(final String firstName) {
 		this.firstName.set(firstName);
 	}
 
-	public void setLastName(String lastName) {
+	public void setLastName(final String lastName) {
 		this.lastName.set(lastName);
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s %s", this.firstName.get(), this.lastName.get());
 	}
 }
