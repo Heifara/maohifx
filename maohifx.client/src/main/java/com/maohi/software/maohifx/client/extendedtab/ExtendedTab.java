@@ -76,6 +76,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	public ExtendedTab(final FXMLLoader aParent) {
 		try {
 			this.loader = new FXMLLoader();
+			this.loader.setBuilderFactory(aParent.getBuilderFactory());
 			this.loader.setLocation(this.getClass().getResource("ExtendedTab.fxml"));
 			this.loader.setRoot(this);
 			this.loader.setController(this);
@@ -141,6 +142,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	}
 
 	public void load(final FXMLLoader aLoader, final String aText, final String aURL, final String aRecipeId) {
+		aLoader.setBuilderFactory(this.loader.getBuilderFactory());
 		this.populateLoaderNamespace(aLoader, true, true);
 
 		final Node iRecipee = this.getContent().lookup(aRecipeId);
@@ -242,6 +244,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		try {
 			final URL iUrl = new URL(ExtendedTab.this.url.getText());
 			final FXMLLoader iLoader = new FXMLLoader();
+			iLoader.setBuilderFactory(this.loader.getBuilderFactory());
 			if ((iUrl.getQuery() != null) && !iUrl.getQuery().isEmpty()) {
 				final Client iClient = ClientBuilder.newClient();
 				final WebTarget iTarget = iClient.target(this.toHttp(iUrl, false).toString()).queryParam(iUrl.getQuery().split("=")[0], iUrl.getQuery().split("=")[1]);

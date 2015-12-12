@@ -41,6 +41,7 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 
 	public MaohiFXClient() {
 		this.loader = new FXMLLoader();
+		this.loader.setBuilderFactory(new MaohiFXBuilderFactory());
 		this.loader.setLocation(this.getClass().getResource("MaohiFXClient.fxml"));
 	}
 
