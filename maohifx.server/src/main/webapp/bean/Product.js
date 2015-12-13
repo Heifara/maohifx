@@ -24,7 +24,6 @@ Product.prototype.parseJSON = function(aJSONObject) {
 }
 
 Product.prototype.save = function() {
-	$tab.setText(this.getTabTitle());
 	$loader.getNamespace().put("$product", this);
 	$http.ajax({
 		url : "http://localhost:8080/maohifx.server/webapi/product",
