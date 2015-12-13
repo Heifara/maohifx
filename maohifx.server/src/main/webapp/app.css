@@ -1,3 +1,51 @@
+#module {
+	    -fx-background-color: 
+        lightgray,
+        linear-gradient(gray 0.0%, gray 20.0%, lightgray 100.0%);
+    -fx-background-radius: 5.0;
+    -fx-padding: 10.0;
+    -fx-hgap: 10.0;
+    -fx-vgap: 10.0;
+}
+
+#module .text-field {
+    -fx-background-color: 
+        black,
+        linear-gradient(#303842 0.0%, #3e5577 20.0%, #375074 100.0%),
+        linear-gradient(#768aa5 0.0%, #849cbb 5.0%, #5877a2 50.0%, #486a9a 51.0%, #4a6c9b 100.0%);
+    -fx-text-fill: white;
+    -fx-background-radius: 0.0;
+    -fx-font-weight: bold;
+}
+
+#module .text-area {
+	-fx-background-color: null;
+}
+
+#module .text-area .content {
+	-fx-background-color: transparent;
+	-fx-padding: 10.0;
+	-fx-spacing: 8.0;
+}
+
+#invoice-button {
+	-fx-graphic: url("invoice-icon.png");
+	-fx-border-width: 0.0px;
+	-fx-background-color: null;
+}
+
+#product-button {
+	-fx-graphic: url("product-icon.png");
+	-fx-border-width: 0.0px;
+	-fx-background-color: null;
+}
+
+#contact-button {
+	-fx-graphic: url("contact-icon.png");
+	-fx-border-width: 0.0px;
+	-fx-background-color: null;
+}
+
 .tab-pane .tab-header-background {
 	-fx-background-image: null;
 }
