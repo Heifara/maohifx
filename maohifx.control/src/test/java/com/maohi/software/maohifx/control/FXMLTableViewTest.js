@@ -22,6 +22,12 @@ function FXMLTableViewTest() {
 	tableView.setItems(this.data);
 
 	filter.textProperty().bindBidirectional(tableView.filterProperty());
+
+	autoCompletion.add("Jacob");
+	autoCompletion.add("Helena");
+	autoCompletion.add("Igor");
+	autoCompletion.add("Stanley");
+	// lastNameCellFactory.setItems(this.autoCompletion)
 }
 
 FXMLTableViewTest.prototype.actionEvent = function() {
@@ -34,4 +40,8 @@ FXMLTableViewTest.prototype.selectRowOneEvent = function() {
 
 FXMLTableViewTest.prototype.onEditCommitAgeEvent = function() {
 	java.lang.System.out.println("onEditCommitAgeEvent");
+}
+
+FXMLTableViewTest.prototype.onEditCommitLastnameEvent = function() {
+	java.lang.System.out.println("onEditCommitLastnameEvent");
 }

@@ -5,6 +5,7 @@
 <?import java.net.*?>
 <?import com.maohi.software.maohifx.control.*?>
 <?import com.maohi.software.maohifx.control.cell.*?>
+<?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.control.*?>
@@ -49,6 +50,13 @@
 							<cellValueFactory>
 								<JSObjectPropertyValueFactory onEditCommit="controller.addInvoiceLineEvent(event)" property="label" />
 							</cellValueFactory>
+							<cellFactory>
+								<JSObjectCellFactory>
+									<autoCompletion>
+										<FXCollections fx:id="autoCompletion" fx:factory="observableArrayList" />
+									</autoCompletion>
+								</JSObjectCellFactory>
+							</cellFactory>
 						</TableColumn>
 						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Quantités">
 							<cellValueFactory>

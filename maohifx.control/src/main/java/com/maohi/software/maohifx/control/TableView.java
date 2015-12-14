@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import com.maohi.software.maohifx.control.cell.JSObjectStringConverter;
+import com.maohi.software.maohifx.control.cell.JSObjectCellFactory;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -22,7 +22,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TablePosition;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -245,7 +244,7 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 				final List<? extends TableColumn<S, ?>> iAddedTableColumns = aChange.getAddedSubList();
 				for (final TableColumn iTableColumn : iAddedTableColumns) {
 					if (iTableColumn.getCellFactory().getClass().isAnonymousClass()) {
-						iTableColumn.setCellFactory(TextFieldTableCell.forTableColumn(new JSObjectStringConverter<>()));
+						iTableColumn.setCellFactory(new JSObjectCellFactory<>());
 					}
 					iTableColumn.addEventHandler(TableColumn.editAnyEvent(), this);
 				}

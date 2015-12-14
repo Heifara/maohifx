@@ -6,6 +6,7 @@
 <?import com.maohi.software.maohifx.control.cell.*?>
 
 <?import java.lang.*?>
+<?import javafx.collections.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.control.Hyperlink?>
@@ -64,6 +65,13 @@
 							<cellValueFactory>
 								<JSObjectPropertyValueFactory property="lastName" />
 							</cellValueFactory>
+							<cellFactory>
+								<JSObjectCellFactory>
+									<autoCompletion>
+										<FXCollections fx:id="autoCompletion" fx:factory="observableArrayList" />
+									</autoCompletion>
+								</JSObjectCellFactory>
+							</cellFactory>
 						</TableColumn>
 						<TableColumn prefWidth="75.0" text="onEditCommit(Age)">
 							<cellValueFactory>

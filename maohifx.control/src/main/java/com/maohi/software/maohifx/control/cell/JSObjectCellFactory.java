@@ -1,13 +1,15 @@
 /**
- * 
+ *
  */
 package com.maohi.software.maohifx.control.cell;
 
+import java.util.Collection;
+
+import org.controlsfx.control.textfield.TextFields;
+
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
-import javafx.util.StringConverter;
 
 /**
  * @author heifara
@@ -15,51 +17,23 @@ import javafx.util.StringConverter;
  */
 public class JSObjectCellFactory<S, T> implements Callback<TableColumn<S, T>, TableCell<S, T>> {
 
-	/**
-	 * @author heifara
-	 *
-	 */
-	public class JSObjectStringConverter extends StringConverter<T> {
-
-		private Class<?> type;
-
-		@Override
-		public String toString(T aObject) {
-			if (aObject != null) {
-				if (aObject instanceof String) {
-					type = String.class;
-					return (String) aObject;
-				} else if (aObject instanceof Double) {
-					type = Double.class;
-					return aObject.toString();
-				} else if (aObject instanceof Float) {
-					type = Float.class;
-					return aObject.toString();
-				} else {
-					return aObject.toString();
-				}
-			}
-			return null;
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public T fromString(String aString) {
-			if (type == String.class) {
-				return (T) aString;
-			} else if (type == Double.class) {
-				return (T) Double.valueOf(aString);
-			} else if (type == Float.class) {
-				return (T) Float.valueOf(aString);
-			} else {
-				throw new IllegalArgumentException(String.format("The type of %s is illegal", aString));
-			}
-		}
-	}
+	private Collection autoCompletion;
 
 	@Override
 	public TableCell<S, T> call(final TableColumn<S, T> param) {
-		return new TextFieldTableCell<S, T>(new JSObjectStringConverter());
+		final TextFieldTableCell<S, T> iTableCell = new TextFieldTableCell<S, T>(new JSObjectStringConverter());
+		if (this.autoCompletion != null) {
+			TextFields.bindAutoCompletion(iTableCell.getTextfield(), this.autoCompletion);
+		}
+		return iTableCell;
+	}
+
+	public Collection getAutoCompletion() {
+		return this.autoCompletion;
+	}
+
+	public void setAutoCompletion(final Collection autoCompletion) {
+		this.autoCompletion = autoCompletion;
 	}
 
 }

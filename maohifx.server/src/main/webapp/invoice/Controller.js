@@ -50,6 +50,17 @@ function InvoiceController() {
 		}
 	});
 	invoicePaymentLines.getContextMenu().getItems().add(iRemoveInvoicePaymentLineMenuItem);
+
+	autoCompletion.add("TOUQUE DE PEINTURE BLEU 25L");
+	autoCompletion.add("TOUQUE DE PEINTURE ROUGE 25L");
+	autoCompletion.add("TOUQUE DE PEINTURE JAUNE 25L");
+	autoCompletion.add("TOUQUE DE PEINTURE VERT 25L");
+	autoCompletion.add("TOUQUE DE PEINTURE ROSE 25L");
+	autoCompletion.add("TOUQUE DE PEINTURE BLANC 25L");
+	autoCompletion.add("PVC BLANC");
+	autoCompletion.add("PVC BLEU");
+	autoCompletion.add("PVC ROUGE");
+	autoCompletion.add("PVC JAUNE");
 }
 
 InvoiceController.prototype.addInvoiceLineEvent = function(aEvent) {
