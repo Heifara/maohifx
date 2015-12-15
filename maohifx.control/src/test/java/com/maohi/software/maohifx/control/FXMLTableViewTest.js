@@ -4,6 +4,7 @@ load("fx:graphics.js");
 
 function FXMLTableViewTest() {
 	this.data = FXCollections.observableArrayList();
+	tableView.setItems(this.data);
 
 	iPerson = new Person();
 	iPerson.firstName.set("Jacob");
@@ -12,22 +13,19 @@ function FXMLTableViewTest() {
 	iPerson.href.set("http://localhost:8080/maohifx.server/webapi/fxml?id=index");
 	this.data.add(iPerson);
 
-	iPerson = new Person();
-	iPerson.firstName.set("Isabella");
-	iPerson.lastName.set("Johnson")
-	iPerson.age.set(15.0);
-	iPerson.href.set("http://localhost:8080/maohifx.server/webapi/fxml?id=index");
-	this.data.add(iPerson);
-
-	tableView.setItems(this.data);
-
 	filter.textProperty().bindBidirectional(tableView.filterProperty());
 
-	autoCompletion.add("Jacob");
-	autoCompletion.add("Helena");
-	autoCompletion.add("Igor");
-	autoCompletion.add("Stanley");
-	// lastNameCellFactory.setItems(this.autoCompletion)
+	this.addAutoCompletion("Smith", "Jacob");
+	this.addAutoCompletion("Johnson", "Isabella");
+	this.addAutoCompletion("Jacobson", "Igor");
+	this.addAutoCompletion("Syrano", "Bergerac");
+}
+
+FXMLTableViewTest.prototype.addAutoCompletion = function(aLastName, aFirstName) {
+	iPerson = new Person();
+	iPerson.firstName.set(aFirstName);
+	iPerson.lastName.set(aLastName);
+	autoCompletion.add(iPerson);
 }
 
 FXMLTableViewTest.prototype.actionEvent = function() {
@@ -44,4 +42,9 @@ FXMLTableViewTest.prototype.onEditCommitAgeEvent = function() {
 
 FXMLTableViewTest.prototype.onEditCommitLastnameEvent = function() {
 	java.lang.System.out.println("onEditCommitLastnameEvent");
+}
+
+FXMLTableViewTest.prototype.autoCompletionEvent = function(aEvent) {
+	iPerson = aEvent.getCompletion();
+	java.lang.System.out.println(iPerson.toString());
 }

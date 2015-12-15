@@ -3,12 +3,13 @@
  */
 package com.maohi.software.maohifx.control.cell;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.TableCell;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 
@@ -18,18 +19,19 @@ import javafx.util.StringConverter;
  */
 public class TextFieldTableCell<S, T> extends TableCell<S, T>implements EventHandler<ActionEvent>, ChangeListener<Boolean> {
 
-	private TextField textfield;
-	private final StringConverter<T> converter;
+	private ObjectProperty<StringConverter<T>> stringConverter;
 
-	public TextFieldTableCell(final StringConverter aStringConverter) {
-		this.converter = aStringConverter;
+	private TextField textfield;
+
+	public TextFieldTableCell(final StringConverter<T> aStringConverter) {
+		this.stringConverterProperty().set(aStringConverter);
 	}
 
 	@Override
 	public void cancelEdit() {
 		super.cancelEdit();
 
-		this.setText(this.converter.toString(this.getItem()));
+		this.setText(this.getStringConverter().toString(this.getItem()));
 		this.setGraphic(null);
 	}
 
@@ -49,6 +51,10 @@ public class TextFieldTableCell<S, T> extends TableCell<S, T>implements EventHan
 		this.cancelEdit();
 	}
 
+	public StringConverter<T> getStringConverter() {
+		return this.stringConverter.get();
+	}
+
 	public TextField getTextfield() {
 		if (this.textfield == null) {
 			this.textfield = new TextField();
@@ -60,7 +66,7 @@ public class TextFieldTableCell<S, T> extends TableCell<S, T>implements EventHan
 
 	@Override
 	public void handle(final ActionEvent aEvent) {
-		this.commitEdit(this.converter.fromString(this.getTextfield().getText()));
+		this.commitEdit(this.getStringConverter().fromString(this.getTextfield().getText()));
 	}
 
 	@Override
@@ -72,8 +78,14 @@ public class TextFieldTableCell<S, T> extends TableCell<S, T>implements EventHan
 
 		this.setText(null);
 
-		final TableRow<?> iTableRow = (TableRow<?>) this.getParent();
 		this.setGraphic(this.getTextfield());
+	}
+
+	protected ObjectProperty<StringConverter<T>> stringConverterProperty() {
+		if (this.stringConverter == null) {
+			this.stringConverter = new SimpleObjectProperty<StringConverter<T>>();
+		}
+		return this.stringConverter;
 	}
 
 	@Override
@@ -87,11 +99,11 @@ public class TextFieldTableCell<S, T> extends TableCell<S, T>implements EventHan
 		} else {
 			if (this.isEditing()) {
 				this.setText(null);
-				this.getTextfield().setText(this.converter.toString(aItem));
+				this.getTextfield().setText(this.getStringConverter().toString(aItem));
 				this.setGraphic(this.getTextfield());
 			} else {
-				this.setText(this.converter.toString(aItem));
-				this.getTextfield().setText(this.converter.toString(aItem));
+				this.setText(this.getStringConverter().toString(aItem));
+				this.getTextfield().setText(this.getStringConverter().toString(aItem));
 				this.setGraphic(null);
 			}
 		}

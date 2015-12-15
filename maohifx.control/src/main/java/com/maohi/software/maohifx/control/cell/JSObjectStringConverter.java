@@ -1,12 +1,14 @@
 package com.maohi.software.maohifx.control.cell;
 
 import javafx.util.StringConverter;
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 /**
  * @author heifara
  * @param <T>
  *
  */
+@SuppressWarnings("restriction")
 public class JSObjectStringConverter<T> extends StringConverter<T> {
 
 	private Class<?> type;
@@ -37,8 +39,16 @@ public class JSObjectStringConverter<T> extends StringConverter<T> {
 			} else if (aObject instanceof Float) {
 				this.type = Float.class;
 				return aObject.toString();
+			} else if (aObject instanceof ScriptObjectMirror) {
+				final ScriptObjectMirror iScriptObject = (ScriptObjectMirror) aObject;
+				final ScriptObjectMirror iToStringMethod = (ScriptObjectMirror) iScriptObject.get("toString");
+				iToStringMethod.setMember("this", iScriptObject);
+
+				final String iResult = (String) iToStringMethod.call(iScriptObject);
+				System.out.println(iResult);
+				return iResult;
 			} else {
-				return aObject.toString();
+				throw new IllegalArgumentException(String.format("The type of %s is illegal", aObject.toString()));
 			}
 		}
 		return null;
