@@ -183,7 +183,6 @@ public class TableView<S> extends javafx.scene.control.TableView<S>implements Ev
 	}
 
 	private void handleCellEditStart(final CellEditEvent<S, ?> aEvent) {
-		this.calcNextAndPreviousPosition(aEvent.getTablePosition());
 	}
 
 	private void handleKeyEvent(final KeyEvent aEvent) {
