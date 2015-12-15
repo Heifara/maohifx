@@ -5,6 +5,7 @@ function Product() {
 	this.uuid = new SimpleStringProperty();
 	this.designation = new SimpleStringProperty();
 	this.sellingPrice = new SimpleDoubleProperty();
+	this.tvaRate = new SimpleDoubleProperty();
 	this.href = new SimpleStringProperty();
 }
 
@@ -12,7 +13,8 @@ Product.prototype.toJSON = function() {
 	return {
 		uuid : this.uuid.get(),
 		designation : this.designation.get(),
-		sellingPrice : this.sellingPrice.get()
+		sellingPrice : this.sellingPrice.get(),
+		tvaRate : this.tvaRate.get()
 	}
 }
 
@@ -20,6 +22,7 @@ Product.prototype.parseJSON = function(aJSONObject) {
 	this.uuid.set(aJSONObject.get("uuid"));
 	this.designation.set(aJSONObject.get("uuid"));
 	this.sellingPrice.set(aJSONObject.get("number"));
+	this.tvaRate.set(aJSONObject.get("tvaRate"));
 	this.href.set("http://localhost:8080/maohifx.server/webapi/product?uuid=" + this.uuid.get() + "");
 }
 
@@ -41,4 +44,8 @@ Product.prototype.save = function() {
 			print($status);
 		}
 	});
+}
+
+Product.prototype.toString = function() {
+	return this.designation.get();
 }

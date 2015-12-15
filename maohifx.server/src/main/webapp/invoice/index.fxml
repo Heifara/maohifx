@@ -48,10 +48,10 @@
 						</TableColumn>
 						<TableColumn maxWidth="-1.0" minWidth="200.0" prefWidth="200.0" text="Désignation">
 							<cellValueFactory>
-								<JSObjectPropertyValueFactory onEditCommit="controller.addInvoiceLineEvent(event)" property="label" />
+								<JSObjectPropertyValueFactory onEditCommit="controller.labelEditCommitEvent(event)" property="label" />
 							</cellValueFactory>
 							<cellFactory>
-								<JSObjectCellFactory>
+								<JSObjectCellFactory onAutoCompletion="controller.labelAutoCompletionEvent(event)">
 									<autoCompletion>
 										<FXCollections fx:id="autoCompletion" fx:factory="observableArrayList" />
 									</autoCompletion>

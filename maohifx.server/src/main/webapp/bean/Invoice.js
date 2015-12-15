@@ -101,6 +101,14 @@ Invoice.prototype.addInvoicePaymentLine = function() {
 	this.invoicePaymentLines.add(iInvoicePaymentLine)
 }
 
+Invoice.prototype.updateInvoiceLine = function(aIndex, aProduct) {
+	iInvoiceLine = this.invoiceLines.get(aIndex);
+	iInvoiceLine.sellingPrice.set(aProduct.sellingPrice.get());
+	iInvoiceLine.tvaRate.set(aProduct.tvaRate.get())
+	
+	this.updateTotals();
+}
+
 Invoice.prototype.removeInvoiceLine = function(aIndex) {
 	this.invoiceLines.remove(aIndex);
 
