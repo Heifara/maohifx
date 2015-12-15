@@ -3,6 +3,8 @@
  */
 package com.maohi.software.maohifx.control.cell;
 
+import com.maohi.software.maohifx.control.TextField;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -10,7 +12,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.TableCell;
-import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 
 /**

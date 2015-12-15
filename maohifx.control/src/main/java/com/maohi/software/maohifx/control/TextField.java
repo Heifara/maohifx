@@ -1,51 +1,41 @@
 /**
  *
  */
-package com.maohi.software.maohifx.control.cell;
+package com.maohi.software.maohifx.control;
 
+import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.AutoCompletionBinding.AutoCompletionEvent;
+import org.controlsfx.control.textfield.CustomTextField;
 
+import com.maohi.software.maohifx.control.cell.JSObjectStringConverter;
 import com.sun.javafx.event.EventHandlerManager;
 
+import impl.org.controlsfx.autocompletion.AutoCompletionTextFieldBinding;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 /**
  * @author heifara
  *
  */
-@SuppressWarnings({ "rawtypes" })
-public class JSObjectCellFactory<S, T> implements Callback<TableColumn<S, T>, TableCell<S, T>> {
+@SuppressWarnings({ "rawtypes", "unchecked" })
+public class TextField extends CustomTextField {
 
 	private final EventHandlerManager eventHandlerManager;
 
-	private ObservableList<T> autoCompletion;
+	private ObservableList autoCompletion;
 	private ObjectProperty<EventHandler<AutoCompletionEvent>> onAutoCompletion;
-	private ObjectProperty<StringConverter<T>> stringConverter;
+	private ObjectProperty<StringConverter> stringConverter;
+	private AutoCompletionBinding autoCompletionBinding;
 
-	public JSObjectCellFactory() {
+	public TextField() {
 		this.eventHandlerManager = new EventHandlerManager(this);
 	}
 
-	@Override
-	public TableCell<S, T> call(final TableColumn<S, T> aParam) {
-		final TextFieldTableCell<S, T> iTableCell = new TextFieldTableCell<S, T>(this.getStringConverter());
-		if (this.getAutoCompletion() != null) {
-			iTableCell.getTextfield().setAutoCompletion(this.getAutoCompletion());
-			if (this.getOnAutoCompletion() != null) {
-				iTableCell.getTextfield().setOnAutoCompletion(this.getOnAutoCompletion());
-			}
-		}
-		return iTableCell;
-	}
-
-	public ObservableList<T> getAutoCompletion() {
+	public ObservableList getAutoCompletion() {
 		return this.autoCompletion;
 	}
 
@@ -53,7 +43,7 @@ public class JSObjectCellFactory<S, T> implements Callback<TableColumn<S, T>, Ta
 		return this.onAutoCompletionProperty().get();
 	}
 
-	public StringConverter<T> getStringConverter() {
+	public StringConverter getStringConverter() {
 		return this.stringConverterProperty().get();
 	}
 
@@ -62,26 +52,29 @@ public class JSObjectCellFactory<S, T> implements Callback<TableColumn<S, T>, Ta
 			this.onAutoCompletion = new SimpleObjectProperty<EventHandler<AutoCompletionEvent>>(this, "onAutoCompletion") {
 				@Override
 				protected void invalidated() {
-					JSObjectCellFactory.this.eventHandlerManager.setEventHandler(AutoCompletionEvent.AUTO_COMPLETED, this.get());
+					TextField.this.eventHandlerManager.setEventHandler(AutoCompletionEvent.AUTO_COMPLETED, this.get());
 				}
 			};
 		}
 		return this.onAutoCompletion;
 	}
 
-	public void setAutoCompletion(final ObservableList<T> autoCompletion) {
+	public void setAutoCompletion(final ObservableList autoCompletion) {
 		this.autoCompletion = autoCompletion;
+		this.autoCompletionBinding = new AutoCompletionTextFieldBinding(this, new StringSuggestionProvider(this.autoCompletion, this.getStringConverter()), this.getStringConverter());
 	}
 
 	public void setOnAutoCompletion(final EventHandler<AutoCompletionEvent> onAutoCompletion) {
 		this.onAutoCompletionProperty().set(onAutoCompletion);
+		if (this.autoCompletionBinding != null) {
+			this.autoCompletionBinding.addEventHandler(AutoCompletionEvent.AUTO_COMPLETED, this.getOnAutoCompletion());
+		}
 	}
 
-	protected ObjectProperty<StringConverter<T>> stringConverterProperty() {
+	protected ObjectProperty<StringConverter> stringConverterProperty() {
 		if (this.stringConverter == null) {
-			this.stringConverter = new SimpleObjectProperty<StringConverter<T>>(new JSObjectStringConverter<>());
+			this.stringConverter = new SimpleObjectProperty<StringConverter>(new JSObjectStringConverter<>());
 		}
 		return this.stringConverter;
 	}
-
 }
