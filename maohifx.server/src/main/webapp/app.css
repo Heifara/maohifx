@@ -1,66 +1,19 @@
-#module {
-	    -fx-background-color: 
-        lightgray,
-        linear-gradient(gray 0.0%, gray 20.0%, lightgray 100.0%);
-    -fx-background-radius: 5.0;
-    -fx-padding: 10.0;
-    -fx-hgap: 10.0;
-    -fx-vgap: 10.0;
-}
-
-#module .text-field {
-    -fx-background-color: 
-        black,
-        linear-gradient(#303842 0.0%, #3e5577 20.0%, #375074 100.0%),
-        linear-gradient(#768aa5 0.0%, #849cbb 5.0%, #5877a2 50.0%, #486a9a 51.0%, #4a6c9b 100.0%);
-    -fx-text-fill: white;
-    -fx-background-radius: 0.0;
-    -fx-font-weight: bold;
-}
-
-#module .text-area {
-	-fx-background-color: null;
-}
-
-#module .text-area .content {
-	-fx-background-color: transparent;
-	-fx-padding: 10.0;
-	-fx-spacing: 8.0;
-}
-
-#invoice-button {
-	-fx-graphic: url("invoice-icon.png");
-	-fx-border-width: 0.0px;
-	-fx-background-color: null;
-}
-
-#product-button {
-	-fx-graphic: url("product-icon.png");
-	-fx-border-width: 0.0px;
-	-fx-background-color: null;
-}
-
-#contact-button {
-	-fx-graphic: url("contact-icon.png");
-	-fx-border-width: 0.0px;
-	-fx-background-color: null;
-}
-
 .tab-pane .tab-header-background {
 	-fx-background-image: null;
+	-fx-background-color:
+    	gray,
+    	linear-gradient(lightgray 0.0%, gray 50.0%, darkgray 90.0%);
 }
 
 .tab-pane .tab-content-area {
-	-fx-background-color: 
-        #a6b5c9,
-        linear-gradient(#303842 0.0%, #3e5577 20.0%, #375074 100.0%),
-        linear-gradient(#768aa5 0.0%, #849cbb 5.0%, #5877a2 50.0%, #486a9a 51.0%, #4a6c9b 100.0%);
+	-fx-background-color: lightgray;
+	-fx-effect: innershadow( three-pass-box , gray , 8.0, 0.0 , 0.0 , 4.0 );
 }
 
 .link {
 	-fx-font-family: "Helvetica";
 	-fx-font-size: 12.0px;
-    -fx-text-fill: white;
+    -fx-text-fill: black;
     -fx-font-weight: bold;
 }
 
@@ -69,42 +22,42 @@
 }
 
 .label {
-	-fx-font-color: white;
+	-fx-font-color: black;
     -fx-font-size: 12.0px;
     -fx-font-weight: bold;
-    -fx-text-fill: white;
+    -fx-text-fill: black;
     -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
 }
 
 .text-field {
-	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
+	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 0.0 );
 }
 
 .text-field:hover {
-	-fx-background-color: lightblue;
-}
-
-.button {
+	-fx-background-color: lightgray;
 }
 
 .tool-bar {
-    -fx-background-color: linear-gradient(#98a8bd 0.0%, #8195af 25.0%, #6d86a4 100.0%);
+    -fx-background-color:
+    	gray,
+    	linear-gradient(lightgray 0.0%, gray 50.0%, darkgray 100.0%),
+    	linear-gradient(lightgray 0.0%, gray 50.0%, darkgray 100.0%);
+    -fx-effect: dropshadow( three-pass-box , black , 6.0, 0.0 , 0.0 , 2.0 );
 }
 
 .tool-bar .button {
-	-fx-background-color: 
-        #a6b5c9,
-        linear-gradient(#303842 0.0%, #3e5577 20.0%, #375074 100.0%),
-        linear-gradient(#768aa5 0.0%, #849cbb 5.0%, #5877a2 50.0%, #486a9a 51.0%, #4a6c9b 100.0%);
-    -fx-background-insets: 0.0 0.0 -1.0 0.0,0.0,1.0;
-    -fx-background-radius: 5.0,5.0,4.0;
-    -fx-padding: 3.0 10.0 3.0 10.0;
-    -fx-text-fill: #242d35;
-    -fx-font-family: "Helvetica";
-    -fx-text-fill: white;
+	-fx-border-width: 0.0px;
+	-fx-background-color: null;
 }
 
-.table-view {
+.tool-bar .button:hover {
+	-fx-effect: dropshadow( gaussian , white , 30.0, 0.0, 0.0, 1.0 );
+}
+
+.tool-bar .button:pressed {
+	-fx-background-color: lightgray;
+	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
+	-fx-background-radius: 60.0px;
 }
 
 .table-view .button {
@@ -150,6 +103,48 @@
 	-fx-background-color: skyblue;
 }
 
+#module {
+	    -fx-background-color: 
+        lightgray,
+        linear-gradient(gray 0.0%, gray 20.0%, lightgray 100.0%);
+    -fx-background-radius: 5.0;
+    -fx-padding: 10.0;
+    -fx-hgap: 10.0;
+    -fx-vgap: 10.0;
+}
+
+#module .text-field {
+    -fx-background-color: 
+        black,
+        linear-gradient(#303842 0.0%, #3e5577 20.0%, #375074 100.0%),
+        linear-gradient(#768aa5 0.0%, #849cbb 5.0%, #5877a2 50.0%, #486a9a 51.0%, #4a6c9b 100.0%);
+    -fx-text-fill: white;
+    -fx-background-radius: 0.0;
+    -fx-font-weight: bold;
+}
+
+#module .text-area {
+	-fx-background-color: null;
+}
+
+#module .text-area .content {
+	-fx-background-color: transparent;
+	-fx-padding: 10.0;
+	-fx-spacing: 8.0;
+}
+
+#invoice-button {
+	-fx-graphic: url("invoice-icon.png");
+}
+
+#product-button {
+	-fx-graphic: url("product-icon.png");
+}
+
+#contact-button {
+	-fx-graphic: url("contact-icon.png");
+}
+
 #save-button {
 	-fx-graphic: url("save-icon.png");
 }
@@ -158,46 +153,16 @@
 	-fx-graphic: url("delete-icon.png");
 }
 
-#save-button:hover {
-	-fx-background-color: white;
-	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
-	-fx-background-radius: 40.0px;
-}
-
 #print-button {
 	-fx-graphic: url("print-icon.png");
-}
-
-#print-button:hover {
-	-fx-background-color: white;
-	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
-	-fx-background-radius: 40.0px;
 }
 
 #valid-button {
 	-fx-graphic: url("valid-icon.png");
 }
 
-#valid-button:hover {
-	-fx-background-color: white;
-	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
-	-fx-background-radius: 40.0px;
-}
-
-#print-button:hover {
-	-fx-background-color: white;
-	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
-	-fx-background-radius: 40.0px;
-}
-
 #search-button {
 	-fx-graphic: url("search-icon.png");
 	-fx-border-width: 0.0px;
 	-fx-background-color: null;
-}
-
-#search-button:pressed {
-	-fx-background-color: white;
-	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
-	-fx-background-radius: 40.0px;
 }
