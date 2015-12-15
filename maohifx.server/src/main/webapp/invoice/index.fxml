@@ -35,7 +35,15 @@
 			<children>
 				<Label text="Date" />
 				<DatePicker fx:id="invoiceDate" GridPane.columnIndex="1" />
-				<TextField fx:id="customerName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+				<TextField fx:id="customerName" onAutoCompletion="controller.customerNameAutoCompletionEvent(event)" GridPane.columnIndex="1" GridPane.rowIndex="1">
+					<autoCompletion>
+						<FXCollections fx:id="customerAutoCompletion" fx:factory="observableArrayList">
+							<String fx:value="Jacob Smith" />
+							<String fx:value="Helena Gomez" />
+							<String fx:value="Igor Azouvioska" />
+						</FXCollections>
+					</autoCompletion>
+				</TextField>
 				<Label text="Client" GridPane.rowIndex="1" />
 				<Label text="Numéro de facture" GridPane.columnIndex="3" />
 				<TextField fx:id="invoiceNumber" editable="false" GridPane.columnIndex="4" />
