@@ -91,7 +91,7 @@ public class JSObjectCellFactory<S, T> implements Callback<TableColumn<S, T>, Ta
 	}
 
 	public EventHandler<AutoCompletionEvent> getOnAutoCompletion() {
-		return this.onAutoCompletion.get();
+		return this.onAutoCompletionProperty().get();
 	}
 
 	public StringConverter<T> getStringConverter() {
