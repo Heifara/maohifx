@@ -44,9 +44,7 @@ public class JSObjectStringConverter<T> extends StringConverter<T> {
 				final ScriptObjectMirror iToStringMethod = (ScriptObjectMirror) iScriptObject.get("toString");
 				iToStringMethod.setMember("this", iScriptObject);
 
-				final String iResult = (String) iToStringMethod.call(iScriptObject);
-				System.out.println(iResult);
-				return iResult;
+				return (String) iToStringMethod.call(iScriptObject);
 			} else {
 				throw new IllegalArgumentException(String.format("The type of %s is illegal", aObject.toString()));
 			}
