@@ -45,6 +45,8 @@ public class TextFieldTableCell<S, T> extends TableCell<S, T>implements EventHan
 	}
 
 	private void focusGain(final ObservableValue<? extends Boolean> aObservable) {
+		System.out.println("focusGain");
+		this.textfield.selectAll();
 	}
 
 	private void focusLost(final ObservableValue<? extends Boolean> aObservable) {
@@ -79,6 +81,7 @@ public class TextFieldTableCell<S, T> extends TableCell<S, T>implements EventHan
 		this.setText(null);
 
 		this.setGraphic(this.getTextfield());
+		this.getTextfield().requestFocus();
 	}
 
 	protected ObjectProperty<StringConverter<T>> stringConverterProperty() {
