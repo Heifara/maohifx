@@ -25,6 +25,7 @@ function InvoiceController() {
 
 	invoiceNumber.textProperty().bindBidirectional(this.invoice.invoiceNumber, new NumberStringConverter());
 	invoiceDate.valueProperty().bindBidirectional(this.invoice.invoiceDate);
+	customerName.textProperty().bindBidirectional(this.invoice.customerName);
 	totalWithNoTaxes.textProperty().bindBidirectional(this.invoice.totalWithNoTaxes, new JSObjectStringConverter());
 	totalTva.textProperty().bindBidirectional(this.invoice.totalTva, new JSObjectStringConverter());
 	totalDiscount.textProperty().bindBidirectional(this.invoice.totalDiscount, new JSObjectStringConverter());
