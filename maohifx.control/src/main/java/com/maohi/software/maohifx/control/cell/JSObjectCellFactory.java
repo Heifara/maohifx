@@ -120,7 +120,7 @@ public class JSObjectCellFactory<S, T> implements Callback<TableColumn<S, T>, Ta
 
 	protected ObjectProperty<StringConverter<T>> stringConverterProperty() {
 		if (this.stringConverter == null) {
-			this.stringConverter = new SimpleObjectProperty<StringConverter<T>>();
+			this.stringConverter = new SimpleObjectProperty<StringConverter<T>>(new JSObjectStringConverter<>());
 		}
 		return this.stringConverter;
 	}
