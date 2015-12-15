@@ -52,7 +52,7 @@ public class TextFieldTableCell<S, T> extends TableCell<S, T>implements EventHan
 	}
 
 	public StringConverter<T> getStringConverter() {
-		return this.stringConverter.get();
+		return this.stringConverterProperty().get();
 	}
 
 	public TextField getTextfield() {
