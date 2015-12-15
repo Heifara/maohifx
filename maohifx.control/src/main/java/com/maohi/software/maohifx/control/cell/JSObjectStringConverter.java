@@ -1,5 +1,8 @@
 package com.maohi.software.maohifx.control.cell;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 import javafx.util.StringConverter;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
@@ -36,6 +39,11 @@ public class JSObjectStringConverter<T> extends StringConverter<T> {
 			} else if (aObject instanceof Double) {
 				this.type = Double.class;
 				return aObject.toString();
+			} else if (aObject instanceof Date) {
+				final Date iDate = (Date) aObject;
+
+				final DateFormat iFormat = DateFormat.getDateInstance();
+				return iFormat.format(iDate);
 			} else if (aObject instanceof Float) {
 				this.type = Float.class;
 				return aObject.toString();
