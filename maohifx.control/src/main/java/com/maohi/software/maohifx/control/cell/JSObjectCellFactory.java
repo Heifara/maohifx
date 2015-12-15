@@ -77,9 +77,9 @@ public class JSObjectCellFactory<S, T> implements Callback<TableColumn<S, T>, Ta
 	@Override
 	public TableCell<S, T> call(final TableColumn<S, T> aParam) {
 		final TextFieldTableCell<S, T> iTableCell = new TextFieldTableCell<S, T>(this.getStringConverter());
-		if (this.autoCompletion != null) {
+		if (this.getAutoCompletion() != null) {
 			final AutoCompletionBinding<T> iAutoCompletionBinding = new AutoCompletionTextFieldBinding(iTableCell.getTextfield(), new StringSuggestionProvider(this.autoCompletion, this.getStringConverter()), this.getStringConverter());
-			if (this.onAutoCompletion != null) {
+			if (this.getOnAutoCompletion() != null) {
 				iAutoCompletionBinding.addEventHandler(AutoCompletionEvent.AUTO_COMPLETED, this.getOnAutoCompletion());
 			}
 		}
@@ -115,7 +115,7 @@ public class JSObjectCellFactory<S, T> implements Callback<TableColumn<S, T>, Ta
 	}
 
 	public void setOnAutoCompletion(final EventHandler<AutoCompletionEvent> onAutoCompletion) {
-		this.onAutoCompletion.set(onAutoCompletion);
+		this.onAutoCompletionProperty().set(onAutoCompletion);
 	}
 
 	protected ObjectProperty<StringConverter<T>> stringConverterProperty() {
