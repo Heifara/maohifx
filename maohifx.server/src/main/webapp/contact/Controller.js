@@ -48,6 +48,7 @@ ContactController.prototype.addPhoneEvent = function(aActionEvent) {
 		this.phoneRowIndex++;
 
 		iLabelTextField = new TextField();
+		iLabelTextField.getStyleClass().add("label-text-field");
 		iLabelTextField.setText("");
 		iLabelTextField.setFocusTraversable(false);
 		iLabelTextField.textProperty().bindBidirectional(this.lastAddedPhone.label);
@@ -72,6 +73,7 @@ ContactController.prototype.addEmailEvent = function(aActionEvent) {
 		this.emailRowIndex++;
 
 		iLabelTextField = new TextField();
+		iLabelTextField.getStyleClass().add("label-text-field");
 		iLabelTextField.setText("");
 		iLabelTextField.setFocusTraversable(false);
 		iLabelTextField.textProperty().bindBidirectional(iEmail.label);

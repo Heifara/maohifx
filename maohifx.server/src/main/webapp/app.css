@@ -37,6 +37,25 @@
 	-fx-background-color: lightgray;
 }
 
+.label-text-field {
+	-fx-font-color: black;
+    -fx-font-size: 12.0px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
+	-fx-background-color: transparent;
+}
+
+.label-text-field:hover {
+    -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
+}
+
+.label-text-field:focused {
+    -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
+	-fx-background-color: white;
+	-fx-border-width: 10.0px;
+}
+
 .tool-bar {
     -fx-background-color:
     	gray,
