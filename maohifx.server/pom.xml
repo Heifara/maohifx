@@ -82,10 +82,6 @@
 			<artifactId>jersey-media-json-jackson</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.maohi.software</groupId>
 			<artifactId>maohifx.common</artifactId>
 			<version>${project.parent.version}</version>

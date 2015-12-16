@@ -5,11 +5,9 @@ package com.maohi.software.maohifx.server.webapi;
 
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -30,10 +28,7 @@ import com.maohi.software.maohifx.invoice.dao.InvoiceDAO;
  */
 @Path("invoices")
 @Produces({ MediaType.APPLICATION_JSON })
-public class InvoicesService {
-
-	@Context
-	ServletContext context;
+public class InvoicesService extends RestService {
 
 	@GET
 	public Response search(final String aPattern) {
@@ -47,7 +42,7 @@ public class InvoicesService {
 		final InvoiceDAO iDAO = new InvoiceDAO();
 		final List<Invoice> iInvoices = iDAO.readAll();
 		for (final Invoice iInvoice : iInvoices) {
-			iInvoice.setHref("http://localhost:8080/maohifx.server/webapi/invoice?uuid=" + iInvoice.getUuid());
+			iInvoice.setHref(this.getLocalContextUri() + "/webapi/invoice?uuid=" + iInvoice.getUuid());
 		}
 
 		try {
