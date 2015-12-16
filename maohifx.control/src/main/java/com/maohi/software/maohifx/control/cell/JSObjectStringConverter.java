@@ -1,6 +1,7 @@
 package com.maohi.software.maohifx.control.cell;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -41,7 +42,7 @@ public class JSObjectStringConverter<T> extends StringConverter<T> {
 				return Integer.valueOf(aObject.toString()).toString();
 			} else if (aObject instanceof Double) {
 				this.type = Double.class;
-				return aObject.toString();
+				return NumberFormat.getNumberInstance().format(Double.valueOf((Double) aObject));
 			} else if (aObject instanceof LocalDate) {
 				final LocalDate iLocalDate = (LocalDate) aObject;
 				return iLocalDate.toString();
