@@ -62,6 +62,8 @@ ContactController.prototype.addPhoneEvent = function(aActionEvent) {
 			}
 		});
 		phone.add(iTextField, 1, this.phoneRowIndex);
+
+		iTextField.requestFocus();
 	}
 }
 
@@ -87,6 +89,8 @@ ContactController.prototype.addEmailEvent = function(aActionEvent) {
 			}
 		});
 		email.add(iTextField, 1, this.emailRowIndex);
+
+		iTextField.requestFocus();
 	}
 }
 
