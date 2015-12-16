@@ -11,6 +11,13 @@ function ProductsController() {
 			pattern.requestFocus();
 		}
 	}));
+
+	// AutoCompletion
+	iResults = Product.search();
+	for (iIndex in iResults) {
+		iProduct = iResults.get(iIndex);
+		patternAutoCompletion.add(iProduct.designation.get());
+	}
 }
 
 ProductsController.prototype.searchEvent = function(aEvent) {
