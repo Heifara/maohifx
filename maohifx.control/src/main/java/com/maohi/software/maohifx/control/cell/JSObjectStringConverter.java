@@ -1,6 +1,7 @@
 package com.maohi.software.maohifx.control.cell;
 
 import java.text.DateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 import javafx.util.StringConverter;
@@ -36,12 +37,16 @@ public class JSObjectStringConverter<T> extends StringConverter<T> {
 			if (aObject instanceof String) {
 				this.type = String.class;
 				return (String) aObject;
+			} else if (aObject instanceof Integer) {
+				return Integer.valueOf(aObject.toString()).toString();
 			} else if (aObject instanceof Double) {
 				this.type = Double.class;
 				return aObject.toString();
+			} else if (aObject instanceof LocalDate) {
+				final LocalDate iLocalDate = (LocalDate) aObject;
+				return iLocalDate.toString();
 			} else if (aObject instanceof Date) {
 				final Date iDate = (Date) aObject;
-
 				final DateFormat iFormat = DateFormat.getDateInstance();
 				return iFormat.format(iDate);
 			} else if (aObject instanceof Float) {
