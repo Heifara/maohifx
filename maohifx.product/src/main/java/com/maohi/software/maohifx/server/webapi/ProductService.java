@@ -4,6 +4,7 @@
 package com.maohi.software.maohifx.server.webapi;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -91,11 +92,16 @@ public class ProductService extends RestService {
 	public Response searchFromQueryParam(@QueryParam("pattern") final String aPattern) {
 		try {
 			final ProductDAO iDAO = new ProductDAO();
-			final List<Product> iResults = iDAO.readAll();
+			List<Product> iResults = new ArrayList<>();
+			if (aPattern.isEmpty()) {
+				iResults = iDAO.readAll();
+			} else {
+				iResults = iDAO.readByDesignation(aPattern);
+			}
+
 			for (final Product iProduct : iResults) {
 				iProduct.setHref(this.getLocalContextUri() + "/webapi/product?uuid=" + iProduct.getUuid());
 			}
-
 			final String iJSONObject = new ObjectMapper().writeValueAsString(iResults);
 			return Response.ok(iJSONObject).build();
 		} catch (final Exception aException) {
