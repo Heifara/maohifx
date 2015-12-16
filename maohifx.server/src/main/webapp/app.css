@@ -30,11 +30,23 @@
 }
 
 .text-field {
-	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 0.0 );
+	-fx-font-color: black;
+    -fx-font-size: 12.0px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+    -fx-background-color: lightgray;
+    -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
 }
 
 .text-field:hover {
-	-fx-background-color: lightgray;
+	-fx-background-color: gray;
+    -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
+}
+
+.text-field:focused {
+    -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
+	-fx-background-color: gray;
+	-fx-border-width: 10.0px;
 }
 
 .label-text-field {
@@ -47,12 +59,13 @@
 }
 
 .label-text-field:hover {
+	-fx-background-color: lightgray;
     -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
 }
 
 .label-text-field:focused {
     -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
-	-fx-background-color: white;
+	-fx-background-color: lightgray;
 	-fx-border-width: 10.0px;
 }
 
