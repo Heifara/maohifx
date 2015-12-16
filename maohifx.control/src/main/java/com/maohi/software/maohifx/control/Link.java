@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Tooltip;
 
 /**
  * @author heifara
@@ -103,6 +104,10 @@ public class Link extends Hyperlink implements Initializable, EventHandler<Actio
 		} catch (final IOException aException) {
 			throw new RuntimeException(aException);
 		}
+
+		this.setTooltip(new Tooltip(this.getText()));
+		this.tooltipProperty().get().textProperty().bindBidirectional(this.textProperty());
+
 	}
 
 	public Link(final String aText) {
