@@ -11,6 +11,7 @@ import com.maohi.software.maohifx.control.enumerations.HrefTarget;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TableCell;
+import javafx.scene.control.TableRow;
 import javafx.util.StringConverter;
 import netscape.javascript.JSObject;
 
@@ -79,6 +80,7 @@ public class LinkTableCell<S, T> extends TableCell<S, T> {
 		this.setGraphic(this.getLink());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void updateItem(final T aItem, final boolean aEmpty) {
 		super.updateItem(aItem, aEmpty);
@@ -88,12 +90,15 @@ public class LinkTableCell<S, T> extends TableCell<S, T> {
 			this.getLink().setText(null);
 			this.setGraphic(null);
 		} else {
-			this.setText(this.converter.toString(aItem));
+			this.setText(null);
 			this.getLink().setText(this.converter.toString(aItem));
 			this.getLink().setTarget(this.target);
 
-			this.getLink().setHref(this.getHref(this.getTableRow().getItem()));
-			this.setGraphic(this.getLink());
+			final TableRow<T> iTableRow = this.getTableRow();
+			if (iTableRow != null) {
+				this.getLink().setHref(this.getHref(iTableRow.getItem()));
+				this.setGraphic(this.getLink());
+			}
 		}
 	}
 
