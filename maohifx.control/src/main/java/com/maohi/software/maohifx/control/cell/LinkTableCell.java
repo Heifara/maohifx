@@ -11,7 +11,6 @@ import com.maohi.software.maohifx.control.enumerations.HrefTarget;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TableCell;
-import javafx.scene.control.TableRow;
 import javafx.util.StringConverter;
 import netscape.javascript.JSObject;
 
@@ -75,8 +74,7 @@ public class LinkTableCell<S, T> extends TableCell<S, T> {
 
 		this.setText(null);
 
-		final TableRow<?> iTableRow = (TableRow<?>) this.getParent();
-		this.getLink().setHref(this.getHref(iTableRow.getItem()));
+		this.getLink().setHref(this.getHref(this.getTableRow().getItem()));
 		this.getLink().setTarget(this.target);
 		this.setGraphic(this.getLink());
 	}
@@ -93,6 +91,9 @@ public class LinkTableCell<S, T> extends TableCell<S, T> {
 			this.setText(this.converter.toString(aItem));
 			this.getLink().setText(this.converter.toString(aItem));
 			this.getLink().setTarget(this.target);
+
+			this.getLink().setHref(this.getHref(this.getTableRow().getItem()));
+			this.setGraphic(this.getLink());
 		}
 	}
 
