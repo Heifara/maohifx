@@ -46,6 +46,9 @@ public class InvoicesService {
 
 		final InvoiceDAO iDAO = new InvoiceDAO();
 		final List<Invoice> iInvoices = iDAO.readAll();
+		for (final Invoice iInvoice : iInvoices) {
+			iInvoice.setHref("http://localhost:8080/maohifx.server/webapi/invoice?uuid=" + iInvoice.getUuid());
+		}
 
 		try {
 			final String iJSONObject = new ObjectMapper().writeValueAsString(iInvoices);

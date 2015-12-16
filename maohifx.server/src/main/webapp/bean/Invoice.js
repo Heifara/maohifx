@@ -32,7 +32,7 @@ Invoice.prototype.parseJSON = function(aJSONObject) {
 	this.invoiceNumber.set(aJSONObject.get("number"));
 	this.invoiceDate.setDate(aJSONObject.get("date"));
 	this.customerName.set(aJSONObject.get("customerName"));
-	this.href.set("http://localhost:8080/maohifx.server/webapi/invoice?uuid=" + this.uuid.get() + "");
+	this.href.set(aJSONObject.get("href"));
 
 	this.invoiceLines.clear();
 	iArray = aJSONObject.get("invoiceLines");
@@ -105,7 +105,7 @@ Invoice.prototype.updateInvoiceLine = function(aIndex, aProduct) {
 	iInvoiceLine = this.invoiceLines.get(aIndex);
 	iInvoiceLine.sellingPrice.set(aProduct.sellingPrice.get());
 	iInvoiceLine.tvaRate.set(aProduct.tvaRate.get())
-	
+
 	this.updateTotals();
 }
 
