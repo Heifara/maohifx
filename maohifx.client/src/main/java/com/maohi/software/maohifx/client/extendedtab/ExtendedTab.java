@@ -4,6 +4,8 @@
 package com.maohi.software.maohifx.client.extendedtab;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -35,6 +37,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -288,10 +291,14 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 						final Node iNode = iLoader.load();
 						ExtendedTab.this.content.setCenter(iNode);
 					} catch (final IOException aException) {
-						final Label iLabel = new Label();
-						iLabel.setText(aException.getMessage());
-						ExtendedTab.this.content.setCenter(iLabel);
-						aException.printStackTrace();
+						final StringWriter iStringWriter = new StringWriter();
+						final PrintWriter iPrintWriter = new PrintWriter(iStringWriter);
+						aException.printStackTrace(iPrintWriter);
+
+						final TextArea iStackTrace = new TextArea();
+						iStackTrace.setText(iStringWriter.toString());
+						iStackTrace.setEditable(false);
+						ExtendedTab.this.content.setCenter(iStackTrace);
 					}
 				}
 			});
@@ -300,10 +307,14 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 			ExtendedTab.this.progressIndicator.setVisible(false);
 
 		} catch (final Exception aException) {
-			final Label iLabel = new Label();
-			iLabel.setText(aException.getMessage());
-			ExtendedTab.this.content.setCenter(iLabel);
-			aException.printStackTrace();
+			final StringWriter iStringWriter = new StringWriter();
+			final PrintWriter iPrintWriter = new PrintWriter(iStringWriter);
+			aException.printStackTrace(iPrintWriter);
+
+			final TextArea iStackTrace = new TextArea();
+			iStackTrace.setText(iStringWriter.toString());
+			iStackTrace.setEditable(false);
+			ExtendedTab.this.content.setCenter(iStackTrace);
 		}
 
 	}
