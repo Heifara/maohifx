@@ -9,19 +9,14 @@ function InvoicesController() {
 		$tab.setText("Factures");
 	}
 
+	Platform.runLater(new Runnable({
+		run : function() {
+			pattern.requestFocus();
+		}
+	}));
+
 	this.data = FXCollections.observableArrayList();
 	tableView.setItems(this.data);
-
-	try {
-		iRunnable = iAccelerators = tab.getContent().getScene().getAccelerators()
-		iAccelerators.put(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN), new java.lang.Runnable({
-			run : function() {
-				controller.newInvoiceEvent();
-			}
-		}));
-		print(iAccelerators);
-	} catch (e) {
-	}
 }
 
 InvoicesController.prototype.searchEvent = function(aEvent) {
@@ -50,9 +45,4 @@ InvoicesController.prototype.searchEvent = function(aEvent) {
 			java.lang.System.err.println($status);
 		}
 	});
-}
-
-InvoicesController.prototype.keyTypeEvent = function(aEvent) {
-	print("keyType");
-	print(aEvent);
 }
