@@ -113,6 +113,17 @@
 							<cellValueFactory>
 								<JSObjectPropertyValueFactory property="mode" onEditCommit="controller.addInvoicePaymentLineEvent(event)" />
 							</cellValueFactory>
+							<cellFactory>
+								<JSObjectCellFactory>
+									<autoCompletion>
+										<FXCollections fx:factory="observableArrayList">
+											<String fx:value="CASH" />
+											<String fx:value="CHEQUE" />
+											<String fx:value="CARTE DE CREDIT" />
+										</FXCollections>
+									</autoCompletion>
+								</JSObjectCellFactory>
+							</cellFactory>
 						</TableColumn>
 						<TableColumn prefWidth="150.0" text="Montant en XPF">
 							<cellValueFactory>
