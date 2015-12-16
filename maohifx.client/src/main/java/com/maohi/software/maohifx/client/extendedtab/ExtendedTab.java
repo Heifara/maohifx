@@ -3,11 +3,16 @@
  */
 package com.maohi.software.maohifx.client.extendedtab;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import javax.ws.rs.InternalServerErrorException;
@@ -24,6 +29,8 @@ import com.maohi.software.maohifx.client.rest.RestManagerImpl;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -46,7 +53,7 @@ import javafx.scene.layout.VBox;
  * @author heifara
  *
  */
-public class ExtendedTab extends Tab implements Initializable, ChangeListener<TabPane>, Runnable {
+public class ExtendedTab extends Tab implements Initializable, ChangeListener<TabPane>, Runnable, ListChangeListener<String> {
 
 	private final FXMLLoader loader;
 	private Tab selectedTab;
@@ -77,6 +84,9 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 	@FXML
 	private VBox urlPane;
+
+	@FXML
+	private ObservableList<String> urlAutoCompletion;
 
 	public ExtendedTab(final FXMLLoader aParent) {
 		try {
@@ -144,6 +154,37 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 		this.menuButton.setBorder(null);
 		this.menuButton.setBackground(null);
+
+		this.initUrlAutoCompletion();
+
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				ExtendedTab.this.url.requestFocus();
+			}
+		});
+	}
+
+	private void initUrlAutoCompletion() {
+		try {
+			final InputStream iInputStream = this.getClass().getResourceAsStream("url.properties");
+			if (iInputStream != null) {
+				final Properties iProperties = new Properties();
+				iProperties.load(iInputStream);
+
+				if (iProperties.getProperty("url") != null) {
+					for (final String iUrl : iProperties.getProperty("url").split(";")) {
+						this.urlAutoCompletion.add(iUrl);
+					}
+				}
+			}
+
+		} catch (final IOException aException) {
+			aException.printStackTrace();
+		}
+
+		this.urlAutoCompletion.addListener(this);
 	}
 
 	public void load(final FXMLLoader aLoader, final String aText, final String aURL, final String aRecipeId) {
@@ -205,6 +246,42 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 				ExtendedTab.this.parent.getTabs().add(new ExtendedTab(ExtendedTab.this.loader));
 			}
 		});
+	}
+
+	@Override
+	public void onChanged(final javafx.collections.ListChangeListener.Change<? extends String> aChange) {
+		OutputStream iOutput = null;
+
+		try {
+			final URL iUrl = this.getClass().getResource("url.properties");
+			if (iUrl != null) {
+				final Properties iProperties = new Properties();
+				iOutput = new FileOutputStream(new File(iUrl.getFile()));
+
+				final StringBuilder iUrlBuilder = new StringBuilder();
+				for (final String iUrlString : ExtendedTab.this.urlAutoCompletion) {
+					iUrlBuilder.append(iUrlString);
+					iUrlBuilder.append(";");
+				}
+
+				// set the properties value
+				iProperties.setProperty("url", iUrlBuilder.toString());
+
+				// save properties to project root folder
+				iProperties.store(iOutput, null);
+			}
+		} catch (final IOException aException) {
+			aException.printStackTrace();
+		} finally {
+			if (iOutput != null) {
+				try {
+					iOutput.close();
+				} catch (final IOException aException) {
+					aException.printStackTrace();
+				}
+			}
+
+		}
 	}
 
 	public void openEvent(final ActionEvent aEvent) {
@@ -288,6 +365,11 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 				public void run() {
 					try {
 						iLoader.setLocation(ExtendedTab.this.toHttp(iUrl, true));
+
+						if (!ExtendedTab.this.urlAutoCompletion.contains(iUrl.toExternalForm())) {
+							ExtendedTab.this.urlAutoCompletion.add(iUrl.toExternalForm());
+						}
+
 						final Node iNode = iLoader.load();
 						ExtendedTab.this.content.setCenter(iNode);
 					} catch (final IOException aException) {

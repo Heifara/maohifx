@@ -1,6 +1,7 @@
 <?import com.maohi.software.maohifx.control.*?>
 
 <?import org.controlsfx.control.*?>
+<?import javafx.collections.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.input.*?>
@@ -66,7 +67,12 @@
 							</Button>
 							<Button id="home" fx:id="homeButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" GridPane.columnIndex="1" onAction="#homeEvent">
 							</Button>
-							<TextField id="url" fx:id="url" GridPane.columnIndex="2" maxHeight="Infinity" onAction="#refreshTabEvent" />
+							<TextField id="url" fx:id="url" GridPane.columnIndex="2" maxHeight="Infinity" onAction="#refreshTabEvent">
+								<autoCompletion>
+									<FXCollections fx:id="urlAutoCompletion" fx:factory="observableArrayList">
+									</FXCollections>
+								</autoCompletion>
+							</TextField>
 						</children>
 					</GridPane>
 				</children>
