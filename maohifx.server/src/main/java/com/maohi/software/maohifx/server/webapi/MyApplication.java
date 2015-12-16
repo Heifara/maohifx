@@ -12,6 +12,7 @@ import com.maohi.software.maohifx.invoice.bean.Invoice;
 import com.maohi.software.maohifx.invoice.bean.InvoiceLine;
 import com.maohi.software.maohifx.invoice.bean.InvoicePaymentLine;
 import com.maohi.software.maohifx.invoice.bean.PaymentMode;
+import com.maohi.software.maohifx.product.bean.Product;
 
 /**
  * @author heifara
@@ -24,6 +25,7 @@ public class MyApplication extends ResourceConfig {
 		HibernateUtil.getConfiguration().addAnnotatedClass(InvoiceLine.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(InvoicePaymentLine.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(PaymentMode.class);
+		HibernateUtil.getConfiguration().addAnnotatedClass(Product.class);
 
 		final Session iSession = HibernateUtil.getSessionFactory().openSession();
 		AbstractDAO.setSession(iSession);
