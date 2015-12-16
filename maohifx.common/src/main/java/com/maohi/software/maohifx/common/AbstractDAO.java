@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.maohi.software.maohifx.common;
 
@@ -15,7 +15,7 @@ import org.hibernate.Session;
  */
 public abstract class AbstractDAO<E> {
 
-	private static Session session;
+	protected static Session session;
 
 	public static void setSession(final Session aSession) {
 		session = aSession;
