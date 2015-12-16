@@ -165,16 +165,29 @@
 	-fx-spacing: 8.0;
 }
 
-#invoice-button {
+#module .link {
+	-fx-graphic: url("workinprogress-icon.png");
+}
+
+
+#module #invoice-button {
 	-fx-graphic: url("invoice-icon.png");
 }
 
-#product-button {
+#module #product-button {
 	-fx-graphic: url("product-icon.png");
 }
 
-#contact-button {
+#module #contact-button {
 	-fx-graphic: url("contact-icon.png");
+}
+
+#module #customer-button {
+	-fx-graphic: url("customer-icon.png");
+}
+
+#module #supplier-button {
+	-fx-graphic: url("supplier-icon.png");
 }
 
 #save-button {
