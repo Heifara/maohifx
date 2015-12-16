@@ -124,6 +124,9 @@ InvoiceController.prototype.saveEvent = function() {
 	}
 
 	this.invoice.save();
+
+	this.addInvoiceLineEvent();
+	this.addInvoicePaymentLineEvent();
 }
 
 InvoiceController.prototype.printEvent = function() {
