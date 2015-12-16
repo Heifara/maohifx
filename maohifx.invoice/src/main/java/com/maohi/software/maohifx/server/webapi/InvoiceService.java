@@ -9,14 +9,12 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.UUID;
 
-import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -29,7 +27,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maohi.software.maohifx.common.AbstractDAO;
 import com.maohi.software.maohifx.common.HibernateUtil;
 import com.maohi.software.maohifx.invoice.bean.Invoice;
-import com.maohi.software.maohifx.invoice.bean.InvoiceLine;
 import com.maohi.software.maohifx.invoice.bean.InvoicePaymentLine;
 import com.maohi.software.maohifx.invoice.bean.PaymentMode;
 import com.maohi.software.maohifx.invoice.dao.InvoiceDAO;
@@ -40,16 +37,9 @@ import com.maohi.software.maohifx.invoice.dao.PaymentModeDAO;
  *
  */
 @Path("invoice")
-public class InvoiceService {
-
-	@Context
-	ServletContext context;
+public class InvoiceService extends RestService {
 
 	public InvoiceService() {
-		HibernateUtil.getConfiguration().addAnnotatedClass(Invoice.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(InvoiceLine.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(InvoicePaymentLine.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(PaymentMode.class);
 		final Session iSession = HibernateUtil.getSessionFactory().openSession();
 		AbstractDAO.setSession(iSession);
 	}

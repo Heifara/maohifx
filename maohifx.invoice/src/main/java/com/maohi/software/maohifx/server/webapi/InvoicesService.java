@@ -17,9 +17,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maohi.software.maohifx.common.AbstractDAO;
 import com.maohi.software.maohifx.common.HibernateUtil;
 import com.maohi.software.maohifx.invoice.bean.Invoice;
-import com.maohi.software.maohifx.invoice.bean.InvoiceLine;
-import com.maohi.software.maohifx.invoice.bean.InvoicePaymentLine;
-import com.maohi.software.maohifx.invoice.bean.PaymentMode;
 import com.maohi.software.maohifx.invoice.dao.InvoiceDAO;
 
 /**
@@ -30,15 +27,13 @@ import com.maohi.software.maohifx.invoice.dao.InvoiceDAO;
 @Produces({ MediaType.APPLICATION_JSON })
 public class InvoicesService extends RestService {
 
-	@GET
-	public Response search(final String aPattern) {
-		HibernateUtil.getConfiguration().addAnnotatedClass(Invoice.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(InvoiceLine.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(InvoicePaymentLine.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(PaymentMode.class);
+	public InvoicesService() {
 		final Session iSession = HibernateUtil.getSessionFactory().openSession();
 		AbstractDAO.setSession(iSession);
+	}
 
+	@GET
+	public Response search(final String aPattern) {
 		final InvoiceDAO iDAO = new InvoiceDAO();
 		final List<Invoice> iInvoices = iDAO.readAll();
 		for (final Invoice iInvoice : iInvoices) {
