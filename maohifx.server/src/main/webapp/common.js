@@ -20,3 +20,7 @@ var JSObjectStringConverter = com.maohi.software.maohifx.control.cell.JSObjectSt
 function alert(aText) {
 	javax.swing.JOptionPane.showMessageDialog(null, aText);
 }
+
+function runLater(aRunnable) {
+	Platform.runLater(aRunnable);
+}

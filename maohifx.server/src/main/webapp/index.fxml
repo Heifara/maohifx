@@ -16,6 +16,7 @@
 	<stylesheets>
 		<URL value="@app.css" />
 	</stylesheets>
+	<fx:script source="Controller.js" />
 	<center>
 		<ScrollPane BorderPane.alignment="CENTER">
 			<content>
@@ -91,4 +92,7 @@
 			</content>
 		</ScrollPane>
 	</center>
+	<fx:script>
+		controller = new HomeController();
+	</fx:script>
 </BorderPane>
