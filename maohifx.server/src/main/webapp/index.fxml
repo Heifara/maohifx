@@ -39,7 +39,7 @@
 								<TextArea editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT" />
 							</center>
 							<left>
-								<Link id="invoice-button" href="fxml://localhost:8080/maohifx.server/invoices" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" target="BLANK" BorderPane.alignment="TOP_LEFT" />
+								<Link id="invoice-button" href="@invoices" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" target="BLANK" BorderPane.alignment="TOP_LEFT" />
 							</left>
 						</BorderPane>
 						<BorderPane id="module" GridPane.rowIndex="1">
@@ -50,7 +50,7 @@
 								<TextArea editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT" />
 							</center>
 							<left>
-								<Link id="contact-button" href="fxml://localhost:8080/maohifx.server/contacts" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" target="BLANK" BorderPane.alignment="TOP_LEFT" />
+								<Link id="contact-button" href="@contacts" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" target="BLANK" BorderPane.alignment="TOP_LEFT" />
 							</left>
 						</BorderPane>
 						<BorderPane id="module" GridPane.columnIndex="1">
@@ -61,7 +61,7 @@
 								<TextArea editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT" />
 							</center>
 							<left>
-								<Link id="product-button" href="fxml://localhost:8080/maohifx.server/products" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" target="BLANK" BorderPane.alignment="TOP_LEFT" />
+								<Link id="product-button" href="@products" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" target="BLANK" BorderPane.alignment="TOP_LEFT" />
 							</left>
 						</BorderPane>
 						<BorderPane id="module" GridPane.rowIndex="2">
@@ -72,7 +72,7 @@
 								<TextArea text="Work in progress" editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT" />
 							</center>
 							<left>
-								<Link id="supplier-button" href="fxml://localhost:8080/maohifx.server/suppliers" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" target="BLANK" BorderPane.alignment="TOP_LEFT" />
+								<Link id="supplier-button" href="@suppliers" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" target="BLANK" BorderPane.alignment="TOP_LEFT" />
 							</left>
 						</BorderPane>
 						<BorderPane id="module" GridPane.rowIndex="3">
@@ -83,7 +83,7 @@
 								<TextArea text="Work in progress" editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT" />
 							</center>
 							<left>
-								<Link id="customer-button" href="fxml://localhost:8080/maohifx.server/products" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" target="BLANK" BorderPane.alignment="TOP_LEFT" />
+								<Link id="customer-button" href="@products" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" target="BLANK" BorderPane.alignment="TOP_LEFT" />
 							</left>
 						</BorderPane>
 					</children>

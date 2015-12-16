@@ -104,8 +104,8 @@
 				</ImageView>
 				<Button mnemonicParsing="false" onAction="controller.changeImageEvent(event)" text="Changer image" GridPane.rowIndex="1" />
 				<VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
-					<Link href="fxml://localhost:8080/maohifx.server/products" recipee="#recipe" target="FRAMENAME" text="Liste des ventes" />
-					<Link href="fxml://localhost:8080/maohifx.server/invoices" recipee="#recipe" target="FRAMENAME" text="Liste des factures" />
+					<Link href="@../products" recipee="#recipe" target="FRAMENAME" text="Liste des ventes" />
+					<Link href="@../invoices" recipee="#recipe" target="FRAMENAME" text="Liste des factures" />
 				</VBox>
 			</children>
 			<BorderPane.margin>
