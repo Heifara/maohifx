@@ -23,7 +23,7 @@ Product.prototype.parseJSON = function(aJSONObject) {
 	this.designation.set(aJSONObject.get("uuid"));
 	this.sellingPrice.set(aJSONObject.get("number"));
 	this.tvaRate.set(aJSONObject.get("tvaRate"));
-	this.href.set("http://localhost:8080/maohifx.server/webapi/product?uuid=" + this.uuid.get() + "");
+	this.href.set("http://localhost:8080/maohifx.server/product?uuid=" + this.uuid.get() + "");
 }
 
 Product.prototype.save = function() {

@@ -8,6 +8,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -125,7 +127,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	}
 
 	public void homeEvent(final ActionEvent aEvent) {
-		this.url.setText("fxml://localhost:8080/maohifx.server/webapi/index");
+		this.url.setText("fxml://localhost:8080/maohifx.server/");
 		this.refreshTabEvent(aEvent);
 	}
 
@@ -247,7 +249,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 			iLoader.setBuilderFactory(this.loader.getBuilderFactory());
 			if ((iUrl.getQuery() != null) && !iUrl.getQuery().isEmpty()) {
 				final Client iClient = ClientBuilder.newClient();
-				final WebTarget iTarget = iClient.target(this.toHttp(iUrl, false).toString()).queryParam(iUrl.getQuery().split("=")[0], iUrl.getQuery().split("=")[1]);
+				final WebTarget iTarget = iClient.target(iUrl.toExternalForm()).queryParam(iUrl.getQuery().split("=")[0], iUrl.getQuery().split("=")[1]);
 				final Response iResponse = iTarget.request().get();
 
 				final int iStatus = iResponse.getStatus();
@@ -264,6 +266,12 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 						throw new Exception(iResponse.readEntity(String.class));
 					}
 					break;
+
+				case INTERNAL_SERVER_ERROR:
+					throw new InternalServerErrorException(iResponse);
+
+				case NOT_FOUND:
+					throw new NotFoundException(iResponse);
 
 				default:
 					break;
@@ -325,17 +333,14 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		iURLBuilder.append("http://");
 		iURLBuilder.append(iUrl.getHost());
 		iURLBuilder.append(iUrl.getPort() != 0 ? ":" + iUrl.getPort() : "");
-
-		if (aForFXMLLoader) {
-			final String iBasePath = "/maohifx.server/webapi";
-			final String iId = iUrl.getPath().substring(iBasePath.length(), iUrl.getPath().length()).replaceAll("/", "");
-			iURLBuilder.append(iBasePath);
-			iURLBuilder.append("/fxml?id=" + iId);
-		} else {
-			iURLBuilder.append(iUrl.getPath());
+		iURLBuilder.append(iUrl.getPath());
+		if (!iUrl.getPath().endsWith("/")) {
+			iURLBuilder.append("/");
 		}
-
-		return new URL(iURLBuilder.toString());
+		if (!iUrl.getPath().endsWith(".fxml")) {
+			iURLBuilder.append("index.fxml");
+		}
+		return new URL(iURLBuilder.toString().replace("webapi/", ""));
 	}
 
 }

@@ -61,7 +61,7 @@
 						<TableColumn prefWidth="75.0" text="Nom du client" />
 					</columns>
 				</TableView>
-				<Link href="fxml://localhost:8080/maohifx.server/webapi/invoice" text="Nouveau" GridPane.columnIndex="0" />
+				<Link href="fxml://localhost:8080/maohifx.server/invoice" text="Nouveau" GridPane.columnIndex="0" />
 			</children>
 		</GridPane>
 	</center>

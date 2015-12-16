@@ -33,7 +33,7 @@ Contact.prototype.parseJSON = function(aJSONObject) {
 	this.lastname.set(aJSONObject.get("lastname"));
 	this.middlename.set(aJSONObject.get("middlename"));
 	this.firstname.set(aJSONObject.get("firstname"));
-	this.href.set("http://localhost:8080/maohifx.server/webapi/contact?uuid=" + this.uuid.get() + "");
+	this.href.set("http://localhost:8080/maohifx.server/contact?uuid=" + this.uuid.get() + "");
 
 	this.emails.clear();
 	iArray = aJSONObject.get("emails");

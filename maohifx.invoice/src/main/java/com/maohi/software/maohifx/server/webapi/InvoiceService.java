@@ -61,6 +61,7 @@ public class InvoiceService {
 			final InvoiceDAO iInvoiceDAO = new InvoiceDAO();
 			final Invoice iInvoice = iInvoiceDAO.read(aUuid);
 			final String iJSONObject = new ObjectMapper().writeValueAsString(iInvoice);
+			// return Response.seeOther(new URI("http://localhost:8080/maohifx.server/invoice")).entity(iJSONObject).build();
 			return Response.ok(iJSONObject).build();
 		} catch (final IOException aException) {
 			aException.printStackTrace();

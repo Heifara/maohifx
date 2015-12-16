@@ -47,7 +47,7 @@
 						<TableColumn prefWidth="75.0" text="Téléphone" />
 					</columns>
 				</TableView>
-				<Link href="fxml://localhost:8080/maohifx.server/webapi/contact" text="Nouveau" GridPane.columnIndex="0" />
+				<Link href="fxml://localhost:8080/maohifx.server/contact" text="Nouveau" GridPane.columnIndex="0" />
 			</children>
 		</GridPane>
 	</center>

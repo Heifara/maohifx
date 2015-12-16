@@ -45,7 +45,7 @@
 						<TableColumn prefWidth="75.0" text="Prix Unitaire TTC" />
 					</columns>
 				</TableView>
-				<Link href="fxml://localhost:8080/maohifx.server/webapi/product" target="BLANK" text="Nouveau" GridPane.columnIndex="0" />
+				<Link href="fxml://localhost:8080/maohifx.server/product" target="BLANK" text="Nouveau" GridPane.columnIndex="0" />
 			</children>
 		</GridPane>
 	</center>
