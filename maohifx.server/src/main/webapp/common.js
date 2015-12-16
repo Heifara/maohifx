@@ -8,6 +8,7 @@ var URL = java.net.URL;
 
 var File = java.io.File;
 var System = java.lang.System;
+var Platform = javafx.application.Platform;
 
 var Thread = java.lang.Thread;
 var Runnable = java.lang.Runnable;

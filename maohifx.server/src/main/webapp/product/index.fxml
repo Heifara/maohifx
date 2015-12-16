@@ -7,6 +7,7 @@
 
 <?import com.maohi.software.maohifx.control.*?>
 
+<?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.effect.*?>
@@ -39,11 +40,16 @@
 			</columnConstraints>
 			<children>
 				<Label text="Désignation" />
-				<TextField fx:id="designation" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" />
+				<TextField fx:id="designation" onAutoCompletion="controller.designationAutoCompletionEvent(event)" GridPane.columnIndex="1" GridPane.columnSpan="2147483647">
+					<autoCompletion>
+						<FXCollections fx:id="designationAutoCompletion" fx:factory="observableArrayList">
+						</FXCollections>
+					</autoCompletion>
+				</TextField>
 				<Label text="Quantité disponible" GridPane.rowIndex="1" />
-				<TextField fx:id="availableQuantity" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+				<TextField fx:id="availableQuantity" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 				<Label text="Quantité en cours" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-				<TextField fx:id="currentQuantity" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+				<TextField fx:id="currentQuantity" editable="false" focusTraversable="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
 				<BorderPane GridPane.columnSpan="2147483647" GridPane.rowIndex="2" GridPane.rowSpan="2147483647">
 					<center>
 						<TabPane fx:id="recipe" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
@@ -62,7 +68,7 @@
 											</rowConstraints>
 											<children>
 												<Label text="Prix Unitaire H.T" />
-												<TextField fx:id="sellingPrice" GridPane.columnIndex="1" />
+												<TextField fx:id="sellingPrice" editable="false" GridPane.columnIndex="1" />
 												<Label text="Taux de Tva" GridPane.rowIndex="1" />
 												<TextField fx:id="tvaRate" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 												<Label text="Prix Unitaire T.T.C" GridPane.rowIndex="2" />
