@@ -6,4 +6,11 @@
 		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>maohifx.product</artifactId>
+	<dependencies>
+		<dependency>
+			<groupId>com.maohi.software</groupId>
+			<artifactId>maohifx.common</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+	</dependencies>
 </project>
