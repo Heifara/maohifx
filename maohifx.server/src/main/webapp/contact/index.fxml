@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?language javascript?>
-<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import com.maohi.software.maohifx.control.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.web.*?>
 <?import javafx.scene.control.*?>
@@ -50,17 +51,26 @@
 				<ColumnConstraints halignment="LEFT" hgrow="ALWAYS" minWidth="10.0" prefWidth="200.0" />
 			</columnConstraints>
 			<children>
+				<CheckBox mnemonicParsing="false" text="Est une société" GridPane.rowIndex="0" GridPane.columnIndex="1" />
 				<Label text="Nom de famille" GridPane.rowIndex="1" />
 				<TextField fx:id="lastname" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 				<Label text="Deuxième prénom" GridPane.rowIndex="2" />
 				<TextField fx:id="middlename" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 				<Label text="Prénom" GridPane.rowIndex="3" />
 				<TextField fx:id="firstname" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-				<CheckBox mnemonicParsing="false" text="Est une société" GridPane.columnIndex="1" />
 				<Label text="Fonction" GridPane.rowIndex="4" />
-				<TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
+				<TextField GridPane.columnIndex="1" GridPane.rowIndex="4">
+					<autoCompletion>
+						<FXCollections fx:id="customerAutoCompletion" fx:factory="observableArrayList">
+							<String fx:value="DIRECTEUR" />
+							<String fx:value="Chef de section" />
+							<String fx:value="Employé" />
+						</FXCollections>
+					</autoCompletion>
+				</TextField>
 				<Label text="Anniversaire" GridPane.rowIndex="5" />
 				<DatePicker GridPane.columnIndex="1" GridPane.rowIndex="5" />
+				<Label text="Note" GridPane.rowIndex="6" />
 				<TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnSpan="2147483647" GridPane.rowIndex="8" GridPane.rowSpan="2147483647">
 					<tabs>
 						<Tab text="Téléphone">
@@ -85,7 +95,6 @@
 						</Tab>
 					</tabs>
 				</TabPane>
-				<Label text="Note" GridPane.rowIndex="6" />
 				<TextArea prefHeight="75.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.rowSpan="2">
 					<GridPane.margin>
 						<Insets bottom="5.0" />
