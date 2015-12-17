@@ -58,11 +58,11 @@
 }
 
 #urlPane .button:hover {
-	-fx-effect: dropshadow( three-pass-box , snow  , 2.0, 1.0, 0.0, 0.0 );
+	-fx-effect: dropshadow( three-pass-box , lightgray  , 2.0, 1.0, 0.0, 0.0 );
 }
 
 #urlPane .button:pressed {
-	-fx-background-color: lightgray;
+	-fx-background-color: -fx-secondary-color;
 	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
 }
 
