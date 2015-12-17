@@ -389,14 +389,20 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 			ExtendedTab.this.progressIndicator.setVisible(false);
 
 		} catch (final Exception aException) {
-			final StringWriter iStringWriter = new StringWriter();
-			final PrintWriter iPrintWriter = new PrintWriter(iStringWriter);
-			aException.printStackTrace(iPrintWriter);
+			Platform.runLater(new Runnable() {
 
-			final TextArea iStackTrace = new TextArea();
-			iStackTrace.setText(iStringWriter.toString());
-			iStackTrace.setEditable(false);
-			ExtendedTab.this.content.setCenter(iStackTrace);
+				@Override
+				public void run() {
+					final StringWriter iStringWriter = new StringWriter();
+					final PrintWriter iPrintWriter = new PrintWriter(iStringWriter);
+					aException.printStackTrace(iPrintWriter);
+
+					final TextArea iStackTrace = new TextArea();
+					iStackTrace.setText(iStringWriter.toString());
+					iStackTrace.setEditable(false);
+					ExtendedTab.this.content.setCenter(iStackTrace);
+				}
+			});
 		}
 
 	}
