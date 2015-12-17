@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -46,7 +48,7 @@ public class InvoiceService extends RestService {
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response fromQueryParam(@QueryParam("uuid") final String aUuid) {
+	public Response getFromQueryParam(@QueryParam("uuid") final String aUuid) {
 		try {
 			final InvoiceDAO iInvoiceDAO = new InvoiceDAO();
 			final Invoice iInvoice = iInvoiceDAO.read(aUuid);
@@ -132,6 +134,30 @@ public class InvoiceService extends RestService {
 			return Response.serverError().entity(aException.getMessage()).build();
 		}
 
+	}
+
+	@Path("search")
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response searchFromQueryParam(@QueryParam("pattern") final String aPattern) {
+		try {
+			final InvoiceDAO iDAO = new InvoiceDAO();
+			List<Invoice> iElements = new ArrayList<>();
+			if (aPattern.isEmpty()) {
+				iElements = iDAO.readAll();
+			} else {
+				iElements = iDAO.readAll();
+			}
+
+			for (final Invoice iElement : iElements) {
+				iElement.setHref(this.getLocalContextUri() + "/webapi/invoice?uuid=" + iElement.getUuid());
+			}
+			final String iJSONObject = new ObjectMapper().writeValueAsString(iElements);
+			return Response.ok(iJSONObject).build();
+		} catch (final Exception aException) {
+			aException.printStackTrace();
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
 }
