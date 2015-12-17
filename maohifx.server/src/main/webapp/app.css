@@ -1,13 +1,33 @@
+* {
+	-fx-police: "Arial Narrow";
+	
+	-fx-base-color: gray;
+	-fx-secondary-color: ghostwhite;
+	-fx-tird-color: white;
+	
+	-fx-linear-gradient-1: lightgray;
+	-fx-linear-gradient-2: gray;
+	-fx-linear-gradient-3: darkgray;
+}
+
+.button {
+	-fx-border-width: 0.0px;
+}
+
+.button:hover {
+	-fx-effect: dropshadow( three-pass-box , lightgray  , 2.0, 1.0, 0.0, 0.0 );
+}
+
+.button:pressed {
+	-fx-background-color: -fx-secondary-color;
+	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
+}
+
 .tab-pane .tab-header-background {
-	-fx-background-image: null;
-	-fx-background-color:
-    	gray,
-    	linear-gradient(lightgray 0.0%, gray 50.0%, darkgray 90.0%);
 }
 
 .tab-pane .tab-content-area {
-	-fx-background-color: lightgray;
-	-fx-effect: innershadow( three-pass-box , gray , 8.0, 0.0 , 0.0 , 4.0 );
+	-fx-background-color: -fx-secondary-color;
 }
 
 .link {
@@ -34,19 +54,16 @@
     -fx-font-size: 12.0px;
     -fx-font-weight: bold;
     -fx-text-fill: black;
-    -fx-background-color: lightgray;
-    -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
+    -fx-background-color: -fx-tird-color;
+    -fx-effect: dropshadow( gaussian , rgba(0.0,0.0,0.0,0.5) , 0.0,0.0,0.0,1.0 );
 }
 
 .text-field:hover {
-	-fx-background-color: gray;
-    -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
+	-fx-background-color: -fx-secondary-color;
 }
 
 .text-field:focused {
-    -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
-	-fx-background-color: gray;
-	-fx-border-width: 10.0px;
+	-fx-background-color: -fx-secondary-color;
 }
 
 .label-text-field {
@@ -59,13 +76,13 @@
 }
 
 .label-text-field:hover {
-	-fx-background-color: lightgray;
-    -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
+	-fx-background-color: -fx-tird-color;
+    -fx-effect: dropshadow( gaussian , rgba(0.0,0.0,0.0,0.5) , 0.0,0.0,0.0,1.0 );
 }
 
 .label-text-field:focused {
-    -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
-	-fx-background-color: lightgray;
+    -fx-background-color: -fx-tird-color;
+    -fx-effect: dropshadow( gaussian , rgba(0.0,0.0,0.0,0.5) , 0.0,0.0,0.0,1.0 );
 	-fx-border-width: 10.0px;
 }
 
@@ -74,7 +91,6 @@
     	gray,
     	linear-gradient(lightgray 0.0%, gray 50.0%, darkgray 100.0%),
     	linear-gradient(lightgray 0.0%, gray 50.0%, darkgray 100.0%);
-    -fx-effect: dropshadow( three-pass-box , black , 6.0, 0.0 , 0.0 , 2.0 );
 }
 
 .tool-bar .button {
@@ -83,7 +99,7 @@
 }
 
 .tool-bar .button:hover {
-	-fx-effect: dropshadow( gaussian , white , 30.0, 0.0, 0.0, 1.0 );
+	-fx-effect: dropshadow( three-pass-box , lightgray  , 2.0, 1.0, 0.0, 0.0 );
 }
 
 .tool-bar .button:pressed {
@@ -94,9 +110,9 @@
 
 .table-view .button {
 	-fx-background-color: 
-        #a6b5c9,
-        linear-gradient(#303842 0.0%, #3e5577 20.0%, #375074 100.0%),
-        linear-gradient(#768aa5 0.0%, #849cbb 5.0%, #5877a2 50.0%, #486a9a 51.0%, #4a6c9b 100.0%);
+        gray,
+        linear-gradient(lightgray 0.0%, gray 20.0%, darkgray 100.0%),
+        linear-gradient(lightgray 0.0%, gray 20.0%, darkgray 100.0%);
     -fx-background-insets: 0.0 0.0 -1.0 0.0,0.0,1.0;
     -fx-background-radius: 5.0,5.0,4.0;
     -fx-text-fill: #242d35;
@@ -111,17 +127,13 @@
 }
 
 .table-view .column-header, .table-view .filler {
-	-fx-background-color: 
-        #a6b5c9,
-        linear-gradient(#303842 0.0%, #3e5577 20.0%, #375074 100.0%),
-        linear-gradient(#768aa5 0.0%, #849cbb 5.0%, #5877a2 50.0%, #486a9a 51.0%, #4a6c9b 100.0%);
     -fx-background-insets: 0.0 0.0 -1.0 0.0,0.0,1.0;
     -fx-text-fill: #242d35;
     -fx-font-family: "Helvetica";
 }
 
 .table-view .column-header .label {
-    -fx-text-fill: white;
+    -fx-text-fill: black;
 }
 
 .table-view:focused .table-row-cell:filled:focused:selected {
