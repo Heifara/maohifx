@@ -1,63 +1,86 @@
+* {
+	-fx-police: "Arial Narrow";
+	
+	-fx-base-color: cornflowerblue;
+	-fx-secondary-color: ghostwhite;
+	-fx-tird-color: white;
+	
+	-fx-linear-gradient-1: lightgray;
+	-fx-linear-gradient-2: gray;
+	-fx-linear-gradient-3: darkgray;
+}
+
+.root {
+}
+
 .tab-pane .tab-header-background {
-	-fx-background-image: url("background.jpg");
+	-fx-background-color:
+    	-fx-linear-gradient-2,
+    	linear-gradient(-fx-linear-gradient-1 0.0%, -fx-linear-gradient-2 50.0%, -fx-linear-gradient-3 100.0%),
+    	linear-gradient(-fx-linear-gradient-1 0.0%, -fx-linear-gradient-2 50.0%, -fx-linear-gradient-3 100.0%);
 }
 
-.tab-pane .tab-content-area {
-	-fx-background-color: 
-        gray,
-        linear-gradient(white 0.0%, lightgray 20.0%, gray 80.0%)
+.tab-pane .tab { 
+   	-fx-background-color: -fx-base-color;
 }
 
-.extended-tab{
-	-fx-background-color: gray;
+.tab-pane .tab-label { 
+    -fx-font-size: 14.0;
+    -fx-font-family: -fx-police;
 }
 
-.extended-tab .tab-label { 
-    -fx-text-fill: white;
-    -fx-font-size: 14.0px;
-    -fx-font-family: "Arial Narrow";
+.tab-pane .tab .tab-close-button {
 }
 
-.extended-tab:selected{
+.tab-pane .tab .tab-close-button:hover {
 	-fx-background-color: white;
 }
 
-.extended-tab:selected .tab-label{
-	-fx-background-color: white;
-	-fx-text-fill: black;
-	-fx-background-image: url("background.jpg");
+.tab-pane .tab:selected {
+   	-fx-background-color: -fx-secondary-color;
+   	-fx-border-color: -fx-secondary-color;
 }
 
-.button:pressed {
-	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 )
+.tab-pane .tab:selected .tab-label {
+    -fx-font-weight: bold;
+}
+
+#content {
+	-fx-background-color: -fx-tird-color;
 }
 
 #urlPane {
-	-fx-background-color: white;
+	-fx-effect: dropshadow( three-pass-box , black , 6.0, 0.0, 0.0, 2.0 );
+	-fx-background-color: -fx-secondary-color;
 	-fx-padding: 5.0;
-	-fx-spacing: 5.0;
-	-fx-background-image: url("background.jpg");
+}
+
+#urlPane .button {
+	-fx-border-width: 0.0px;
+	-fx-background-color: transparent;
+}
+
+#urlPane .button:hover {
+	-fx-effect: dropshadow( three-pass-box , snow  , 2.0, 1.0, 0.0, 0.0 );
+}
+
+#urlPane .button:pressed {
+	-fx-background-color: lightgray;
+	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
 }
 
 #home {
 	-fx-graphic: url("home.png");
-	-fx-border-width: 0.0px;
-	-fx-background-color: white;
-	-fx-background-radius: 20.0px;
 }
 
 #refresh {
 	-fx-graphic: url("refresh.png");
-	-fx-border-width: 0.0px;
-	-fx-background-radius: 20.0px;
-	-fx-background-color: white;
 }
 
 #url {
-	-fx-font-family: "Arial Narrow";
-	-fx-font-size: 16.0px;
-	-fx-background-color: white;
-	-fx-background-radius: 20.0px;
-	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 )
+	-fx-font-size: 16.0;
+	-fx-font-family: -fx-police;
+	-fx-background-color: whitesmoke;
+	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
 }
 
