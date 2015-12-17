@@ -11,7 +11,7 @@ Phone.prototype.toJSON = function() {
 	return {
 		uuid : this.uuid.get(),
 		label : this.label.get(),
-		number : this.number.get,
+		number : this.number.get(),
 	}
 }
 

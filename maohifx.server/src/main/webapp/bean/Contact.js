@@ -1,6 +1,34 @@
-/**
- * 
- */
+Contact.search = function(aPattern) {
+	iPattern = "";
+	if (typeof (aPattern) != 'undefined') {
+		iPattern = aPattern.replaceAll(" ", "+");
+	}
+
+	iSearchResult = FXCollections.observableArrayList();
+	$loader.getNamespace().put("$data", iSearchResult);
+	$http.ajax({
+		url : "http://localhost:8080/maohifx.server/webapi/contact/search?pattern=" + iPattern,
+		type : "get",
+		contentType : "application/x-www-form-urlencoded",
+		dataType : "application/json",
+		success : function($result, $status) {
+			load("http://localhost:8080/maohifx.server/common.js");
+			load("http://localhost:8080/maohifx.server/bean/Contact.js");
+
+			for ( var iItem in $result) {
+				iElement = new Contact();
+				iElement.parseJSON($result[iItem]);
+				$data.add(iElement);
+			}
+		},
+		error : function($result, $status) {
+			java.lang.System.err.println($result);
+			java.lang.System.err.println($status);
+		}
+	});
+	return iSearchResult;
+}
+
 function Contact() {
 	this.uuid = new SimpleStringProperty();
 	this.href = new SimpleStringProperty();
@@ -18,8 +46,8 @@ function Contact() {
 Contact.prototype.toJSON = function() {
 	return {
 		uuid : this.uuid.get(),
-		society : this.society.get(),
-		lastname : this.lastname.get,
+		// society : this.society.get(),
+		lastname : this.lastname.get(),
 		middlename : this.middlename.get(),
 		firstname : this.firstname.get(),
 		phones : this.getPhones(),
@@ -33,7 +61,7 @@ Contact.prototype.parseJSON = function(aJSONObject) {
 	this.lastname.set(aJSONObject.get("lastname"));
 	this.middlename.set(aJSONObject.get("middlename"));
 	this.firstname.set(aJSONObject.get("firstname"));
-	this.href.set("http://localhost:8080/maohifx.server/contact?uuid=" + this.uuid.get() + "");
+	this.href.set(aJSONObject.get("href"));
 
 	this.emails.clear();
 	iArray = aJSONObject.get("emails");
@@ -53,8 +81,6 @@ Contact.prototype.parseJSON = function(aJSONObject) {
 }
 
 Contact.prototype.save = function() {
-	System.out.println("Anniversaire: " + this.birthdate.get());
-
 	$loader.getNamespace().put("$contact", this);
 	$http.ajax({
 		url : "http://localhost:8080/maohifx.server/webapi/contact",
@@ -64,11 +90,16 @@ Contact.prototype.save = function() {
 		data : this.toJSON(),
 		success : function($result, $status) {
 			load("http://localhost:8080/maohifx.server/common.js");
+			load("http://localhost:8080/maohifx.server/bean/Contact.js");
+			
 			$contact.parseJSON($result);
 
 			alert("Sauvegarde réussi");
 		},
 		error : function($result, $status) {
+			load("http://localhost:8080/maohifx.server/common.js");
+			load("http://localhost:8080/maohifx.server/bean/Contact.js");
+
 			print($status);
 
 			alert("Erreur lors de la sauvegarde");

@@ -6,6 +6,8 @@
 <?import com.maohi.software.maohifx.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import com.maohi.software.maohifx.control.cell.JSObjectPropertyValueFactory?>
+<?import com.maohi.software.maohifx.control.cell.LinkCellFactory?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<fx:script source="../contacts/Controller.js" />
@@ -40,14 +42,29 @@
 				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
-				<TableView fx:id="tableView" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2147483647">
+				<TableView fx:id="tableView" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2147483647">
 					<columns>
-						<TableColumn prefWidth="75.0" text="Nom" />
-						<TableColumn prefWidth="75.0" text="Prénom" />
-						<TableColumn prefWidth="75.0" text="Téléphone" />
+						<TableColumn prefWidth="75.0" text="Nom">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="lastname" />
+							</cellValueFactory>
+							<cellFactory>
+								<LinkCellFactory property="href" target="BLANK" />
+							</cellFactory>
+						</TableColumn>
+						<TableColumn prefWidth="75.0" text="Prénom">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="firstname" />
+							</cellValueFactory>
+						</TableColumn>
+						<TableColumn prefWidth="75.0" text="Téléphone">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="mainPhone" />
+							</cellValueFactory>
+						</TableColumn>
 					</columns>
 				</TableView>
-				<Link href="@../contact" text="Nouveau" GridPane.columnIndex="0" />
+				<Link href="@../contact" text="Nouveau" target="BLANK" GridPane.columnIndex="0" />
 			</children>
 		</GridPane>
 	</center>

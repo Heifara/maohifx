@@ -14,6 +14,9 @@ function ContactController() {
 	this.lastAddedEmail.mail.set("lsdjflsdjmlj");
 
 	this.contact = new Contact();
+	if(typeof($item) != 'undefined'){
+		this.contact.parseJSON($item);
+	}
 
 	if (typeof ($tab) != 'undefined') {
 		$tab.textProperty().bindBidirectional(this.contact.lastname);
