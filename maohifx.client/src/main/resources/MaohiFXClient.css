@@ -1,7 +1,7 @@
 * {
 	-fx-police: "Arial Narrow";
 	
-	-fx-base-color: cornflowerblue;
+	-fx-base-color: gray;
 	-fx-secondary-color: ghostwhite;
 	-fx-tird-color: white;
 	
@@ -14,10 +14,7 @@
 }
 
 .tab-pane .tab-header-background {
-	-fx-background-color:
-    	-fx-linear-gradient-2,
-    	linear-gradient(-fx-linear-gradient-1 0.0%, -fx-linear-gradient-2 50.0%, -fx-linear-gradient-3 100.0%),
-    	linear-gradient(-fx-linear-gradient-1 0.0%, -fx-linear-gradient-2 50.0%, -fx-linear-gradient-3 100.0%);
+	-fx-background-color: -fx-base-color;
 }
 
 .tab-pane .tab { 
