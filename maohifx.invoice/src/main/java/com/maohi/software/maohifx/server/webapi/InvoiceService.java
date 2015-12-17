@@ -3,31 +3,16 @@
  */
 package com.maohi.software.maohifx.server.webapi;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
-import org.hibernate.Session;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.maohi.software.maohifx.common.AbstractDAO;
-import com.maohi.software.maohifx.common.HibernateUtil;
 import com.maohi.software.maohifx.invoice.bean.Invoice;
 import com.maohi.software.maohifx.invoice.bean.InvoicePaymentLine;
 import com.maohi.software.maohifx.invoice.bean.PaymentMode;
@@ -39,26 +24,66 @@ import com.maohi.software.maohifx.invoice.dao.PaymentModeDAO;
  *
  */
 @Path("invoice")
-public class InvoiceService extends RestService {
+public class InvoiceService extends AnnotatedClassService<InvoiceDAO, Invoice> {
 
-	public InvoiceService() {
-		final Session iSession = HibernateUtil.getSessionFactory().openSession();
-		AbstractDAO.setSession(iSession);
+	public InvoiceService() throws InstantiationException, IllegalAccessException {
+		super();
 	}
 
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response getFromQueryParam(@QueryParam("uuid") final String aUuid) {
-		try {
-			final InvoiceDAO iInvoiceDAO = new InvoiceDAO();
-			final Invoice iInvoice = iInvoiceDAO.read(aUuid);
-			final String iJSONObject = new ObjectMapper().writeValueAsString(iInvoice);
-			// return Response.seeOther(new URI("http://localhost:8080/maohifx.server/invoice")).entity(iJSONObject).build();
-			return Response.ok(iJSONObject).build();
-		} catch (final IOException aException) {
-			aException.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+	@Override
+	Class<Invoice> getAnnotatedClass() {
+		return Invoice.class;
+	}
+
+	@Override
+	Class<InvoiceDAO> getDAOClass() {
+		return InvoiceDAO.class;
+	}
+
+	@Override
+	public void onInserted(final Invoice iElement) {
+	}
+
+	@Override
+	public void onInserting(final Invoice iElement) {
+		iElement.bindChildren();
+	}
+
+	@Override
+	public void onSaved(final Invoice iElement) {
+	}
+
+	@Override
+	public void onSaving(final Invoice iElement) {
+		final PaymentModeDAO iDAO = new PaymentModeDAO();
+		for (final InvoicePaymentLine iInvoicePaymentLine : iElement.getInvoicePaymentLines()) {
+			final PaymentMode iPaymentMode = iInvoicePaymentLine.getPaymentMode();
+			final PaymentMode iValidPaymentMode;
+			switch (iPaymentMode.getLabel()) {
+			case "CASH":
+				iValidPaymentMode = iDAO.read(2);
+				break;
+
+			case "CHEQUE":
+				iValidPaymentMode = iDAO.read(1);
+				break;
+
+			default:
+				iValidPaymentMode = null;
+				break;
+			}
+
+			iInvoicePaymentLine.setPaymentMode(iValidPaymentMode);
 		}
+	}
+
+	@Override
+	public void onUpdated(final Invoice iElement) {
+	}
+
+	@Override
+	public void onUpdating(final Invoice iElement) {
+		iElement.bindChildren();
 	}
 
 	@GET
@@ -72,92 +97,9 @@ public class InvoiceService extends RestService {
 		}
 	}
 
-	@POST
-	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response save(final String aJSONObject) {
-		Invoice iInvoice = null;
-		try {
-			iInvoice = new ObjectMapper().readValue(aJSONObject, Invoice.class);
-
-			final PaymentModeDAO iDAO = new PaymentModeDAO();
-			for (final InvoicePaymentLine iInvoicePaymentLine : iInvoice.getInvoicePaymentLines()) {
-				final PaymentMode iPaymentMode = iInvoicePaymentLine.getPaymentMode();
-				final PaymentMode iValidPaymentMode;
-				switch (iPaymentMode.getLabel()) {
-				case "CASH":
-					iValidPaymentMode = iDAO.read(2);
-					break;
-
-				case "CHEQUE":
-					iValidPaymentMode = iDAO.read(1);
-					break;
-
-				default:
-					iValidPaymentMode = null;
-					break;
-				}
-
-				iInvoicePaymentLine.setPaymentMode(iValidPaymentMode);
-			}
-
-			if (iInvoice.getUuid() == null) {
-				iInvoice.setUuid(UUID.randomUUID().toString());
-				iInvoice.bindChildren();
-
-				final InvoiceDAO iInvoiceDAO = new InvoiceDAO();
-				iInvoiceDAO.beginTransaction();
-				iInvoice.setNumber(iInvoiceDAO.next(Integer.class, "number"));
-				iInvoiceDAO.insert(iInvoice);
-				iInvoiceDAO.commit();
-			} else {
-				iInvoice.bindChildren();
-
-				final InvoiceDAO iInvoiceDAO = new InvoiceDAO();
-				iInvoiceDAO.beginTransaction();
-				iInvoiceDAO.update(iInvoice);
-				iInvoiceDAO.commit();
-			}
-
-			final String iJSONObject = new ObjectMapper().writeValueAsString(iInvoice);
-			final Response iResponse = Response.ok(iJSONObject).build();
-
-			return iResponse;
-		} catch (final JsonParseException aException) {
-			aException.printStackTrace();
-			return Response.serverError().entity(aException.getMessage()).build();
-		} catch (final JsonMappingException aException) {
-			aException.printStackTrace();
-			return Response.serverError().entity(aException.getMessage()).build();
-		} catch (final IOException aException) {
-			aException.printStackTrace();
-			return Response.serverError().entity(aException.getMessage()).build();
-		}
-
-	}
-
-	@Path("search")
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response searchFromQueryParam(@QueryParam("pattern") final String aPattern) {
-		try {
-			final InvoiceDAO iDAO = new InvoiceDAO();
-			List<Invoice> iElements = new ArrayList<>();
-			if (aPattern.isEmpty()) {
-				iElements = iDAO.readAll();
-			} else {
-				iElements = iDAO.readAll();
-			}
-
-			for (final Invoice iElement : iElements) {
-				iElement.setHref(this.getLocalContextUri() + "/webapi/invoice?uuid=" + iElement.getUuid());
-			}
-			final String iJSONObject = new ObjectMapper().writeValueAsString(iElements);
-			return Response.ok(iJSONObject).build();
-		} catch (final Exception aException) {
-			aException.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-		}
+	@Override
+	public List<Invoice> search(final String aPattern) {
+		return this.dao.readAll();
 	}
 
 }

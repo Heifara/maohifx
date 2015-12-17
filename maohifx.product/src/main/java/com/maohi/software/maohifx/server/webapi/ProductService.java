@@ -3,27 +3,11 @@
  */
 package com.maohi.software.maohifx.server.webapi;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
-import org.hibernate.Session;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.maohi.software.maohifx.common.AbstractDAO;
-import com.maohi.software.maohifx.common.HibernateUtil;
 import com.maohi.software.maohifx.product.bean.Product;
 import com.maohi.software.maohifx.product.dao.ProductDAO;
 
@@ -32,82 +16,61 @@ import com.maohi.software.maohifx.product.dao.ProductDAO;
  *
  */
 @Path("product")
-public class ProductService extends RestService {
+public class ProductService extends AnnotatedClassService<ProductDAO, Product> {
 
-	public ProductService() {
-		final Session iSession = HibernateUtil.getSessionFactory().openSession();
-		AbstractDAO.setSession(iSession);
+	public ProductService() throws InstantiationException, IllegalAccessException {
+		super();
 	}
 
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response getFromQueryParam(@QueryParam("uuid") final String aUuid) {
-		try {
-			final ProductDAO iDAO = new ProductDAO();
-			final Product iElement = iDAO.read(aUuid);
-			final String iJSONObject = new ObjectMapper().writeValueAsString(iElement);
-			return Response.ok(iJSONObject).build();
-		} catch (final IOException aException) {
-			aException.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-		}
+	@Override
+	Class<Product> getAnnotatedClass() {
+		return Product.class;
 	}
 
-	@POST
-	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response save(final String aJSONObject) {
-		Product iProduct;
-		try {
-			iProduct = new ObjectMapper().readValue(aJSONObject, Product.class);
-			if (iProduct.getUuid() == null) {
-				iProduct.setUuid(UUID.randomUUID().toString());
-				iProduct.setCreationDate(new Date());
-				iProduct.setUpdateDate(new Date());
-
-				final ProductDAO iDAO = new ProductDAO();
-				iDAO.beginTransaction();
-				iDAO.insert(iProduct);
-				iDAO.commit();
-			} else {
-				iProduct.setUpdateDate(new Date());
-
-				final ProductDAO iDAO = new ProductDAO();
-				iDAO.beginTransaction();
-				iDAO.update(iProduct);
-				iDAO.commit();
-			}
-
-			final String iJSONObject = new ObjectMapper().writeValueAsString(iProduct);
-			return Response.ok(iJSONObject).build();
-		} catch (final Exception aException) {
-			aException.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-		}
+	@Override
+	Class<ProductDAO> getDAOClass() {
+		return ProductDAO.class;
 	}
 
-	@Path("search")
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response searchFromQueryParam(@QueryParam("pattern") final String aPattern) {
-		try {
-			final ProductDAO iDAO = new ProductDAO();
-			List<Product> iResults = new ArrayList<>();
-			if (aPattern.isEmpty()) {
-				iResults = iDAO.readAll();
-			} else {
-				iResults = iDAO.readByDesignation(aPattern);
-			}
+	@Override
+	public void onInserted(final Product iElement) {
 
-			for (final Product iProduct : iResults) {
-				iProduct.setHref(this.getLocalContextUri() + "/webapi/product?uuid=" + iProduct.getUuid());
-			}
-			final String iJSONObject = new ObjectMapper().writeValueAsString(iResults);
-			return Response.ok(iJSONObject).build();
-		} catch (final Exception aException) {
-			aException.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+	}
+
+	@Override
+	public void onInserting(final Product iElement) {
+
+	}
+
+	@Override
+	public void onSaved(final Product iElement) {
+
+	}
+
+	@Override
+	public void onSaving(final Product iElement) {
+
+	}
+
+	@Override
+	public void onUpdated(final Product iElement) {
+
+	}
+
+	@Override
+	public void onUpdating(final Product iElement) {
+
+	}
+
+	@Override
+	public List<Product> search(final String aPattern) {
+		List<Product> iProducts = new ArrayList<>();
+		if (aPattern.isEmpty()) {
+			iProducts = this.dao.readAll();
+		} else {
+			iProducts = this.dao.readByDesignation(aPattern);
 		}
+		return iProducts;
 	}
 
 }
