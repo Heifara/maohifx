@@ -21,6 +21,7 @@ import javax.ws.rs.core.Response.Status;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maohi.software.maohifx.common.AbstractDAO;
 import com.maohi.software.maohifx.common.AnnotatedClass;
+import com.maohi.software.maohifx.common.HibernateUtil;
 
 /**
  * @author heifara
@@ -29,8 +30,10 @@ import com.maohi.software.maohifx.common.AnnotatedClass;
 public abstract class AnnotatedClassService<A extends AbstractDAO<T>, T extends AnnotatedClass> extends RestService {
 	protected final A dao;
 
+	@SuppressWarnings("static-access")
 	public AnnotatedClassService() throws InstantiationException, IllegalAccessException {
 		this.dao = this.getDAOClass().newInstance();
+		this.dao.setSession(HibernateUtil.getSessionFactory().openSession());
 	}
 
 	abstract Class<T> getAnnotatedClass();
