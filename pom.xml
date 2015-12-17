@@ -156,5 +156,6 @@
 		<module>maohifx.samples</module>
 		<module>maohifx.control</module>
 		<module>maohifx.product</module>
+		<module>maohifx.contact</module>
 	</modules>
 </project>
