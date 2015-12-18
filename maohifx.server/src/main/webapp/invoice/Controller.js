@@ -4,6 +4,7 @@ load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
 load("http://localhost:8080/maohifx.server/bean/InvoicePaymentLine.js");
 load("http://localhost:8080/maohifx.server/bean/PaymentMode.js");
 load("http://localhost:8080/maohifx.server/bean/Product.js");
+load("http://localhost:8080/maohifx.server/bean/Contact.js");
 
 function InvoiceController() {
 	this.autoCompletedProduct = null;
@@ -55,24 +56,8 @@ function InvoiceController() {
 	});
 	invoicePaymentLines.getContextMenu().getItems().add(iRemoveInvoicePaymentLineMenuItem);
 
-	this.addAutoCompletion("TOUQUE DE PEINTURE BLEU 25L");
-	this.addAutoCompletion("TOUQUE DE PEINTURE ROUGE 25L");
-	this.addAutoCompletion("TOUQUE DE PEINTURE JAUNE 25L");
-	this.addAutoCompletion("TOUQUE DE PEINTURE VERT 25L");
-	this.addAutoCompletion("TOUQUE DE PEINTURE ROSE 25L");
-	this.addAutoCompletion("TOUQUE DE PEINTURE BLANC 25L");
-	this.addAutoCompletion("PVC BLANC");
-	this.addAutoCompletion("PVC BLEU");
-	this.addAutoCompletion("PVC ROUGE");
-	this.addAutoCompletion("PVC JAUNE");
-}
-
-InvoiceController.prototype.addAutoCompletion = function(aDesignation) {
-	iProduct = new Product();
-	iProduct.designation.set(aDesignation);
-	iProduct.sellingPrice.set(15000.0);
-	iProduct.tvaRate.set(16.0);
-	autoCompletion.add(iProduct);
+	autoCompletion.addAll(Product.search());
+	customerAutoCompletion.addAll(Contact.search());
 }
 
 InvoiceController.prototype.addInvoiceLineEvent = function(aEvent) {

@@ -30,11 +30,13 @@ function ProductController() {
 	}));
 
 	// AutoCompletion
-	iResults = Product.search();
-	for (iIndex in iResults) {
-		iProduct = iResults.get(iIndex);
-		designationAutoCompletion.add(iProduct);
-	}
+	designationAutoCompletion.addAll(Product.search());
+	
+	runLater(new Runnable({
+		run : function() {
+			designation.requestFocus();
+		}
+	}));
 }
 
 ProductController.prototype.designationAutoCompletionEvent = function(aEvent) {

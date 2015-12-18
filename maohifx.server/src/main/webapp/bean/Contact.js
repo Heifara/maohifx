@@ -80,6 +80,10 @@ Contact.prototype.parseJSON = function(aJSONObject) {
 	}
 }
 
+Contact.prototype.toString = function() {
+	return this.lastname.get() + " " + this.firstname.get();
+}
+
 Contact.prototype.save = function() {
 	$loader.getNamespace().put("$contact", this);
 	$http.ajax({
@@ -91,7 +95,7 @@ Contact.prototype.save = function() {
 		success : function($result, $status) {
 			load("http://localhost:8080/maohifx.server/common.js");
 			load("http://localhost:8080/maohifx.server/bean/Contact.js");
-			
+
 			$contact.parseJSON($result);
 
 			alert("Sauvegarde réussi");
