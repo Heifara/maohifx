@@ -88,5 +88,5 @@ Customer.prototype.save = function() {
 }
 
 Customer.prototype.toString = function() {
-	return "NOT IMPLEMENTED YET!"
+	return this.lastname.get() + " " + this.firstname.get();
 }
