@@ -61,11 +61,15 @@ public class InvoiceService extends AnnotatedClassService<InvoiceDAO, Invoice> {
 			final PaymentMode iValidPaymentMode;
 			switch (iPaymentMode.getLabel()) {
 			case "CASH":
-				iValidPaymentMode = iDAO.read(2);
+				iValidPaymentMode = iDAO.read(0);
 				break;
 
 			case "CHEQUE":
 				iValidPaymentMode = iDAO.read(1);
+				break;
+
+			case "CARTE DE CREDIT":
+				iValidPaymentMode = iDAO.read(2);
 				break;
 
 			default:

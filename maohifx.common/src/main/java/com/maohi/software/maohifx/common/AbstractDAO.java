@@ -64,6 +64,10 @@ public abstract class AbstractDAO<E> {
 		return iElements;
 	}
 
+	public void replace(final E aEntity) {
+		AbstractDAO.session.saveOrUpdate(aEntity);
+	}
+
 	public void update(final E aEntity) {
 		AbstractDAO.session.update(aEntity);
 	}
