@@ -17,6 +17,9 @@ Invoice.search = function(aPattern) {
 			load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
 			load("http://localhost:8080/maohifx.server/bean/InvoicePaymentLine.js");
 			load("http://localhost:8080/maohifx.server/bean/PaymentMode.js");
+			load("http://localhost:8080/maohifx.server/bean/Product.js");
+			load("http://localhost:8080/maohifx.server/bean/Contact.js");
+			load("http://localhost:8080/maohifx.server/bean/Customer.js");
 
 			for ( var item in $result) {
 				iInvoice = new Invoice();
@@ -38,6 +41,7 @@ function Invoice() {
 	this.invoiceNumber = new SimpleIntegerProperty();
 	this.invoiceDate = new SimpleLocalDateProperty();
 	this.customerName = new SimpleStringProperty();
+	this.customer = new Customer();
 	this.href = new SimpleStringProperty();
 
 	this.totalWithNoTaxes = new SimpleDoubleProperty();
@@ -57,6 +61,7 @@ Invoice.prototype.toJSON = function() {
 		number : this.invoiceNumber.get(),
 		date : this.invoiceDate.getDate(),
 		customerName : this.customerName.get(),
+		customer: this.customer.toJSON(),
 		invoiceLines : this.getInvoiceLines(),
 		invoicePaymentLines : this.getInvoicePaymentLines(),
 	}
@@ -229,6 +234,12 @@ Invoice.prototype.save = function() {
 			load("http://localhost:8080/maohifx.server/common.js");
 			load("http://localhost:8080/maohifx.server/bean/Invoice.js");
 			load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
+			load("http://localhost:8080/maohifx.server/bean/InvoicePaymentLine.js");
+			load("http://localhost:8080/maohifx.server/bean/PaymentMode.js");
+			load("http://localhost:8080/maohifx.server/bean/Product.js");
+			load("http://localhost:8080/maohifx.server/bean/Contact.js");
+			load("http://localhost:8080/maohifx.server/bean/Customer.js");
+			
 			$invoice.parseJSON($result);
 
 			alert("Save success!");

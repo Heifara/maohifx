@@ -9,7 +9,6 @@ load("http://localhost:8080/maohifx.server/bean/Customer.js");
 
 function InvoiceController() {
 	this.autoCompletedProduct = null;
-	this.autoCompletedCustomer = null;
 
 	this.invoice = new Invoice();
 
@@ -81,7 +80,7 @@ InvoiceController.prototype.addInvoicePaymentLineEvent = function(aEvent) {
 }
 
 InvoiceController.prototype.customerNameAutoCompletionEvent = function(aAutoCompletionEvent) {
-	this.autoCompletedCustomer = aAutoCompletionEvent.getCompletion();
+	this.invoice.customer = aAutoCompletionEvent.getCompletion();
 }
 
 InvoiceController.prototype.labelAutoCompletionEvent = function(aAutoCompletionEvent) {
