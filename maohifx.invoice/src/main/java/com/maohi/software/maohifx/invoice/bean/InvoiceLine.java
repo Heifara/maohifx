@@ -187,7 +187,7 @@ public class InvoiceLine implements java.io.Serializable {
 		return this.sellingPrice;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "tva_type", nullable = false)
 	public Tva getTva() {
 		return this.tva;

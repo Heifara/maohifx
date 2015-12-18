@@ -16,6 +16,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.maohi.software.maohifx.common.AnnotatedClass;
 
 /**
@@ -23,6 +24,7 @@ import com.maohi.software.maohifx.common.AnnotatedClass;
  */
 @Entity
 @Table(name = "tva")
+@JsonIgnoreProperties({ "invoiceLines" })
 public class Tva implements java.io.Serializable, AnnotatedClass {
 
 	private static final long serialVersionUID = 1L;
