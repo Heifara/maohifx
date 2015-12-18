@@ -7,16 +7,16 @@ import java.util.List;
 
 import javax.ws.rs.Path;
 
-import com.maohi.software.maohifx.contact.bean.Supplier;
+import com.maohi.software.maohifx.contact.bean.Customer;
 import com.maohi.software.maohifx.contact.dao.ContactDAO;
-import com.maohi.software.maohifx.contact.dao.SupplierDAO;
+import com.maohi.software.maohifx.contact.dao.CustomerDAO;
 
 /**
  * @author heifara
  *
  */
 @Path("customer")
-public class CustomerService extends AnnotatedClassService<SupplierDAO, Supplier> {
+public class CustomerService extends AnnotatedClassService<CustomerDAO, Customer> {
 
 	public CustomerService() throws InstantiationException, IllegalAccessException {
 		super();
@@ -24,48 +24,48 @@ public class CustomerService extends AnnotatedClassService<SupplierDAO, Supplier
 	}
 
 	@Override
-	Class<Supplier> getAnnotatedClass() {
-		return Supplier.class;
+	Class<Customer> getAnnotatedClass() {
+		return Customer.class;
 	}
 
 	@Override
-	Class<SupplierDAO> getDAOClass() {
-		return SupplierDAO.class;
+	Class<CustomerDAO> getDAOClass() {
+		return CustomerDAO.class;
 	}
 
 	@Override
-	public void onInserted(final Supplier iElement) {
+	public void onInserted(final Customer iElement) {
 
 	}
 
 	@Override
-	public void onInserting(final Supplier iElement) {
+	public void onInserting(final Customer iElement) {
 		final ContactDAO iDao = new ContactDAO();
 		iDao.insert(iElement.getContact());
 	}
 
 	@Override
-	public void onSaved(final Supplier iElement) {
+	public void onSaved(final Customer iElement) {
 
 	}
 
 	@Override
-	public void onSaving(final Supplier iElement) {
+	public void onSaving(final Customer iElement) {
 
 	}
 
 	@Override
-	public void onUpdated(final Supplier iElement) {
+	public void onUpdated(final Customer iElement) {
 
 	}
 
 	@Override
-	public void onUpdating(final Supplier iElement) {
+	public void onUpdating(final Customer iElement) {
 
 	}
 
 	@Override
-	public List<Supplier> search(final String aPattern) {
+	public List<Customer> search(final String aPattern) {
 		return this.dao.readAll();
 	}
 }
