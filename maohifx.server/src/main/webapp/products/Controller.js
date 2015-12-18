@@ -1,5 +1,6 @@
 load("http://localhost:8080/maohifx.server/common.js");
 load("http://localhost:8080/maohifx.server/bean/Product.js");
+load("http://localhost:8080/maohifx.server/bean/Tva.js");
 
 function ProductsController() {
 	if (typeof ($tab) != 'undefined') {

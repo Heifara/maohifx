@@ -36,6 +36,7 @@ public class InvoiceLine implements java.io.Serializable {
 	private Double sellingPrice;
 	private Double discountRate;
 	private Double tvaRate;
+	private Tva tva;
 
 	public InvoiceLine() {
 	}
@@ -186,6 +187,12 @@ public class InvoiceLine implements java.io.Serializable {
 		return this.sellingPrice;
 	}
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "tva_type", nullable = false)
+	public Tva getTva() {
+		return this.tva;
+	}
+
 	@Column(name = "tva_rate", precision = 22, scale = 0)
 	public Double getTvaRate() {
 		return this.tvaRate;
@@ -198,7 +205,6 @@ public class InvoiceLine implements java.io.Serializable {
 	}
 
 	@Id
-
 	@Column(name = "uuid", unique = true, nullable = false)
 	public String getUuid() {
 		return this.uuid;
@@ -251,6 +257,10 @@ public class InvoiceLine implements java.io.Serializable {
 
 	public void setSellingPrice(final Double sellingPrice) {
 		this.sellingPrice = sellingPrice;
+	}
+
+	public void setTva(final Tva tva) {
+		this.tva = tva;
 	}
 
 	public void setTvaRate(final Double tvaRate) {

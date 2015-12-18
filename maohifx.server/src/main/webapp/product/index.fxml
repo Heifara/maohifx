@@ -70,7 +70,12 @@
 												<Label text="Prix Unitaire H.T" />
 												<TextField fx:id="sellingPrice" editable="false" GridPane.columnIndex="1" />
 												<Label text="Taux de Tva" GridPane.rowIndex="1" />
-												<TextField fx:id="tvaRate" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+												<TextField fx:id="tvaRate" onAutoCompletion="controller.tvaAutoCompletionEvent(event)" GridPane.columnIndex="1" GridPane.rowIndex="1">
+													<autoCompletion>
+														<FXCollections fx:id="tvaAutoCompletion" fx:factory="observableArrayList">
+														</FXCollections>
+													</autoCompletion>
+												</TextField>
 												<Label text="Prix Unitaire T.T.C" GridPane.rowIndex="2" />
 												<TextField fx:id="sellingPriceWithTaxes" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 											</children>

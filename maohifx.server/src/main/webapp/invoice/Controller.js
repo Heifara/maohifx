@@ -4,6 +4,7 @@ load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
 load("http://localhost:8080/maohifx.server/bean/InvoicePaymentLine.js");
 load("http://localhost:8080/maohifx.server/bean/PaymentMode.js");
 load("http://localhost:8080/maohifx.server/bean/Product.js");
+load("http://localhost:8080/maohifx.server/bean/Tva.js");
 load("http://localhost:8080/maohifx.server/bean/Contact.js");
 load("http://localhost:8080/maohifx.server/bean/Customer.js");
 

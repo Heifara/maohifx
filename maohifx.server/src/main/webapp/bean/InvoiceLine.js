@@ -7,6 +7,7 @@ function InvoiceLine() {
 	this.sellingPrice = new SimpleDoubleProperty();
 	this.discountRate = new SimpleDoubleProperty();
 	this.tvaRate = new SimpleDoubleProperty();
+	this.tva = new Tva();
 	this.sellingPriceWithTaxes = Bindings.multiply(this.sellingPrice, this.tvaRate.divide(100).add(1));
 
 	this.tvaAmount = Bindings.multiply(this.sellingPrice, this.tvaRate.divide(100));
@@ -24,6 +25,7 @@ InvoiceLine.prototype.toJSON = function() {
 		quantity : this.quantity.get(),
 		sellingPrice : this.sellingPrice.get(),
 		discountRate : this.discountRate.get(),
+		tva : this.tva.toJSON(),
 		tvaRate : this.tvaRate.get()
 	};
 }
@@ -36,6 +38,7 @@ InvoiceLine.prototype.parseJSON = function(aJSONObject) {
 	this.quantity.set(aJSONObject.get("quantity"));
 	this.sellingPrice.set(aJSONObject.get("sellingPrice"));
 	this.discountRate.set(aJSONObject.get("discountRate"));
+	this.tva.parseJSON(aJSONObject);
 	this.tvaRate.set(aJSONObject.get("tvaRate"));
 }
 

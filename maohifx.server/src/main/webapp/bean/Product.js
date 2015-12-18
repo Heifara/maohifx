@@ -14,6 +14,7 @@ Product.search = function(aPattern) {
 		success : function($result, $status) {
 			load("http://localhost:8080/maohifx.server/common.js");
 			load("http://localhost:8080/maohifx.server/bean/Product.js");
+			load("http://localhost:8080/maohifx.server/bean/Tva.js");
 
 			for ( var iItem in $result) {
 				iElement = new Product();
@@ -33,14 +34,14 @@ function Product() {
 	this.uuid = new SimpleStringProperty();
 	this.designation = new SimpleStringProperty();
 	this.sellingPrice = new SimpleDoubleProperty();
-	this.tvaRate = new SimpleDoubleProperty();
+	this.tva = new Tva();
 	this.href = new SimpleStringProperty();
 
 	// Calculated item see calc methods
 	this.sellingPriceWithTaxes = new SimpleDoubleProperty();
 
 	// Calculated item using bindings
-	this.tvaAmount = Bindings.multiply(this.sellingPrice, this.tvaRate.divide(100));
+	this.tvaAmount = Bindings.multiply(this.sellingPrice, this.tva.rate.divide(100));
 }
 
 Product.prototype.toJSON = function() {
@@ -48,7 +49,7 @@ Product.prototype.toJSON = function() {
 		uuid : this.uuid.get(),
 		designation : this.designation.get(),
 		sellingPrice : this.sellingPrice.get(),
-		tvaRate : this.tvaRate.get()
+		tva : this.tva.toJSON(),
 	}
 }
 
@@ -56,17 +57,23 @@ Product.prototype.parseJSON = function(aJSONObject) {
 	this.uuid.set(aJSONObject.get("uuid"));
 	this.designation.set(aJSONObject.get("designation"));
 	this.sellingPrice.set(aJSONObject.get("sellingPrice"));
-	this.tvaRate.set(aJSONObject.get("tvaRate"));
+	this.tva.parseJSON(aJSONObject.get("tva"));
 	this.href.set(aJSONObject.get("href"));
 
-	this.sellingPriceWithTaxes.set(this.sellingPrice.multiply(this.tvaRate.divide(100).add(1)).get());
+	this.sellingPriceWithTaxes.set(this.sellingPrice.multiply(this.tva.rate.divide(100).add(1)).get());
+}
+
+Product.prototype.parseTva = function(aTva) {
+	this.tva = aTva;
+	
+	this.calcSellingPrice();
 }
 
 Product.prototype.parseProduct = function(aProduct) {
 	this.uuid.set(null);
 	this.designation.set(aProduct.designation.get());
 	this.sellingPriceWithTaxes.set(aProduct.sellingPriceWithTaxes.get());
-	this.tvaRate.set(aProduct.tvaRate.get());
+	this.parseTva(aProduct.tva);
 }
 
 Product.prototype.save = function() {
@@ -80,6 +87,7 @@ Product.prototype.save = function() {
 		success : function($result, $status) {
 			load("http://localhost:8080/maohifx.server/common.js");
 			load("http://localhost:8080/maohifx.server/bean/Product.js");
+			load("http://localhost:8080/maohifx.server/bean/Tva.js");
 
 			$product.parseJSON($result);
 
@@ -98,6 +106,6 @@ Product.prototype.toString = function() {
 }
 
 Product.prototype.calcSellingPrice = function() {
-	iSellingPrice = this.sellingPriceWithTaxes.divide(this.tvaRate.divide(100).add(1)).get()
+	iSellingPrice = this.sellingPriceWithTaxes.divide(this.tva.rate.divide(100).add(1)).get()
 	this.sellingPrice.set(iSellingPrice);
 }

@@ -1,5 +1,6 @@
 load("http://localhost:8080/maohifx.server/common.js");
 load("http://localhost:8080/maohifx.server/bean/Product.js");
+load("http://localhost:8080/maohifx.server/bean/Tva.js");
 
 function ProductController() {
 	this.product = new Product();
@@ -11,10 +12,11 @@ function ProductController() {
 		$tab.textProperty().bindBidirectional(this.product.designation);
 	}
 
+	tvaRate.setText(this.product.tva.toString());
+
 	// Controls Binding
 	designation.textProperty().bindBidirectional(this.product.designation);
 	sellingPrice.textProperty().bindBidirectional(this.product.sellingPrice, new JSObjectStringConverter());
-	tvaRate.textProperty().bindBidirectional(this.product.tvaRate, new JSObjectStringConverter());
 	sellingPriceWithTaxes.textProperty().bindBidirectional(this.product.sellingPriceWithTaxes, new JSObjectStringConverter());
 
 	// Adding ChangeListener
@@ -23,20 +25,20 @@ function ProductController() {
 			controller.product.calcSellingPrice();
 		}
 	}));
-	this.product.tvaRate.addListener(new ChangeListener({
-		changed : function(aObservable, aOldValue, aNewValue) {
-			controller.product.calcSellingPrice();
-		}
-	}));
 
 	// AutoCompletion
 	designationAutoCompletion.addAll(Product.search());
-	
+	tvaAutoCompletion.addAll(Tva.search());
+
 	runLater(new Runnable({
 		run : function() {
 			designation.requestFocus();
 		}
 	}));
+}
+
+ProductController.prototype.tvaAutoCompletionEvent = function(aEvent) {
+	this.product.parseTva(aEvent.getCompletion());
 }
 
 ProductController.prototype.designationAutoCompletionEvent = function(aEvent) {

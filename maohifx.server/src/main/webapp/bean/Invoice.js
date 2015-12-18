@@ -18,6 +18,7 @@ Invoice.search = function(aPattern) {
 			load("http://localhost:8080/maohifx.server/bean/InvoicePaymentLine.js");
 			load("http://localhost:8080/maohifx.server/bean/PaymentMode.js");
 			load("http://localhost:8080/maohifx.server/bean/Product.js");
+			load("http://localhost:8080/maohifx.server/bean/Tva.js");
 			load("http://localhost:8080/maohifx.server/bean/Contact.js");
 			load("http://localhost:8080/maohifx.server/bean/Customer.js");
 
@@ -61,7 +62,7 @@ Invoice.prototype.toJSON = function() {
 		number : this.invoiceNumber.get(),
 		date : this.invoiceDate.getDate(),
 		customerName : this.customerName.get(),
-		customer: this.customer.toJSON(),
+		customer : this.customer.toJSON(),
 		invoiceLines : this.getInvoiceLines(),
 		invoicePaymentLines : this.getInvoicePaymentLines(),
 	}
@@ -145,7 +146,8 @@ Invoice.prototype.addInvoicePaymentLine = function() {
 Invoice.prototype.updateInvoiceLine = function(aIndex, aProduct) {
 	iInvoiceLine = this.invoiceLines.get(aIndex);
 	iInvoiceLine.sellingPrice.set(aProduct.sellingPrice.get());
-	iInvoiceLine.tvaRate.set(aProduct.tvaRate.get())
+	iInvoiceLine.tvaRate.set(aProduct.tva.rate.get())
+	iInvoiceLine.tva = aProduct.tva;
 
 	this.updateTotals();
 }
@@ -238,9 +240,10 @@ Invoice.prototype.save = function() {
 			load("http://localhost:8080/maohifx.server/bean/InvoicePaymentLine.js");
 			load("http://localhost:8080/maohifx.server/bean/PaymentMode.js");
 			load("http://localhost:8080/maohifx.server/bean/Product.js");
+			load("http://localhost:8080/maohifx.server/bean/Tva.js");
 			load("http://localhost:8080/maohifx.server/bean/Contact.js");
 			load("http://localhost:8080/maohifx.server/bean/Customer.js");
-			
+
 			$invoice.parseJSON($result);
 
 			alert("Save success!");

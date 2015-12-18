@@ -19,7 +19,9 @@ import com.maohi.software.maohifx.invoice.bean.Invoice;
 import com.maohi.software.maohifx.invoice.bean.InvoiceLine;
 import com.maohi.software.maohifx.invoice.bean.InvoicePaymentLine;
 import com.maohi.software.maohifx.invoice.bean.PaymentMode;
+import com.maohi.software.maohifx.invoice.bean.Tva;
 import com.maohi.software.maohifx.invoice.dao.PaymentModeDAO;
+import com.maohi.software.maohifx.invoice.dao.TvaDAO;
 import com.maohi.software.maohifx.product.bean.Product;
 
 /**
@@ -34,6 +36,7 @@ public class MyApplication extends ResourceConfig {
 		HibernateUtil.getConfiguration().addAnnotatedClass(InvoicePaymentLine.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(PaymentMode.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(Product.class);
+		HibernateUtil.getConfiguration().addAnnotatedClass(Tva.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(Customer.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(Supplier.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(Contact.class);
@@ -46,6 +49,11 @@ public class MyApplication extends ResourceConfig {
 		this.insertPaymentMode(0, "CASH");
 		this.insertPaymentMode(1, "CHEQUE");
 		this.insertPaymentMode(2, "CARTE DE CREDIT");
+
+		this.insertTva(0, "PPN", 0.0);
+		this.insertTva(1, "Service", 13.0);
+		this.insertTva(2, "Produits 1", 6.0);
+		this.insertTva(3, "Produits 2", 16.0);
 	}
 
 	public void insertPaymentMode(final int aId, final String aLabel) {
@@ -59,6 +67,16 @@ public class MyApplication extends ResourceConfig {
 		iDAO.beginTransaction();
 		iDAO.replace(iPaymentMode);
 		iDAO.commit();
+	}
+
+	private void insertTva(final Integer aType, final String aLabel, final Double aRate) {
+		final Tva iTva = new Tva(aType);
+		iTva.setLabel(aLabel);
+		iTva.setRate(aRate);
+		final TvaDAO iDao = new TvaDAO();
+		iDao.beginTransaction();
+		iDao.replace(iTva);
+		iDao.commit();
 	}
 
 }
