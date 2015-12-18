@@ -59,6 +59,7 @@ function InvoiceController() {
 
 	autoCompletion.addAll(Product.search());
 	customerAutoCompletion.addAll(Customer.search());
+	paymentModeAutoCompletion.addAll(PaymentMode.search());
 }
 
 InvoiceController.prototype.addInvoiceLineEvent = function(aEvent) {
