@@ -81,7 +81,6 @@ InvoiceController.prototype.addInvoicePaymentLineEvent = function(aEvent) {
 
 InvoiceController.prototype.customerNameAutoCompletionEvent = function(aAutoCompletionEvent) {
 	this.autoCompletedCustomer = aAutoCompletionEvent.getCompletion();
-	System.out.println(this.autoCompletedCustomer);
 }
 
 InvoiceController.prototype.labelAutoCompletionEvent = function(aAutoCompletionEvent) {
