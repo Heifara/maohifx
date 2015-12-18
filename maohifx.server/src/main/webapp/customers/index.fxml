@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?language javascript?>
+
+<?import com.maohi.software.maohifx.control.*?>
+<?import com.maohi.software.maohifx.control.cell.*?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+	<stylesheets>
+		<URL value="@../app.css" />
+	</stylesheets>
+	<fx:script source="../customers/Controller.js" />
+	<top>
+		<GridPane BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints hgrow="NEVER" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+				<Button id="search-button" alignment="CENTER_RIGHT" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" onAction="controller.searchEvent(event)" GridPane.columnIndex="1" />
+				<TextField fx:id="pattern">
+					<autoCompletion>
+						<FXCollections fx:id="patternAutoCompletion" fx:factory="observableArrayList">
+						</FXCollections>
+					</autoCompletion>
+				</TextField>
+			</children>
+		</GridPane>
+	</top>
+	<center>
+		<GridPane BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints hgrow="NEVER" />
+				<ColumnConstraints hgrow="NEVER" />
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints vgrow="NEVER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+				<TableView fx:id="tableView" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2147483647">
+					<columns>
+						<TableColumn prefWidth="75.0" text="Nom">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="lastname" />
+							</cellValueFactory>
+							<cellFactory>
+								<LinkCellFactory property="href" target="BLANK" />
+							</cellFactory>
+						</TableColumn>
+						<TableColumn prefWidth="75.0" text="Prénom">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="firstname" />
+							</cellValueFactory>
+							<cellFactory>
+								<LinkCellFactory property="href" target="BLANK" />
+							</cellFactory>
+						</TableColumn>
+					</columns>
+				</TableView>
+				<Link href="@../customer" text="Nouveau" GridPane.columnIndex="0" />
+			</children>
+		</GridPane>
+	</center>
+	<fx:script>
+		controller = new CustomersController();
+	</fx:script>
+</BorderPane>

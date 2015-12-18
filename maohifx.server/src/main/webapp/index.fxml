@@ -84,7 +84,7 @@
 								<TextArea text="Work in progress" editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT" />
 							</center>
 							<left>
-								<Link id="customer-button" href="@products" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" target="BLANK" BorderPane.alignment="TOP_LEFT" />
+								<Link id="customer-button" href="@customers" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" target="BLANK" BorderPane.alignment="TOP_LEFT" />
 							</left>
 						</BorderPane>
 					</children>
