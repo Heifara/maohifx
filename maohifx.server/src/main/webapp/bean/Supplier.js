@@ -38,12 +38,12 @@ function Supplier() {
 	this.code = new SimpleStringProperty();
 
 	this.contact = new Contact();
-	
+
 	this.uuid.bindBidirectional(this.contact.uuid);
-	
+
 	this.lastname = new SimpleStringProperty();
 	this.lastname.bindBidirectional(this.contact.lastname);
-	
+
 	this.firstname = new SimpleStringProperty();
 	this.firstname.bindBidirectional(this.contact.firstname);
 }
@@ -88,5 +88,5 @@ Supplier.prototype.save = function() {
 }
 
 Supplier.prototype.toString = function() {
-	return "NOT IMPLEMENTED YET!"
+	return this.code.get() + " " + this.lastname.get() + " " + this.firstname.get();
 }

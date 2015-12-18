@@ -88,5 +88,5 @@ Customer.prototype.save = function() {
 }
 
 Customer.prototype.toString = function() {
-	return this.lastname.get() + " " + this.firstname.get();
+	return this.code.get() + " " + this.lastname.get() + " " + this.firstname.get();
 }
