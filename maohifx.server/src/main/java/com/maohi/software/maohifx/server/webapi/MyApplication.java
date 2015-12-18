@@ -56,7 +56,9 @@ public class MyApplication extends ResourceConfig {
 		iPaymentMode.setUpdateDate(new Date());
 
 		final PaymentModeDAO iDAO = new PaymentModeDAO();
+		iDAO.beginTransaction();
 		iDAO.replace(iPaymentMode);
+		iDAO.commit();
 	}
 
 }
