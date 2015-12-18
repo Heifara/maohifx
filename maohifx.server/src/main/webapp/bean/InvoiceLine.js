@@ -38,8 +38,10 @@ InvoiceLine.prototype.parseJSON = function(aJSONObject) {
 	this.quantity.set(aJSONObject.get("quantity"));
 	this.sellingPrice.set(aJSONObject.get("sellingPrice"));
 	this.discountRate.set(aJSONObject.get("discountRate"));
-	this.tva.parseJSON(aJSONObject);
+	this.tva.parseJSON(aJSONObject.get("tva"));
 	this.tvaRate.set(aJSONObject.get("tvaRate"));
+	
+	System.out.println(this.tva.toString());
 }
 
 InvoiceLine.prototype.toConsole = function() {
