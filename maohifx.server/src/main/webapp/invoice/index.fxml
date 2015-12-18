@@ -68,14 +68,6 @@
 								<JSObjectPropertyValueFactory onEditCommit="controller.updateInvoiceEvent(event)" property="quantity" />
 							</cellValueFactory>
 						</TableColumn>
-						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Prix H.T">
-							<cellValueFactory>
-								<JSObjectPropertyValueFactory onEditCommit="controller.updateInvoiceEvent(event)" property="sellingPrice" />
-							</cellValueFactory>
-							<cellFactory>
-								<JSObjectCellFactory />
-							</cellFactory>
-						</TableColumn>
 						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Remise">
 							<cellValueFactory>
 								<JSObjectPropertyValueFactory onEditCommit="controller.updateInvoiceEvent(event)" property="discountRate" />
@@ -84,7 +76,15 @@
 								<JSObjectCellFactory />
 							</cellFactory>
 						</TableColumn>
-						<TableColumn maxWidth="75.0" prefWidth="75.0" text="Tva">
+						<TableColumn editable="false" maxWidth="75.0" prefWidth="75.0" text="Prix H.T">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory onEditCommit="controller.updateInvoiceEvent(event)" property="sellingPrice" />
+							</cellValueFactory>
+							<cellFactory>
+								<JSObjectCellFactory />
+							</cellFactory>
+						</TableColumn>
+						<TableColumn editable="false" maxWidth="75.0" prefWidth="75.0" text="Tva">
 							<cellValueFactory>
 								<JSObjectPropertyValueFactory onEditCommit="controller.updateInvoiceEvent(event)" property="tvaRate" />
 							</cellValueFactory>
