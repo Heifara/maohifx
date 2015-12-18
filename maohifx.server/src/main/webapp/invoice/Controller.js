@@ -5,6 +5,7 @@ load("http://localhost:8080/maohifx.server/bean/InvoicePaymentLine.js");
 load("http://localhost:8080/maohifx.server/bean/PaymentMode.js");
 load("http://localhost:8080/maohifx.server/bean/Product.js");
 load("http://localhost:8080/maohifx.server/bean/Contact.js");
+load("http://localhost:8080/maohifx.server/bean/Customer.js");
 
 function InvoiceController() {
 	this.autoCompletedProduct = null;
@@ -57,7 +58,7 @@ function InvoiceController() {
 	invoicePaymentLines.getContextMenu().getItems().add(iRemoveInvoicePaymentLineMenuItem);
 
 	autoCompletion.addAll(Product.search());
-	customerAutoCompletion.addAll(Contact.search());
+	customerAutoCompletion.addAll(Customer.search());
 }
 
 InvoiceController.prototype.addInvoiceLineEvent = function(aEvent) {
