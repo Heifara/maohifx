@@ -3,6 +3,7 @@
  */
 package com.maohi.software.maohifx.server.webapi;
 
+import java.io.InputStream;
 import java.util.List;
 
 import javax.ws.rs.Path;
@@ -31,6 +32,16 @@ public class SupplierService extends AnnotatedClassService<SupplierDAO, Supplier
 	@Override
 	Class<SupplierDAO> getDAOClass() {
 		return SupplierDAO.class;
+	}
+
+	@Override
+	protected String getJaxbPackage() {
+		return null;
+	}
+
+	@Override
+	protected InputStream getXslInputStream(final Supplier iElement) {
+		return null;
 	}
 
 	@Override
@@ -67,5 +78,10 @@ public class SupplierService extends AnnotatedClassService<SupplierDAO, Supplier
 	@Override
 	public List<Supplier> search(final String aPattern) {
 		return this.dao.readAll();
+	}
+
+	@Override
+	protected Object toJaxb(final Supplier iElement) {
+		return null;
 	}
 }

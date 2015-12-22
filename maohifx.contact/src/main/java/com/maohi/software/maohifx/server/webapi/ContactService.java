@@ -3,6 +3,7 @@
  */
 package com.maohi.software.maohifx.server.webapi;
 
+import java.io.InputStream;
 import java.util.List;
 
 import javax.ws.rs.Path;
@@ -29,6 +30,16 @@ public class ContactService extends AnnotatedClassService<ContactDAO, Contact> {
 	@Override
 	Class<ContactDAO> getDAOClass() {
 		return ContactDAO.class;
+	}
+
+	@Override
+	protected String getJaxbPackage() {
+		return null;
+	}
+
+	@Override
+	protected InputStream getXslInputStream(final Contact iElement) {
+		return null;
 	}
 
 	@Override
@@ -64,6 +75,11 @@ public class ContactService extends AnnotatedClassService<ContactDAO, Contact> {
 	@Override
 	public List<Contact> search(final String aPattern) {
 		return this.dao.readAll();
+	}
+
+	@Override
+	protected Object toJaxb(final Contact iElement) {
+		return null;
 	}
 
 }

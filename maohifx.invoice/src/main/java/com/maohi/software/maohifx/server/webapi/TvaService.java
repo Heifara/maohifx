@@ -3,6 +3,7 @@
  */
 package com.maohi.software.maohifx.server.webapi;
 
+import java.io.InputStream;
 import java.util.List;
 
 import javax.ws.rs.Path;
@@ -29,6 +30,16 @@ public class TvaService extends AnnotatedClassService<TvaDAO, Tva> {
 	@Override
 	Class<TvaDAO> getDAOClass() {
 		return TvaDAO.class;
+	}
+
+	@Override
+	protected String getJaxbPackage() {
+		return null;
+	}
+
+	@Override
+	protected InputStream getXslInputStream(final Tva iElement) {
+		return null;
 	}
 
 	@Override
@@ -64,6 +75,11 @@ public class TvaService extends AnnotatedClassService<TvaDAO, Tva> {
 	@Override
 	public List<Tva> search(final String aPattern) {
 		return this.dao.readAll();
+	}
+
+	@Override
+	protected Object toJaxb(final Tva iElement) {
+		return null;
 	}
 
 }

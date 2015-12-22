@@ -3,6 +3,7 @@
  */
 package com.maohi.software.maohifx.server.webapi;
 
+import java.io.InputStream;
 import java.util.List;
 
 import javax.ws.rs.Path;
@@ -29,6 +30,16 @@ public class PaymentModeService extends AnnotatedClassService<PaymentModeDAO, Pa
 	@Override
 	Class<PaymentModeDAO> getDAOClass() {
 		return PaymentModeDAO.class;
+	}
+
+	@Override
+	protected String getJaxbPackage() {
+		return null;
+	}
+
+	@Override
+	protected InputStream getXslInputStream(final PaymentMode iElement) {
+		return null;
 	}
 
 	public void insertPaymentMode(final int aId, final String aLabel) {
@@ -61,6 +72,11 @@ public class PaymentModeService extends AnnotatedClassService<PaymentModeDAO, Pa
 	@Override
 	public List<PaymentMode> search(final String aPattern) {
 		return this.dao.readAll();
+	}
+
+	@Override
+	protected Object toJaxb(final PaymentMode iElement) {
+		return null;
 	}
 
 }

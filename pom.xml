@@ -68,6 +68,22 @@
 						</descriptors>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.jvnet.jaxb2.maven2</groupId>
+					<artifactId>maven-jaxb2-plugin</artifactId>
+					<version>0.11.0</version>
+					<configuration>
+						<generateDirectory>src/main/java</generateDirectory>
+						<generatePackage>${project.groupId}.${project.artifactId}.jaxb2</generatePackage>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>generate</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>

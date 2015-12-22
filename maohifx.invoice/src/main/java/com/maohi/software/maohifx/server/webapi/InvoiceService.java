@@ -3,15 +3,12 @@
  */
 package com.maohi.software.maohifx.server.webapi;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
-import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
 
 import com.maohi.software.maohifx.invoice.bean.Invoice;
 import com.maohi.software.maohifx.invoice.bean.InvoicePaymentLine;
@@ -38,6 +35,16 @@ public class InvoiceService extends AnnotatedClassService<InvoiceDAO, Invoice> {
 	@Override
 	Class<InvoiceDAO> getDAOClass() {
 		return InvoiceDAO.class;
+	}
+
+	@Override
+	protected String getJaxbPackage() {
+		return "com.maohi.software.maohifx.invoice.jaxb2";
+	}
+
+	@Override
+	protected InputStream getXslInputStream(final Invoice iElement) {
+		return this.getClass().getClassLoader().getResourceAsStream("invoice.xsl");
 	}
 
 	@Override
@@ -90,20 +97,24 @@ public class InvoiceService extends AnnotatedClassService<InvoiceDAO, Invoice> {
 		iElement.bindChildren();
 	}
 
-	@GET
-	@Path("pdf")
-	@Produces({ "application/pdf" })
-	public Response pdf() {
-		try {
-			return Response.seeOther(new URL("http://localhost:8080/maohifx.server/my.pdf").toURI()).build();
-		} catch (MalformedURLException | URISyntaxException e) {
-			return Response.serverError().build();
-		}
-	}
-
 	@Override
 	public List<Invoice> search(final String aPattern) {
 		return this.dao.readAll();
+	}
+
+	@Override
+	protected Object toJaxb(final Invoice iElement) {
+		final com.maohi.software.maohifx.invoice.jaxb2.Invoice iJaxbInvoice = new com.maohi.software.maohifx.invoice.jaxb2.Invoice();
+		iJaxbInvoice.setNumber(iElement.getNumber().toString());
+		iJaxbInvoice.setDate(DateFormat.getDateInstance().format(new Date()));
+		iJaxbInvoice.setCustomerName(iElement.getCustomerName());
+
+		final com.maohi.software.maohifx.invoice.jaxb2.Invoice.InvoiceLines iJaxbInvoiceLines = new com.maohi.software.maohifx.invoice.jaxb2.Invoice.InvoiceLines();
+		iJaxbInvoice.setInvoiceLines(iJaxbInvoiceLines);
+
+		final com.maohi.software.maohifx.invoice.jaxb2.Invoice.InvoicePaymentLines iJaxbPaymentLines = new com.maohi.software.maohifx.invoice.jaxb2.Invoice.InvoicePaymentLines();
+		iJaxbInvoice.setInvoicePaymentLines(iJaxbPaymentLines);
+		return iJaxbInvoice;
 	}
 
 }

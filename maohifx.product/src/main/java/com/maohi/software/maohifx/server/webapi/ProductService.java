@@ -3,6 +3,7 @@
  */
 package com.maohi.software.maohifx.server.webapi;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,17 @@ public class ProductService extends AnnotatedClassService<ProductDAO, Product> {
 	@Override
 	Class<ProductDAO> getDAOClass() {
 		return ProductDAO.class;
+	}
+
+	@Override
+	protected String getJaxbPackage() {
+		return null;
+	}
+
+	@Override
+	protected InputStream getXslInputStream(final Product iElement) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -71,6 +83,11 @@ public class ProductService extends AnnotatedClassService<ProductDAO, Product> {
 			iProducts = this.dao.readByDesignation(aPattern);
 		}
 		return iProducts;
+	}
+
+	@Override
+	protected Object toJaxb(final Product iElement) {
+		return null;
 	}
 
 }

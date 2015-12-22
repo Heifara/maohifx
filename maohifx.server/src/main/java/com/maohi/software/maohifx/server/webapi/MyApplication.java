@@ -31,6 +31,8 @@ import com.maohi.software.maohifx.product.bean.Product;
 public class MyApplication extends ResourceConfig {
 
 	public MyApplication() {
+		System.setProperty("java.io.tmpdir", "C:\\temp");
+
 		HibernateUtil.getConfiguration().addAnnotatedClass(Invoice.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(InvoiceLine.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(InvoicePaymentLine.class);
