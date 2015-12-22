@@ -1,333 +1,517 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:fox="http://xml.apache.org/fop/extensions" xmlns:fo="http://www.w3.org/1999/XSL/Format" version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:saxon="http://icl.com/saxon" extension-element-prefixes="saxon">
-	<xsl:template match="/Invoice">
-		<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
-			<fo:layout-master-set>
-				<fo:simple-page-master master-name="pagemaster1" page-height="845.0pt" page-width="598.0pt" margin-top="10.0pt" margin-left="10.0pt" margin-bottom="10.0pt" margin-right="10.0pt">
-					<xsl:variable name="backgroundImageRepeat">
-						no-repeat
-					</xsl:variable>
-					<xsl:variable name="pageBackgroundColor">
-						#ffffff
-					</xsl:variable>
-					<xsl:variable name="uriBackgroundImage"></xsl:variable>
-					<xsl:variable name="uriLeftBackgroundImage"></xsl:variable>
-					<xsl:variable name="uriRightBackgroundImage"></xsl:variable>
-					<xsl:variable name="uriBottomBackgroundImage"></xsl:variable>
-					<xsl:variable name="uriTopBackgroundImage"></xsl:variable>
-					<fo:region-body margin-left="28.0pt" margin-top="28.0pt" margin-bottom="28.0pt" margin-right="28.0pt" background-image="url({$uriBackgroundImage})" background-repeat="{$backgroundImageRepeat}" background-position-horizontal="left" background-position-vertical="top" />
-					<fo:region-before extent="28.0pt" precedence="true" background-image="url({$uriTopBackgroundImage})" background-repeat="no-repeat" />
-					<fo:region-after extent="28.0pt" precedence="true" background-image="url({$uriBottomBackgroundImage})" background-repeat="no-repeat" />
-					<fo:region-start extent="28.0pt" background-image="url({$uriLeftBackgroundImage})" background-repeat="no-repeat" />
-					<fo:region-end extent="28.0pt" background-image="url({$uriRightBackgroundImage})" background-repeat="no-repeat" />
-				</fo:simple-page-master>
-			</fo:layout-master-set>
-			<fo:bookmark-tree>
-			</fo:bookmark-tree>
-			<fo:page-sequence master-reference="pagemaster1">
-				<xsl:attribute name="force-page-count">no-force</xsl:attribute>
-				<fo:static-content flow-name="xsl-region-before">
-					<xsl:variable name="backgroundColorVariable0">
-						#000000
-					</xsl:variable>
-					<fo:block-container position="absolute" top="-10.0pt" left="-10.0pt" height="10.0pt" width="598.0pt" border-left-style="solid" border-left-width="1.0pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.0pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.0pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.0pt" border-bottom-color="#000000" background-color="{$backgroundColorVariable0}">
-						<fo:block />
-					</fo:block-container>
-					<xsl:variable name="backgroundColorVariable1">
-						#000000
-					</xsl:variable>
-					<fo:block-container position="absolute" top="-2.0pt" left="-10.0pt" height="840.0pt" width="38.0pt" border-left-style="solid" border-left-width="1.0pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.0pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.0pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.0pt" border-bottom-color="#000000" background-color="{$backgroundColorVariable1}">
-						<fo:block />
-					</fo:block-container>
-				</fo:static-content>
-				<fo:static-content flow-name="xsl-region-after">
-					<fo:block />
-				</fo:static-content>
-				<fo:static-content flow-name="xsl-region-start">
-					<fo:block />
-				</fo:static-content>
-				<fo:static-content flow-name="xsl-region-end">
-					<fo:block />
-				</fo:static-content>
-				<fo:flow flow-name="xsl-region-body">
-					<fo:block />
-					<fo:block-container position="absolute" top="4pt" left="2pt" height="752.0pt" width="536.0pt" border-width="1.0pt">
-						<fo:block span="none" white-space-collapse="false" font-family="Helvetica" font-size="12pt" text-align="start" position="relative" top="44pt" left="27pt" height="752.0pt" width="536.0pt">
-							<fo:instream-foreign-object xmlns:xlink="http://www.w3.org/1999/xlink">
-								<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="600" height="600" viewBox="0 0 1000 1000"> <g id="test-body-content"><text x="0" y="100" style="opacity:.25; font-family:Arial; font-size:100pt; fill:rgb(200,200,200)">XSLfast</text><text x="50" y="200" style="opacity:.25; font-family:Arial; font-size:100pt; fill:rgb(200,200,200)">DEMO</text></g></svg>
-							</fo:instream-foreign-object>
-						</fo:block>
-					</fo:block-container>
-					<xsl:variable name="backgroundColorVariable2">
-						transparent
-					</xsl:variable>
-					<xsl:variable name="backgroundImageTextFlowVariable0"></xsl:variable>
-					<fo:block-container position="absolute" top="6.0pt" left="7.0pt" height="39.0pt" width="509.0pt" border-left-style="double" border-left-width="1.37pt" border-left-color="#000000" border-right-style="double" border-right-width="1.37pt" border-right-color="#000000" border-top-style="double" border-top-width="1.37pt" border-top-color="#000000" border-bottom-style="double" border-bottom-width="1.37pt" border-bottom-color="#000000" background-color="{$backgroundColorVariable2}" display-align="center" reference-orientation="0">
-						<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="24.0pt" line-stacking-strategy="max-height" white-space-collapse="false" hyphenate="true" language="en" text-align="center" position="relative" top="6.0pt" left="7.0pt" height="39.0pt" width="509.0pt" keep-together="auto" color="#000000" font-family="Times New Roman" font-size="20.0pt" font-weight="bold" letter-spacing="normal" word-spacing="normal">
-							<fo:block hyphenate="true" language="en">
-								<fo:inline>
-									<xsl:text>Facture n°</xsl:text>
-								</fo:inline>
-								<fo:inline>
-									<xsl:value-of disable-output-escaping="no" select="@number" />
-								</fo:inline>
-							</fo:block>
-						</fo:block>
-					</fo:block-container>
-					<xsl:variable name="backgroundColorVariable5">
-						#ffffff
-					</xsl:variable>
-					<xsl:variable name="backgroundImageTextFlowVariable1"></xsl:variable>
-					<fo:block-container position="absolute" top="53.0pt" left="7.0pt" height="77.0pt" width="254.0pt" display-align="before" reference-orientation="0">
-						<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.399999999999999pt" line-stacking-strategy="max-height" white-space-collapse="false" hyphenate="true" language="en" text-align="start" position="relative" top="53.0pt" left="7.0pt" height="77.0pt" width="254.0pt" keep-together="auto" color="#000000" font-family="Arial" font-size="12.0pt" letter-spacing="normal" word-spacing="normal">
-							<fo:block hyphenate="true" language="en">
-								<fo:inline>
-									<xsl:text>msdjfklsdjflsdfjlm</xsl:text>
-								</fo:inline>
-							</fo:block>
-							<fo:inline>
-								<xsl:text>sdfsdlfjsdilmfjsdklm</xsl:text>
-							</fo:inline>
-							<fo:block hyphenate="true" language="en">
-								<fo:inline>
-								</fo:inline>
-								<fo:inline>
-									<xsl:text>sfsfjsdlfjslmdjfsd</xsl:text>
-								</fo:inline>
-							</fo:block>
-							<fo:inline>
-								<xsl:text>fsdlmfkjsdlfjsdklmj</xsl:text>
-							</fo:inline>
-						</fo:block>
-					</fo:block-container>
-					<xsl:variable name="backgroundColorVariable10">
-						#ffffff
-					</xsl:variable>
-					<xsl:variable name="backgroundImageTextFlowVariable2"></xsl:variable>
-					<fo:block-container position="absolute" top="58.0pt" left="352.0pt" height="30.0pt" width="158.0pt" display-align="before" reference-orientation="0">
-						<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.399999999999999pt" line-stacking-strategy="max-height" white-space-collapse="false" hyphenate="true" language="en" text-align="start" position="relative" top="58.0pt" left="352.0pt" height="30.0pt" width="158.0pt" keep-together="auto" letter-spacing="normal" word-spacing="normal">
-							<fo:block hyphenate="true" language="en">
-								<fo:inline color="#000000" font-family="Arial" font-size="12.0pt" font-weight="bold">
-									<xsl:text>Faite le</xsl:text>
-								</fo:inline>
-								<fo:inline color="#000000" font-family="Arial" font-size="12.0pt">
-									<xsl:text> </xsl:text>
-								</fo:inline>
-								<fo:inline color="#000000" font-family="Arial" font-size="12.0pt">
-									<xsl:value-of disable-output-escaping="no" select="@date" />
-								</fo:inline>
-							</fo:block>
-						</fo:block>
-					</fo:block-container>
-					<xsl:variable name="backgroundColorVariable14">
-						#ffffff
-					</xsl:variable>
-					<xsl:variable name="backgroundImageTextFlowVariable3"></xsl:variable>
-					<fo:block-container position="absolute" top="130.0pt" left="261.0pt" height="88.0pt" width="255.0pt" display-align="before" reference-orientation="0">
-						<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.399999999999999pt" line-stacking-strategy="max-height" white-space-collapse="false" hyphenate="true" language="en" text-align="end" position="relative" top="130.0pt" left="261.0pt" height="88.0pt" width="255.0pt" keep-together="auto" color="#000000" font-family="Arial" font-size="12.0pt" letter-spacing="normal" word-spacing="normal">
-							<fo:block hyphenate="true" language="en">
-								<fo:inline>
-									<xsl:value-of disable-output-escaping="no" select="@customerName" />
-								</fo:inline>
-							</fo:block>
-							<fo:inline>
-								<xsl:value-of disable-output-escaping="no" select="address/Company" />
-							</fo:inline>
-							<fo:block hyphenate="true" language="en">
-								<fo:inline>
-								</fo:inline>
-								<fo:inline>
-									<xsl:value-of disable-output-escaping="no" select="address/Country" />
-								</fo:inline>
-							</fo:block>
-							<fo:inline>
-								<xsl:value-of disable-output-escaping="no" select="address/City" />
-							</fo:inline>
-							<fo:inline>
-								<xsl:text> </xsl:text>
-							</fo:inline>
-							<fo:inline>
-								<xsl:value-of disable-output-escaping="no" select="address/Street" />
-							</fo:inline>
-							<fo:block hyphenate="true" language="en">
-								<fo:inline>
-								</fo:inline>
-								<fo:inline>
-									<xsl:text>+689 87 69 85 23</xsl:text>
-								</fo:inline>
-							</fo:block>
-						</fo:block>
-					</fo:block-container>
-					<fo:block-container position="absolute" top="250.0pt" left="2.0pt" height="110.0pt" width="522.0pt" reference-orientation="0">
-						<fo:block keep-together="auto"><!-- GENERATE TABLE START -->
-							<xsl:if test="InvoiceLines/InvoiceLine">
-								<xsl:variable name="tableIfEmptyVariable0"></xsl:variable>
-								<xsl:variable name="backgroundColorVariable22"></xsl:variable>
-								<fo:table table-layout="fixed" width="100%" background-image="url({$tableIfEmptyVariable0})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorVariable22}">
-									<fo:table-column column-width="85.0pt" />
-									<fo:table-column column-width="112.0pt" />
-									<fo:table-column column-width="80.0pt" />
-									<fo:table-column column-width="80.0pt" />
-									<fo:table-column column-width="80.0pt" />
-									<fo:table-column column-width="80.0pt" />
-									<fo:table-body>
-										<xsl:for-each select="InvoiceLines/InvoiceLine">
-											<xsl:variable name="rowIfEmptyVariable0"></xsl:variable>
-											<xsl:variable name="backgroundColorRowVariable0"></xsl:variable>
-											<fo:table-row background-color="{$backgroundColorRowVariable0}" background-image="url({$rowIfEmptyVariable0})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%">
-												<xsl:variable name="cellIfEmptyVariable0"></xsl:variable>
-												<xsl:variable name="backgroundColorVariable23">
-													#ffffff
-												</xsl:variable>
-												<xsl:variable name="backgroundColorCellVariable0"></xsl:variable>
-												<fo:table-cell padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable0})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable0}" width="85.0pt" reference-orientation="0">
-													<fo:block break-before="auto" />
-													<xsl:variable name="backgroundColorVariable24">
-														#ffffff
-													</xsl:variable>
-													<fo:block-container>
-														<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.399999999999999pt" line-stacking-strategy="max-height" white-space-collapse="false" hyphenate="true" language="en" text-align="start" keep-together="auto" color="#000000" font-family="Arial" font-size="12.0pt" letter-spacing="normal" word-spacing="normal">
-															<fo:inline>
-																<xsl:value-of disable-output-escaping="no" select="@bar_code" />
-															</fo:inline>
-														</fo:block>
-													</fo:block-container>
-													<fo:block break-after="auto" />
-												</fo:table-cell>
-												<xsl:variable name="cellIfEmptyVariable1"></xsl:variable>
-												<xsl:variable name="backgroundColorVariable26">
-													#ffffff
-												</xsl:variable>
-												<xsl:variable name="backgroundColorCellVariable1"></xsl:variable>
-												<fo:table-cell padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable1})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable1}" width="112.0pt" reference-orientation="0">
-													<fo:block break-before="auto" />
-													<xsl:variable name="backgroundColorVariable27">
-														#ffffff
-													</xsl:variable>
-													<fo:block-container>
-														<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.399999999999999pt" line-stacking-strategy="max-height" white-space-collapse="false" hyphenate="true" language="en" text-align="start" keep-together="auto" color="#000000" font-family="Arial" font-size="12.0pt" letter-spacing="normal" word-spacing="normal">
-															<fo:inline>
-																<xsl:value-of disable-output-escaping="no" select="@label" />
-															</fo:inline>
-														</fo:block>
-													</fo:block-container>
-													<fo:block break-after="auto" />
-												</fo:table-cell>
-												<xsl:variable name="cellIfEmptyVariable2"></xsl:variable>
-												<xsl:variable name="backgroundColorVariable29">
-													#ffffff
-												</xsl:variable>
-												<xsl:variable name="backgroundColorCellVariable2"></xsl:variable>
-												<fo:table-cell padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable2})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable2}" width="80.0pt" reference-orientation="0">
-													<fo:block break-before="auto" />
-													<xsl:variable name="backgroundColorVariable30">
-														#ffffff
-													</xsl:variable>
-													<fo:block-container>
-														<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.399999999999999pt" line-stacking-strategy="max-height" white-space-collapse="false" hyphenate="true" language="en" text-align="start" keep-together="auto" color="#000000" font-family="Arial" font-size="12.0pt" letter-spacing="normal" word-spacing="normal">
-															<fo:inline>
-																<xsl:value-of disable-output-escaping="no" select="@quantity" />
-															</fo:inline>
-														</fo:block>
-													</fo:block-container>
-													<fo:block break-after="auto" />
-												</fo:table-cell>
-												<xsl:variable name="cellIfEmptyVariable3"></xsl:variable>
-												<xsl:variable name="backgroundColorVariable32">
-													#ffffff
-												</xsl:variable>
-												<xsl:variable name="backgroundColorCellVariable3"></xsl:variable>
-												<fo:table-cell padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable3})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable3}" width="80.0pt" reference-orientation="0">
-													<fo:block break-before="auto" />
-													<xsl:variable name="backgroundColorVariable33">
-														#ffffff
-													</xsl:variable>
-													<fo:block-container>
-														<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.399999999999999pt" line-stacking-strategy="max-height" white-space-collapse="false" hyphenate="true" language="en" text-align="start" keep-together="auto" color="#000000" font-family="Arial" font-size="12.0pt" letter-spacing="normal" word-spacing="normal">
-															<fo:inline>
-																<xsl:value-of disable-output-escaping="no" select="@sellingPrice" />
-															</fo:inline>
-														</fo:block>
-													</fo:block-container>
-													<fo:block break-after="auto" />
-												</fo:table-cell>
-												<xsl:variable name="cellIfEmptyVariable4"></xsl:variable>
-												<xsl:variable name="backgroundColorVariable35">
-													#ffffff
-												</xsl:variable>
-												<xsl:variable name="backgroundColorCellVariable4"></xsl:variable>
-												<fo:table-cell padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable4})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable4}" width="80.0pt" reference-orientation="0">
-													<fo:block break-before="auto" />
-													<xsl:variable name="backgroundColorVariable36">
-														#ffffff
-													</xsl:variable>
-													<fo:block-container>
-														<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.399999999999999pt" line-stacking-strategy="max-height" white-space-collapse="false" hyphenate="true" language="en" text-align="start" keep-together="auto" color="#000000" font-family="Arial" font-size="12.0pt" letter-spacing="normal" word-spacing="normal">
-															<fo:inline>
-																<xsl:value-of disable-output-escaping="no" select="@discountRate" />
-															</fo:inline>
-														</fo:block>
-													</fo:block-container>
-													<fo:block break-after="auto" />
-												</fo:table-cell>
-												<xsl:variable name="cellIfEmptyVariable5"></xsl:variable>
-												<xsl:variable name="backgroundColorVariable38">
-													#ffffff
-												</xsl:variable>
-												<xsl:variable name="backgroundColorCellVariable5"></xsl:variable>
-												<fo:table-cell padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable5})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable5}" width="80.0pt" reference-orientation="0">
-													<fo:block break-before="auto" />
-													<xsl:variable name="backgroundColorVariable39">
-														#ffffff
-													</xsl:variable>
-													<fo:block-container>
-														<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.399999999999999pt" line-stacking-strategy="max-height" white-space-collapse="false" hyphenate="true" language="en" text-align="start" keep-together="auto" color="#000000" font-family="Arial" font-size="12.0pt" letter-spacing="normal" word-spacing="normal">
-															<fo:inline>
-																<xsl:value-of disable-output-escaping="no" select="@tvaRate" />
-															</fo:inline>
-														</fo:block>
-													</fo:block-container>
-													<fo:block break-after="auto" />
-												</fo:table-cell>
 
-											</fo:table-row>
-											<xsl:variable name="rowIfEmptyVariable1"></xsl:variable>
-											<xsl:variable name="backgroundColorRowVariable1"></xsl:variable>
-											<fo:table-row background-color="{$backgroundColorRowVariable1}" background-image="url({$rowIfEmptyVariable1})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%">
-												<fo:table-cell>
-													<fo:block />
-												</fo:table-cell>
-												<fo:table-cell>
-													<fo:block />
-												</fo:table-cell>
-												<fo:table-cell>
-													<fo:block />
-												</fo:table-cell>
-												<fo:table-cell>
-													<fo:block />
-												</fo:table-cell>
-												<fo:table-cell>
-													<fo:block />
-												</fo:table-cell>
-												<fo:table-cell>
-													<fo:block />
-												</fo:table-cell>
+<!-- File was generated by XSLfast 5.0, build 13/02/2012 -->
+<!-- Layout version: 204 -->
+<!-- Please leave unchanged; manage layouts instead -->
+<!DOCTYPE xsl:stylesheet [
+<!ENTITY XML "http://www.w3.org/TR/REC-xml">
+<!ENTITY XMLNames "http://www.w3.org/TR/REC-xml-names">
+<!ENTITY XSLT.ns "http://www.w3.org/1999/XSL/Transform">
+<!ENTITY XSLTA.ns "http://www.w3.org/1999/XSL/TransformAlias">
+<!ENTITY XSLFO.ns "http://www.w3.org/1999/XSL/Format">
+<!ENTITY copy "&#169;">
+<!ENTITY trade "&#8482;">
+<!ENTITY deg "&#x00b0;">
+<!ENTITY gt "&#62;">
+<!ENTITY sup2 "&#x00b2;">
+<!ENTITY frac14 "&#x00bc;">
+<!ENTITY quot "&#34;">
+<!ENTITY frac12 "&#x00bd;">
+<!ENTITY euro "&#x20ac;">
+<!ENTITY Omega "&#937;">
+]>
 
-											</fo:table-row>
-										</xsl:for-each>
-									</fo:table-body>
-								</fo:table>
-							</xsl:if>
-						</fo:block>
-					</fo:block-container>
-					<xsl:if test='position()=last()'>
-						<fo:block id="lastPage" />
-					</xsl:if>
-				</fo:flow>
-			</fo:page-sequence>
-		</fo:root>
-	</xsl:template>
-	<xsl:template match="include-xsl-fo">
-		<xsl:copy-of select="@*" />
-	</xsl:template>
+<xsl:stylesheet 
+	xmlns:fox="http://xml.apache.org/fop/extensions"
+	xmlns:fo="http://www.w3.org/1999/XSL/Format" version="1.1"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:saxon="http://icl.com/saxon" extension-element-prefixes="saxon">
+
+
+<xsl:decimal-format name="FN0" grouping-separator="," decimal-separator="."/>
+<xsl:decimal-format name="FN1" grouping-separator="," decimal-separator="."/>
+<xsl:decimal-format name="FN2" grouping-separator="," decimal-separator="."/>
+<xsl:decimal-format name="FN3" grouping-separator="," decimal-separator="."/>
+<xsl:decimal-format name="FN4" grouping-separator="," decimal-separator="."/>
+<xsl:decimal-format name="FN5" grouping-separator="," decimal-separator="."/>
+<xsl:decimal-format name="FN6" grouping-separator="," decimal-separator="."/>
+<xsl:decimal-format name="FN7" grouping-separator="," decimal-separator="."/>
+<xsl:decimal-format name="FN8" grouping-separator="," decimal-separator="."/>
+<xsl:decimal-format name="FN9" grouping-separator="," decimal-separator="."/>
+<xsl:template match="Invoice">
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+<fo:layout-master-set>
+<fo:simple-page-master master-name="pagemaster1" page-height="845.0pt" page-width="598.0pt" margin-top="10.0pt" margin-left="10.0pt" margin-bottom="10.0pt" margin-right="9.0pt">
+<xsl:variable name="backgroundImageRepeat">no-repeat</xsl:variable><xsl:variable name="pageBackgroundColor">#ffffff</xsl:variable>
+<xsl:variable name="uriBackgroundImage"></xsl:variable><xsl:variable name="uriLeftBackgroundImage"></xsl:variable><xsl:variable name="uriRightBackgroundImage"></xsl:variable><xsl:variable name="uriBottomBackgroundImage"></xsl:variable><xsl:variable name="uriTopBackgroundImage"></xsl:variable><fo:region-body margin-left="28.0pt" margin-top="33.0pt" margin-bottom="156.0pt" margin-right="1.0pt" background-image="url({$uriBackgroundImage})" background-repeat="{$backgroundImageRepeat}"   background-position-horizontal="left" background-position-vertical="top" />
+<fo:region-before extent="33.0pt" precedence="true" background-image="url({$uriTopBackgroundImage})" background-repeat="no-repeat"  />
+<fo:region-after extent="156.0pt" precedence="true" background-image="url({$uriBottomBackgroundImage})" background-repeat="no-repeat"  />
+<fo:region-start extent="28.0pt" background-image="url({$uriLeftBackgroundImage})" background-repeat="no-repeat"  />
+<fo:region-end extent="1.0pt" background-image="url({$uriRightBackgroundImage})" background-repeat="no-repeat"  />
+</fo:simple-page-master>
+</fo:layout-master-set>
+ <fo:bookmark-tree>
+</fo:bookmark-tree>
+<fo:page-sequence master-reference="pagemaster1">
+<xsl:attribute name="force-page-count">no-force</xsl:attribute>
+<fo:static-content flow-name="xsl-region-before">
+<xsl:variable name="backgroundColorVariable0">transparent</xsl:variable>
+<xsl:variable name="backgroundImageTextFlowVariable0"></xsl:variable>
+<fo:block-container position="absolute" top="6.0pt" left="-2.0pt" height="22.0pt" width="579.0pt" background-color="{$backgroundColorVariable0}" display-align="center" reference-orientation="0">
+<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="24.0pt" line-stacking-strategy="max-height" white-space-collapse="false"  hyphenate="true" language="en"  text-align="center" position="relative" top="6.0pt" height="22.0pt" width="579.0pt" keep-together="auto"  color="#000000" font-family="Times New Roman" font-size="20.0pt" font-weight="bold" letter-spacing="normal" word-spacing="normal">
+<fo:block hyphenate="true" language="en" >
+<fo:inline>
+<xsl:text>Facture n°</xsl:text></fo:inline>
+<fo:inline>
+<xsl:value-of disable-output-escaping="no" select="@number"/>
+</fo:inline>
+</fo:block>
+</fo:block>
+</fo:block-container>
+</fo:static-content>
+<fo:static-content flow-name="xsl-region-after">
+<fo:block-container  position="absolute" top="9.0pt" left="30.0pt" height="146.0pt" width="199.0pt" reference-orientation="0" >
+<fo:block keep-together="auto" ><!-- GENERATE TABLE START-->
+<xsl:if test="InvoicePaymentLines/invoicePaymentLine"><xsl:variable name="tableIfEmptyVariable0"></xsl:variable><xsl:variable name="backgroundColorVariable3"></xsl:variable>
+<fo:table table-layout="fixed" width="100%" background-image="url({$tableIfEmptyVariable0})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorVariable3}">
+<fo:table-column column-width="115.0pt"/>
+<fo:table-column column-width="80.0pt"/>
+<fo:table-body>
+<xsl:for-each select="InvoicePaymentLines/invoicePaymentLine">
+<xsl:variable name="rowIfEmptyVariable0"></xsl:variable><xsl:variable name="backgroundColorRowVariable0"></xsl:variable>
+    <fo:table-row background-color="{$backgroundColorRowVariable0}" background-image="url({$rowIfEmptyVariable0})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%">
+<xsl:variable name="cellIfEmptyVariable0"></xsl:variable>
+<xsl:variable name="backgroundColorVariable4">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable0"></xsl:variable><fo:table-cell padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable0})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable0}" width="115.0pt"  reference-orientation="0">
+<fo:block break-before="auto"/>
+<xsl:variable name="backgroundColorVariable5">#ffffff</xsl:variable>
+<fo:block-container>
+<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.5pt" line-stacking-strategy="max-height" white-space-collapse="false"  hyphenate="true" language="en"  text-align="start" keep-together="auto"  color="#000000" font-family="Arial" font-size="11.0pt" letter-spacing="normal" word-spacing="normal">
+<fo:inline>
+<xsl:value-of disable-output-escaping="no" select="@label"/>
+</fo:inline>
+</fo:block>
+</fo:block-container>
+<fo:block break-after="auto"/>
+</fo:table-cell>
+<xsl:variable name="cellIfEmptyVariable1"></xsl:variable>
+<xsl:variable name="backgroundColorVariable7">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable1"></xsl:variable><fo:table-cell padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable1})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable1}" width="80.0pt"  reference-orientation="0">
+<xsl:variable name="backgroundColorVariable8">#ffffff</xsl:variable>
+<fo:block position="relative" white-space-collapse="false"  hyphenate="true" language="en"  linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" text-align="start" color="#000000" font-family="Arial" font-size="11.0pt" keep-together="auto" >
+<xsl:variable name="formattedNumber" select="translate(string(format-number(number(translate(string(@amount), ',', '.')), &quot;##,##0.00&quot;)) , 'NaN', '0')"/><xsl:if test="$formattedNumber != ''"><xsl:choose><xsl:when test="$formattedNumber = translate(string(format-number(number(0), &quot;##,##0.00&quot;)) , 'NaN', '0')"><xsl:text></xsl:text></xsl:when><xsl:otherwise><xsl:value-of disable-output-escaping="no" select="$formattedNumber"/></xsl:otherwise></xsl:choose></xsl:if>
+</fo:block>
+</fo:table-cell>
+
+    </fo:table-row>
+<xsl:variable name="rowIfEmptyVariable1"></xsl:variable><xsl:variable name="backgroundColorRowVariable1"></xsl:variable>
+    <fo:table-row background-color="{$backgroundColorRowVariable1}" background-image="url({$rowIfEmptyVariable1})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%">
+    <fo:table-cell>
+         <fo:block/>
+    </fo:table-cell>
+    <fo:table-cell>
+         <fo:block/>
+    </fo:table-cell>
+
+    </fo:table-row>
+</xsl:for-each></fo:table-body>
+</fo:table>
+</xsl:if></fo:block></fo:block-container>
+<fo:block-container  position="absolute" top="9.0pt" left="414.0pt" height="139.0pt" width="164.0pt" reference-orientation="0" >
+<fo:block keep-together="auto" ><!-- GENERATE TABLE START-->
+<xsl:variable name="tableIfEmptyVariable1"></xsl:variable><xsl:variable name="backgroundColorVariable9"></xsl:variable>
+<fo:table table-layout="fixed" width="100%" background-image="url({$tableIfEmptyVariable1})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorVariable9}">
+<fo:table-column column-width="80.0pt"/>
+<fo:table-column column-width="80.0pt"/>
+<fo:table-body>
+<xsl:variable name="rowIfEmptyVariable2"></xsl:variable><xsl:variable name="backgroundColorRowVariable2"></xsl:variable>
+    <fo:table-row background-color="{$backgroundColorRowVariable2}" background-image="url({$rowIfEmptyVariable2})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%">
+<xsl:variable name="cellIfEmptyVariable2"></xsl:variable>
+<xsl:variable name="backgroundColorVariable10">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable2"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable2})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable2}" width="80.0pt"  reference-orientation="0">
+<fo:block break-before="auto"/>
+<xsl:variable name="backgroundColorVariable11">#ffffff</xsl:variable>
+<fo:block-container>
+<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.5pt" line-stacking-strategy="max-height" white-space-collapse="false"  hyphenate="true" language="en"  text-align="start" keep-together="auto"  color="#000000" font-family="Arial" font-size="11.0pt" letter-spacing="normal" word-spacing="normal">
+<fo:inline>
+<xsl:text>Total</xsl:text></fo:inline>
+</fo:block>
+</fo:block-container>
+<fo:block break-after="auto"/>
+</fo:table-cell>
+<xsl:variable name="cellIfEmptyVariable3"></xsl:variable>
+<xsl:variable name="backgroundColorVariable13">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable3"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable3})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable3}" width="80.0pt"  reference-orientation="0">
+<xsl:variable name="backgroundColorVariable14">#ffffff</xsl:variable>
+<fo:block position="relative" white-space-collapse="false"  hyphenate="true" language="en"  linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" text-align="start" color="#000000" font-family="Arial" font-size="11.0pt" keep-together="auto" >
+<xsl:variable name="formattedNumber" select="translate(string(format-number(number(translate(string(totalWithNoTaxAmount), ',', '.')), &quot;##,##0.00&quot;)) , 'NaN', '0')"/><xsl:if test="$formattedNumber != ''"><xsl:choose><xsl:when test="$formattedNumber = translate(string(format-number(number(0), &quot;##,##0.00&quot;)) , 'NaN', '0')"><xsl:text></xsl:text></xsl:when><xsl:otherwise><xsl:value-of disable-output-escaping="no" select="$formattedNumber"/></xsl:otherwise></xsl:choose></xsl:if>
+</fo:block>
+</fo:table-cell>
+
+    </fo:table-row>
+<xsl:variable name="rowIfEmptyVariable3"></xsl:variable><xsl:variable name="backgroundColorRowVariable3"></xsl:variable>
+    <fo:table-row background-color="{$backgroundColorRowVariable3}" background-image="url({$rowIfEmptyVariable3})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%">
+<xsl:variable name="cellIfEmptyVariable4"></xsl:variable>
+<xsl:variable name="backgroundColorVariable15">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable4"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable4})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable4}" width="80.0pt"  reference-orientation="0">
+<fo:block break-before="auto"/>
+<xsl:variable name="backgroundColorVariable16">#ffffff</xsl:variable>
+<fo:block-container>
+<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.5pt" line-stacking-strategy="max-height" white-space-collapse="false"  hyphenate="true" language="en"  text-align="start" keep-together="auto"  color="#000000" font-family="Arial" font-size="11.0pt" letter-spacing="normal" word-spacing="normal">
+<fo:inline>
+<xsl:text>Tva</xsl:text></fo:inline>
+</fo:block>
+</fo:block-container>
+<fo:block break-after="auto"/>
+</fo:table-cell>
+<xsl:variable name="cellIfEmptyVariable5"></xsl:variable>
+<xsl:variable name="backgroundColorVariable18">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable5"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable5})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable5}" width="80.0pt"  reference-orientation="0">
+<xsl:variable name="backgroundColorVariable19">#ffffff</xsl:variable>
+<fo:block position="relative" white-space-collapse="false"  hyphenate="true" language="en"  linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" text-align="start" color="#000000" font-family="Arial" font-size="11.0pt" keep-together="auto" >
+<xsl:variable name="formattedNumber" select="translate(string(format-number(number(translate(string(tvaAmount), ',', '.')), &quot;##,##0.00&quot;)) , 'NaN', '0')"/><xsl:if test="$formattedNumber != ''"><xsl:choose><xsl:when test="$formattedNumber = translate(string(format-number(number(0), &quot;##,##0.00&quot;)) , 'NaN', '0')"><xsl:text></xsl:text></xsl:when><xsl:otherwise><xsl:value-of disable-output-escaping="no" select="$formattedNumber"/></xsl:otherwise></xsl:choose></xsl:if>
+</fo:block>
+</fo:table-cell>
+
+    </fo:table-row>
+<xsl:variable name="rowIfEmptyVariable4"></xsl:variable><xsl:variable name="backgroundColorRowVariable4"></xsl:variable>
+    <fo:table-row background-color="{$backgroundColorRowVariable4}" background-image="url({$rowIfEmptyVariable4})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%">
+<xsl:variable name="cellIfEmptyVariable6"></xsl:variable>
+<xsl:variable name="backgroundColorVariable20">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable6"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable6})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable6}" width="80.0pt"  reference-orientation="0">
+<fo:block break-before="auto"/>
+<xsl:variable name="backgroundColorVariable21">#ffffff</xsl:variable>
+<fo:block-container>
+<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.5pt" line-stacking-strategy="max-height" white-space-collapse="false"  hyphenate="true" language="en"  text-align="start" keep-together="auto"  color="#000000" font-family="Arial" font-size="11.0pt" letter-spacing="normal" word-spacing="normal">
+<fo:inline>
+<xsl:text>Remise</xsl:text></fo:inline>
+</fo:block>
+</fo:block-container>
+<fo:block break-after="auto"/>
+</fo:table-cell>
+<xsl:variable name="cellIfEmptyVariable7"></xsl:variable>
+<xsl:variable name="backgroundColorVariable23">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable7"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable7})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable7}" width="80.0pt"  reference-orientation="0">
+<xsl:variable name="backgroundColorVariable24">#ffffff</xsl:variable>
+<fo:block position="relative" white-space-collapse="false"  hyphenate="true" language="en"  linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" text-align="start" color="#000000" font-family="Arial" font-size="11.0pt" keep-together="auto" >
+<xsl:variable name="formattedNumber" select="translate(string(format-number(number(translate(string(discountAmount), ',', '.')), &quot;##,##0.00&quot;)) , 'NaN', '0')"/><xsl:if test="$formattedNumber != ''"><xsl:choose><xsl:when test="$formattedNumber = translate(string(format-number(number(0), &quot;##,##0.00&quot;)) , 'NaN', '0')"><xsl:text></xsl:text></xsl:when><xsl:otherwise><xsl:value-of disable-output-escaping="no" select="$formattedNumber"/></xsl:otherwise></xsl:choose></xsl:if>
+</fo:block>
+</fo:table-cell>
+
+    </fo:table-row>
+<xsl:variable name="rowIfEmptyVariable5"></xsl:variable><xsl:variable name="backgroundColorRowVariable5"></xsl:variable>
+    <fo:table-row background-color="{$backgroundColorRowVariable5}" background-image="url({$rowIfEmptyVariable5})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%">
+<xsl:variable name="cellIfEmptyVariable8"></xsl:variable>
+<xsl:variable name="backgroundColorVariable25">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable8"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable8})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable8}" width="80.0pt"  reference-orientation="0">
+<fo:block break-before="auto"/>
+<xsl:variable name="backgroundColorVariable26">#ffffff</xsl:variable>
+<fo:block-container>
+<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.5pt" line-stacking-strategy="max-height" white-space-collapse="false"  hyphenate="true" language="en"  text-align="start" keep-together="auto"  color="#000000" font-family="Arial" font-size="11.0pt" letter-spacing="normal" word-spacing="normal">
+<fo:inline>
+<xsl:text>Total Net</xsl:text></fo:inline>
+</fo:block>
+</fo:block-container>
+<fo:block break-after="auto"/>
+</fo:table-cell>
+<xsl:variable name="cellIfEmptyVariable9"></xsl:variable>
+<xsl:variable name="backgroundColorVariable28">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable9"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable9})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable9}" width="80.0pt"  reference-orientation="0">
+<xsl:variable name="backgroundColorVariable29">#ffffff</xsl:variable>
+<fo:block position="relative" white-space-collapse="false"  hyphenate="true" language="en"  linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" text-align="start" color="#000000" font-family="Arial" font-size="11.0pt" keep-together="auto" >
+<xsl:variable name="formattedNumber" select="translate(string(format-number(number(translate(string(totalAmount), ',', '.')), &quot;##,##0.00&quot;)) , 'NaN', '0')"/><xsl:if test="$formattedNumber != ''"><xsl:choose><xsl:when test="$formattedNumber = translate(string(format-number(number(0), &quot;##,##0.00&quot;)) , 'NaN', '0')"><xsl:text></xsl:text></xsl:when><xsl:otherwise><xsl:value-of disable-output-escaping="no" select="$formattedNumber"/></xsl:otherwise></xsl:choose></xsl:if>
+</fo:block>
+</fo:table-cell>
+
+    </fo:table-row>
+</fo:table-body>
+</fo:table>
+</fo:block></fo:block-container>
+</fo:static-content>
+<fo:static-content flow-name="xsl-region-start">
+  <fo:block/>
+</fo:static-content>
+<fo:static-content flow-name="xsl-region-end">
+  <fo:block/>
+</fo:static-content>
+<fo:flow flow-name="xsl-region-body">
+<fo:block/>
+<fo:block-container position="absolute" top="4pt" left="2pt" height="752.0pt" width="536.0pt" border-width="1.0pt"> <fo:block span="none" white-space-collapse="false"  font-family="Helvetica" font-size="12pt" text-align="start" position="relative" top="44pt" left="27pt" height="752.0pt" width="536.0pt"><fo:instream-foreign-object  xmlns:xlink="http://www.w3.org/1999/xlink"><svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="600" height="600" viewBox="0 0 1000 1000"> <g id="test-body-content"><text x="0" y="100" style="opacity:.25; font-family:Arial; font-size:100pt; fill:rgb(200,200,200)">XSLfast</text><text x="50" y="200" style="opacity:.25; font-family:Arial; font-size:100pt; fill:rgb(200,200,200)">DEMO</text></g></svg></fo:instream-foreign-object></fo:block></fo:block-container><xsl:variable name="backgroundColorVariable30">#ffffff</xsl:variable>
+<xsl:variable name="backgroundImageTextFlowVariable1"></xsl:variable>
+<fo:block-container position="absolute" top="5.0pt" left="2.0pt" height="39.0pt" width="254.0pt" display-align="before" reference-orientation="0">
+<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.399999999999999pt" line-stacking-strategy="max-height" white-space-collapse="false"  hyphenate="true" language="en"  text-align="start" position="relative" top="5.0pt" left="2.0pt" height="39.0pt" width="254.0pt" keep-together="auto"  color="#000000" font-family="Arial" font-size="12.0pt" letter-spacing="normal" word-spacing="normal">
+<fo:block hyphenate="true" language="en" >
+<fo:inline>
+<xsl:text>La Touque</xsl:text></fo:inline>
+</fo:block>
+<fo:inline>
+<xsl:text>Paea pk 22,5 coté Mer</xsl:text></fo:inline>
+</fo:block>
+</fo:block-container>
+<xsl:variable name="backgroundColorVariable33">#ffffff</xsl:variable>
+<xsl:variable name="backgroundImageTextFlowVariable2"></xsl:variable>
+<fo:block-container position="absolute" top="5.0pt" left="330.0pt" height="22.0pt" width="216.0pt" display-align="before" reference-orientation="0">
+<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.399999999999999pt" line-stacking-strategy="max-height" white-space-collapse="false"  hyphenate="true" language="en"  text-align="end" position="relative" top="5.0pt" left="330.0pt" height="22.0pt" width="216.0pt" keep-together="auto"  letter-spacing="normal" word-spacing="normal">
+<fo:block hyphenate="true" language="en" >
+<fo:inline color="#000000" font-family="Arial" font-size="12.0pt" font-weight="bold">
+<xsl:text>Faite le</xsl:text></fo:inline>
+<fo:inline color="#000000" font-family="Arial" font-size="12.0pt">
+<xsl:text> </xsl:text></fo:inline>
+<fo:inline color="#000000" font-family="Arial" font-size="12.0pt">
+<xsl:value-of disable-output-escaping="no" select="@date"/>
+</fo:inline>
+</fo:block>
+</fo:block>
+</fo:block-container>
+<xsl:variable name="backgroundColorVariable37">#ffffff</xsl:variable>
+<xsl:variable name="backgroundImageTextFlowVariable3"></xsl:variable>
+<fo:block-container position="absolute" top="45.0pt" left="290.0pt" height="88.0pt" width="255.0pt" display-align="before" reference-orientation="0">
+<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.399999999999999pt" line-stacking-strategy="max-height" white-space-collapse="false"  hyphenate="true" language="en"  text-align="end" position="relative" top="45.0pt" left="290.0pt" height="88.0pt" width="255.0pt" keep-together="auto"  color="#000000" font-family="Arial" font-size="12.0pt" letter-spacing="normal" word-spacing="normal">
+<fo:block hyphenate="true" language="en" >
+<fo:inline>
+<xsl:value-of disable-output-escaping="no" select="Customer/name"/>
+</fo:inline>
+</fo:block>
+<fo:inline>
+<xsl:value-of disable-output-escaping="no" select="Customer/city"/>
+</fo:inline>
+<fo:block hyphenate="true" language="en" >
+<fo:inline>
+</fo:inline>
+<fo:inline>
+<xsl:value-of disable-output-escaping="no" select="Customer/street"/>
+</fo:inline>
+</fo:block>
+<fo:inline>
+<xsl:value-of disable-output-escaping="no" select="Customer/address"/>
+</fo:inline>
+<fo:block hyphenate="true" language="en" >
+<fo:inline>
+</fo:inline>
+<fo:inline>
+<xsl:value-of disable-output-escaping="no" select="Customer/phone"/>
+</fo:inline>
+</fo:block>
+</fo:block>
+</fo:block-container>
+<fo:block-container  position="absolute" top="157.0pt" left="2.0pt" height="470.0pt" width="549.0pt" reference-orientation="0" >
+<fo:block keep-together="auto" ><!-- GENERATE TABLE START-->
+<xsl:if test="InvoiceLines/InvoiceLine"><xsl:variable name="tableIfEmptyVariable2"></xsl:variable><xsl:variable name="backgroundColorVariable43"></xsl:variable>
+<fo:table table-layout="fixed" width="100%" background-image="url({$tableIfEmptyVariable2})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorVariable43}">
+<fo:table-column column-width="73.0pt"/>
+<fo:table-column column-width="216.0pt"/>
+<fo:table-column column-width="50.0pt"/>
+<fo:table-column column-width="54.0pt"/>
+<fo:table-column column-width="59.0pt"/>
+<fo:table-column column-width="46.0pt"/>
+<fo:table-column column-width="47.0pt"/>
+<fo:table-header>
+<xsl:variable name="rowIfEmptyVariable6"></xsl:variable><xsl:variable name="backgroundColorRowVariable6"></xsl:variable>
+    <fo:table-row background-color="{$backgroundColorRowVariable6}" background-image="url({$rowIfEmptyVariable6})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%">
+<xsl:variable name="cellIfEmptyVariable10"></xsl:variable>
+<xsl:variable name="backgroundColorVariable44">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable10"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable10})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable10}" width="73.0pt"  reference-orientation="0">
+<fo:block break-before="auto"/>
+<xsl:variable name="backgroundColorVariable45">#ffffff</xsl:variable>
+<fo:block-container>
+<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.5pt" line-stacking-strategy="max-height" white-space-collapse="false"  hyphenate="true" language="en"  text-align="start" keep-together="auto"  color="#000000" font-family="Arial" font-size="11.0pt" letter-spacing="normal" word-spacing="normal">
+<fo:inline>
+<xsl:text>Code barre</xsl:text></fo:inline>
+</fo:block>
+</fo:block-container>
+<fo:block break-after="auto"/>
+</fo:table-cell>
+<xsl:variable name="cellIfEmptyVariable11"></xsl:variable>
+<xsl:variable name="backgroundColorVariable47">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable11"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable11})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable11}" width="216.0pt"  reference-orientation="0">
+<fo:block break-before="auto"/>
+<xsl:variable name="backgroundColorVariable48">#ffffff</xsl:variable>
+<fo:block-container>
+<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.5pt" line-stacking-strategy="max-height" white-space-collapse="false"  hyphenate="true" language="en"  text-align="start" keep-together="auto"  color="#000000" font-family="Arial" font-size="11.0pt" letter-spacing="normal" word-spacing="normal">
+<fo:inline>
+<xsl:text>Désignation</xsl:text></fo:inline>
+</fo:block>
+</fo:block-container>
+<fo:block break-after="auto"/>
+</fo:table-cell>
+<xsl:variable name="cellIfEmptyVariable12"></xsl:variable>
+<xsl:variable name="backgroundColorVariable50">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable12"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable12})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable12}" width="50.0pt"  reference-orientation="0">
+<fo:block break-before="auto"/>
+<xsl:variable name="backgroundColorVariable51">#ffffff</xsl:variable>
+<fo:block-container>
+<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.5pt" line-stacking-strategy="max-height" white-space-collapse="false"  hyphenate="true" language="en"  text-align="start" keep-together="auto"  color="#000000" font-family="Arial" font-size="11.0pt" letter-spacing="normal" word-spacing="normal">
+<fo:inline>
+<xsl:text>Quantités</xsl:text></fo:inline>
+</fo:block>
+</fo:block-container>
+<fo:block break-after="auto"/>
+</fo:table-cell>
+<xsl:variable name="cellIfEmptyVariable13"></xsl:variable>
+<xsl:variable name="backgroundColorVariable53">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable13"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable13})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable13}" width="54.0pt"  reference-orientation="0">
+<fo:block break-before="auto"/>
+<xsl:variable name="backgroundColorVariable54">#ffffff</xsl:variable>
+<fo:block-container>
+<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.5pt" line-stacking-strategy="max-height" white-space-collapse="false"  hyphenate="true" language="en"  text-align="start" keep-together="auto"  color="#000000" font-family="Arial" font-size="11.0pt" letter-spacing="normal" word-spacing="normal">
+<fo:inline>
+<xsl:text>P.U HT</xsl:text></fo:inline>
+</fo:block>
+</fo:block-container>
+<fo:block break-after="auto"/>
+</fo:table-cell>
+<xsl:variable name="cellIfEmptyVariable14"></xsl:variable>
+<xsl:variable name="backgroundColorVariable56">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable14"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable14})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable14}" width="59.0pt"  reference-orientation="0">
+<fo:block break-before="auto"/>
+<xsl:variable name="backgroundColorVariable57">#ffffff</xsl:variable>
+<fo:block-container>
+<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.5pt" line-stacking-strategy="max-height" white-space-collapse="false"  hyphenate="true" language="en"  text-align="start" keep-together="auto"  color="#000000" font-family="Arial" font-size="11.0pt" letter-spacing="normal" word-spacing="normal">
+<fo:inline>
+<xsl:text>Remise</xsl:text></fo:inline>
+</fo:block>
+</fo:block-container>
+<fo:block break-after="auto"/>
+</fo:table-cell>
+<xsl:variable name="cellIfEmptyVariable15"></xsl:variable>
+<xsl:variable name="backgroundColorVariable59">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable15"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable15})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable15}" width="46.0pt"  reference-orientation="0">
+<fo:block break-before="auto"/>
+<xsl:variable name="backgroundColorVariable60">#ffffff</xsl:variable>
+<fo:block-container>
+<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.5pt" line-stacking-strategy="max-height" white-space-collapse="false"  hyphenate="true" language="en"  text-align="start" keep-together="auto"  color="#000000" font-family="Arial" font-size="11.0pt" letter-spacing="normal" word-spacing="normal">
+<fo:inline>
+<xsl:text>Tva</xsl:text></fo:inline>
+</fo:block>
+</fo:block-container>
+<fo:block break-after="auto"/>
+</fo:table-cell>
+<xsl:variable name="cellIfEmptyVariable16"></xsl:variable>
+<xsl:variable name="backgroundColorVariable62">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable16"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable16})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable16}" width="47.0pt"  reference-orientation="0">
+<fo:block break-before="auto"/>
+<xsl:variable name="backgroundColorVariable63">#ffffff</xsl:variable>
+<fo:block-container>
+<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.5pt" line-stacking-strategy="max-height" white-space-collapse="false"  hyphenate="true" language="en"  text-align="start" keep-together="auto"  color="#000000" font-family="Arial" font-size="11.0pt" letter-spacing="normal" word-spacing="normal">
+<fo:inline>
+<xsl:text>Total</xsl:text></fo:inline>
+</fo:block>
+</fo:block-container>
+<fo:block break-after="auto"/>
+</fo:table-cell>
+
+    </fo:table-row>
+</fo:table-header>
+<fo:table-body>
+<xsl:for-each select="InvoiceLines/InvoiceLine">
+<xsl:variable name="rowIfEmptyVariable7"></xsl:variable><xsl:variable name="backgroundColorRowVariable7"></xsl:variable>
+    <fo:table-row background-color="{$backgroundColorRowVariable7}" background-image="url({$rowIfEmptyVariable7})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%">
+<xsl:variable name="cellIfEmptyVariable17"></xsl:variable>
+<xsl:variable name="backgroundColorVariable65">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable17"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable17})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable17}" width="73.0pt"  reference-orientation="0">
+<fo:block break-before="auto"/>
+<xsl:variable name="backgroundColorVariable66">#ffffff</xsl:variable>
+<fo:block-container>
+<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.399999999999999pt" line-stacking-strategy="max-height" white-space-collapse="false"  hyphenate="true" language="en"  text-align="start" keep-together="auto"  color="#000000" font-family="Arial" font-size="12.0pt" letter-spacing="normal" word-spacing="normal">
+<fo:inline>
+<xsl:value-of disable-output-escaping="no" select="@bar_code"/>
+</fo:inline>
+</fo:block>
+</fo:block-container>
+<fo:block break-after="auto"/>
+</fo:table-cell>
+<xsl:variable name="cellIfEmptyVariable18"></xsl:variable>
+<xsl:variable name="backgroundColorVariable68">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable18"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable18})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable18}" width="216.0pt"  reference-orientation="0">
+<fo:block break-before="auto"/>
+<xsl:variable name="backgroundColorVariable69">#ffffff</xsl:variable>
+<fo:block-container>
+<fo:block linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" line-height="14.399999999999999pt" line-stacking-strategy="max-height" white-space-collapse="false"  hyphenate="true" language="en"  text-align="start" keep-together="auto"  color="#000000" font-family="Arial" font-size="12.0pt" letter-spacing="normal" word-spacing="normal">
+<fo:inline>
+<xsl:value-of disable-output-escaping="no" select="@label"/>
+</fo:inline>
+</fo:block>
+</fo:block-container>
+<fo:block break-after="auto"/>
+</fo:table-cell>
+<xsl:variable name="cellIfEmptyVariable19"></xsl:variable>
+<xsl:variable name="backgroundColorVariable71">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable19"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable19})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable19}" width="50.0pt"  reference-orientation="0">
+<xsl:variable name="backgroundColorVariable72">#ffffff</xsl:variable>
+<fo:block position="relative" white-space-collapse="false"  hyphenate="true" language="en"  linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" text-align="start" color="#000000" font-family="Arial" font-size="12.0pt" keep-together="auto" >
+<xsl:variable name="formattedNumber" select="translate(string(format-number(number(translate(string(@quantity), ',', '.')), &quot;##,##0.00&quot;)) , 'NaN', '0')"/><xsl:if test="$formattedNumber != ''"><xsl:choose><xsl:when test="$formattedNumber = translate(string(format-number(number(0), &quot;##,##0.00&quot;)) , 'NaN', '0')"><xsl:text></xsl:text></xsl:when><xsl:otherwise><xsl:value-of disable-output-escaping="no" select="$formattedNumber"/></xsl:otherwise></xsl:choose></xsl:if>
+</fo:block>
+</fo:table-cell>
+<xsl:variable name="cellIfEmptyVariable20"></xsl:variable>
+<xsl:variable name="backgroundColorVariable73">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable20"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable20})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable20}" width="54.0pt"  reference-orientation="0">
+<xsl:variable name="backgroundColorVariable74">#ffffff</xsl:variable>
+<fo:block position="relative" white-space-collapse="false"  hyphenate="true" language="en"  linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" text-align="start" color="#000000" font-family="Arial" font-size="12.0pt" keep-together="auto" >
+<xsl:variable name="formattedNumber" select="translate(string(format-number(number(translate(string(@sellingPrice), ',', '.')), &quot;##,##0.00&quot;)) , 'NaN', '0')"/><xsl:if test="$formattedNumber != ''"><xsl:choose><xsl:when test="$formattedNumber = translate(string(format-number(number(0), &quot;##,##0.00&quot;)) , 'NaN', '0')"><xsl:text></xsl:text></xsl:when><xsl:otherwise><xsl:value-of disable-output-escaping="no" select="$formattedNumber"/></xsl:otherwise></xsl:choose></xsl:if>
+</fo:block>
+</fo:table-cell>
+<xsl:variable name="cellIfEmptyVariable21"></xsl:variable>
+<xsl:variable name="backgroundColorVariable75">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable21"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable21})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable21}" width="59.0pt"  reference-orientation="0">
+<xsl:variable name="backgroundColorVariable76">#ffffff</xsl:variable>
+<fo:block position="relative" white-space-collapse="false"  hyphenate="true" language="en"  linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" text-align="start" color="#000000" font-family="Arial" font-size="12.0pt" keep-together="auto" >
+<xsl:variable name="formattedNumber" select="translate(string(format-number(number(translate(string(@discountRate), ',', '.')), &quot;##,##0.00&quot;)) , 'NaN', '0')"/><xsl:if test="$formattedNumber != ''"><xsl:choose><xsl:when test="$formattedNumber = translate(string(format-number(number(0), &quot;##,##0.00&quot;)) , 'NaN', '0')"><xsl:text></xsl:text></xsl:when><xsl:otherwise><xsl:value-of disable-output-escaping="no" select="$formattedNumber"/></xsl:otherwise></xsl:choose></xsl:if>
+</fo:block>
+</fo:table-cell>
+<xsl:variable name="cellIfEmptyVariable22"></xsl:variable>
+<xsl:variable name="backgroundColorVariable77">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable22"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable22})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable22}" width="46.0pt"  reference-orientation="0">
+<xsl:variable name="backgroundColorVariable78">#ffffff</xsl:variable>
+<fo:block position="relative" white-space-collapse="false"  hyphenate="true" language="en"  linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" text-align="start" color="#000000" font-family="Arial" font-size="12.0pt" keep-together="auto" >
+<xsl:variable name="formattedNumber" select="translate(string(format-number(number(translate(string(@tvaRate), ',', '.')), &quot;##,##0.00&quot;)) , 'NaN', '0')"/><xsl:if test="$formattedNumber != ''"><xsl:choose><xsl:when test="$formattedNumber = translate(string(format-number(number(0), &quot;##,##0.00&quot;)) , 'NaN', '0')"><xsl:text></xsl:text></xsl:when><xsl:otherwise><xsl:value-of disable-output-escaping="no" select="$formattedNumber"/></xsl:otherwise></xsl:choose></xsl:if>
+</fo:block>
+</fo:table-cell>
+<xsl:variable name="cellIfEmptyVariable23"></xsl:variable>
+<xsl:variable name="backgroundColorVariable79">#ffffff</xsl:variable>
+<xsl:variable name="backgroundColorCellVariable23"></xsl:variable><fo:table-cell border-left-style="solid" border-left-width="1.14pt" border-left-color="#000000" border-right-style="solid" border-right-width="1.14pt" border-right-color="#000000" border-top-style="solid" border-top-width="1.14pt" border-top-color="#000000" border-bottom-style="solid" border-bottom-width="1.14pt" border-bottom-color="#000000" padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" background-image="url({$cellIfEmptyVariable23})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%" background-color="{$backgroundColorCellVariable23}" width="47.0pt"  reference-orientation="0">
+<xsl:variable name="backgroundColorVariable80">#ffffff</xsl:variable>
+<fo:block position="relative" white-space-collapse="false"  hyphenate="true" language="en"  linefeed-treatment="preserve" white-space-treatment="ignore-if-surrounding-linefeed"  padding-bottom="0.0pt" start-indent="0.0pt" end-indent="0.0pt" padding-top="0.0pt" padding="0.0pt" display-align="before" text-align="start" color="#000000" font-family="Arial" font-size="11.0pt" keep-together="auto" >
+<xsl:variable name="formattedNumber" select="translate(string(format-number(number(translate(string(@total), ',', '.')), &quot;##,##0.00&quot;)) , 'NaN', '0')"/><xsl:if test="$formattedNumber != ''"><xsl:choose><xsl:when test="$formattedNumber = translate(string(format-number(number(0), &quot;##,##0.00&quot;)) , 'NaN', '0')"><xsl:text></xsl:text></xsl:when><xsl:otherwise><xsl:value-of disable-output-escaping="no" select="$formattedNumber"/></xsl:otherwise></xsl:choose></xsl:if>
+</fo:block>
+</fo:table-cell>
+
+    </fo:table-row>
+<xsl:variable name="rowIfEmptyVariable8"></xsl:variable><xsl:variable name="backgroundColorRowVariable8"></xsl:variable>
+    <fo:table-row background-color="{$backgroundColorRowVariable8}" background-image="url({$rowIfEmptyVariable8})" background-repeat="no-repeat" background-position-horizontal="0%" background-position-vertical="0%">
+    <fo:table-cell>
+         <fo:block/>
+    </fo:table-cell>
+    <fo:table-cell>
+         <fo:block/>
+    </fo:table-cell>
+    <fo:table-cell>
+         <fo:block/>
+    </fo:table-cell>
+    <fo:table-cell>
+         <fo:block/>
+    </fo:table-cell>
+    <fo:table-cell>
+         <fo:block/>
+    </fo:table-cell>
+    <fo:table-cell>
+         <fo:block/>
+    </fo:table-cell>
+    <fo:table-cell>
+         <fo:block/>
+    </fo:table-cell>
+
+    </fo:table-row>
+</xsl:for-each></fo:table-body>
+</fo:table>
+</xsl:if></fo:block></fo:block-container>
+<xsl:if test='position()=last()'>
+  <fo:block id="lastPage"/>
+</xsl:if>
+</fo:flow>
+</fo:page-sequence>
+</fo:root>
+</xsl:template>
+<xsl:template match="include-xsl-fo">
+    <xsl:copy-of select="@*"/>
+</xsl:template>
 </xsl:stylesheet>

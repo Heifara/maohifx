@@ -158,6 +158,15 @@ public class Invoice implements java.io.Serializable, AnnotatedClass {
 	}
 
 	@Transient
+	public Double getDiscountAmount() {
+		Double iDiscountAmount = 0.0;
+		for (final InvoiceLine iInvoiceLine : this.invoiceLines) {
+			iDiscountAmount += iInvoiceLine.getDiscountAmount();
+		}
+		return iDiscountAmount;
+	}
+
+	@Transient
 	public String getHref() {
 		return this.href;
 	}
@@ -175,6 +184,33 @@ public class Invoice implements java.io.Serializable, AnnotatedClass {
 	@Column(name = "number")
 	public Integer getNumber() {
 		return this.number;
+	}
+
+	@Transient
+	public Double getTotalAmount() {
+		Double iTotalAmount = 0.0;
+		iTotalAmount += this.getTotalWithNoTaxAmount();
+		iTotalAmount += this.getTvaAmount();
+		iTotalAmount -= this.getDiscountAmount();
+		return iTotalAmount;
+	}
+
+	@Transient
+	public Double getTotalWithNoTaxAmount() {
+		Double iTotalWithNoTaxAmount = 0.0;
+		for (final InvoiceLine invoiceLine : this.invoiceLines) {
+			iTotalWithNoTaxAmount += invoiceLine.getTotalWithNoTaxAmount();
+		}
+		return iTotalWithNoTaxAmount;
+	}
+
+	@Transient
+	public Double getTvaAmount() {
+		Double iTvaAmount = 0.0;
+		for (final InvoiceLine iInvoiceLine : this.invoiceLines) {
+			iTvaAmount += iInvoiceLine.getTvaAmount();
+		}
+		return iTvaAmount;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

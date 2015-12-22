@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -156,6 +157,11 @@ public class InvoiceLine implements java.io.Serializable {
 		return this.creationDate;
 	}
 
+	@Transient
+	public Double getDiscountAmount() {
+		return this.sellingPrice * (this.discountRate / 100);
+	}
+
 	@Column(name = "discount_rate", precision = 22, scale = 0)
 	public Double getDiscountRate() {
 		return this.discountRate;
@@ -187,10 +193,29 @@ public class InvoiceLine implements java.io.Serializable {
 		return this.sellingPrice;
 	}
 
+	@Transient
+	public Double getTotalAmount() {
+		Double iTotalAmount = 0.0;
+		iTotalAmount = this.getTotalWithNoTaxAmount();
+		iTotalAmount += this.getTvaAmount();
+		iTotalAmount -= this.getDiscountAmount();
+		return iTotalAmount;
+	}
+
+	@Transient
+	public Double getTotalWithNoTaxAmount() {
+		return this.sellingPrice * this.quantity;
+	}
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "tva_type", nullable = false)
 	public Tva getTva() {
 		return this.tva;
+	}
+
+	@Transient
+	public Double getTvaAmount() {
+		return this.sellingPrice * (this.tvaRate / 100);
 	}
 
 	@Column(name = "tva_rate", precision = 22, scale = 0)
