@@ -149,6 +149,11 @@ public class Contact implements java.io.Serializable, AnnotatedClass {
 	}
 
 	@Transient
+	public String getFullName() {
+		return this.lastname + " " + this.firstname;
+	}
+
+	@Transient
 	public String getHref() {
 		return this.href;
 	}
