@@ -55,6 +55,8 @@ public class InvoiceService extends AnnotatedClassService<InvoiceDAO, Invoice> {
 
 	@Override
 	public void onInserting(final Invoice iElement) {
+		iElement.setNumber(this.dao.next(Integer.class, "number"));
+
 		iElement.bindChildren();
 	}
 
