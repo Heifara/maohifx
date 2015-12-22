@@ -23,13 +23,15 @@ public class BindingSample {
 	 * @param args
 	 */
 	public static void main(final String[] args) {
-		BooleanProperty iBooleanProperty = new SimpleBooleanProperty();
+		final BooleanProperty iBooleanProperty = new SimpleBooleanProperty();
 		System.out.println(iBooleanProperty.get());
-		
-		StringProperty iStringOne = new SimpleStringProperty("Hello ");
-		StringProperty iStringTwo = new SimpleStringProperty("World");
-		
-		System.out.println(iStringOne.get());
+
+		final StringProperty iStringOne = new SimpleStringProperty("Hello ");
+		final StringProperty iStringTwo = new SimpleStringProperty("World");
+		final StringProperty iConcat = new SimpleStringProperty();
+		iConcat.bind(Bindings.concat(iStringOne, iStringTwo));
+
+		System.out.println(iConcat.get());
 
 		final SimpleDoubleProperty num1 = new SimpleDoubleProperty(1.0);
 		final IntegerProperty num2 = new SimpleIntegerProperty(2);
