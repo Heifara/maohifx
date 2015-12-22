@@ -127,9 +127,6 @@ public class InvoiceService extends AnnotatedClassService<InvoiceDAO, Invoice> {
 		for (final InvoiceLine iInvoiceLine : iElement.getInvoiceLines()) {
 			final com.maohi.software.maohifx.invoice.jaxb2.InvoiceLine iJaxbInvoiceLine = new com.maohi.software.maohifx.invoice.jaxb2.InvoiceLine();
 			iJaxbInvoice.getInvoiceLines().getInvoiceLine().add(iJaxbInvoiceLine);
-			iJaxbInvoice.getInvoiceLines().getInvoiceLine().add(iJaxbInvoiceLine);
-			iJaxbInvoice.getInvoiceLines().getInvoiceLine().add(iJaxbInvoiceLine);
-			iJaxbInvoice.getInvoiceLines().getInvoiceLine().add(iJaxbInvoiceLine);
 
 			iJaxbInvoiceLine.setBarCode("");
 			iJaxbInvoiceLine.setLabel(iInvoiceLine.getLabel());
