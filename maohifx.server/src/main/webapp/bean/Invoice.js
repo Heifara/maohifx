@@ -167,8 +167,9 @@ Invoice.prototype.getTabTitle = function() {
 }
 
 Invoice.prototype.print = function() {
+	System.out.println(this.uuid.get());
 	$http.ajax({
-		url : "http://localhost:8080/maohifx.server/webapi/invoice/pdf",
+		url : "http://localhost:8080/maohifx.server/webapi/invoice/pdf?uuid=" + this.uuid.get(),
 		type : "get",
 		success : function($result, $status) {
 			print($result);
