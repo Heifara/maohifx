@@ -49,7 +49,7 @@ public class ContactService extends AnnotatedClassService<ContactDAO, Contact> {
 
 	@Override
 	public void onInserting(final Contact iElement) {
-
+		iElement.bindChildren();
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class ContactService extends AnnotatedClassService<ContactDAO, Contact> {
 
 	@Override
 	public void onUpdating(final Contact iElement) {
-
+		iElement.bindChildren();
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -54,6 +55,16 @@ public class Contact implements java.io.Serializable, AnnotatedClass {
 		this.emails = emails;
 	}
 
+	public void bindChildren() {
+		for (final Email email : this.emails) {
+			email.setContact(this);
+		}
+
+		for (final Phone phone : this.phones) {
+			phone.setContact(this);
+		}
+	}
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (this == obj) {
@@ -71,13 +82,6 @@ public class Contact implements java.io.Serializable, AnnotatedClass {
 				return false;
 			}
 		} else if (!this.creationDate.equals(other.creationDate)) {
-			return false;
-		}
-		if (this.emails == null) {
-			if (other.emails != null) {
-				return false;
-			}
-		} else if (!this.emails.equals(other.emails)) {
 			return false;
 		}
 		if (this.firstname == null) {
@@ -108,13 +112,6 @@ public class Contact implements java.io.Serializable, AnnotatedClass {
 		} else if (!this.middlename.equals(other.middlename)) {
 			return false;
 		}
-		if (this.phones == null) {
-			if (other.phones != null) {
-				return false;
-			}
-		} else if (!this.phones.equals(other.phones)) {
-			return false;
-		}
 		if (this.updateDate == null) {
 			if (other.updateDate != null) {
 				return false;
@@ -138,7 +135,7 @@ public class Contact implements java.io.Serializable, AnnotatedClass {
 		return this.creationDate;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "contact")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "contact", cascade = CascadeType.ALL)
 	public Set<Email> getEmails() {
 		return this.emails;
 	}
@@ -168,7 +165,7 @@ public class Contact implements java.io.Serializable, AnnotatedClass {
 		return this.middlename;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "contact")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "contact", cascade = CascadeType.ALL)
 	public Set<Phone> getPhones() {
 		return this.phones;
 	}
@@ -192,12 +189,10 @@ public class Contact implements java.io.Serializable, AnnotatedClass {
 		final int prime = 31;
 		int result = 1;
 		result = (prime * result) + ((this.creationDate == null) ? 0 : this.creationDate.hashCode());
-		result = (prime * result) + ((this.emails == null) ? 0 : this.emails.hashCode());
 		result = (prime * result) + ((this.firstname == null) ? 0 : this.firstname.hashCode());
 		result = (prime * result) + ((this.href == null) ? 0 : this.href.hashCode());
 		result = (prime * result) + ((this.lastname == null) ? 0 : this.lastname.hashCode());
 		result = (prime * result) + ((this.middlename == null) ? 0 : this.middlename.hashCode());
-		result = (prime * result) + ((this.phones == null) ? 0 : this.phones.hashCode());
 		result = (prime * result) + ((this.updateDate == null) ? 0 : this.updateDate.hashCode());
 		result = (prime * result) + ((this.uuid == null) ? 0 : this.uuid.hashCode());
 		return result;
