@@ -101,7 +101,13 @@ public class RestManagerImpl {
 	}
 
 	private File generatePDFFile(final InputStream aInputStream) {
-		final File iFile = new File("my.pdf");
+		File iFile = null;
+		try {
+			iFile = File.createTempFile("maohifx", ".pdf");
+		} catch (final IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		try (OutputStream iOutputStream = new FileOutputStream(iFile)) {
 
