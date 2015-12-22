@@ -11,14 +11,14 @@ Email.prototype.toJSON = function() {
 	return {
 		uuid : this.uuid.get(),
 		label : this.label.get(),
-		mail : this.mail.get,
+		email : this.mail.get(),
 	}
 }
 
 Email.prototype.parseJSON = function(aJSONObject) {
 	this.uuid.set(aJSONObject.get("uuid"));
 	this.label.set(aJSONObject.get("label"));
-	this.number.set(aJSONObject.get("mail"));
+	this.mail.set(aJSONObject.get("email"));
 }
 
 Email.prototype.save = function() {

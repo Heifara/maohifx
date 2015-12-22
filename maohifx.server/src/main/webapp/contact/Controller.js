@@ -14,7 +14,7 @@ function ContactController() {
 	this.lastAddedEmail.mail.set("lsdjflsdjmlj");
 
 	this.contact = new Contact();
-	if(typeof($item) != 'undefined'){
+	if (typeof ($item) != 'undefined') {
 		this.contact.parseJSON($item);
 	}
 
@@ -25,6 +25,15 @@ function ContactController() {
 	lastname.textProperty().bindBidirectional(this.contact.lastname);
 	middlename.textProperty().bindBidirectional(this.contact.middlename);
 	firstname.textProperty().bindBidirectional(this.contact.firstname);
+
+	// Populating UI with phones from contact
+	for (iIndex in this.contact.phones) {
+		this.addPhoneEvent(this.contact.phones.get(iIndex));
+	}
+	// Populating UI with emails from contact
+	for (iIndex in this.contact.emails) {
+		this.addEmailEvent(this.contact.emails.get(iIndex));
+	}
 
 	this.addEmailEvent();
 	this.addPhoneEvent();
@@ -44,57 +53,65 @@ ContactController.prototype.saveEvent = function(aActionEvent) {
 	this.contact.save();
 }
 
-ContactController.prototype.addPhoneEvent = function(aActionEvent) {
-	if (this.lastAddedPhone != null && !this.lastAddedPhone.number.get().isEmpty()) {
+ContactController.prototype.addPhoneEvent = function(aPhone) {
+	if (typeof (aPhone) != 'undefined') {
+		this.lastAddedPhone = aPhone;
+	} else {
 		this.lastAddedPhone = this.contact.addPhone();
-
-		this.phoneRowIndex++;
-
-		iLabelTextField = new TextField();
-		iLabelTextField.getStyleClass().add("label-text-field");
-		iLabelTextField.setText("");
-		iLabelTextField.setFocusTraversable(false);
-		iLabelTextField.textProperty().bindBidirectional(this.lastAddedPhone.label);
-		phone.add(iLabelTextField, 0, this.phoneRowIndex);
-
-		iTextField = new TextField();
-		iTextField.textProperty().bindBidirectional(this.lastAddedPhone.number);
-		iTextField.onAction = new javafx.event.EventHandler({
-			handle : function(aActionEvent) {
-				controller.addPhoneEvent(aActionEvent);
-			}
-		});
-		phone.add(iTextField, 1, this.phoneRowIndex);
-
-		iTextField.requestFocus();
 	}
+
+	this.phoneRowIndex++;
+
+	iLabelTextField = new TextField();
+	iLabelTextField.getStyleClass().add("label-text-field");
+	iLabelTextField.setText(this.lastAddedPhone.label);
+	iLabelTextField.setFocusTraversable(false);
+	iLabelTextField.textProperty().bindBidirectional(this.lastAddedPhone.label);
+	phone.add(iLabelTextField, 0, this.phoneRowIndex);
+
+	iTextField = new TextField();
+	iTextField.setText(this.lastAddedPhone.number);
+	iTextField.textProperty().bindBidirectional(this.lastAddedPhone.number);
+	iTextField.onAction = new javafx.event.EventHandler({
+		handle : function() {
+			if (controller.lastAddedPhone != null && !controller.lastAddedPhone.number.get().isEmpty()) {
+				controller.addPhoneEvent();
+			}
+		}
+	});
+	phone.add(iTextField, 1, this.phoneRowIndex);
+
+	iTextField.requestFocus();
 }
 
-ContactController.prototype.addEmailEvent = function(aActionEvent) {
-	if (this.lastAddedEmail != null && !this.lastAddedEmail.mail.get().isEmpty()) {
-		iEmail = this.contact.addEmail();
-		this.lastAddedEmail = iEmail;
+ContactController.prototype.addEmailEvent = function(aEmail) {
+	if (typeof (aEmail) != 'undefined') {
+		this.lastAddedEmail = aEmail;
+	} else {
+		this.lastAddedEmail = this.contact.addEmail();
+	}
 
-		this.emailRowIndex++;
+	this.emailRowIndex++;
 
-		iLabelTextField = new TextField();
-		iLabelTextField.getStyleClass().add("label-text-field");
-		iLabelTextField.setText("");
-		iLabelTextField.setFocusTraversable(false);
-		iLabelTextField.textProperty().bindBidirectional(iEmail.label);
-		email.add(iLabelTextField, 0, this.emailRowIndex);
+	iLabelTextField = new TextField();
+	iLabelTextField.getStyleClass().add("label-text-field");
+	iLabelTextField.setText("");
+	iLabelTextField.setFocusTraversable(false);
+	iLabelTextField.textProperty().bindBidirectional(this.lastAddedEmail.label);
+	email.add(iLabelTextField, 0, this.emailRowIndex);
 
-		iTextField = new TextField();
-		iTextField.textProperty().bindBidirectional(iEmail.mail);
-		iTextField.onAction = new javafx.event.EventHandler({
-			handle : function(aActionEvent) {
+	iTextField = new TextField();
+	iTextField.textProperty().bindBidirectional(this.lastAddedEmail.mail);
+	iTextField.onAction = new javafx.event.EventHandler({
+		handle : function(aActionEvent) {
+			if (controller.lastAddedEmail != null && !controller.lastAddedEmail.mail.get().isEmpty()) {
 				controller.addEmailEvent();
 			}
-		});
-		email.add(iTextField, 1, this.emailRowIndex);
+		}
+	});
+	email.add(iTextField, 1, this.emailRowIndex);
 
-		iTextField.requestFocus();
-	}
+	iTextField.requestFocus();
 }
 
 ContactController.prototype.changeImageEvent = function(aEvent) {

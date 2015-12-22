@@ -14,6 +14,8 @@ Contact.search = function(aPattern) {
 		success : function($result, $status) {
 			load("http://localhost:8080/maohifx.server/common.js");
 			load("http://localhost:8080/maohifx.server/bean/Contact.js");
+			load("http://localhost:8080/maohifx.server/bean/Email.js");
+			load("http://localhost:8080/maohifx.server/bean/Phone.js");
 
 			for ( var iItem in $result) {
 				iElement = new Contact();
@@ -95,6 +97,8 @@ Contact.prototype.save = function() {
 		success : function($result, $status) {
 			load("http://localhost:8080/maohifx.server/common.js");
 			load("http://localhost:8080/maohifx.server/bean/Contact.js");
+			load("http://localhost:8080/maohifx.server/bean/Email.js");
+			load("http://localhost:8080/maohifx.server/bean/Phone.js");
 
 			$contact.parseJSON($result);
 
@@ -103,6 +107,8 @@ Contact.prototype.save = function() {
 		error : function($result, $status) {
 			load("http://localhost:8080/maohifx.server/common.js");
 			load("http://localhost:8080/maohifx.server/bean/Contact.js");
+			load("http://localhost:8080/maohifx.server/bean/Email.js");
+			load("http://localhost:8080/maohifx.server/bean/Phone.js");
 
 			print($status);
 
