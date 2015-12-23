@@ -10,8 +10,8 @@ function InvoiceLine() {
 	this.tva = new Tva();
 	this.sellingPriceWithTaxes = Bindings.multiply(this.sellingPrice, this.tvaRate.divide(100).add(1));
 
-	this.tvaAmount = Bindings.multiply(this.sellingPrice, this.tvaRate.divide(100));
-	this.discountAmount = Bindings.multiply(this.sellingPrice, this.discountRate.divide(100));
+	this.tvaAmount = Bindings.multiply(this.sellingPrice.multiply(this.quantity), this.tvaRate.divide(100));
+	this.discountAmount = Bindings.multiply(this.sellingPrice.multiply(this.quantity), this.discountRate.divide(100));
 
 	this.totalAmount = Bindings.multiply(this.sellingPrice, this.quantity).add(this.tvaAmount).subtract(this.discountAmount);
 }

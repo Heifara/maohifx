@@ -25,7 +25,7 @@ public class InvoiceLineDAO extends AbstractDAO<InvoiceLine> {
 
 	public List<TvaReport> tvaReport(final String aStart, final String aEnd) {
 		final StringBuilder iStatement = new StringBuilder();
-		iStatement.append("SELECT tvaRate as tvaRate,  SUM(ROUND(sellingPrice * (tvaRate/100))) as amount");
+		iStatement.append("SELECT tvaRate as tvaRate,  SUM(ROUND((sellingPrice * quantity) * (tvaRate/100))) as amount");
 		iStatement.append(" FROM " + this.getAnnotatedClass().getSimpleName());
 		iStatement.append(" WHERE invoice.date >= :start");
 		iStatement.append(" AND invoice.date <= :end");

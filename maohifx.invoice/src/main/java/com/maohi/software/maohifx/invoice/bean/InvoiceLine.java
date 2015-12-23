@@ -215,7 +215,7 @@ public class InvoiceLine implements java.io.Serializable {
 
 	@Transient
 	public Double getTvaAmount() {
-		return this.sellingPrice * (this.tvaRate / 100);
+		return this.getTotalWithNoTaxAmount() * (this.tvaRate / 100);
 	}
 
 	@Column(name = "tva_rate", precision = 22, scale = 0)
