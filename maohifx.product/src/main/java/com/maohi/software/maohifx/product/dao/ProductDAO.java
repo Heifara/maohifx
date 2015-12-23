@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.hibernate.Query;
 
-import com.maohi.software.maohifx.common.AbstractDAO;
+import com.maohi.software.maohifx.common.server.AbstractDAO;
 import com.maohi.software.maohifx.product.bean.Product;
 
 /**

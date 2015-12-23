@@ -41,9 +41,9 @@ import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.maohi.software.maohifx.common.AbstractDAO;
-import com.maohi.software.maohifx.common.AnnotatedClass;
-import com.maohi.software.maohifx.common.HibernateUtil;
+import com.maohi.software.maohifx.common.server.AbstractDAO;
+import com.maohi.software.maohifx.common.server.AnnotatedClass;
+import com.maohi.software.maohifx.common.server.HibernateUtil;
 
 /**
  * @author heifara

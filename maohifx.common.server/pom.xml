@@ -6,4 +6,32 @@
 		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>maohifx.common.server</artifactId>
+	<dependencies>
+		<dependency>
+			<groupId>com.maohi.software</groupId>
+			<artifactId>maohifx.common</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>fop</artifactId>
+			<version>2.0</version>
+		</dependency>
+	</dependencies>
 </project>

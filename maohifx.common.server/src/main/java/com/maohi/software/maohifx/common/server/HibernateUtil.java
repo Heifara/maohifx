@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.maohi.software.maohifx.common;
+package com.maohi.software.maohifx.common.server;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;

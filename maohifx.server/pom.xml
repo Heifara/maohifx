@@ -58,7 +58,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.maohi.software</groupId>
-			<artifactId>maohifx.common</artifactId>
+			<artifactId>maohifx.common.server</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>

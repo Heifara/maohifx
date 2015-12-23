@@ -12,8 +12,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.maohi.software.maohifx.common.AbstractDAO;
-import com.maohi.software.maohifx.common.HibernateUtil;
+import com.maohi.software.maohifx.common.server.AbstractDAO;
+import com.maohi.software.maohifx.common.server.HibernateUtil;
 import com.maohi.software.maohifx.contact.bean.Contact;
 import com.maohi.software.maohifx.contact.bean.Customer;
 import com.maohi.software.maohifx.contact.bean.Email;

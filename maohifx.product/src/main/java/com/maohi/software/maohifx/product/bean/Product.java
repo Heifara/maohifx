@@ -14,7 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import com.maohi.software.maohifx.common.AnnotatedClass;
+import com.maohi.software.maohifx.common.server.AnnotatedClass;
 import com.maohi.software.maohifx.invoice.bean.Tva;
 
 /**

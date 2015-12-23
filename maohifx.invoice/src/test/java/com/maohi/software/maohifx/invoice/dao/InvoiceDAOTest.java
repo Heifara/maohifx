@@ -11,8 +11,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.maohi.software.maohifx.common.AbstractDAO;
-import com.maohi.software.maohifx.common.HibernateUtil;
+import com.maohi.software.maohifx.common.server.AbstractDAO;
+import com.maohi.software.maohifx.common.server.HibernateUtil;
 import com.maohi.software.maohifx.invoice.bean.Invoice;
 import com.maohi.software.maohifx.invoice.bean.InvoiceLine;
 import com.maohi.software.maohifx.invoice.bean.InvoicePaymentLine;

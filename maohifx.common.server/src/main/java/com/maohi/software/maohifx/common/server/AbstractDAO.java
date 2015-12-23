@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.maohi.software.maohifx.common;
+package com.maohi.software.maohifx.common.server;
 
 import java.io.Serializable;
 import java.util.List;

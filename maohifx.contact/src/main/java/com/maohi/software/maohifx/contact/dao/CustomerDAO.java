@@ -3,7 +3,7 @@
  */
 package com.maohi.software.maohifx.contact.dao;
 
-import com.maohi.software.maohifx.common.AbstractDAO;
+import com.maohi.software.maohifx.common.server.AbstractDAO;
 import com.maohi.software.maohifx.contact.bean.Customer;
 
 /**

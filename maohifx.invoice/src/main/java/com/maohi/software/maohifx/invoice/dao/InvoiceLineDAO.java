@@ -8,7 +8,7 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
-import com.maohi.software.maohifx.common.AbstractDAO;
+import com.maohi.software.maohifx.common.server.AbstractDAO;
 import com.maohi.software.maohifx.invoice.bean.InvoiceLine;
 import com.maohi.software.maohifx.invoice.bean.TvaReport;
 
