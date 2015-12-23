@@ -1,8 +1,4 @@
 load("http://localhost:8080/maohifx.server/common.js");
-load("http://localhost:8080/maohifx.server/bean/Customer.js");
-load("http://localhost:8080/maohifx.server/bean/Contact.js");
-load("http://localhost:8080/maohifx.server/bean/Email.js");
-load("http://localhost:8080/maohifx.server/bean/Phone.js");
 
 function CustomerController() {
 	this.customer = new Customer();
@@ -14,10 +10,23 @@ function CustomerController() {
 		$tab.textProperty().bindBidirectional(this.customer.contact.lastname);
 	}
 
+	this.bindChildren();
+
+	// Auto Completion
+	contactAutoCompletion.addAll(Contact.search());
+}
+
+CustomerController.prototype.bindChildren = function() {
 	code.textProperty().bindBidirectional(this.customer.code);
 	lastname.textProperty().bindBidirectional(this.customer.contact.lastname);
 	middlename.textProperty().bindBidirectional(this.customer.contact.middlename);
 	firstname.textProperty().bindBidirectional(this.customer.contact.firstname);
+}
+
+CustomerController.prototype.contactAutoCompletionEvent = function(aEvent) {
+	this.customer.contact = aEvent.getCompletion();
+	this.customer.uuid.set(this.customer.contact.uuid.get());
+	this.bindChildren();
 }
 
 CustomerController.prototype.saveEvent = function(aActionEvent) {

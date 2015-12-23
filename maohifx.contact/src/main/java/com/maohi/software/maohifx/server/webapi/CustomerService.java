@@ -9,7 +9,6 @@ import java.util.List;
 import javax.ws.rs.Path;
 
 import com.maohi.software.maohifx.contact.bean.Customer;
-import com.maohi.software.maohifx.contact.dao.ContactDAO;
 import com.maohi.software.maohifx.contact.dao.CustomerDAO;
 
 /**
@@ -51,8 +50,6 @@ public class CustomerService extends AnnotatedClassService<CustomerDAO, Customer
 
 	@Override
 	public void onInserting(final Customer iElement) {
-		final ContactDAO iDao = new ContactDAO();
-		iDao.insert(iElement.getContact());
 	}
 
 	@Override

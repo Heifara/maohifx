@@ -68,8 +68,8 @@ public abstract class AbstractDAO<E> {
 		}
 
 		E iElement = this.read(aId);
-		session.evict(iElement);
 		if (iElement != null) {
+			session.evict(iElement);
 			return true;
 		} else {
 			return false;
