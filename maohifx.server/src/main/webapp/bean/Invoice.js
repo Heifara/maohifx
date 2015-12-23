@@ -42,7 +42,7 @@ function Invoice() {
 	this.invoiceNumber = new SimpleIntegerProperty();
 	this.invoiceDate = new SimpleLocalDateProperty();
 	this.customerName = new SimpleStringProperty();
-	this.customer = new Customer();
+	this.customer = null;
 	this.href = new SimpleStringProperty();
 
 	this.totalWithNoTaxes = new SimpleDoubleProperty();
@@ -227,6 +227,16 @@ Invoice.prototype.getInvoicePaymentLines = function() {
 }
 
 Invoice.prototype.save = function() {
+	if (this.customer == null) {
+		if (!this.customerName.get().isEmpty()) {
+			alert("Le nom de client ne correspond à aucun client");
+			return;
+		} else {
+			alert("Veuillez sélectionner un client");
+			return;
+		}
+	}
+
 	$loader.getNamespace().put("$invoice", this);
 	$http.ajax({
 		url : "http://localhost:8080/maohifx.server/webapi/invoice",
