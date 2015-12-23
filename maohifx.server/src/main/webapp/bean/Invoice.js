@@ -13,14 +13,6 @@ Invoice.search = function(aPattern) {
 		dataType : "application/json",
 		success : function($result, $status) {
 			load("http://localhost:8080/maohifx.server/common.js");
-			load("http://localhost:8080/maohifx.server/bean/Invoice.js");
-			load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
-			load("http://localhost:8080/maohifx.server/bean/InvoicePaymentLine.js");
-			load("http://localhost:8080/maohifx.server/bean/PaymentMode.js");
-			load("http://localhost:8080/maohifx.server/bean/Product.js");
-			load("http://localhost:8080/maohifx.server/bean/Tva.js");
-			load("http://localhost:8080/maohifx.server/bean/Contact.js");
-			load("http://localhost:8080/maohifx.server/bean/Customer.js");
 
 			for ( var item in $result) {
 				iInvoice = new Invoice();
@@ -73,6 +65,7 @@ Invoice.prototype.parseJSON = function(aJSONObject) {
 	this.invoiceNumber.set(aJSONObject.get("number"));
 	this.invoiceDate.setDate(aJSONObject.get("date"));
 	this.customerName.set(aJSONObject.get("customerName"));
+	this.customer = new Customer();
 	this.customer.parseJSON(aJSONObject.get("customer"));
 	this.href.set(aJSONObject.get("href"));
 
@@ -246,14 +239,6 @@ Invoice.prototype.save = function() {
 		data : this.toJSON(),
 		success : function($result, $status) {
 			load("http://localhost:8080/maohifx.server/common.js");
-			load("http://localhost:8080/maohifx.server/bean/Invoice.js");
-			load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
-			load("http://localhost:8080/maohifx.server/bean/InvoicePaymentLine.js");
-			load("http://localhost:8080/maohifx.server/bean/PaymentMode.js");
-			load("http://localhost:8080/maohifx.server/bean/Product.js");
-			load("http://localhost:8080/maohifx.server/bean/Tva.js");
-			load("http://localhost:8080/maohifx.server/bean/Contact.js");
-			load("http://localhost:8080/maohifx.server/bean/Customer.js");
 
 			$invoice.parseJSON($result);
 
