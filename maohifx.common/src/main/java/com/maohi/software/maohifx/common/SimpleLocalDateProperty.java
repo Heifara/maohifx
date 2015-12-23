@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.maohi.software.maohifx.common;
 
@@ -26,10 +26,13 @@ public class SimpleLocalDateProperty extends SimpleObjectProperty<LocalDate> {
 	}
 
 	public SimpleLocalDateProperty() {
-		this.set(LocalDate.now());
 	}
 
 	public Date getDate() throws ParseException {
+		if (this.get() == null) {
+			return null;
+		}
+
 		final Date iDate = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(this.get().toString());
 		return iDate;
 	}
