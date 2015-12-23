@@ -19,6 +19,7 @@ load("http://localhost:8080/maohifx.server/bean/Phone.js");
 load("http://localhost:8080/maohifx.server/bean/Product.js");
 load("http://localhost:8080/maohifx.server/bean/Supplier.js");
 load("http://localhost:8080/maohifx.server/bean/Tva.js");
+load("http://localhost:8080/maohifx.server/bean/TvaReport.js");
 
 /**
  * 

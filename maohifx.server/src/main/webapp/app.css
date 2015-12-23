@@ -177,10 +177,6 @@
 	-fx-spacing: 8.0;
 }
 
-#module .link {
-	-fx-graphic: url("workinprogress-icon.png");
-}
-
 
 #module #invoice-button {
 	-fx-graphic: url("invoice-icon.png");
@@ -216,6 +212,10 @@
 
 #valid-button {
 	-fx-graphic: url("valid-icon.png");
+}
+
+#reports-button {
+	-fx-graphic: url("reports-icon.png");
 }
 
 #search-button {

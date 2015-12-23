@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?language javascript?>
+<?import com.maohi.software.maohifx.control.*?>
+<?import com.maohi.software.maohifx.control.cell.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+	<stylesheets>
+		<URL value="@../app.css" />
+	</stylesheets>
+	<fx:script source="../tvaReport/Controller.js" />
+	<top>
+		<GridPane BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="40.0" />
+				<ColumnConstraints hgrow="ALWAYS" />
+				<ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="40.0" />
+				<ColumnConstraints hgrow="ALWAYS" />
+				<ColumnConstraints hgrow="NEVER" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+				<Button id="search-button" alignment="CENTER_RIGHT" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" onAction="controller.searchEvent(event)" GridPane.columnIndex="4" />
+				<DatePicker fx:id="start" GridPane.columnIndex="1" />
+				<DatePicker fx:id="end" GridPane.columnIndex="3" />
+				<Label text="Du" />
+				<Label text="au" GridPane.columnIndex="2" />
+			</children>
+		</GridPane>
+	</top>
+	<center>
+		<GridPane BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints hgrow="NEVER" />
+				<ColumnConstraints hgrow="NEVER" />
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints vgrow="NEVER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+				<TableView fx:id="tvaReports" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2147483647">
+					<columns>
+						<TableColumn prefWidth="75.0" text="Taux de Tva">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="tvaRate" />
+							</cellValueFactory>
+						</TableColumn>
+						<TableColumn prefWidth="75.0" text="Montant">
+							<cellValueFactory>
+								<JSObjectPropertyValueFactory property="amount" />
+							</cellValueFactory>
+						</TableColumn>
+					</columns>
+				</TableView>
+			</children>
+		</GridPane>
+	</center>
+	<fx:script>
+		controller = new TvaReportController();
+	</fx:script>
+</BorderPane>

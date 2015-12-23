@@ -70,7 +70,7 @@
 								<TextField editable="false" text="Gestion des fournisseurs" BorderPane.alignment="CENTER" />
 							</top>
 							<center>
-								<TextArea text="Work in progress" editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT" />
+								<TextArea editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" text="Work in progress" BorderPane.alignment="TOP_LEFT" />
 							</center>
 							<left>
 								<Link id="supplier-button" href="@suppliers" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" target="BLANK" BorderPane.alignment="TOP_LEFT" />
@@ -81,10 +81,21 @@
 								<TextField editable="false" text="Gestion des clients" BorderPane.alignment="CENTER" />
 							</top>
 							<center>
-								<TextArea text="Work in progress" editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT" />
+								<TextArea editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" text="Work in progress" BorderPane.alignment="TOP_LEFT" />
 							</center>
 							<left>
 								<Link id="customer-button" href="@customers" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" target="BLANK" BorderPane.alignment="TOP_LEFT" />
+							</left>
+						</BorderPane>
+						<BorderPane id="module" GridPane.columnIndex="1" GridPane.rowIndex="1">
+							<top>
+								<TextField editable="false" text="Déclaration TVA" BorderPane.alignment="CENTER" />
+							</top>
+							<center>
+								<TextArea editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT" />
+							</center>
+							<left>
+								<Link id="reports-button" href="@tvaReport" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" target="BLANK" BorderPane.alignment="TOP_LEFT" />
 							</left>
 						</BorderPane>
 					</children>

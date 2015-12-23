@@ -102,4 +102,13 @@ public class InvoiceServiceTest {
 	public void tearDown() throws Exception {
 	}
 
+	@Test
+	public void tvaReportFromJSON() throws Exception {
+		final Response iResponse = ClientBuilder.newClient().target("http://localhost:8080/maohifx.server/webapi/invoice/tvaReport").queryParam("start", "2015-12-01").queryParam("end", "2015-12-30").request().get(Response.class);
+		assertTrue(Status.OK.equals(Status.fromStatusCode(iResponse.getStatus())));
+
+		final String aJSon = iResponse.readEntity(String.class);
+		assertTrue(aJSon != null);
+	}
+
 }

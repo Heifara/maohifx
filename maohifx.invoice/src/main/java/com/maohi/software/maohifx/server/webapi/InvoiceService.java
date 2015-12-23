@@ -8,13 +8,21 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import com.maohi.software.maohifx.invoice.bean.Invoice;
 import com.maohi.software.maohifx.invoice.bean.InvoiceLine;
 import com.maohi.software.maohifx.invoice.bean.InvoicePaymentLine;
 import com.maohi.software.maohifx.invoice.bean.PaymentMode;
+import com.maohi.software.maohifx.invoice.bean.TvaReport;
 import com.maohi.software.maohifx.invoice.dao.InvoiceDAO;
+import com.maohi.software.maohifx.invoice.dao.InvoiceLineDAO;
 import com.maohi.software.maohifx.invoice.dao.PaymentModeDAO;
 import com.maohi.software.maohifx.invoice.jaxb2.Customer;
 
@@ -149,6 +157,19 @@ public class InvoiceService extends AnnotatedClassService<InvoiceDAO, Invoice> {
 			iJaxbInvoicePaymentLine.setAmount(iInvoicePaymentLine.getAmount());
 		}
 		return iJaxbInvoice;
+	}
+
+	@GET
+	@Path("tvaReport")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response tvaReportFromQueryParam(@QueryParam("start") final String aStart, @QueryParam("end") final String aEnd) {
+		try {
+			final List<TvaReport> iReports = new InvoiceLineDAO().tvaReport(aStart, aEnd);
+			return Response.ok(iReports).build();
+		} catch (final Exception aException) {
+			aException.printStackTrace();
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
 }
