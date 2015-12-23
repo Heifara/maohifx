@@ -168,6 +168,7 @@
 		<module>maohifx.server</module>
 		<module>maohifx.client</module>
 		<module>maohifx.common</module>
+		<module>maohifx.common.server</module>
 		<module>maohifx.invoice</module>
 		<module>maohifx.samples</module>
 		<module>maohifx.control</module>
