@@ -4,11 +4,13 @@
 package com.maohi.software.maohifx.server.webapi;
 
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Path;
 
 import com.maohi.software.maohifx.contact.bean.Customer;
+import com.maohi.software.maohifx.contact.dao.ContactDAO;
 import com.maohi.software.maohifx.contact.dao.CustomerDAO;
 
 /**
@@ -18,9 +20,11 @@ import com.maohi.software.maohifx.contact.dao.CustomerDAO;
 @Path("customer")
 public class CustomerService extends AnnotatedClassService<CustomerDAO, Customer> {
 
+	private boolean insertContact;
+
 	public CustomerService() throws InstantiationException, IllegalAccessException {
 		super();
-
+		this.insertContact = false;
 	}
 
 	@Override
@@ -50,6 +54,12 @@ public class CustomerService extends AnnotatedClassService<CustomerDAO, Customer
 
 	@Override
 	public void onInserting(final Customer iElement) {
+		if (this.insertContact) {
+			new ContactDAO().insert(iElement.getContact());
+		}
+
+		iElement.getContact().setCreationDate(new Date());
+		iElement.getContact().setUpdateDate(new Date());
 	}
 
 	@Override
@@ -59,6 +69,7 @@ public class CustomerService extends AnnotatedClassService<CustomerDAO, Customer
 
 	@Override
 	public void onSaving(final Customer iElement) {
+		this.insertContact = iElement.getUuid() == null ? true : false;
 
 	}
 
@@ -69,7 +80,7 @@ public class CustomerService extends AnnotatedClassService<CustomerDAO, Customer
 
 	@Override
 	public void onUpdating(final Customer iElement) {
-
+		iElement.getContact().setUpdateDate(new Date());
 	}
 
 	@Override
