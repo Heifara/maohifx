@@ -1,8 +1,19 @@
 TvaReport.search = function(aStart, aEnd) {
+	System.out.println(aStart + " " + aEnd)
+
+	var iUrl = "http://localhost:8080/maohifx.server/webapi/invoice/tvaReport"
+	if (aStart != null && aEnd != null) {
+		iUrl = "http://localhost:8080/maohifx.server/webapi/invoice/tvaReport?start=" + aStart + "&end=" + aEnd;
+	} else if (aStart != null && aEnd == null) {
+		iUrl = "http://localhost:8080/maohifx.server/webapi/invoice/tvaReport?start=" + aStart;
+	} else if (aStart == null && aEnd != null) {
+		iUrl = "http://localhost:8080/maohifx.server/webapi/invoice/tvaReport?end=" + aEnd;
+	}
+
 	iSearchResult = FXCollections.observableArrayList();
 	$loader.getNamespace().put("$data", iSearchResult);
 	$http.ajax({
-		url : "http://localhost:8080/maohifx.server/webapi/invoice/tvaReport?start=" + aStart + "&end=" + aEnd,
+		url : iUrl,
 		type : "get",
 		contentType : "application/x-www-form-urlencoded",
 		dataType : "application/json",
