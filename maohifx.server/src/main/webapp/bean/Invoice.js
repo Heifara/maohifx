@@ -33,6 +33,7 @@ function Invoice() {
 	this.uuid = new SimpleStringProperty();
 	this.invoiceNumber = new SimpleIntegerProperty();
 	this.invoiceDate = new SimpleLocalDateProperty();
+	this.validDate = new SimpleLocalDateProperty();
 	this.customerName = new SimpleStringProperty();
 	this.customer = null;
 	this.href = new SimpleStringProperty();
@@ -53,6 +54,7 @@ Invoice.prototype.toJSON = function() {
 		uuid : this.uuid.get(),
 		number : this.invoiceNumber.get(),
 		date : this.invoiceDate.getDate(),
+		validDate : this.validDate.getDate(),
 		customerName : this.customerName.get(),
 		customer : this.customer.toJSON(),
 		invoiceLines : this.getInvoiceLines(),
@@ -64,6 +66,7 @@ Invoice.prototype.parseJSON = function(aJSONObject) {
 	this.uuid.set(aJSONObject.get("uuid"));
 	this.invoiceNumber.set(aJSONObject.get("number"));
 	this.invoiceDate.setDate(aJSONObject.get("date"));
+	this.validDate.setDate(aJSONObject.get("validDate"));
 	this.customerName.set(aJSONObject.get("customerName"));
 	this.customer = new Customer();
 	this.customer.parseJSON(aJSONObject.get("customer"));
@@ -123,6 +126,14 @@ Invoice.prototype.addInvoiceLine = function() {
 	iInvoiceLine.tvaRate.set(0.0);
 
 	this.invoiceLines.add(iInvoiceLine);
+}
+
+Invoice.prototype.isEditable = function() {
+	if (this.validDate.getDate() != null) {
+		return false;
+	}
+
+	return true;
 }
 
 Invoice.prototype.addInvoicePaymentLine = function() {
@@ -220,36 +231,47 @@ Invoice.prototype.getInvoicePaymentLines = function() {
 }
 
 Invoice.prototype.save = function() {
+	if (this.isValid()) {
+		$loader.getNamespace().put("$invoice", this);
+		$http.ajax({
+			url : "http://localhost:8080/maohifx.server/webapi/invoice",
+			type : "post",
+			contentType : "application/x-www-form-urlencoded",
+			dataType : "application/json",
+			data : this.toJSON(),
+			success : function($result, $status) {
+				load("http://localhost:8080/maohifx.server/common.js");
+
+				$invoice.parseJSON($result);
+
+				alert("Save success!");
+			},
+			error : function($result, $status) {
+				load("http://localhost:8080/maohifx.server/common.js");
+
+				print($status);
+
+				alert("Save error!");
+			}
+		});
+	}
+}
+
+Invoice.prototype.isValid = function() {
+	if (this.customerName.get() == null) {
+		alert("Le nom de client est vide");
+		return false;
+	}
+
 	if (this.customer == null) {
 		if (!this.customerName.get().isEmpty()) {
 			alert("Le nom de client ne correspond à aucun client");
-			return;
+			return false;
 		} else {
 			alert("Veuillez sélectionner un client");
-			return;
+			return false;
 		}
 	}
 
-	$loader.getNamespace().put("$invoice", this);
-	$http.ajax({
-		url : "http://localhost:8080/maohifx.server/webapi/invoice",
-		type : "post",
-		contentType : "application/x-www-form-urlencoded",
-		dataType : "application/json",
-		data : this.toJSON(),
-		success : function($result, $status) {
-			load("http://localhost:8080/maohifx.server/common.js");
-
-			$invoice.parseJSON($result);
-
-			alert("Save success!");
-		},
-		error : function($result, $status) {
-			load("http://localhost:8080/maohifx.server/common.js");
-
-			print($status);
-
-			alert("Save error!");
-		}
-	});
+	return true;
 }

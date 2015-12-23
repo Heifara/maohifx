@@ -60,6 +60,8 @@ function InvoiceController() {
 	autoCompletion.addAll(Product.search());
 	customerAutoCompletion.addAll(Customer.search());
 	paymentModeAutoCompletion.addAll(PaymentMode.search());
+
+	this.fireEditable();
 }
 
 InvoiceController.prototype.addInvoiceLineEvent = function(aEvent) {
@@ -115,6 +117,16 @@ InvoiceController.prototype.saveEvent = function() {
 	this.addInvoicePaymentLineEvent();
 }
 
+InvoiceController.prototype.validEvent = function() {
+	if (this.invoice.isValid()) {
+		this.invoice.validDate.setDate(System.currentTimeMillis());
+
+		this.saveEvent();
+		
+		this.fireEditable();
+	}
+}
+
 InvoiceController.prototype.printEvent = function() {
 	this.invoice.print();
 }
@@ -128,8 +140,10 @@ InvoiceController.prototype.removeInvoicePaymentLineEvent = function(aEvent) {
 	this.addInvoicePaymentLineEvent(aEvent);
 }
 
-InvoiceController.prototype.sellingPriceEditable = function() {
-	return true;
+InvoiceController.prototype.fireEditable = function() {
+	if (!this.invoice.isEditable()) {
+		disableControls(view);
+	}
 }
 
 InvoiceController.prototype.removeInvoiceLineEvent = function(aEvent) {

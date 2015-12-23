@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Tab?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="view" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<stylesheets>
 		<URL value="@../app.css" />
 	</stylesheets>
@@ -139,7 +139,7 @@
 			<items>
 				<Button id="save-button" mnemonicParsing="false" onAction="controller.saveEvent(event)" />
 				<Button id="print-button" mnemonicParsing="false" onAction="controller.printEvent(event)" />
-				<Button id="valid-button" fx:id="valid" mnemonicParsing="false" onAction="controller.validEvent(aEvent)" />
+				<Button id="valid-button" fx:id="valid" mnemonicParsing="false" onAction="controller.validEvent(event)" />
 			</items>
 		</ToolBar>
 	</top>

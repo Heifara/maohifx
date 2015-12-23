@@ -32,12 +32,13 @@ public class Invoice implements java.io.Serializable, AnnotatedClass {
 	private static final long serialVersionUID = 1L;
 
 	private String uuid;
+	private Customer customer;
 	private Date creationDate;
 	private Date updateDate;
 	private Integer number;
 	private Date date;
 	private String customerName;
-	private Customer customer;
+	private Date validDate;
 	private String href;
 	private Set<InvoiceLine> invoiceLines = new HashSet<>(0);
 	private Set<InvoicePaymentLine> invoicePaymentLines = new HashSet<>(0);
@@ -227,6 +228,11 @@ public class Invoice implements java.io.Serializable, AnnotatedClass {
 		return this.uuid;
 	}
 
+	@Column(name = "valid_date")
+	public Date getValidDate() {
+		return this.validDate;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -282,6 +288,10 @@ public class Invoice implements java.io.Serializable, AnnotatedClass {
 	@Override
 	public void setUuid(final String uuid) {
 		this.uuid = uuid;
+	}
+
+	public void setValidDate(final Date validDate) {
+		this.validDate = validDate;
 	}
 
 }
