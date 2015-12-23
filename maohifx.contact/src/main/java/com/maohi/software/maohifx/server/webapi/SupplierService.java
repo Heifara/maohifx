@@ -51,8 +51,6 @@ public class SupplierService extends AnnotatedClassService<SupplierDAO, Supplier
 
 	@Override
 	public void onInserting(final Supplier iElement) {
-		final ContactDAO iDao = new ContactDAO();
-		iDao.insert(iElement.getContact());
 	}
 
 	@Override

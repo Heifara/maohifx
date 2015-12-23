@@ -11,7 +11,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.image.Image?>
-
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<fx:script source="../supplier/Controller.js" />
 	<stylesheets>
@@ -55,7 +54,12 @@
 				<Label text="Code" GridPane.rowIndex="1" />
 				<TextField fx:id="code" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 				<Label text="Nom de famille" GridPane.rowIndex="2" />
-				<TextField fx:id="lastname" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+				<TextField fx:id="lastname" onAutoCompletion="controller.contactAutoCompletionEvent(event)" GridPane.columnIndex="1" GridPane.rowIndex="2">
+					<autoCompletion>
+						<FXCollections fx:id="contactAutoCompletion" fx:factory="observableArrayList">
+						</FXCollections>
+					</autoCompletion>
+				</TextField>
 				<Label text="Deuxième prénom" GridPane.rowIndex="3" />
 				<TextField fx:id="middlename" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 				<Label text="Prénom" GridPane.rowIndex="4" />
@@ -74,7 +78,6 @@
 			</rowConstraints>
 		</GridPane>
 	</center>
-	<fx:script>
-		controller = new SupplierController();
+	<fx:script> controller = new SupplierController();
 	</fx:script>
 </BorderPane>

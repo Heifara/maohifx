@@ -41,7 +41,8 @@ public abstract class AbstractDAO<E> {
 
 	@SuppressWarnings("unchecked")
 	public <T> T next(final Class<T> aType, final String aAttribute) {
-		final Query iQuery = AbstractDAO.session.createQuery(String.format("SELECT MAX(%s) as max FROM %s", aAttribute, this.getAnnotatedClass().getSimpleName()));
+		final Query iQuery = AbstractDAO.session.createQuery(
+				String.format("SELECT MAX(%s) as max FROM %s", aAttribute, this.getAnnotatedClass().getSimpleName()));
 		final T iNext = (T) iQuery.uniqueResult();
 		if (aType.isAssignableFrom(Integer.class)) {
 			return (T) (iNext == null ? new Integer(0) : new Integer((Integer) iNext + 1));
@@ -54,7 +55,25 @@ public abstract class AbstractDAO<E> {
 
 	@SuppressWarnings("unchecked")
 	public E read(final Serializable aId) {
+		if (aId == null) {
+			return null;
+		}
+
 		return (E) AbstractDAO.session.get(this.getAnnotatedClass(), aId);
+	}
+
+	public boolean exists(final Serializable aId) {
+		if (aId == null) {
+			return false;
+		}
+
+		E iElement = this.read(aId);
+		session.evict(iElement);
+		if (iElement != null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@SuppressWarnings("unchecked")
