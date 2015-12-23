@@ -37,9 +37,11 @@ public class SimpleLocalDateProperty extends SimpleObjectProperty<LocalDate> {
 		return iDate;
 	}
 
-	public void setDate(final long aMilliseconde) {
-		final Date iDate = new Date(aMilliseconde);
-		this.set(iDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+	public void setDate(final Long aMilliseconde) {
+		if (aMilliseconde != null) {
+			final Date iDate = new Date(aMilliseconde);
+			this.set(iDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+		}
 	}
 
 }
