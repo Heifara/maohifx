@@ -143,6 +143,9 @@ InvoiceController.prototype.removeInvoicePaymentLineEvent = function(aEvent) {
 InvoiceController.prototype.fireEditable = function() {
 	if (!this.invoice.isEditable()) {
 		disableControls(view);
+		
+		//Handle exceptions
+		printButton.setDisable(false);
 	}
 }
 

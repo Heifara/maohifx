@@ -138,7 +138,7 @@
 		<ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<items>
 				<Button id="save-button" mnemonicParsing="false" onAction="controller.saveEvent(event)" />
-				<Button id="print-button" mnemonicParsing="false" onAction="controller.printEvent(event)" />
+				<Button fx:id="printButton" id="print-button" mnemonicParsing="false" onAction="controller.printEvent(event)" />
 				<Button id="valid-button" fx:id="valid" mnemonicParsing="false" onAction="controller.validEvent(event)" />
 			</items>
 		</ToolBar>
