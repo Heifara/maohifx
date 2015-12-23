@@ -42,7 +42,9 @@ public class JSObjectStringConverter<T> extends StringConverter<T> {
 				return Integer.valueOf(aObject.toString()).toString();
 			} else if (aObject instanceof Double) {
 				this.type = Double.class;
-				return NumberFormat.getNumberInstance().format(Double.valueOf((Double) aObject));
+				final NumberFormat iFormat = NumberFormat.getInstance();
+				iFormat.setMaximumFractionDigits(0);
+				return iFormat.format(Double.valueOf((Double) aObject));
 			} else if (aObject instanceof LocalDate) {
 				final LocalDate iLocalDate = (LocalDate) aObject;
 				return iLocalDate.toString();
