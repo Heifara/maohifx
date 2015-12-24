@@ -5,6 +5,13 @@
     <xs:complexType>
       <xs:all>
         <xs:element name="homeUrl" type="xs:string" />
+        <xs:element name="historyUrl">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="unbounded" name="url" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:all>
     </xs:complexType>
   </xs:element>

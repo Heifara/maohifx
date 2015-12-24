@@ -3,16 +3,11 @@
  */
 package com.maohi.software.maohifx.client;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 import javax.ws.rs.InternalServerErrorException;
@@ -209,21 +204,9 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	}
 
 	private void initUrlAutoCompletion() {
-		try {
-			final InputStream iInputStream = this.getClass().getResourceAsStream("url.properties");
-			if (iInputStream != null) {
-				final Properties iProperties = new Properties();
-				iProperties.load(iInputStream);
-
-				if (iProperties.getProperty("url") != null) {
-					for (final String iUrl : iProperties.getProperty("url").split(";")) {
-						this.urlAutoCompletion.add(iUrl);
-					}
-				}
-			}
-
-		} catch (final IOException aException) {
-			aException.printStackTrace();
+		final Configuration iConfiguration = this.controller.getConfiguration();
+		for (final String iUrl : iConfiguration.getHistoryUrl().getUrl()) {
+			this.urlAutoCompletion.add(iUrl);
 		}
 
 		this.urlAutoCompletion.addListener(this);
@@ -292,38 +275,10 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 	@Override
 	public void onChanged(final javafx.collections.ListChangeListener.Change<? extends String> aChange) {
-		OutputStream iOutput = null;
-
-		try {
-			final URL iUrl = this.getClass().getResource("url.properties");
-			if (iUrl != null) {
-				final Properties iProperties = new Properties();
-				iOutput = new FileOutputStream(new File(iUrl.getFile()));
-
-				final StringBuilder iUrlBuilder = new StringBuilder();
-				for (final String iUrlString : ExtendedTab.this.urlAutoCompletion) {
-					iUrlBuilder.append(iUrlString);
-					iUrlBuilder.append(";");
-				}
-
-				// set the properties value
-				iProperties.setProperty("url", iUrlBuilder.toString());
-
-				// save properties to project root folder
-				iProperties.store(iOutput, null);
-			}
-		} catch (final IOException aException) {
-			aException.printStackTrace();
-		} finally {
-			if (iOutput != null) {
-				try {
-					iOutput.close();
-				} catch (final IOException aException) {
-					aException.printStackTrace();
-				}
-			}
-
-		}
+		final Configuration iConfiguration = this.controller.getConfiguration();
+		iConfiguration.getHistoryUrl().getUrl().clear();
+		iConfiguration.getHistoryUrl().getUrl().addAll(this.urlAutoCompletion);
+		this.controller.saveConfiguration(iConfiguration);
 	}
 
 	public void openEvent(final ActionEvent aEvent) {
