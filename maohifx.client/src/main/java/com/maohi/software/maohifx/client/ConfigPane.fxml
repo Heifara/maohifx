@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?language javascript?>
+<?import org.controlsfx.control.*?>
+<?import javafx.scene.web.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root prefHeight="400.0" prefWidth="300.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+	<center>
+		<GridPane BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+			</rowConstraints>
+			<children>
+				<TextField fx:id="homeUrl" GridPane.columnIndex="1" />
+				<Label text="Acceuil" />
+			</children>
+		</GridPane>
+	</center>
+	<bottom>
+		<ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+			<items>
+				<Button mnemonicParsing="false" onAction="#applyEvent" text="Appliquer" />
+				<Button mnemonicParsing="false" onAction="#okEvent" text="Ok" />
+				<Button mnemonicParsing="false" onAction="#cancelEvent" text="Annuler" />
+			</items>
+		</ToolBar>
+	</bottom>
+</fx:root>

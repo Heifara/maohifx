@@ -3,12 +3,25 @@
  */
 package com.maohi.software.maohifx.client;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.xml.bind.JAXBException;
+
+import org.controlsfx.dialog.Dialogs;
+import org.kohsuke.args4j.CmdLineException;
+import org.kohsuke.args4j.CmdLineParser;
+import org.kohsuke.args4j.Option;
 
 import com.maohi.software.maohifx.client.extendedtab.ExtendedTab;
+import com.maohi.software.maohifx.client.jaxb2.Configuration;
 import com.maohi.software.maohifx.control.Link;
 import com.maohi.software.maohifx.control.Link.LinkTarget;
 import com.maohi.software.maohifx.control.enumerations.HrefTarget;
@@ -32,12 +45,16 @@ import javafx.stage.Stage;
  */
 public class MaohiFXClient extends Application implements ListChangeListener<Tab>, ChangeListener<Tab>, LinkTarget {
 
+	@Option(name = "-config", usage = "path to the cofig file")
+	private String config;
+
 	private final FXMLLoader loader;
 	private Stage stage;
 	private Scene scene;
 	private BorderPane mainPane;
 	private TabPane tabpane;
 	private ExtendedTab currentTab;
+	private Configuration configuration;
 
 	public MaohiFXClient() {
 		this.loader = new FXMLLoader();
@@ -55,11 +72,19 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 		JOptionPane.showMessageDialog(null, aException.getMessage());
 	}
 
+	public Configuration getConfiguration() {
+		return this.configuration;
+	}
+
+	public FXMLLoader getLoader() {
+		return this.loader;
+	}
+
 	@Override
 	public void handle(final Link aLink, final ActionEvent aEvent, final FXMLLoader aLoader, final String aRecipeeId) {
 		switch (aLink.getTarget()) {
 		case BLANK:
-			this.tabpane.getTabs().add(new ExtendedTab(this.loader, aLink.getHref()));
+			this.tabpane.getTabs().add(new ExtendedTab(this, this.loader, aLink.getHref()));
 			break;
 
 		case SELF:
@@ -100,9 +125,38 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 		}
 	}
 
+	private void readConfiguration() throws FileNotFoundException, JAXBException {
+		final InputStream iInputStream = new FileInputStream(this.config);
+		if (iInputStream != null) {
+			this.configuration = (Configuration) JaxbUtils.readXML(iInputStream, "com.maohi.software.maohifx.client.jaxb2", this.getClass().getClassLoader());
+		}
+	}
+
+	public boolean saveConfiguration(final Configuration aConfiguration) {
+		try {
+			final File iConfigFile = new File(this.config);
+			final OutputStream iOutputStream = new FileOutputStream(iConfigFile);
+			JaxbUtils.writeXML(aConfiguration, iOutputStream, "com.maohi.software.maohifx.client.jaxb2", this.getClass().getClassLoader());
+
+			this.readConfiguration();
+			return true;
+		} catch (final Exception aException) {
+			Dialogs.create().owner(this.stage).title("Exception Dialog").masthead(aException.getClass().getSimpleName()).message("Ooops, there was an exception!").showException(aException);
+		}
+
+		return false;
+	}
+
 	@Override
 	public void start(final Stage aStage) {
+		this.config = "config.xml";
+
 		try {
+			final CmdLineParser iParser = new CmdLineParser(this);
+			iParser.parseArgument(this.getParameters().getRaw());
+
+			this.readConfiguration();
+
 			this.mainPane = this.loader.load();
 
 			this.stage = aStage;
@@ -112,7 +166,7 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 
 			this.tabpane = (TabPane) this.mainPane.getCenter();
 			this.tabpane.getSelectionModel().selectedItemProperty().addListener(this);
-			this.tabpane.getTabs().add(new ExtendedTab(this.loader));
+			this.tabpane.getTabs().add(new ExtendedTab(this, this.loader));
 			this.tabpane.getTabs().addListener(this);
 
 			this.loader.getNamespace().put("$stage", this.stage);
@@ -127,6 +181,10 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 			Link.setHrefTarget(HrefTarget.SELF, this);
 			Link.setHrefTarget(HrefTarget.FRAMENAME, this);
 		} catch (final IOException aException) {
+			throw new RuntimeException(aException);
+		} catch (final CmdLineException aException) {
+			throw new RuntimeException(aException);
+		} catch (final JAXBException aException) {
 			throw new RuntimeException(aException);
 		}
 	}

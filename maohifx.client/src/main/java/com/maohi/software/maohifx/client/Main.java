@@ -9,10 +9,6 @@ import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
 import java.net.URL;
 
-import org.kohsuke.args4j.CmdLineException;
-import org.kohsuke.args4j.CmdLineParser;
-import org.kohsuke.args4j.Option;
-
 import com.maohi.software.maohifx.client.protocole.fxml.URLStreamHandlerFactoryImpl;
 
 import javafx.application.Application;
@@ -29,14 +25,8 @@ public class Main {
 		new Main().doMain(args);
 	}
 
-	@Option(name = "-url", usage = "the very 1st URL to execute")
-	private String url;
-
 	private void doMain(final String[] aArgs) {
 		try {
-			final CmdLineParser iParser = new CmdLineParser(this);
-			iParser.parseArgument(aArgs);
-
 			final boolean isDebug = ManagementFactory.getRuntimeMXBean().getInputArguments().toString().indexOf("jdwp") >= 0;
 			if (isDebug) {
 				System.out.println("Push Enter to start ");
@@ -44,10 +34,8 @@ public class Main {
 				iReader.readLine();
 			}
 
-			Application.launch(MaohiFXClient.class, this.url);
+			Application.launch(MaohiFXClient.class, aArgs);
 
-		} catch (final CmdLineException aException) {
-			aException.printStackTrace();
 		} catch (final IOException aException) {
 			aException.printStackTrace();
 		}

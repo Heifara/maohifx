@@ -24,6 +24,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.maohi.software.maohifx.client.ConfigPane;
+import com.maohi.software.maohifx.client.MaohiFXClient;
+import com.maohi.software.maohifx.client.jaxb2.Configuration;
 import com.maohi.software.maohifx.client.rest.RestManagerImpl;
 
 import javafx.application.Platform;
@@ -36,6 +39,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
@@ -48,6 +52,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * @author heifara
@@ -55,6 +61,7 @@ import javafx.scene.layout.VBox;
  */
 public class ExtendedTab extends Tab implements Initializable, ChangeListener<TabPane>, Runnable, ListChangeListener<String> {
 
+	private final MaohiFXClient controller;
 	private final FXMLLoader loader;
 	private Tab selectedTab;
 	private TabPane parent;
@@ -94,7 +101,9 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	@FXML
 	private ObservableList<String> urlAutoCompletion;
 
-	public ExtendedTab(final FXMLLoader aParent) {
+	public ExtendedTab(final MaohiFXClient aController, final FXMLLoader aParent) {
+		this.controller = aController;
+
 		try {
 			this.loader = new FXMLLoader();
 			this.loader.setBuilderFactory(aParent.getBuilderFactory());
@@ -112,8 +121,8 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		}
 	}
 
-	public ExtendedTab(final FXMLLoader aParent, final String aUrl) {
-		this(aParent);
+	public ExtendedTab(final MaohiFXClient aController, final FXMLLoader aParent, final String aUrl) {
+		this(aController, aParent);
 
 		this.setUrl(aUrl);
 		this.refreshTabEvent(new ActionEvent());
@@ -147,6 +156,19 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 	@FXML
 	public void configEvent(final ActionEvent aEvent) {
+		final FXMLLoader iParentLoader = (FXMLLoader) this.loader.getNamespace().get("$parentLoader");
+		final Stage iOwner = (Stage) iParentLoader.getNamespace().get("$stage");
+
+		final Stage iDialog = new Stage(iOwner.getStyle());
+		iDialog.setTitle("Préférences");
+		iDialog.initOwner(iOwner);
+		iDialog.initModality(Modality.WINDOW_MODAL);
+
+		final Scene iScene = new Scene(new ConfigPane(this.controller, iParentLoader, iDialog), 400, 300);
+		iScene.getStylesheets().add("MaohiFXClient.css");
+		iDialog.setScene(iScene);
+
+		iDialog.show();
 	}
 
 	@FXML
@@ -155,7 +177,8 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	}
 
 	public void homeEvent(final ActionEvent aEvent) {
-		this.url.setText("fxml://localhost:8080/maohifx.server/");
+		final Configuration iConfiguration = this.controller.getConfiguration();
+		this.url.setText(iConfiguration.getHomeUrl());
 		this.refreshTabEvent(aEvent);
 	}
 
@@ -264,7 +287,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 			@Override
 			public void run() {
-				ExtendedTab.this.parent.getTabs().add(new ExtendedTab(ExtendedTab.this.loader));
+				ExtendedTab.this.parent.getTabs().add(new ExtendedTab(ExtendedTab.this.controller, ExtendedTab.this.loader));
 			}
 		});
 	}
