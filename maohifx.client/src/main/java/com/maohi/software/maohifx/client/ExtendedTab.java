@@ -43,6 +43,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -153,6 +154,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		final Stage iOwner = (Stage) iParentLoader.getNamespace().get("$stage");
 
 		final Stage iDialog = new Stage(iOwner.getStyle());
+		iDialog.getIcons().add(new Image("config.png"));
 		iDialog.setTitle("Préférences");
 		iDialog.initOwner(iOwner);
 		iDialog.initModality(Modality.WINDOW_MODAL);
