@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -42,8 +43,26 @@ public class RestManagerImpl {
 	}
 
 	public void ajax(final JSObject aJsObject) throws ScriptException, NoSuchMethodException {
+		String iUrl = (String) aJsObject.getMember("url");
+		if (iUrl.startsWith("@/")) {
+			iUrl = iUrl.replace("@/", "@");
+		}
+
+		if (iUrl.startsWith("@")) {
+			URL iCurrentLocation = this.loader.getLocation();
+			StringBuilder iBaseUrl = new StringBuilder();
+			iBaseUrl.append(iCurrentLocation.getProtocol());
+			iBaseUrl.append("://");
+			iBaseUrl.append(iCurrentLocation.getHost());
+			iBaseUrl.append(":");
+			iBaseUrl.append(iCurrentLocation.getPort());
+			iBaseUrl.append("/");
+
+			iUrl = iUrl.replace("@", iBaseUrl.toString());
+		}
+
 		final Client iClient = ClientBuilder.newClient();
-		final WebTarget iTarget = iClient.target((String) aJsObject.getMember("url"));
+		final WebTarget iTarget = iClient.target(iUrl);
 		final Builder iBuilder = iTarget.request();
 
 		final Response iResponse;
@@ -85,7 +104,8 @@ public class RestManagerImpl {
 		}
 	}
 
-	private void executeFunction(final String aMethodName, final JSObject aJsObject, final int iStatus, final Object iEntity) throws ScriptException, NoSuchMethodException {
+	private void executeFunction(final String aMethodName, final JSObject aJsObject, final int iStatus,
+			final Object iEntity) throws ScriptException, NoSuchMethodException {
 		String iMethod = aJsObject.getMember(aMethodName).toString();
 		if ((iMethod != null) && !iMethod.equals("undefined")) {
 			iMethod = iMethod.replace("function", "function " + aMethodName);
