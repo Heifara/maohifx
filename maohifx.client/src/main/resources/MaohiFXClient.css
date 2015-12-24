@@ -74,6 +74,14 @@
 	-fx-graphic: url("refresh.png");
 }
 
+#config {
+	-fx-graphic: url("config.png");
+}
+
+#profile {
+	-fx-graphic: url("profile-signin.png");
+}
+
 #url {
 	-fx-font-size: 16.0;
 	-fx-font-family: -fx-police;

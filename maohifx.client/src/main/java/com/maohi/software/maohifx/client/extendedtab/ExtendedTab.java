@@ -86,6 +86,12 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	private VBox urlPane;
 
 	@FXML
+	private Button configButton;
+
+	@FXML
+	private Button profileButton;
+
+	@FXML
 	private ObservableList<String> urlAutoCompletion;
 
 	public ExtendedTab(final FXMLLoader aParent) {
@@ -139,6 +145,15 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		});
 	}
 
+	@FXML
+	public void configEvent(final ActionEvent aEvent) {
+	}
+
+	@FXML
+	public void connectEvent(final ActionEvent aEvent) {
+		this.profileButton.setText("Heifara");
+	}
+
 	public void homeEvent(final ActionEvent aEvent) {
 		this.url.setText("fxml://localhost:8080/maohifx.server/");
 		this.refreshTabEvent(aEvent);
@@ -155,6 +170,8 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		this.menuButton.setBorder(null);
 		this.menuButton.setBackground(null);
 
+		this.initProfile();
+
 		this.initUrlAutoCompletion();
 
 		Platform.runLater(new Runnable() {
@@ -164,6 +181,10 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 				ExtendedTab.this.url.requestFocus();
 			}
 		});
+	}
+
+	private void initProfile() {
+		this.profileButton.setText("Se connecter");
 	}
 
 	private void initUrlAutoCompletion() {
