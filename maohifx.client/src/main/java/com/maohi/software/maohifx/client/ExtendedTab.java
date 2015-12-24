@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.maohi.software.maohifx.client.extendedtab;
+package com.maohi.software.maohifx.client;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,8 +24,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.maohi.software.maohifx.client.ConfigPane;
-import com.maohi.software.maohifx.client.MaohiFXClient;
 import com.maohi.software.maohifx.client.jaxb2.Configuration;
 import com.maohi.software.maohifx.client.rest.RestManagerImpl;
 

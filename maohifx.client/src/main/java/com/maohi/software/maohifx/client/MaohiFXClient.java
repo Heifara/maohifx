@@ -20,7 +20,6 @@ import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
-import com.maohi.software.maohifx.client.extendedtab.ExtendedTab;
 import com.maohi.software.maohifx.client.jaxb2.Configuration;
 import com.maohi.software.maohifx.control.Link;
 import com.maohi.software.maohifx.control.Link.LinkTarget;
