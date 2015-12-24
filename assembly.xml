@@ -24,6 +24,13 @@
 				<exclude>*.bat</exclude>
 			</excludes>
 		</fileSet>
+		<fileSet>
+			<directory>../maohifx.client/src/main/resources/</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>config.xml</include>
+			</includes>
+		</fileSet>
 	</fileSets>
 	<dependencySets>
 	</dependencySets>

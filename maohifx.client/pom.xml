@@ -17,16 +17,16 @@
 			<resource>
 				<directory>src/main/java</directory>
 				<includes>
-					<include>**/*.properties</include>
 					<include>**/*.fxml</include>
-					<include>**/*.png</include>
-					<include>**/*.jpeg</include>
 				</includes>
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
 				<includes>
-					<include>**/*</include>
+					<include>**/*.css</include>
+					<include>**/*.png</include>
+					<include>**/*.jpeg</include>
+					<include>**/*.jpg</include>
 				</includes>
 				<filtering>true</filtering>
 			</resource>
