@@ -21,6 +21,7 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
 import com.maohi.software.maohifx.client.jaxb2.Configuration;
+import com.maohi.software.maohifx.client.jaxb2.Configuration.HistoryUrl;
 import com.maohi.software.maohifx.control.Link;
 import com.maohi.software.maohifx.control.Link.LinkTarget;
 import com.maohi.software.maohifx.control.enumerations.HrefTarget;
@@ -166,6 +167,9 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 		final InputStream iInputStream = new FileInputStream(this.config);
 		if (iInputStream != null) {
 			this.configuration = (Configuration) JaxbUtils.readXML(iInputStream, "com.maohi.software.maohifx.client.jaxb2", this.getClass().getClassLoader());
+			if (this.configuration.getHistoryUrl() == null) {
+				this.configuration.setHistoryUrl(new HistoryUrl());
+			}
 		}
 	}
 
