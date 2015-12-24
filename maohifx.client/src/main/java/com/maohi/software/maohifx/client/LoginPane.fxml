@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?language javascript?>
+<?import org.controlsfx.control.*?>
+<?import javafx.scene.web.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Hyperlink?>
+
+<fx:root type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+	<center>
+		<GridPane BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+			</rowConstraints>
+			<children>
+				<TextField fx:id="username" GridPane.columnIndex="1" />
+				<Label text="Utilisateur" />
+				<Label text="Mot de passe" GridPane.rowIndex="1" />
+				<TextField fx:id="password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+				<CheckBox mnemonicParsing="false" text="Se souvenir de moi" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+			</children>
+		</GridPane>
+	</center>
+	<bottom>
+		<ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+			<items>
+				<Hyperlink mnemonicParsing="false" onAction="#connect" text="Connecter" />
+			</items>
+		</ToolBar>
+	</bottom>
+</fx:root>

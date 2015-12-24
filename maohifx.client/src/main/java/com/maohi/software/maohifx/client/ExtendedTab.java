@@ -19,6 +19,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.controlsfx.control.PopOver;
+import org.controlsfx.control.PopOver.ArrowLocation;
+
 import com.maohi.software.maohifx.client.jaxb2.Configuration;
 import com.maohi.software.maohifx.client.rest.RestManagerImpl;
 
@@ -28,6 +31,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -44,10 +48,12 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * @author heifara
@@ -168,7 +174,23 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 
 	@FXML
 	public void connectEvent(final ActionEvent aEvent) {
-		this.profileButton.setText("Heifara");
+		if (this.controller.isConnected()) {
+			this.content.setCenter(new Label("Vous êtes connecté! Félicitation!"));
+		} else {
+			final PopOver iPopOver = new PopOver();
+			iPopOver.setDetachable(true);
+			iPopOver.setContentNode(new LoginPane(this.controller, iPopOver));
+			iPopOver.setArrowSize(10.0);
+			iPopOver.setArrowLocation(ArrowLocation.TOP_RIGHT);
+			iPopOver.show(this.profileButton);
+			iPopOver.setOnHidden(new EventHandler<WindowEvent>() {
+
+				@Override
+				public void handle(final WindowEvent event) {
+					ExtendedTab.this.initProfile();
+				}
+			});
+		}
 	}
 
 	public void homeEvent(final ActionEvent aEvent) {
@@ -202,13 +224,21 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	}
 
 	private void initProfile() {
-		this.profileButton.setText("Se connecter");
+		if (this.controller.isConnected()) {
+			this.profileButton.setText(this.controller.getProfile());
+			this.profileButton.setGraphic(new ImageView(new Image("profile-connected.png")));
+		} else {
+			this.profileButton.setText("Se connecter");
+			this.profileButton.setGraphic(new ImageView(new Image("profile-signin.png")));
+		}
 	}
 
 	private void initUrlAutoCompletion() {
 		final Configuration iConfiguration = this.controller.getConfiguration();
-		for (final String iUrl : iConfiguration.getHistoryUrl().getUrl()) {
-			this.urlAutoCompletion.add(iUrl);
+		if (iConfiguration.getHistoryUrl() != null) {
+			for (final String iUrl : iConfiguration.getHistoryUrl().getUrl()) {
+				this.urlAutoCompletion.add(iUrl);
+			}
 		}
 
 		this.urlAutoCompletion.addListener(this);

@@ -26,6 +26,8 @@ import com.maohi.software.maohifx.control.Link.LinkTarget;
 import com.maohi.software.maohifx.control.enumerations.HrefTarget;
 
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
@@ -37,6 +39,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.util.BuilderFactory;
 
 /**
  * @author heifara
@@ -55,6 +58,8 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 	private ExtendedTab currentTab;
 	private Configuration configuration;
 
+	private StringProperty profile;
+
 	public MaohiFXClient() {
 		this.loader = new FXMLLoader();
 		this.loader.setBuilderFactory(new MaohiFXBuilderFactory());
@@ -66,9 +71,23 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 		this.currentTab = (ExtendedTab) aNewValue;
 	}
 
+	public boolean connect(final String aUsername, final String aPasswd) {
+		if (aUsername.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Username can not be null");
+			return false;
+		}
+
+		this.setProfile(aUsername);
+		return true;
+	}
+
 	@Override
 	public void error(final Link link, final ActionEvent aEvent, final Throwable aException) {
 		JOptionPane.showMessageDialog(null, aException.getMessage());
+	}
+
+	public BuilderFactory getBuilderFactory() {
+		return this.loader.getBuilderFactory();
 	}
 
 	public Configuration getConfiguration() {
@@ -77,6 +96,10 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 
 	public FXMLLoader getLoader() {
 		return this.loader;
+	}
+
+	public String getProfile() {
+		return this.profileProperty().get();
 	}
 
 	@Override
@@ -106,6 +129,14 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 		super.init();
 	}
 
+	public boolean isConnected() {
+		if (this.getProfile() == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	@Override
 	public void onChanged(final javafx.collections.ListChangeListener.Change<? extends Tab> aChange) {
 		if (aChange.next()) {
@@ -122,6 +153,13 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 			} else if (aChange.wasPermutated()) {
 			}
 		}
+	}
+
+	public StringProperty profileProperty() {
+		if (this.profile == null) {
+			this.profile = new SimpleStringProperty();
+		}
+		return this.profile;
 	}
 
 	private void readConfiguration() throws FileNotFoundException, JAXBException {
@@ -144,6 +182,10 @@ public class MaohiFXClient extends Application implements ListChangeListener<Tab
 		}
 
 		return false;
+	}
+
+	private void setProfile(final String aProfile) {
+		this.profileProperty().set(aProfile);
 	}
 
 	@Override
