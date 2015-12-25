@@ -10,6 +10,7 @@
 			<param-value>com.maohi.software.maohifx.server.webapi.MyApplication</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported>
 	</servlet>
 	<listener>
 		<listener-class>com.maohi.software.maohifx.server.webapi.listener.HibernateConfiguration</listener-class>

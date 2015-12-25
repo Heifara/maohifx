@@ -129,6 +129,9 @@ Invoice.prototype.addInvoiceLine = function() {
 }
 
 Invoice.prototype.isEditable = function() {
+	if (typeof ($profile) == 'undefined') {
+		return false;
+	}
 	if (this.validDate.getDate() != null) {
 		return false;
 	}
