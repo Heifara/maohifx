@@ -11,6 +11,7 @@ import com.maohi.software.maohifx.contact.bean.Contact;
 import com.maohi.software.maohifx.contact.bean.Customer;
 import com.maohi.software.maohifx.contact.bean.Email;
 import com.maohi.software.maohifx.contact.bean.Phone;
+import com.maohi.software.maohifx.contact.bean.Salesman;
 import com.maohi.software.maohifx.contact.bean.Supplier;
 import com.maohi.software.maohifx.invoice.bean.Invoice;
 import com.maohi.software.maohifx.invoice.bean.InvoiceLine;
@@ -42,5 +43,6 @@ public class HibernateConfiguration implements ServletContextListener {
 		HibernateUtil.getConfiguration().addAnnotatedClass(Contact.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(Email.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(Phone.class);
+		HibernateUtil.getConfiguration().addAnnotatedClass(Salesman.class);
 	}
 }
