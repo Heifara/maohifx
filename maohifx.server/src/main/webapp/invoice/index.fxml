@@ -106,7 +106,7 @@
 				</TableView>
 				<TableView fx:id="invoicePaymentLines" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
 					<columns>
-						<TableColumn prefWidth="150.0" text="Mode 22de paiement">
+						<TableColumn prefWidth="150.0" text="Mode de paiement">
 							<cellValueFactory>
 								<JSObjectPropertyValueFactory property="mode" onEditCommit="controller.addInvoicePaymentLineEvent(event)" />
 							</cellValueFactory>
