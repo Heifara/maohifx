@@ -16,8 +16,8 @@ function ProductController() {
 
 	// Controls Binding
 	designation.textProperty().bindBidirectional(this.product.designation);
-	sellingPrice.textProperty().bindBidirectional(this.product.sellingPrice, new JSObjectStringConverter());
-	sellingPriceWithTaxes.textProperty().bindBidirectional(this.product.sellingPriceWithTaxes, new JSObjectStringConverter());
+	sellingPrice.textProperty().bindBidirectional(this.product.sellingPrice, new ExtStringConverter());
+	sellingPriceWithTaxes.textProperty().bindBidirectional(this.product.sellingPriceWithTaxes, new ExtStringConverter());
 
 	// Adding ChangeListener
 	this.product.sellingPriceWithTaxes.addListener(new ChangeListener({

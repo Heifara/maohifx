@@ -14,7 +14,7 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
  *
  */
 @SuppressWarnings("restriction")
-public class JSObjectStringConverter<T> extends StringConverter<T> {
+public class ExtStringConverter<T> extends StringConverter<T> {
 
 	private Class<?> type;
 

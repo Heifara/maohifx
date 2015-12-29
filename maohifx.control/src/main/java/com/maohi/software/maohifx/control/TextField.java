@@ -7,7 +7,7 @@ import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.AutoCompletionBinding.AutoCompletionEvent;
 import org.controlsfx.control.textfield.CustomTextField;
 
-import com.maohi.software.maohifx.common.JSObjectStringConverter;
+import com.maohi.software.maohifx.common.ExtStringConverter;
 import com.sun.javafx.event.EventHandlerManager;
 
 import impl.org.controlsfx.autocompletion.AutoCompletionTextFieldBinding;
@@ -73,7 +73,7 @@ public class TextField extends CustomTextField {
 
 	protected ObjectProperty<StringConverter> stringConverterProperty() {
 		if (this.stringConverter == null) {
-			this.stringConverter = new SimpleObjectProperty<StringConverter>(new JSObjectStringConverter<>());
+			this.stringConverter = new SimpleObjectProperty<StringConverter>(new ExtStringConverter<>());
 		}
 		return this.stringConverter;
 	}

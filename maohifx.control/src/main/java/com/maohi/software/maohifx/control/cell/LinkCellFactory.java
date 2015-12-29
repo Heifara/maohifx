@@ -3,7 +3,7 @@
  */
 package com.maohi.software.maohifx.control.cell;
 
-import com.maohi.software.maohifx.common.JSObjectStringConverter;
+import com.maohi.software.maohifx.common.ExtStringConverter;
 import com.maohi.software.maohifx.control.enumerations.HrefTarget;
 
 import javafx.beans.NamedArg;
@@ -27,7 +27,7 @@ public class LinkCellFactory<S, T> implements Callback<TableColumn<S, T>, TableC
 
 	@Override
 	public TableCell<S, T> call(final TableColumn<S, T> param) {
-		return new LinkTableCell<S, T>(this.property, this.target, new JSObjectStringConverter<T>());
+		return new LinkTableCell<S, T>(this.property, this.target, new ExtStringConverter<T>());
 	}
 
 }

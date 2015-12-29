@@ -1,4 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Configuration>
-	<homeUrl>fxml://192.168.10.51:8080/maohifx.server/</homeUrl>
-</Configuration>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Configuration><homeUrl>fxml://192.168.10.51:8080/maohifx.server/</homeUrl><historyUrl><url>fxml://192.168.10.51:8080/maohifx.server/</url><url>http://192.168.10.51:8080/maohifx.server/invoices</url><url>http://192.168.10.51:8080/maohifx.server/invoice</url><url>http://192.168.10.51:8080/maohifx.server/contacts</url><url>http://localhost:8080/maohifx.server/webapi/contact?uuid=b05500ca-8d25-4a6b-9222-f9b0e4ec3f64</url><url>http://192.168.10.51:8080/maohifx.server/salesmans</url><url>http://localhost:8080/maohifx.server/webapi/salesman?uuid=b05500ca-8d25-4a6b-9222-f9b0e4ec3f64</url></historyUrl></Configuration>

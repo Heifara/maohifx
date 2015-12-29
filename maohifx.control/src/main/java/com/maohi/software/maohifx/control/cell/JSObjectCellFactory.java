@@ -5,7 +5,7 @@ package com.maohi.software.maohifx.control.cell;
 
 import org.controlsfx.control.textfield.AutoCompletionBinding.AutoCompletionEvent;
 
-import com.maohi.software.maohifx.common.JSObjectStringConverter;
+import com.maohi.software.maohifx.common.ExtStringConverter;
 import com.sun.javafx.event.EventHandlerManager;
 
 import javafx.beans.property.ObjectProperty;
@@ -80,7 +80,7 @@ public class JSObjectCellFactory<S, T> implements Callback<TableColumn<S, T>, Ta
 
 	protected ObjectProperty<StringConverter<T>> stringConverterProperty() {
 		if (this.stringConverter == null) {
-			this.stringConverter = new SimpleObjectProperty<StringConverter<T>>(new JSObjectStringConverter<>());
+			this.stringConverter = new SimpleObjectProperty<StringConverter<T>>(new ExtStringConverter<>());
 		}
 		return this.stringConverter;
 	}

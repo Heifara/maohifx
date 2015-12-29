@@ -19,7 +19,7 @@ SalesmanController.prototype.bindChildren = function() {
 	lastname.textProperty().bindBidirectional(this.element.contact.lastname);
 	middlename.textProperty().bindBidirectional(this.element.contact.middlename);
 	firstname.textProperty().bindBidirectional(this.element.contact.firstname);
-	salesCommission.textProperty().bindBidirectional(this.element.salesCommission, new JSObjectStringConverter());
+	salesCommission.textProperty().bindBidirectional(this.element.salesCommission, new ExtStringConverter());
 }
 
 SalesmanController.prototype.contactAutoCompletionEvent = function(aEvent) {

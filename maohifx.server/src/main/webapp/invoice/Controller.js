@@ -29,11 +29,11 @@ function InvoiceController() {
 	invoiceNumber.textProperty().bindBidirectional(this.invoice.invoiceNumber, new NumberStringConverter());
 	invoiceDate.valueProperty().bindBidirectional(this.invoice.invoiceDate);
 	customerName.textProperty().bindBidirectional(this.invoice.customerName);
-	totalWithNoTaxes.textProperty().bindBidirectional(this.invoice.totalWithNoTaxes, new JSObjectStringConverter());
-	totalTva.textProperty().bindBidirectional(this.invoice.totalTva, new JSObjectStringConverter());
-	totalDiscount.textProperty().bindBidirectional(this.invoice.totalDiscount, new JSObjectStringConverter());
-	totalWithTaxes.textProperty().bindBidirectional(this.invoice.totalWithTaxes, new JSObjectStringConverter());
-	totalChange.textProperty().bindBidirectional(this.invoice.totalChange, new JSObjectStringConverter());
+	totalWithNoTaxes.textProperty().bindBidirectional(this.invoice.totalWithNoTaxes, new ExtStringConverter());
+	totalTva.textProperty().bindBidirectional(this.invoice.totalTva, new ExtStringConverter());
+	totalDiscount.textProperty().bindBidirectional(this.invoice.totalDiscount, new ExtStringConverter());
+	totalWithTaxes.textProperty().bindBidirectional(this.invoice.totalWithTaxes, new ExtStringConverter());
+	totalChange.textProperty().bindBidirectional(this.invoice.totalChange, new ExtStringConverter());
 
 	invoiceLines.setItems(this.invoice.invoiceLines);
 	invoiceLines.setContextMenu(new ContextMenu());
