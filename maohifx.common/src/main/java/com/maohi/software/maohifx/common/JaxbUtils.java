@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.maohi.software.maohifx.client;
+package com.maohi.software.maohifx.common;
 
 import java.io.InputStream;
 import java.io.OutputStream;

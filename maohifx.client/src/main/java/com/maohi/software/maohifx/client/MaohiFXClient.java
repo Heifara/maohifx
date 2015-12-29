@@ -22,6 +22,7 @@ import org.kohsuke.args4j.Option;
 
 import com.maohi.software.maohifx.client.jaxb2.Configuration;
 import com.maohi.software.maohifx.client.jaxb2.Configuration.HistoryUrl;
+import com.maohi.software.maohifx.common.JaxbUtils;
 import com.maohi.software.maohifx.control.Link;
 import com.maohi.software.maohifx.control.Link.LinkTarget;
 import com.maohi.software.maohifx.control.enumerations.HrefTarget;
