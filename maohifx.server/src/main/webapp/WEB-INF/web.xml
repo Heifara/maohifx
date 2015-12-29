@@ -3,7 +3,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<display-name>Restful Web Application</display-name>
 	<servlet>
-		<servlet-name>Jersey Web Application</servlet-name>
+		<servlet-name>MaohiFX</servlet-name>
 		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
 		<init-param>
 			<param-name>javax.ws.rs.Application</param-name>
@@ -16,7 +16,7 @@
 		<listener-class>com.maohi.software.maohifx.server.webapi.listener.HibernateConfiguration</listener-class>
 	</listener>
 	<servlet-mapping>
-		<servlet-name>Jersey Web Application</servlet-name>
+		<servlet-name>MaohiFX</servlet-name>
 		<url-pattern>/webapi/*</url-pattern>
 	</servlet-mapping>
 </web-app>
