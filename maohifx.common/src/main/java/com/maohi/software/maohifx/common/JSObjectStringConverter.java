@@ -1,4 +1,4 @@
-package com.maohi.software.maohifx.control.cell;
+package com.maohi.software.maohifx.common;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;

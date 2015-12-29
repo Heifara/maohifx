@@ -3,6 +3,7 @@
  */
 package com.maohi.software.maohifx.control.cell;
 
+import com.maohi.software.maohifx.common.JSObjectStringConverter;
 import com.maohi.software.maohifx.control.enumerations.HrefTarget;
 
 import javafx.beans.NamedArg;

@@ -5,6 +5,7 @@ package com.maohi.software.maohifx.control.cell;
 
 import org.controlsfx.control.textfield.AutoCompletionBinding.AutoCompletionEvent;
 
+import com.maohi.software.maohifx.common.JSObjectStringConverter;
 import com.sun.javafx.event.EventHandlerManager;
 
 import javafx.beans.property.ObjectProperty;

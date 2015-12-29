@@ -7,7 +7,7 @@ import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.AutoCompletionBinding.AutoCompletionEvent;
 import org.controlsfx.control.textfield.CustomTextField;
 
-import com.maohi.software.maohifx.control.cell.JSObjectStringConverter;
+import com.maohi.software.maohifx.common.JSObjectStringConverter;
 import com.sun.javafx.event.EventHandlerManager;
 
 import impl.org.controlsfx.autocompletion.AutoCompletionTextFieldBinding;

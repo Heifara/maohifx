@@ -37,7 +37,7 @@ var Runnable = java.lang.Runnable;
 var StringBuilder = java.lang.StringBuilder;
 
 var SimpleLocalDateProperty = com.maohi.software.maohifx.common.SimpleLocalDateProperty;
-var JSObjectStringConverter = com.maohi.software.maohifx.control.cell.JSObjectStringConverter;
+var JSObjectStringConverter = com.maohi.software.maohifx.common.JSObjectStringConverter;
 
 var LocalDate = java.time.LocalDate;
 
