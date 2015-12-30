@@ -96,7 +96,9 @@ public class LinkTableCell<S, T> extends TableCell<S, T> {
 
 			final TableRow<T> iTableRow = this.getTableRow();
 			if (iTableRow != null) {
-				this.getLink().setHref(this.getHref(iTableRow.getItem()));
+				if (iTableRow.getItem() != null) {
+					this.getLink().setHref(this.getHref(iTableRow.getItem()));
+				}
 				this.setGraphic(this.getLink());
 			}
 		}
