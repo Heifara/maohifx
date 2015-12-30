@@ -52,7 +52,7 @@ public class MaohiFXModel {
 				}
 			}
 		} catch (final FileNotFoundException | JAXBException aException) {
-			this.onExceptionThrown.handle(new ExceptionEvent(this, aException));
+			this.onExceptionThrown.handle(new ExceptionEvent(this, aException, -1));
 		}
 
 		return iConfiguration;
@@ -69,7 +69,7 @@ public class MaohiFXModel {
 			JaxbUtils.writeXML(aConfiguration, iOutputStream, "com.maohi.software.maohifx.client.jaxb2", this.getClass().getClassLoader());
 			return true;
 		} catch (final FileNotFoundException | JAXBException aException) {
-			this.onExceptionThrown.handle(new ExceptionEvent(this, aException));
+			this.onExceptionThrown.handle(new ExceptionEvent(this, aException, -1));
 			return false;
 		}
 	}

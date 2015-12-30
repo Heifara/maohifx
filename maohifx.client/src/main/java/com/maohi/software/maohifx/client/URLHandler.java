@@ -13,7 +13,10 @@ import java.net.URL;
 
 import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotAcceptableException;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.NotFoundException;
+import javax.ws.rs.NotSupportedException;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
@@ -180,7 +183,7 @@ public class URLHandler {
 				throw new IllegalArgumentException();
 			}
 		} catch (final Exception aException) {
-			this.onExceptionThrown.handle(new ExceptionEvent(this, aException));
+			this.onExceptionThrown.handle(new ExceptionEvent(this, aException, -1));
 			return null;
 		}
 	}
@@ -214,17 +217,23 @@ public class URLHandler {
 			case FORBIDDEN:
 				throw new ForbiddenException(iResponse);
 
+			case UNAUTHORIZED:
+				throw new NotAuthorizedException(iResponse);
+
 			case INTERNAL_SERVER_ERROR:
 				throw new InternalServerErrorException(iResponse);
 
 			case NOT_FOUND:
 				throw new NotFoundException(iResponse);
 
+			case NOT_ACCEPTABLE:
+				throw new NotAcceptableException(iResponse);
+
 			default:
-				break;
+				throw new NotSupportedException(iResponse);
 			}
 		} catch (final Exception aException) {
-			this.onExceptionThrown.handle(new ExceptionEvent(this, aException));
+			this.onExceptionThrown.handle(new ExceptionEvent(this, aException, iResponse.getStatus()));
 		}
 	}
 

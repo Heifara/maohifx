@@ -4,11 +4,14 @@
 package com.maohi.software.maohifx.client;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 
 import javax.script.ScriptException;
 import javax.ws.rs.core.Response.Status;
 
+import com.maohi.software.maohifx.client.event.ExceptionEvent;
 import com.maohi.software.maohifx.client.event.SuccesEvent;
 
 import javafx.event.EventHandler;
@@ -41,6 +44,19 @@ public class HttpHandler {
 				final ScriptObjectMirror iScriptObject = (ScriptObjectMirror) aJsObject;
 				final ScriptObjectMirror iSuccessMethod = (ScriptObjectMirror) iScriptObject.get("success");
 				iSuccessMethod.call(iScriptObject, aEvent.getItem(), Status.OK);
+			}
+		});
+		this.urlHandler.setOnExceptionThrown(new EventHandler<ExceptionEvent>() {
+
+			@Override
+			public void handle(final ExceptionEvent aEvent) {
+				final StringWriter iStringWriter = new StringWriter();
+				final PrintWriter iPrintWriter = new PrintWriter(iStringWriter);
+				aEvent.getException().printStackTrace(iPrintWriter);
+
+				final ScriptObjectMirror iScriptObject = (ScriptObjectMirror) aJsObject;
+				final ScriptObjectMirror iSuccessMethod = (ScriptObjectMirror) iScriptObject.get("error");
+				iSuccessMethod.call(iScriptObject, aEvent.getException().getMessage(), aEvent.getStatusCode(), iStringWriter.toString());
 			}
 		});
 		final Thread iThread = new Thread(new Runnable() {
