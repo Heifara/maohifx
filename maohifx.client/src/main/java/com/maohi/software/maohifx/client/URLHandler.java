@@ -126,13 +126,16 @@ public class URLHandler {
 
 		URL iUrl = aUrl;
 		Response iResponse = this.processHttp(iUrl, aRequestType, aEntity);
-		if (Status.fromStatusCode(iResponse.getStatus()).equals(Status.NOT_FOUND)) {
-			iResponse.close();
+		if (iResponse != null) {
+			if (Status.fromStatusCode(iResponse.getStatus()).equals(Status.NOT_FOUND)) {
+				iResponse.close();
 
-			iUrl = this.toHttp(aUrl);
-			iResponse = this.processHttp(iUrl, aRequestType, aEntity);
+				iUrl = this.toHttp(aUrl);
+				iResponse = this.processHttp(iUrl, aRequestType, aEntity);
+			}
+
+			this.processResponse(iResponse, aUrl);
 		}
-		this.processResponse(iResponse, aUrl);
 
 		this.onEnd.handle(new Event(Event.ANY));
 	}
