@@ -27,28 +27,20 @@ import javafx.stage.Stage;
  */
 public class ConfigPane extends BorderPane implements Initializable {
 
-	private final MaohiFXClient controller;
-	private FXMLLoader loader;
-	private final Stage dialog;
+	private final MaohiFXView view;
+	private final FXMLLoader loader;
 
 	@FXML
 	private TextField homeUrl;
 
-	public ConfigPane(final MaohiFXClient aController, final FXMLLoader aParent, final Stage aDialog) {
-		this.controller = aController;
-		this.dialog = aDialog;
-
+	public ConfigPane(final MaohiFXView aView) {
+		this.view = aView;
 		try {
 			this.loader = new FXMLLoader();
-			this.loader.setBuilderFactory(aParent.getBuilderFactory());
+			this.loader.setBuilderFactory(this.view.getBuilderFactory());
 			this.loader.setLocation(this.getClass().getResource("ConfigPane.fxml"));
 			this.loader.setRoot(this);
 			this.loader.setController(this);
-			this.loader.getNamespace().put("$parentLoader", aParent);
-			for (final String iKey : aParent.getNamespace().keySet()) {
-				this.loader.getNamespace().put(iKey, aParent.getNamespace().get(iKey));
-			}
-
 			this.loader.load();
 		} catch (final IOException aException) {
 			throw new RuntimeException(aException);
@@ -62,20 +54,20 @@ public class ConfigPane extends BorderPane implements Initializable {
 
 	@FXML
 	public void cancelEvent() {
-		this.dialog.close();
+		final Stage iStage = (Stage) this.getScene().getWindow();
+		iStage.close();
 	}
 
 	@Override
 	public void initialize(final URL aLocation, final ResourceBundle aResources) {
-		final Configuration iConfiguration = this.controller.getConfiguration();
-
+		final Configuration iConfiguration = this.view.getController().getConfiguration();
 		this.homeUrl.setText(iConfiguration.getHomeUrl());
 	}
 
 	@FXML
 	public void okEvent() {
 		if (this.save()) {
-			this.dialog.close();
+			this.cancelEvent();
 		}
 	}
 
@@ -83,7 +75,7 @@ public class ConfigPane extends BorderPane implements Initializable {
 		final Configuration iConfiguration = new Configuration();
 		iConfiguration.setHomeUrl(this.homeUrl.getText());
 
-		return this.controller.saveConfiguration(iConfiguration);
+		return this.view.getController().save(iConfiguration);
 	}
 
 	public void writeXML(final Object aElement, final OutputStream aOutputStream, final String aPackage, final ClassLoader aClassLoader) {

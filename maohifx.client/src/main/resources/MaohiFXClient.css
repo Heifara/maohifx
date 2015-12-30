@@ -42,6 +42,11 @@
     -fx-font-weight: bold;
 }
 
+#menuButton {
+	-fx-border-width: 0.0px;
+	-fx-background-color: transparent;
+}
+
 #content {
 	-fx-background-color: -fx-tird-color;
 }

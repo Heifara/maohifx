@@ -19,7 +19,6 @@ public class MaohiFXBuilderFactory implements BuilderFactory {
 		this.baseFactory = new JavaFXBuilderFactory();
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Builder<?> getBuilder(final Class<?> aType) {
 		return this.baseFactory.getBuilder(aType);

@@ -6,36 +6,27 @@ package com.maohi.software.maohifx.client;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import javax.ws.rs.InternalServerErrorException;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.PopOver.ArrowLocation;
 
+import com.maohi.software.maohifx.client.event.ConnectEvent;
+import com.maohi.software.maohifx.client.event.ExceptionEvent;
+import com.maohi.software.maohifx.client.event.SuccesEvent;
 import com.maohi.software.maohifx.client.jaxb2.Configuration;
-import com.maohi.software.maohifx.client.rest.RestManagerImpl;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -48,32 +39,39 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 /**
  * @author heifara
  *
  */
-public class ExtendedTab extends Tab implements Initializable, ChangeListener<TabPane>, Runnable, ListChangeListener<String> {
+public class ExtendedTab extends Tab implements Initializable, ListChangeListener<String> {
 
-	private final MaohiFXClient controller;
-	private final FXMLLoader loader;
-	private Tab selectedTab;
-	private TabPane parent;
+	private final MaohiFXView view;
+	private final MaohiFXController controller;
+	private final URLHandler urlHandler;
 
 	private boolean refreshing;
+	private Parent refreshTarget;
+	private String refreshText;
+
+	private EventHandler<Event> onStart;
+	private EventHandler<SuccesEvent> onSucces;
+	private EventHandler<Event> onEnd;
+
+	private EventHandler<ConnectEvent> onConnectSucces;
+	private EventHandler<ConnectEvent> onConnectError;
+
+	private EventHandler<ExceptionEvent> onExceptionThrown;
 
 	@FXML
 	private TextField url;
 
 	@FXML
 	private BorderPane content;
-
 	@FXML
 	private MenuItem hidShowUrl;
 
@@ -101,63 +99,36 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 	@FXML
 	private ObservableList<String> urlAutoCompletion;
 
-	public ExtendedTab(final MaohiFXClient aController, final FXMLLoader aParent) {
-		this.controller = aController;
+	public ExtendedTab(final MaohiFXView aView) {
+		this.view = aView;
+		this.controller = this.view.getController();
+		this.controller.addEventHandler(ConnectEvent.CONNECT_SUCCES, this.getOnConnectSucces());
+		this.controller.addEventHandler(ConnectEvent.CONNECT_ERROR, this.getOnConnectError());
+
+		this.urlHandler = this.newUrlHandler();
 
 		try {
-			this.loader = new FXMLLoader();
-			this.loader.setBuilderFactory(aParent.getBuilderFactory());
-			this.loader.setLocation(this.getClass().getResource("ExtendedTab.fxml"));
-			this.loader.setRoot(this);
-			this.loader.setController(this);
-			this.loader.getNamespace().put("$parentLoader", aParent);
-			for (final String iKey : aParent.getNamespace().keySet()) {
-				this.loader.getNamespace().put(iKey, aParent.getNamespace().get(iKey));
-			}
+			final FXMLLoader iLoader = new FXMLLoader();
+			iLoader.setBuilderFactory(this.view.getBuilderFactory());
+			iLoader.setLocation(this.getClass().getResource("ExtendedTab.fxml"));
+			iLoader.setRoot(this);
+			iLoader.setController(this);
+			iLoader.load();
 
-			this.loader.load();
+			this.getStyleClass().add("extended-tab");
 		} catch (final IOException aException) {
 			throw new RuntimeException(aException);
 		}
 	}
 
-	public ExtendedTab(final MaohiFXClient aController, final FXMLLoader aParent, final String aUrl) {
-		this(aController, aParent);
-
-		this.setUrl(aUrl);
-		this.refreshTabEvent(new ActionEvent());
-	}
-
-	@Override
-	public void changed(final ObservableValue<? extends TabPane> aObservable, final TabPane aOldValue, final TabPane aNewValue) {
-		if (this.parent == null) {
-			this.parent = aNewValue;
-			this.selectedTab = this.parent.getSelectionModel().getSelectedItem();
-			this.parent.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
-
-				@Override
-				public void changed(final ObservableValue<? extends Tab> aObservable, final Tab aOldValue, final Tab aNewValue) {
-					ExtendedTab.this.selectedTab = aNewValue;
-				}
-			});
-		}
-	}
-
 	@FXML
 	public void closeTabEvent(final ActionEvent aEvent) {
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				ExtendedTab.this.parent.getTabs().remove(ExtendedTab.this.selectedTab);
-			}
-		});
+		this.view.closeCurrentTab();
 	}
 
 	@FXML
 	public void configEvent(final ActionEvent aEvent) {
-		final FXMLLoader iParentLoader = (FXMLLoader) this.loader.getNamespace().get("$parentLoader");
-		final Stage iOwner = (Stage) iParentLoader.getNamespace().get("$stage");
+		final Stage iOwner = (Stage) this.getTabPane().getScene().getWindow();
 
 		final Stage iDialog = new Stage(iOwner.getStyle());
 		iDialog.getIcons().add(new Image("config.png"));
@@ -165,7 +136,7 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		iDialog.initOwner(iOwner);
 		iDialog.initModality(Modality.WINDOW_MODAL);
 
-		final Scene iScene = new Scene(new ConfigPane(this.controller, iParentLoader, iDialog), 400, 300);
+		final Scene iScene = new Scene(new ConfigPane(this.view), 400, 300);
 		iScene.getStylesheets().add("MaohiFXClient.css");
 		iDialog.setScene(iScene);
 
@@ -179,58 +150,175 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		} else {
 			final PopOver iPopOver = new PopOver();
 			iPopOver.setDetachable(true);
-			iPopOver.setContentNode(new LoginPane(this.controller, iPopOver));
+			iPopOver.setContentNode(new LoginPane(this.view));
 			iPopOver.setArrowSize(10.0);
 			iPopOver.setArrowLocation(ArrowLocation.TOP_RIGHT);
 			iPopOver.show(this.profileButton);
-			iPopOver.setOnHidden(new EventHandler<WindowEvent>() {
-
-				@Override
-				public void handle(final WindowEvent event) {
-					ExtendedTab.this.initProfile();
-				}
-			});
 		}
 	}
 
+	protected void displayException(final Throwable aException) {
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				final StringWriter iStringWriter = new StringWriter();
+				final PrintWriter iPrintWriter = new PrintWriter(iStringWriter);
+				aException.printStackTrace(iPrintWriter);
+
+				final TextArea iStackTrace = new TextArea();
+				iStackTrace.setText(iStringWriter.toString());
+				iStackTrace.setEditable(false);
+				ExtendedTab.this.content.setCenter(iStackTrace);
+			}
+		});
+	}
+
+	protected void displayNode(final FXMLLoader iLoader, final Parent aTarget, final String aText) {
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					iLoader.setBuilderFactory(ExtendedTab.this.view.getBuilderFactory());
+					iLoader.getNamespace().put("$loader", iLoader);
+					iLoader.getNamespace().put("$tab", ExtendedTab.this);
+					iLoader.getNamespace().put("$http", new HttpHandler(ExtendedTab.this.newUrlHandler(), iLoader.getLocation()));
+
+					ExtendedTab.this.view.populateNamespace(iLoader);
+
+					if (aTarget instanceof BorderPane) {
+						final BorderPane iBorderPane = (BorderPane) aTarget;
+						iBorderPane.setCenter(iLoader.load());
+
+					} else if (aTarget instanceof TabPane) {
+						final Tab iTab = new Tab();
+						iTab.setText(aText);
+						iTab.setClosable(true);
+						iTab.setContent(iLoader.load());
+
+						final TabPane iTabPane = (TabPane) aTarget;
+						iTabPane.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
+						iTabPane.getTabs().add(iTab);
+						iTabPane.getSelectionModel().select(iTabPane.getTabs().indexOf(iTab));
+					} else {
+						throw new IllegalArgumentException();
+					}
+				} catch (final Exception aException) {
+					ExtendedTab.this.displayException(aException);
+				}
+			}
+
+		});
+	}
+
+	protected void displayRunning(final boolean aRunning) {
+		ExtendedTab.this.refreshing = aRunning;
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				ExtendedTab.this.progressIndicator.setVisible(aRunning);
+			}
+		});
+	}
+
+	public EventHandler<ConnectEvent> getOnConnectError() {
+		if (this.onConnectError == null) {
+			this.onConnectError = new EventHandler<ConnectEvent>() {
+
+				@Override
+				public void handle(final ConnectEvent aEvent) {
+				}
+			};
+		}
+		return this.onConnectError;
+	}
+
+	public EventHandler<ConnectEvent> getOnConnectSucces() {
+		if (this.onConnectSucces == null) {
+			this.onConnectSucces = new EventHandler<ConnectEvent>() {
+
+				@Override
+				public void handle(final ConnectEvent aEvent) {
+					ExtendedTab.this.profileConnected(aEvent.getUsername());
+				}
+			};
+		}
+		return this.onConnectSucces;
+	}
+
+	public EventHandler<Event> getOnEnd() {
+		if (this.onEnd == null) {
+			this.onEnd = new EventHandler<Event>() {
+
+				@Override
+				public void handle(final Event aEvent) {
+					ExtendedTab.this.displayRunning(false);
+				}
+			};
+		}
+		return this.onEnd;
+	}
+
+	public EventHandler<ExceptionEvent> getOnExceptionThrown() {
+		if (this.onExceptionThrown == null) {
+			this.onExceptionThrown = new EventHandler<ExceptionEvent>() {
+
+				@Override
+				public void handle(final ExceptionEvent aEvent) {
+					ExtendedTab.this.displayException(aEvent.getException());
+				}
+			};
+		}
+		return this.onExceptionThrown;
+
+	}
+
+	public EventHandler<Event> getOnStart() {
+		if (this.onStart == null) {
+			this.onStart = new EventHandler<Event>() {
+
+				@Override
+				public void handle(final Event aEvent) {
+					ExtendedTab.this.displayRunning(true);
+				}
+			};
+		}
+		return this.onStart;
+	}
+
+	public EventHandler<SuccesEvent> getOnSucces() {
+		if (this.onSucces == null) {
+			this.onSucces = new EventHandler<SuccesEvent>() {
+
+				@Override
+				public void handle(final SuccesEvent aEvent) {
+					final FXMLLoader iLoader = new FXMLLoader(aEvent.getProcessesdUrl());
+					if (aEvent.getItem() != null) {
+						iLoader.getNamespace().put("$item", aEvent.getItem());
+					}
+					ExtendedTab.this.displayNode(iLoader, ExtendedTab.this.refreshTarget, ExtendedTab.this.refreshText);
+
+					final URL iUrl = aEvent.getUrl();
+					if (!ExtendedTab.this.urlAutoCompletion.contains(iUrl.toExternalForm())) {
+						ExtendedTab.this.urlAutoCompletion.add(iUrl.toExternalForm());
+					}
+				}
+			};
+		}
+		return this.onSucces;
+	}
+
 	public void homeEvent(final ActionEvent aEvent) {
-		final Configuration iConfiguration = this.controller.getConfiguration();
-		this.url.setText(iConfiguration.getHomeUrl());
+		this.url.textProperty().set(this.controller.getConfiguration().getHomeUrl());
 		this.refreshTabEvent(aEvent);
 	}
 
 	@Override
 	public void initialize(final URL aLocation, final ResourceBundle aResources) {
-		this.getStyleClass().add("extended-tab");
-
-		this.tabPaneProperty().addListener(this);
-
-		this.setText("Nouvelle Onglet");
-
-		this.menuButton.setBorder(null);
-		this.menuButton.setBackground(null);
-
-		this.initProfile();
-
+		this.profileConnected(this.controller.getProfile());
 		this.initUrlAutoCompletion();
-
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				ExtendedTab.this.url.requestFocus();
-			}
-		});
-	}
-
-	private void initProfile() {
-		if (this.controller.isConnected()) {
-			this.profileButton.setText(this.controller.getProfile());
-			this.profileButton.setGraphic(new ImageView(new Image("profile-connected.png")));
-		} else {
-			this.profileButton.setText("Se connecter");
-			this.profileButton.setGraphic(new ImageView(new Image("profile-signin.png")));
-		}
 	}
 
 	private void initUrlAutoCompletion() {
@@ -244,65 +332,18 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		this.urlAutoCompletion.addListener(this);
 	}
 
-	public void load(final FXMLLoader aLoader, final String aText, final String aURL, final String aRecipeId) {
-		aLoader.setBuilderFactory(this.loader.getBuilderFactory());
-		this.populateLoaderNamespace(aLoader, true, true);
-
-		final Node iRecipee = this.getContent().lookup(aRecipeId);
-
-		try {
-			final URL iUrl = this.toHttp(new URL(aURL), true);
-			aLoader.setLocation(iUrl);
-			final Node iNode = aLoader.load();
-			this.load(iRecipee, aText, iNode);
-		} catch (final Exception aException) {
-			this.load(iRecipee, aText, aException.getMessage());
-		}
-
-	}
-
-	private void load(final Node aRecipee, final String aText, final Object aObject) {
-		if (aRecipee instanceof BorderPane) {
-			final BorderPane iBorderPane = (BorderPane) aRecipee;
-
-			if (aObject instanceof String) {
-				iBorderPane.setCenter(new Label((String) aObject));
-			} else if (aObject instanceof Node) {
-				iBorderPane.setCenter((Node) aObject);
-			} else {
-				throw new IllegalArgumentException();
-			}
-		} else if (aRecipee instanceof TabPane) {
-			final Tab iTab = new Tab();
-			iTab.setText(aText);
-			iTab.setClosable(true);
-
-			if (aObject instanceof String) {
-				iTab.setContent(new Label((String) aObject));
-			} else if (aObject instanceof Node) {
-				iTab.setContent((Node) aObject);
-			} else {
-				throw new IllegalArgumentException();
-			}
-
-			final TabPane iTabPane = (TabPane) aRecipee;
-			iTabPane.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
-			iTabPane.getTabs().add(iTab);
-			iTabPane.getSelectionModel().select(iTabPane.getTabs().indexOf(iTab));
-		} else {
-			throw new IllegalArgumentException();
-		}
-	}
-
 	@FXML
 	public void newTabEvent(final ActionEvent aEvent) {
-		Platform.runLater(new Runnable() {
+		this.view.newTab();
+	}
 
-			@Override
-			public void run() {
-				ExtendedTab.this.parent.getTabs().add(new ExtendedTab(ExtendedTab.this.controller, ExtendedTab.this.loader));
-			}
-		});
+	protected URLHandler newUrlHandler() {
+		final URLHandler iUrlHandler = new URLHandler();
+		iUrlHandler.setOnStart(this.getOnStart());
+		iUrlHandler.setOnSucces(this.getOnSucces());
+		iUrlHandler.setOnEnd(this.getOnEnd());
+		iUrlHandler.setOnExceptionThrown(this.getOnExceptionThrown());
+		return iUrlHandler;
 	}
 
 	@Override
@@ -310,135 +351,56 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 		final Configuration iConfiguration = this.controller.getConfiguration();
 		iConfiguration.getHistoryUrl().getUrl().clear();
 		iConfiguration.getHistoryUrl().getUrl().addAll(this.urlAutoCompletion);
-		this.controller.saveConfiguration(iConfiguration);
+		this.controller.save(iConfiguration);
 	}
 
-	public void openEvent(final ActionEvent aEvent) {
-		this.newTabEvent(aEvent);
+	protected void profileConnected(final String aUsername) {
+		if ((aUsername != null) && !aUsername.isEmpty()) {
+			this.profileButton.setText(aUsername);
+		} else {
+			this.profileButton.setText("Se connecter");
+		}
 	}
 
-	private void populateLoaderNamespace(final FXMLLoader aLoader, final boolean aIgnoreTab, final boolean aIgnoreTabPane) {
-		final FXMLLoader iParentLoader = (FXMLLoader) this.loader.getNamespace().get("$parentLoader");
-		if (iParentLoader != null) {
-			for (final String iKey : iParentLoader.getNamespace().keySet()) {
-				aLoader.getNamespace().put(iKey, iParentLoader.getNamespace().get(iKey));
+	public void refreshTab(final String aText) {
+		this.refreshTab(this.url.getText(), this.content, aText);
+	}
+
+	public void refreshTab(final String aUrl, final Parent aTarget, final String aText) {
+		this.refreshTarget = aTarget;
+		this.refreshText = aText;
+
+		final Thread iThread = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					ExtendedTab.this.urlHandler.process(new URL(aUrl), "get", null);
+				} catch (final IOException aException) {
+					ExtendedTab.this.displayException(aException);
+				}
 			}
-		}
+		});
+		iThread.start();
+	}
 
-		aLoader.getNamespace().put("$loader", aLoader);
-
-		if (!aIgnoreTab) {
-			aLoader.getNamespace().put("$tab", ExtendedTab.this);
-		}
-		if (!aIgnoreTabPane) {
-			aLoader.getNamespace().put("$tabpane", ExtendedTab.this.parent);
-		}
-		aLoader.getNamespace().put("$http", new RestManagerImpl(aLoader));
+	public void refreshTab(final String aUrl, final String aText) {
+		this.refreshTab(aUrl, this.content, aText);
 	}
 
 	@FXML
 	public void refreshTabEvent(final ActionEvent aEvent) {
-		if (!this.refreshing && !ExtendedTab.this.url.getText().isEmpty()) {
-
-			this.refreshing = true;
-
-			this.progressIndicator.setVisible(true);
+		if (!this.refreshing && (this.url.textProperty() != null) && (this.url.textProperty().get() != null) && !this.url.textProperty().get().isEmpty()) {
 
 			this.content.setCenter(null);
 
-			new Thread(this).start();
+			this.refreshTab(this.url.getText(), this.content, "");
 		}
-	}
-
-	@Override
-	public void run() {
-		try {
-			final URL iUrl = new URL(ExtendedTab.this.url.getText());
-			final FXMLLoader iLoader = new FXMLLoader();
-			iLoader.setBuilderFactory(this.loader.getBuilderFactory());
-			if ((iUrl.getQuery() != null) && !iUrl.getQuery().isEmpty()) {
-				final Client iClient = ClientBuilder.newClient();
-				final WebTarget iTarget = iClient.target(iUrl.toExternalForm()).queryParam(iUrl.getQuery().split("=")[0], iUrl.getQuery().split("=")[1]);
-				final Response iResponse = iTarget.request().get();
-
-				final int iStatus = iResponse.getStatus();
-
-				switch (Status.fromStatusCode(iStatus)) {
-				case OK:
-					switch (iResponse.getHeaderString("Content-Type")) {
-					case MediaType.APPLICATION_JSON:
-						final Object iObject = iResponse.readEntity(Object.class);
-						iLoader.getNamespace().put("$item", iObject);
-						break;
-
-					default:
-						throw new Exception(iResponse.readEntity(String.class));
-					}
-					break;
-
-				case INTERNAL_SERVER_ERROR:
-					throw new InternalServerErrorException(iResponse);
-
-				case NOT_FOUND:
-					throw new NotFoundException(iResponse);
-
-				default:
-					break;
-				}
-
-			}
-			this.populateLoaderNamespace(iLoader, false, false);
-			Platform.runLater(new Runnable() {
-
-				@Override
-				public void run() {
-					try {
-						iLoader.setLocation(ExtendedTab.this.toHttp(iUrl, true));
-
-						if (!ExtendedTab.this.urlAutoCompletion.contains(iUrl.toExternalForm())) {
-							ExtendedTab.this.urlAutoCompletion.add(iUrl.toExternalForm());
-						}
-
-						final Node iNode = iLoader.load();
-						ExtendedTab.this.content.setCenter(iNode);
-					} catch (final IOException aException) {
-						final StringWriter iStringWriter = new StringWriter();
-						final PrintWriter iPrintWriter = new PrintWriter(iStringWriter);
-						aException.printStackTrace(iPrintWriter);
-
-						final TextArea iStackTrace = new TextArea();
-						iStackTrace.setText(iStringWriter.toString());
-						iStackTrace.setEditable(false);
-						ExtendedTab.this.content.setCenter(iStackTrace);
-					}
-				}
-			});
-
-			ExtendedTab.this.refreshing = false;
-			ExtendedTab.this.progressIndicator.setVisible(false);
-
-		} catch (final Exception aException) {
-			Platform.runLater(new Runnable() {
-
-				@Override
-				public void run() {
-					final StringWriter iStringWriter = new StringWriter();
-					final PrintWriter iPrintWriter = new PrintWriter(iStringWriter);
-					aException.printStackTrace(iPrintWriter);
-
-					final TextArea iStackTrace = new TextArea();
-					iStackTrace.setText(iStringWriter.toString());
-					iStackTrace.setEditable(false);
-					ExtendedTab.this.content.setCenter(iStackTrace);
-				}
-			});
-		}
-
 	}
 
 	@FXML
 	public void selectTabEvent() {
-		this.parent.getSelectionModel().select(this);
+		this.getTabPane().getSelectionModel().select(this);
 	}
 
 	public void setUrl(final String aUrl) {
@@ -455,20 +417,4 @@ public class ExtendedTab extends Tab implements Initializable, ChangeListener<Ta
 			this.hidShowUrl.setText("Masquer la barre d'adresse");
 		}
 	}
-
-	public URL toHttp(final URL iUrl, final boolean aForFXMLLoader) throws MalformedURLException {
-		final StringBuilder iURLBuilder = new StringBuilder();
-		iURLBuilder.append("http://");
-		iURLBuilder.append(iUrl.getHost());
-		iURLBuilder.append(iUrl.getPort() != 0 ? ":" + iUrl.getPort() : "");
-		iURLBuilder.append(iUrl.getPath());
-		if (!iUrl.getPath().endsWith("/")) {
-			iURLBuilder.append("/");
-		}
-		if (!iUrl.getPath().endsWith(".fxml")) {
-			iURLBuilder.append("index.fxml");
-		}
-		return new URL(iURLBuilder.toString().replace("webapi/", ""));
-	}
-
 }
