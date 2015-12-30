@@ -11,11 +11,15 @@ import java.util.ResourceBundle;
 
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.PopOver.ArrowLocation;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
+import com.maohi.software.maohifx.client.event.AuthentificationEvent;
 import com.maohi.software.maohifx.client.event.ConnectEvent;
 import com.maohi.software.maohifx.client.event.ExceptionEvent;
 import com.maohi.software.maohifx.client.event.SuccesEvent;
 import com.maohi.software.maohifx.client.jaxb2.Configuration;
+import com.maohi.software.maohifx.common.Profile;
+import com.maohi.software.maohifx.control.Link;
 
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
@@ -29,7 +33,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
@@ -146,7 +149,23 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	@FXML
 	public void connectEvent(final ActionEvent aEvent) {
 		if (this.controller.isConnected()) {
-			this.content.setCenter(new Label("Vous êtes connecté! Félicitation!"));
+			final PopOver iPopOver = new PopOver();
+			iPopOver.setDetachable(true);
+			iPopOver.setArrowSize(10.0);
+			iPopOver.setArrowLocation(ArrowLocation.TOP_RIGHT);
+
+			final Link iLink = new Link("Se déconnecter");
+			iLink.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(final ActionEvent aEvent) {
+					ExtendedTab.this.controller.disconnect();
+					iPopOver.hide();
+				}
+			});
+			iPopOver.setContentNode(iLink);
+
+			iPopOver.show(this.profileButton);
 		} else {
 			final PopOver iPopOver = new PopOver();
 			iPopOver.setDetachable(true);
@@ -241,7 +260,7 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 				@Override
 				public void handle(final ConnectEvent aEvent) {
-					ExtendedTab.this.profileConnected(aEvent.getUsername());
+					ExtendedTab.this.profileConnected();
 				}
 			};
 		}
@@ -317,7 +336,7 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 	@Override
 	public void initialize(final URL aLocation, final ResourceBundle aResources) {
-		this.profileConnected(this.controller.getProfile());
+		this.profileConnected();
 		this.initUrlAutoCompletion();
 	}
 
@@ -340,6 +359,16 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	protected URLHandler newUrlHandler() {
 		final URLHandler iUrlHandler = new URLHandler();
 		iUrlHandler.setOnStart(this.getOnStart());
+		iUrlHandler.setOnAuthentification(new EventHandler<AuthentificationEvent>() {
+
+			@Override
+			public void handle(final AuthentificationEvent aEvent) {
+				final Profile iProfile = ExtendedTab.this.controller.getProfile();
+				if (iProfile != null) {
+					aEvent.getWebTarget().register(HttpAuthenticationFeature.basic(iProfile.getUsername(), iProfile.getPassword()));
+				}
+			}
+		});
 		iUrlHandler.setOnSucces(this.getOnSucces());
 		iUrlHandler.setOnEnd(this.getOnEnd());
 		iUrlHandler.setOnExceptionThrown(this.getOnExceptionThrown());
@@ -354,9 +383,9 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 		this.controller.save(iConfiguration);
 	}
 
-	protected void profileConnected(final String aUsername) {
-		if ((aUsername != null) && !aUsername.isEmpty()) {
-			this.profileButton.setText(aUsername);
+	protected void profileConnected() {
+		if (this.controller.isConnected()) {
+			this.profileButton.setText(this.controller.getProfile().getUsername());
 		} else {
 			this.profileButton.setText("Se connecter");
 		}

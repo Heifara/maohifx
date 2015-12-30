@@ -15,13 +15,14 @@ import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Provider;
 
 import org.glassfish.jersey.internal.util.Base64;
 
 /**
  * This filter verify the access permissions for a user based on username and passowrd provided in request
  */
-// @Provider
+@Provider
 public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequestFilter {
 
 	private static final String AUTHORIZATION_PROPERTY = "Authorization";

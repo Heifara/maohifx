@@ -3,8 +3,18 @@
  */
 package com.maohi.software.maohifx.client;
 
+import java.net.URL;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Response.Status;
+
+import org.controlsfx.dialog.Dialogs;
+
 import com.maohi.software.maohifx.client.event.ConnectEvent;
+import com.maohi.software.maohifx.client.event.ExceptionEvent;
+import com.maohi.software.maohifx.client.event.SuccesEvent;
 import com.maohi.software.maohifx.client.jaxb2.Configuration;
+import com.maohi.software.maohifx.common.Profile;
 import com.sun.javafx.event.EventHandlerManager;
 
 import javafx.beans.property.ObjectProperty;
@@ -56,6 +66,8 @@ public class MaohiFXController {
 
 	private final EventHandlerManager eventDispatcher;
 
+	private Profile profile;
+
 	public MaohiFXController() {
 		this.eventDispatcher = new EventHandlerManager(this);
 	}
@@ -72,13 +84,74 @@ public class MaohiFXController {
 	}
 
 	public boolean connect(final String aUsername, final String aPassword) {
-		// TODO Auto-generated method stub
-		if (aUsername.equals(aPassword)) {
-			this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_SUCCES, this, aUsername), new NotImplementedEventDispatchChain());
+		try {
+			final Profile iProfile = new Profile(aUsername, aPassword);
+
+			final URLHandler iHandler = new URLHandler();
+			iHandler.setOnSucces(new EventHandler<SuccesEvent>() {
+
+				@Override
+				public void handle(final SuccesEvent event) {
+					MaohiFXController.this.profile = iProfile;
+					MaohiFXController.this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_SUCCES, this), new NotImplementedEventDispatchChain());
+				}
+			});
+			iHandler.setOnExceptionThrown(new EventHandler<ExceptionEvent>() {
+
+				@Override
+				public void handle(final ExceptionEvent aEvent) {
+					MaohiFXController.this.profile = null;
+
+					final Status iStatus = Status.fromStatusCode(aEvent.getStatusCode());
+					if (iStatus != null) {
+						switch (iStatus) {
+						case NOT_ACCEPTABLE:
+							Dialogs.create().title("Erreur d'authentification").message("Le nom d'utilisateur ou le mot de passe sont incorrecte").showError();
+							break;
+
+						default:
+							MaohiFXController.this.getView().displayException(aEvent.getException());
+							MaohiFXController.this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_ERROR, this), new NotImplementedEventDispatchChain());
+							break;
+						}
+					} else {
+						MaohiFXController.this.getView().displayException(aEvent.getException());
+						MaohiFXController.this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_ERROR, this), new NotImplementedEventDispatchChain());
+					}
+				}
+			});
+			iHandler.process(new URL("http://localhost:8080/maohifx.server/webapi/authentication/connect"), "post", Entity.json(iProfile));
 			return true;
-		} else {
-			this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_ERROR, this, aUsername), new NotImplementedEventDispatchChain());
+		} catch (final Exception aException) {
+			this.getView().displayException(aException);
+			this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_ERROR, this), new NotImplementedEventDispatchChain());
 			return false;
+		}
+	}
+
+	public void disconnect() {
+		try {
+			final URLHandler iHandler = new URLHandler();
+			iHandler.setOnSucces(new EventHandler<SuccesEvent>() {
+
+				@Override
+				public void handle(final SuccesEvent event) {
+					MaohiFXController.this.profile = null;
+					MaohiFXController.this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_SUCCES, this), new NotImplementedEventDispatchChain());
+				}
+			});
+			iHandler.setOnExceptionThrown(new EventHandler<ExceptionEvent>() {
+
+				@Override
+				public void handle(final ExceptionEvent aEvent) {
+					MaohiFXController.this.getView().displayException(aEvent.getException());
+					MaohiFXController.this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_ERROR, this), new NotImplementedEventDispatchChain());
+				}
+			});
+			iHandler.process(new URL("http://localhost:8080/maohifx.server/webapi/authentication/disconnect"), "post", Entity.json(this.profile));
+		} catch (final Exception aException) {
+			this.getView().displayException(aException);
+			this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_ERROR, this), new NotImplementedEventDispatchChain());
 		}
 	}
 
@@ -104,9 +177,8 @@ public class MaohiFXController {
 		return this.onModelChanged;
 	}
 
-	public String getProfile() {
-		// TODO Auto-generated method stub
-		return null;
+	public Profile getProfile() {
+		return this.profile;
 	}
 
 	public MaohiFXView getView() {
@@ -114,8 +186,11 @@ public class MaohiFXController {
 	}
 
 	public boolean isConnected() {
-		// TODO Auto-generated method stub
-		return false;
+		if (this.getProfile() == null) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	public ObjectProperty<MaohiFXModel> modelProperty() {

@@ -24,6 +24,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.maohi.software.maohifx.client.event.AuthentificationEvent;
 import com.maohi.software.maohifx.client.event.ExceptionEvent;
 import com.maohi.software.maohifx.client.event.SuccesEvent;
 import com.sun.media.jfxmedia.MediaException;
@@ -44,6 +45,7 @@ public class URLHandler {
 	private EventHandler<Event> onEnd;
 	private EventHandler<SuccesEvent> onSucces;
 	private EventHandler<ExceptionEvent> onExceptionThrown;
+	private EventHandler<AuthentificationEvent> onAuthentification;
 
 	public URLHandler() {
 		this.onStart = new EventHandler<Event>() {
@@ -63,6 +65,12 @@ public class URLHandler {
 
 			@Override
 			public void handle(final Event aEvent) {
+			}
+		};
+		this.onAuthentification = new EventHandler<AuthentificationEvent>() {
+
+			@Override
+			public void handle(final AuthentificationEvent event) {
 			}
 		};
 	}
@@ -146,6 +154,7 @@ public class URLHandler {
 	protected Response processHttp(final URL iUrl, final String aRequestType, final Entity<?> aEntity) {
 		try {
 			final WebTarget iTarget = ClientBuilder.newClient().target(iUrl.toURI());
+			this.onAuthentification.handle(new AuthentificationEvent(Event.ANY, this, iTarget));
 
 			// Handle QueryParam
 			if ((iUrl.getQuery() != null) && !iUrl.getQuery().isEmpty()) {
@@ -235,6 +244,10 @@ public class URLHandler {
 		} catch (final Exception aException) {
 			this.onExceptionThrown.handle(new ExceptionEvent(this, aException, iResponse.getStatus()));
 		}
+	}
+
+	public void setOnAuthentification(final EventHandler<AuthentificationEvent> onAuthentification) {
+		this.onAuthentification = onAuthentification;
 	}
 
 	public void setOnEnd(final EventHandler<Event> aOnEnd) {
