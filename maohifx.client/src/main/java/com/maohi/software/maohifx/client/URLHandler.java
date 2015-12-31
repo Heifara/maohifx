@@ -24,6 +24,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.maohi.software.maohifx.client.event.AuthentificationEvent;
 import com.maohi.software.maohifx.client.event.ExceptionEvent;
 import com.maohi.software.maohifx.client.event.SuccesEvent;
@@ -109,6 +110,10 @@ public class URLHandler {
 	public void process(final URL aLocation, final JSObject aJsObject) throws MalformedURLException, IOException {
 		final ScriptObjectMirror iScriptObject = (ScriptObjectMirror) aJsObject;
 
+		if (!iScriptObject.hasMember("type")) {
+			throw new JsonMappingException("Type is undefined");
+		}
+
 		String iUrl = (String) iScriptObject.getMember("url");
 		if (iUrl.startsWith("@/")) {
 			iUrl = iUrl.replace("@/", "@");
@@ -127,7 +132,10 @@ public class URLHandler {
 
 		final String iRequestType = (String) iScriptObject.getMember("type");
 
-		final Entity<?> iEntity = this.getEntity((String) iScriptObject.getMember("dataType"), iScriptObject.getMember(("data")));
+		Entity<?> iEntity = null;
+		if (iScriptObject.hasMember("dataType") && iScriptObject.hasMember("data")) {
+			iEntity = this.getEntity((String) iScriptObject.getMember("dataType"), iScriptObject.getMember(("data")));
+		}
 
 		this.process(new URL(iUrl), iRequestType, iEntity);
 	}
