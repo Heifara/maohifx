@@ -46,7 +46,35 @@ var LocalDate = java.time.LocalDate;
  */
 
 function alert(aText) {
-	javax.swing.JOptionPane.showMessageDialog(null, aText);
+	runLater(new Runnable({
+		run : function() {
+			org.controlsfx.dialog.Dialogs.create().title("").message(aText).showInformation();
+		}
+	}));
+}
+
+function info(aTitle, aMessage) {
+	runLater(new Runnable({
+		run : function() {
+			org.controlsfx.dialog.Dialogs.create().title(aTitle).message(aMessage).showWarning();
+		}
+	}));
+}
+
+function warn(aTitle, aMessage) {
+	runLater(new Runnable({
+		run : function() {
+			org.controlsfx.dialog.Dialogs.create().title(aTitle).message(aMessage).showWarning();
+		}
+	}));
+}
+
+function error(aTitle, aErreur, aStackTrace) {
+	runLater(new Runnable({
+		run : function() {
+			org.controlsfx.dialog.Dialogs.create().title(aTitle).masthead(aErreur).message(aStackTrace).showError();
+		}
+	}));
 }
 
 function runLater(aRunnable) {
