@@ -12,6 +12,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="authenticationServer" type="xs:string" />
       </xs:all>
     </xs:complexType>
   </xs:element>

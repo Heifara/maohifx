@@ -7,12 +7,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root prefHeight="400.0" prefWidth="300.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="200.0" prefWidth="400.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<center>
 		<GridPane BorderPane.alignment="CENTER">
 			<columnConstraints>
-				<ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
-				<ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="150.0" />
+				<ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="200.0" />
 			</columnConstraints>
 			<rowConstraints>
 				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
@@ -22,6 +22,8 @@
 			<children>
 				<TextField fx:id="homeUrl" GridPane.columnIndex="1" />
 				<Label text="Acceuil" />
+            <Label text="Serveur d'authentification" GridPane.rowIndex="1" />
+            <TextField fx:id="authenticationServer" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 			</children>
 		</GridPane>
 	</center>

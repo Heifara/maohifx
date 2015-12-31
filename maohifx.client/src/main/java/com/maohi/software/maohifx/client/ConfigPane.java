@@ -33,6 +33,9 @@ public class ConfigPane extends BorderPane implements Initializable {
 	@FXML
 	private TextField homeUrl;
 
+	@FXML
+	private TextField authenticationServer;
+
 	public ConfigPane(final MaohiFXView aView) {
 		this.view = aView;
 		try {
@@ -62,6 +65,8 @@ public class ConfigPane extends BorderPane implements Initializable {
 	public void initialize(final URL aLocation, final ResourceBundle aResources) {
 		final Configuration iConfiguration = this.view.getController().getConfiguration();
 		this.homeUrl.setText(iConfiguration.getHomeUrl());
+		this.authenticationServer.setText(iConfiguration.getAuthenticationServer());
+
 	}
 
 	@FXML
@@ -74,6 +79,11 @@ public class ConfigPane extends BorderPane implements Initializable {
 	private boolean save() {
 		final Configuration iConfiguration = new Configuration();
 		iConfiguration.setHomeUrl(this.homeUrl.getText());
+
+		if (!this.authenticationServer.getText().endsWith("/")) {
+			this.authenticationServer.setText(this.authenticationServer.getText() + "/");
+		}
+		iConfiguration.setAuthenticationServer(this.authenticationServer.getText());
 
 		return this.view.getController().save(iConfiguration);
 	}

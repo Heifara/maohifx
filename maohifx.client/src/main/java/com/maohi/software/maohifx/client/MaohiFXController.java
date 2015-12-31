@@ -85,6 +85,18 @@ public class MaohiFXController {
 
 	public boolean connect(final String aUsername, final String aPassword) {
 		try {
+			if (aUsername.isEmpty()) {
+				Dialogs.create().title("Erreur d'authentification").message("Le nom d'utilisateur ne peut pas être vide").showError();
+				this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_ERROR, this), new NotImplementedEventDispatchChain());
+				return false;
+			}
+
+			if (aPassword.isEmpty()) {
+				Dialogs.create().title("Erreur d'authentification").message("Le mot de passe ne peut pas être vide").showError();
+				this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_ERROR, this), new NotImplementedEventDispatchChain());
+				return false;
+			}
+
 			final Profile iProfile = new Profile(aUsername, aPassword);
 
 			final URLHandler iHandler = new URLHandler();
@@ -120,7 +132,7 @@ public class MaohiFXController {
 					}
 				}
 			});
-			iHandler.process(new URL("http://localhost:8080/maohifx.server/webapi/authentication/connect"), "post", Entity.json(iProfile));
+			iHandler.process(new URL(this.getConfiguration().getAuthenticationServer() + "maohifx.server/webapi/authentication/connect"), "post", Entity.json(iProfile));
 			return true;
 		} catch (final Exception aException) {
 			this.getView().displayException(aException);
@@ -148,7 +160,7 @@ public class MaohiFXController {
 					MaohiFXController.this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_ERROR, this), new NotImplementedEventDispatchChain());
 				}
 			});
-			iHandler.process(new URL("http://localhost:8080/maohifx.server/webapi/authentication/disconnect"), "post", Entity.json(this.profile));
+			iHandler.process(new URL(this.getConfiguration().getAuthenticationServer() + "maohifx.server/webapi/authentication/disconnect"), "post", Entity.json(this.profile));
 		} catch (final Exception aException) {
 			this.getView().displayException(aException);
 			this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_ERROR, this), new NotImplementedEventDispatchChain());
