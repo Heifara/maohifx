@@ -200,7 +200,6 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 			public void run() {
 				try {
 					iLoader.setBuilderFactory(ExtendedTab.this.view.getBuilderFactory());
-					iLoader.getNamespace().put("$loader", iLoader);
 					iLoader.getNamespace().put("$tab", ExtendedTab.this);
 					iLoader.getNamespace().put("$http", new HttpHandler(ExtendedTab.this.newUrlHandler(), iLoader.getLocation()));
 

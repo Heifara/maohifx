@@ -5,24 +5,20 @@ Contact.search = function(aPattern) {
 	}
 
 	iSearchResult = FXCollections.observableArrayList();
-	$loader.getNamespace().put("$data", iSearchResult);
 	$http.ajax({
-		url : "http://localhost:8080/maohifx.server/webapi/contact/search?pattern=" + iPattern,
+		url : "@maohifx.server/webapi/contact/search?pattern=" + iPattern,
 		type : "get",
 		contentType : "application/x-www-form-urlencoded",
 		dataType : "application/json",
 		success : function($result, $status) {
-			load("http://localhost:8080/maohifx.server/common.js");
-
 			for ( var iItem in $result) {
 				iElement = new Contact();
 				iElement.parseJSON($result[iItem]);
-				$data.add(iElement);
+				iSearchResult.add(iElement);
 			}
 		},
-		error : function($result, $status) {
-			java.lang.System.err.println($result);
-			java.lang.System.err.println($status);
+		error : function($error, $status, $stackTrace) {
+			error("Erreur durant la recherche", $error, $stackTrace);
 		}
 	});
 	return iSearchResult;
@@ -84,27 +80,24 @@ Contact.prototype.toString = function() {
 }
 
 Contact.prototype.save = function() {
-	$loader.getNamespace().put("$contact", this);
 	$http.ajax({
-		url : "http://localhost:8080/maohifx.server/webapi/contact",
+		source : this,
+		url : "@maohifx.server/webapi/contact",
 		type : "post",
 		contentType : "application/x-www-form-urlencoded",
 		dataType : "application/json",
 		data : this.toJSON(),
 		success : function($result, $status) {
-			load("http://localhost:8080/maohifx.server/common.js");
-
-			$contact.parseJSON($result);
+			this.source.parseJSON($result);
 
 			alert("Sauvegarde réussi");
 		},
-		error : function($result, $status) {
-			load("http://localhost:8080/maohifx.server/common.js");
-
-			print($status);
-
-			alert("Erreur lors de la sauvegarde");
+		error : function($error, $status, $stackTrace) {
+			alert($error + "\n" + $stackTrace);
+			System.out.println($status)
+			System.out.println($stackTrace)
 		}
+
 	});
 }
 

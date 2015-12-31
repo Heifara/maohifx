@@ -5,25 +5,20 @@ PaymentMode.search = function(aPattern) {
 	}
 
 	iSearchResult = FXCollections.observableArrayList();
-	$loader.getNamespace().put("$data", iSearchResult);
 	$http.ajax({
-		url : "http://localhost:8080/maohifx.server/webapi/paymentMode/search?pattern=" + iPattern,
+		url : "@maohifx.server/webapi/paymentMode/search?pattern=" + iPattern,
 		type : "get",
 		contentType : "application/x-www-form-urlencoded",
 		dataType : "application/json",
 		success : function($result, $status) {
-			load("http://localhost:8080/maohifx.server/common.js");
-			load("http://localhost:8080/maohifx.server/bean/PaymentMode.js");
-
 			for ( var iItem in $result) {
 				iElement = new PaymentMode();
 				iElement.parseJSON($result[iItem]);
-				$data.add(iElement);
+				iSearchResult.add(iElement);
 			}
 		},
-		error : function($result, $status) {
-			java.lang.System.err.println($result);
-			java.lang.System.err.println($status);
+		error : function($error, $stackTrace) {
+			error("Erreur durant la recherche", $error, $stackTrace);
 		}
 	});
 	return iSearchResult;

@@ -5,24 +5,20 @@ Invoice.search = function(aPattern) {
 	}
 
 	iSearchResult = FXCollections.observableArrayList();
-	$loader.getNamespace().put("$data", iSearchResult);
 	$http.ajax({
-		url : "http://localhost:8080/maohifx.server/webapi/invoice/search?pattern=" + iPattern,
+		url : "@maohifx.server/webapi/invoice/search?pattern=" + iPattern,
 		type : "get",
 		contentType : "application/x-www-form-urlencoded",
 		dataType : "application/json",
 		success : function($result, $status) {
-			load("http://localhost:8080/maohifx.server/common.js");
-
 			for ( var item in $result) {
 				iInvoice = new Invoice();
 				iInvoice.parseJSON($result[item]);
-				$data.add(iInvoice);
+				iSearchResult.add(iInvoice);
 			}
 		},
-		error : function($result, $status) {
-			java.lang.System.err.println($result);
-			java.lang.System.err.println($status);
+		error : function($result, $stackTrace) {
+			error("Erreur durant la recherche", $error, $stackTrace);
 		}
 	});
 
@@ -176,15 +172,15 @@ Invoice.prototype.getTabTitle = function() {
 Invoice.prototype.print = function() {
 	System.out.println(this.uuid.get());
 	$http.ajax({
-		url : "http://localhost:8080/maohifx.server/webapi/invoice/pdf?uuid=" + this.uuid.get(),
+		url : "@maohifx.server/webapi/invoice/pdf?uuid=" + this.uuid.get(),
 		type : "get",
 		success : function($result, $status) {
 			print($result);
 			print($status);
 			java.lang.Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + $result);
 		},
-		error : function($result, $status) {
-			print($status);
+		error : function($result, $stackTrace) {
+			error("Erreur durant la recherche", $error, $stackTrace);
 		}
 	});
 }
@@ -235,26 +231,20 @@ Invoice.prototype.getInvoicePaymentLines = function() {
 
 Invoice.prototype.save = function() {
 	if (this.isValid()) {
-		$loader.getNamespace().put("$invoice", this);
 		$http.ajax({
-			url : "http://localhost:8080/maohifx.server/webapi/invoice",
+			source : this,
+			url : "@maohifx.server/webapi/invoice",
 			type : "post",
 			contentType : "application/x-www-form-urlencoded",
 			dataType : "application/json",
 			data : this.toJSON(),
 			success : function($result, $status) {
-				load("http://localhost:8080/maohifx.server/common.js");
-
-				$invoice.parseJSON($result);
+				this.source.parseJSON($result);
 
 				alert("Save success!");
 			},
 			error : function($result, $status) {
-				load("http://localhost:8080/maohifx.server/common.js");
-
-				print($status);
-
-				alert("Save error!");
+				error("Erreur lors de l'enregistrement de la facture", $result, $status);
 			}
 		});
 	}

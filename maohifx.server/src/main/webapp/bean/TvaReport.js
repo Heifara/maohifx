@@ -1,34 +1,30 @@
 TvaReport.search = function(aStart, aEnd) {
 	System.out.println(aStart + " " + aEnd)
 
-	var iUrl = "http://localhost:8080/maohifx.server/webapi/invoice/tvaReport"
+	var iUrl = "@maohifx.server/webapi/invoice/tvaReport"
 	if (aStart != null && aEnd != null) {
-		iUrl = "http://localhost:8080/maohifx.server/webapi/invoice/tvaReport?start=" + aStart + "&end=" + aEnd;
+		iUrl = "@maohifx.server/webapi/invoice/tvaReport?start=" + aStart + "&end=" + aEnd;
 	} else if (aStart != null && aEnd == null) {
-		iUrl = "http://localhost:8080/maohifx.server/webapi/invoice/tvaReport?start=" + aStart;
+		iUrl = "@maohifx.server/webapi/invoice/tvaReport?start=" + aStart;
 	} else if (aStart == null && aEnd != null) {
-		iUrl = "http://localhost:8080/maohifx.server/webapi/invoice/tvaReport?end=" + aEnd;
+		iUrl = "@maohifx.server/webapi/invoice/tvaReport?end=" + aEnd;
 	}
 
 	iSearchResult = FXCollections.observableArrayList();
-	$loader.getNamespace().put("$data", iSearchResult);
 	$http.ajax({
 		url : iUrl,
 		type : "get",
 		contentType : "application/x-www-form-urlencoded",
 		dataType : "application/json",
 		success : function($result, $status) {
-			load("http://localhost:8080/maohifx.server/common.js");
-
 			for ( var iItem in $result) {
 				iElement = new TvaReport();
 				iElement.parseJSON($result[iItem]);
-				$data.add(iElement);
+				iSearchResult.add(iElement);
 			}
 		},
-		error : function($result, $status) {
-			java.lang.System.err.println($result);
-			java.lang.System.err.println($status);
+		error : function($result, $stackTrace) {
+			error("Erreur durant la recherche", $error, $stackTrace);
 		}
 	});
 	return iSearchResult;

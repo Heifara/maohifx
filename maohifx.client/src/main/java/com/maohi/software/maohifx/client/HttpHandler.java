@@ -71,6 +71,12 @@ public class HttpHandler {
 			}
 		});
 		iThread.start();
+		try {
+			iThread.join();
+		} catch (final InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void get(final JSObject aJsObject) throws NoSuchMethodException, ScriptException, IOException {

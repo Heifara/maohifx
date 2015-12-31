@@ -5,29 +5,20 @@ Salesman.search = function(aPattern) {
 	}
 
 	iSearchResult = FXCollections.observableArrayList();
-	$loader.getNamespace().put("$data", iSearchResult);
 	$http.ajax({
-		url : "http://localhost:8080/maohifx.server/webapi/salesman/search?pattern=" + iPattern,
+		url : "@maohifx.server/webapi/salesman/search?pattern=" + iPattern,
 		type : "get",
 		contentType : "application/x-www-form-urlencoded",
 		dataType : "application/json",
 		success : function($result, $status) {
-			load("http://localhost:8080/maohifx.server/common.js");
-			load("http://localhost:8080/maohifx.server/bean/Customer.js");
-			load("http://localhost:8080/maohifx.server/bean/Contact.js");
-			load("http://localhost:8080/maohifx.server/bean/Email.js");
-			load("http://localhost:8080/maohifx.server/bean/Phone.js");
-			load("http://localhost:8080/maohifx.server/bean/Salesman.js");
-
 			for ( var iItem in $result) {
 				iElement = new Salesman();
 				iElement.parseJSON($result[iItem]);
-				$data.add(iElement);
+				iSearchResult.add(iElement);
 			}
 		},
-		error : function($result, $status) {
-			java.lang.System.err.println($result);
-			java.lang.System.err.println($status);
+		error : function($error, $stackTrace) {
+			error("Erreur durant la recherche", $error, $stackTrace);
 		}
 	});
 	return iSearchResult;
@@ -68,29 +59,19 @@ Salesman.prototype.parseJSON = function(aJSONObject) {
 }
 
 Salesman.prototype.save = function() {
-	$loader.getNamespace().put("$element", this);
 	$http.ajax({
-		url : "http://localhost:8080/maohifx.server/webapi/salesman",
+		source : this,
+		url : "@maohifx.server/webapi/salesman",
 		type : "post",
 		contentType : "application/x-www-form-urlencoded",
 		dataType : "application/json",
 		data : this.toJSON(),
 		success : function($result, $status) {
-			load("http://localhost:8080/maohifx.server/common.js");
-			load("http://localhost:8080/maohifx.server/bean/Customer.js");
-			load("http://localhost:8080/maohifx.server/bean/Contact.js");
-			load("http://localhost:8080/maohifx.server/bean/Email.js");
-			load("http://localhost:8080/maohifx.server/bean/Phone.js");
-			load("http://localhost:8080/maohifx.server/bean/Salesman.js");
-
-			$element.parseJSON($result);
-
+			this.source.parseJSON($result);
 			alert("Save success");
 		},
-		error : function($result, $status) {
-			load("http://localhost:8080/maohifx.server/common.js");
-
-			alert($status);
+		error : function($error, $stackTrace) {
+			error("Erreur durant la recherche", $error, $stackTrace);
 		}
 	});
 }

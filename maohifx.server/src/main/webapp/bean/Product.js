@@ -5,26 +5,20 @@ Product.search = function(aPattern) {
 	}
 
 	iSearchResult = FXCollections.observableArrayList();
-	$loader.getNamespace().put("$data", iSearchResult);
 	$http.ajax({
-		url : "http://localhost:8080/maohifx.server/webapi/product/search?pattern=" + iPattern,
+		url : "@maohifx.server/webapi/product/search?pattern=" + iPattern,
 		type : "get",
 		contentType : "application/x-www-form-urlencoded",
 		dataType : "application/json",
 		success : function($result, $status) {
-			load("http://localhost:8080/maohifx.server/common.js");
-			load("http://localhost:8080/maohifx.server/bean/Product.js");
-			load("http://localhost:8080/maohifx.server/bean/Tva.js");
-
 			for ( var iItem in $result) {
 				iElement = new Product();
 				iElement.parseJSON($result[iItem]);
-				$data.add(iElement);
+				iSearchResult.add(iElement);
 			}
 		},
-		error : function($result, $status) {
-			java.lang.System.err.println($result);
-			java.lang.System.err.println($status);
+		error : function($result, $stackTrace) {
+			error("Erreur durant la recherche", $error, $stackTrace);
 		}
 	});
 	return iSearchResult;
@@ -65,7 +59,7 @@ Product.prototype.parseJSON = function(aJSONObject) {
 
 Product.prototype.parseTva = function(aTva) {
 	this.tva = aTva;
-	
+
 	this.calcSellingPrice();
 }
 
@@ -77,26 +71,20 @@ Product.prototype.parseProduct = function(aProduct) {
 }
 
 Product.prototype.save = function() {
-	$loader.getNamespace().put("$product", this);
 	$http.ajax({
-		url : "http://localhost:8080/maohifx.server/webapi/product",
+		source : this,
+		url : "@maohifx.server/webapi/product",
 		type : "post",
 		contentType : "application/x-www-form-urlencoded",
 		dataType : "application/json",
 		data : this.toJSON(),
 		success : function($result, $status) {
-			load("http://localhost:8080/maohifx.server/common.js");
-			load("http://localhost:8080/maohifx.server/bean/Product.js");
-			load("http://localhost:8080/maohifx.server/bean/Tva.js");
-
-			$product.parseJSON($result);
+			this.source.parseJSON($result);
 
 			alert("Save success");
 		},
-		error : function($result, $status) {
-			load("http://localhost:8080/maohifx.server/common.js");
-
-			alert("Save error");
+		error : function($result, $stackTrace) {
+			error("Erreur lors de la sauvegarde", $error, $stackTrace);
 		}
 	});
 }
