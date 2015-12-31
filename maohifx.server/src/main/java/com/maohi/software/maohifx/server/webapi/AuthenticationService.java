@@ -3,6 +3,8 @@
  */
 package com.maohi.software.maohifx.server.webapi;
 
+import java.util.UUID;
+
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -20,17 +22,20 @@ import com.maohi.software.maohifx.common.Profile;
  *
  */
 @Path("authentication")
-@Produces({ MediaType.APPLICATION_JSON })
 public class AuthenticationService {
 
 	@POST
 	@PermitAll
 	@Path("connect")
 	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response connect(final String aJSONObject) {
 		try {
 			final Profile iElement = new ObjectMapper().readValue(aJSONObject, Profile.class);
 			if (iElement.getUsername().equals(iElement.getPassword())) {
+				iElement.setToken(UUID.randomUUID().toString());
+				iElement.setRole("user");
+				AuthenticationFilter.add(iElement.getToken());
 				return Response.ok().entity(iElement).build();
 			} else {
 				return Response.status(Status.NOT_ACCEPTABLE).build();
@@ -44,6 +49,7 @@ public class AuthenticationService {
 	@PermitAll
 	@Path("disconnect")
 	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response disconnect(final String aJSONObject) {
 		try {
 			final Profile iElement = new ObjectMapper().readValue(aJSONObject, Profile.class);

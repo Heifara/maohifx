@@ -4,12 +4,15 @@
 package com.maohi.software.maohifx.client;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response.Status;
 
 import org.controlsfx.dialog.Dialogs;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maohi.software.maohifx.client.event.ConnectEvent;
 import com.maohi.software.maohifx.client.event.ExceptionEvent;
 import com.maohi.software.maohifx.client.event.SuccesEvent;
@@ -31,6 +34,7 @@ import javafx.event.EventType;
  * @author heifara
  *
  */
+@SuppressWarnings("restriction")
 public class MaohiFXController {
 
 	/**
@@ -102,10 +106,22 @@ public class MaohiFXController {
 			final URLHandler iHandler = new URLHandler();
 			iHandler.setOnSucces(new EventHandler<SuccesEvent>() {
 
+				@SuppressWarnings("unchecked")
 				@Override
-				public void handle(final SuccesEvent event) {
-					MaohiFXController.this.profile = iProfile;
-					MaohiFXController.this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_SUCCES, this), new NotImplementedEventDispatchChain());
+				public void handle(final SuccesEvent aEvent) {
+					try {
+						final Map<String, String> iMap = (Map<String, String>) aEvent.getItem();
+
+						final Map<String, String> iParsedMap = new HashMap<>();
+						for (final String iKey : iMap.keySet()) {
+							iParsedMap.put('"' + iKey + '"', '"' + iMap.get(iKey) + '"');
+						}
+
+						MaohiFXController.this.profile = new ObjectMapper().readValue(iParsedMap.toString().replace("=", ":"), Profile.class);
+						MaohiFXController.this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_SUCCES, this), new NotImplementedEventDispatchChain());
+					} catch (final Exception aException) {
+						MaohiFXController.this.getView().displayException(aException);
+					}
 				}
 			});
 			iHandler.setOnExceptionThrown(new EventHandler<ExceptionEvent>() {

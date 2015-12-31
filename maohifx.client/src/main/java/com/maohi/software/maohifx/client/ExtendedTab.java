@@ -365,7 +365,7 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 			public void handle(final AuthentificationEvent aEvent) {
 				final Profile iProfile = ExtendedTab.this.controller.getProfile();
 				if (iProfile != null) {
-					aEvent.getWebTarget().register(HttpAuthenticationFeature.basic(iProfile.getUsername(), iProfile.getPassword()));
+					aEvent.getWebTarget().register(HttpAuthenticationFeature.basic(iProfile.getToken(), iProfile.getRole()));
 				}
 			}
 		});

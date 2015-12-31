@@ -11,6 +11,8 @@ public class Profile {
 
 	private String username;
 	private String password;
+	private String token;
+	private String role;
 
 	public Profile() {
 	}
@@ -29,6 +31,20 @@ public class Profile {
 	}
 
 	/**
+	 * @return the role
+	 */
+	public String getRole() {
+		return this.role;
+	}
+
+	/**
+	 * @return the token
+	 */
+	public String getToken() {
+		return this.token;
+	}
+
+	/**
 	 * @return the username
 	 */
 	public String getUsername() {
@@ -41,6 +57,22 @@ public class Profile {
 	 */
 	public void setPassword(final String password) {
 		this.password = password;
+	}
+
+	/**
+	 * @param role
+	 *            the role to set
+	 */
+	public void setRole(final String role) {
+		this.role = role;
+	}
+
+	/**
+	 * @param token
+	 *            the token to set
+	 */
+	public void setToken(final String token) {
+		this.token = token;
 	}
 
 	/**

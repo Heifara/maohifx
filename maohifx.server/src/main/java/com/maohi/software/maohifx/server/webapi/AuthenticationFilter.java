@@ -1,6 +1,7 @@
 package com.maohi.software.maohifx.server.webapi;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -29,6 +30,11 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 	private static final String AUTHENTICATION_SCHEME = "Basic";
 	private static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED).build();
 	private static final Response ACCESS_FORBIDDEN = Response.status(Response.Status.FORBIDDEN).build();
+	private static List<String> registeredToken = new ArrayList<>();
+
+	public static void add(final String aToken) {
+		registeredToken.add(aToken);
+	}
 
 	@Context
 	private ResourceInfo resourceInfo;
@@ -57,47 +63,33 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 			}
 
 			// Get encoded username and password
-			final String encodedUserPassword = iAuthorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
+			final String endcodedTokenAndRole = iAuthorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
 
 			// Decode username and password
-			final String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));
-			;
+			final String tokenAndRole = new String(Base64.decode(endcodedTokenAndRole.getBytes()));
 
 			// Split username and password tokens
-			final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
-			final String username = tokenizer.nextToken();
-			final String password = tokenizer.nextToken();
+			final StringTokenizer tokenizer = new StringTokenizer(tokenAndRole, ":");
+			final String iToken = tokenizer.nextToken();
+			if (iToken.isEmpty()) {
+				iRequestContext.abortWith(ACCESS_DENIED);
+				return;
+			}
+			if (!registeredToken.contains(iToken)) {
+				iRequestContext.abortWith(ACCESS_DENIED);
+				return;
+			}
 
 			// Verify user access
+			final String iRole = tokenizer.nextToken();
 			if (iMethod.isAnnotationPresent(RolesAllowed.class)) {
 				final RolesAllowed rolesAnnotation = iMethod.getAnnotation(RolesAllowed.class);
-				final Set<String> rolesSet = new HashSet<String>(Arrays.asList(rolesAnnotation.value()));
-
-				// Is user valid?
-				if (!this.isUserAllowed(username, password, rolesSet)) {
+				final Set<String> iAuthorizedRolesSet = new HashSet<String>(Arrays.asList(rolesAnnotation.value()));
+				if (!iAuthorizedRolesSet.contains(iRole)) {
 					iRequestContext.abortWith(ACCESS_DENIED);
 					return;
 				}
 			}
 		}
-	}
-
-	private boolean isUserAllowed(final String username, final String password, final Set<String> rolesSet) {
-		boolean isAllowed = false;
-
-		// Step 1. Fetch password from database and match with password in argument
-		// If both match then get the defined role for user from database and continue; else return isAllowed [false]
-		// Access the database and do this part yourself
-		// String userRole = userMgr.getUserRole(username);
-
-		if (username.equals("authorized") && password.equals("authorized")) {
-			final String userRole = "user";
-
-			// Step 2. Verify user role
-			if (rolesSet.contains(userRole)) {
-				isAllowed = true;
-			}
-		}
-		return isAllowed;
 	}
 }
