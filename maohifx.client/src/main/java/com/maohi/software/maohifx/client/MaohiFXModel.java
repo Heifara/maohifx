@@ -32,6 +32,15 @@ public class MaohiFXModel {
 
 	public MaohiFXModel(final String aConfigFilePath) {
 		this.configFilePathProperty().set(aConfigFilePath);
+
+		final File iFile = new File(this.configFilePathProperty().get());
+		if (!iFile.exists()) {
+			final Configuration iConfiguration = new Configuration();
+			iConfiguration.setHistoryUrl(new HistoryUrl());
+			iConfiguration.setHomeUrl("");
+			iConfiguration.setAuthenticationServer("");
+			this.save(iConfiguration);
+		}
 	}
 
 	public StringProperty configFilePathProperty() {
