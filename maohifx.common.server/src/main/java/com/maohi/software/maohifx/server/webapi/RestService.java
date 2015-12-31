@@ -9,6 +9,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 import javax.xml.transform.URIResolver;
 
@@ -32,6 +33,9 @@ public class RestService {
 
 	@Context
 	UriInfo uriInfo;
+
+	@Context
+	SecurityContext securityContext;
 
 	private File baseDir;
 

@@ -35,7 +35,7 @@ public class AuthenticationService {
 			if (iElement.getUsername().equals(iElement.getPassword())) {
 				iElement.setToken(UUID.randomUUID().toString());
 				iElement.setRole("user");
-				AuthenticationFilter.add(iElement.getToken());
+				AuthenticationFilter.put(iElement.getToken(), iElement);
 				return Response.ok().entity(iElement).build();
 			} else {
 				return Response.status(Status.NOT_ACCEPTABLE).build();

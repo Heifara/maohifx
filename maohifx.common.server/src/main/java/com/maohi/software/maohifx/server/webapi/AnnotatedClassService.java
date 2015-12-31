@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -94,6 +95,7 @@ public abstract class AnnotatedClassService<A extends AbstractDAO<T>, T extends 
 
 	abstract Class<A> getDAOClass();
 
+	@RolesAllowed("user")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response getFromQueryParam(@QueryParam("uuid") final String aUuid) {
@@ -132,8 +134,7 @@ public abstract class AnnotatedClassService<A extends AbstractDAO<T>, T extends 
 		try {
 			// Generate the data source ".xml" from Element
 			final File iXmlFile = File.createTempFile("maohifx", ".xml");
-			this.writeXML(this.toJaxb(iElement), new FileOutputStream(iXmlFile), this.getJaxbPackage(),
-					this.getClass().getClassLoader());
+			this.writeXML(this.toJaxb(iElement), new FileOutputStream(iXmlFile), this.getJaxbPackage(), this.getClass().getClassLoader());
 
 			// Create Transformer
 			final TransformerFactory iTransformerFactory = TransformerFactory.newInstance();
@@ -141,10 +142,8 @@ public abstract class AnnotatedClassService<A extends AbstractDAO<T>, T extends 
 			// Create FO
 			final File iFoFile = File.createTempFile("maohifx", ".fo");
 			final OutputStream iFOOutputStream = new FileOutputStream(iFoFile);
-			final Transformer iFoTransformer = iTransformerFactory
-					.newTransformer(new StreamSource(this.getXslInputStream(iElement)));
-			iFoTransformer.transform(new StreamSource(new FileInputStream(iXmlFile)),
-					new StreamResult(iFOOutputStream));
+			final Transformer iFoTransformer = iTransformerFactory.newTransformer(new StreamSource(this.getXslInputStream(iElement)));
+			iFoTransformer.transform(new StreamSource(new FileInputStream(iXmlFile)), new StreamResult(iFOOutputStream));
 			iFOOutputStream.close();
 
 			// Create PDF
@@ -152,8 +151,7 @@ public abstract class AnnotatedClassService<A extends AbstractDAO<T>, T extends 
 			final FopFactory iFopFactory = FopFactory.newInstance(new File(".").toURI());
 			final OutputStream aPDFOutputStream = new FileOutputStream(iPdfFile);
 			final FOUserAgent iFOUserAgent = iFopFactory.newFOUserAgent();
-			final Fop iFop = iFopFactory.newFop(org.apache.xmlgraphics.util.MimeConstants.MIME_PDF, iFOUserAgent,
-					aPDFOutputStream);
+			final Fop iFop = iFopFactory.newFop(org.apache.xmlgraphics.util.MimeConstants.MIME_PDF, iFOUserAgent, aPDFOutputStream);
 			final Transformer iPdfTransformer = iTransformerFactory.newTransformer();
 			iPdfTransformer.transform(new StreamSource(iFoFile), new SAXResult(iFop.getDefaultHandler()));
 			aPDFOutputStream.close();
@@ -166,6 +164,7 @@ public abstract class AnnotatedClassService<A extends AbstractDAO<T>, T extends 
 
 	}
 
+	@RolesAllowed("user")
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -210,6 +209,7 @@ public abstract class AnnotatedClassService<A extends AbstractDAO<T>, T extends 
 
 	abstract public List<T> search(String aPattern);
 
+	@RolesAllowed("user")
 	@Path("search")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -217,8 +217,7 @@ public abstract class AnnotatedClassService<A extends AbstractDAO<T>, T extends 
 		try {
 			final List<T> iElements = this.search(aPattern);
 			for (final T iElement : iElements) {
-				iElement.setHref(this.getLocalContextUri() + "/webapi/"
-						+ this.getAnnotatedClass().getSimpleName().toLowerCase() + "?uuid=" + iElement.getUuid());
+				iElement.setHref(this.getLocalContextUri() + "/webapi/" + this.getAnnotatedClass().getSimpleName().toLowerCase() + "?uuid=" + iElement.getUuid());
 			}
 			final String iJSONObject = new ObjectMapper().writeValueAsString(iElements);
 			return Response.ok(iJSONObject).build();
@@ -242,8 +241,7 @@ public abstract class AnnotatedClassService<A extends AbstractDAO<T>, T extends 
 	 * @param aClassLoader
 	 *            the ClassLoader use during the newInstance()
 	 */
-	public void writeXML(final Object aElement, final OutputStream aOutputStream, final String aPackage,
-			final ClassLoader aClassLoader) {
+	public void writeXML(final Object aElement, final OutputStream aOutputStream, final String aPackage, final ClassLoader aClassLoader) {
 		try {
 			final JAXBContext iJaxbContext = JAXBContext.newInstance(aPackage, aClassLoader);
 			final Marshaller iMarshaller = iJaxbContext.createMarshaller();

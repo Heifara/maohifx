@@ -3,11 +3,16 @@
  */
 package com.maohi.software.maohifx.common;
 
+import java.security.Principal;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * @author heifara
  *
  */
-public class Profile {
+@JsonIgnoreProperties({ "name" })
+public class Profile implements Principal {
 
 	private String username;
 	private String password;
@@ -21,6 +26,11 @@ public class Profile {
 		super();
 		this.username = username;
 		this.password = password;
+	}
+
+	@Override
+	public String getName() {
+		return this.username;
 	}
 
 	/**

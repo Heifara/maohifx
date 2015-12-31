@@ -1,10 +1,12 @@
 package com.maohi.software.maohifx.server.webapi;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
+import java.security.Principal;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -16,24 +18,66 @@ import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
 
 import org.glassfish.jersey.internal.util.Base64;
 
+import com.maohi.software.maohifx.common.Profile;
+
 /**
- * This filter verify the access permissions for a user based on username and passowrd provided in request
+ * @author heifara
+ *
  */
 @Provider
 public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequestFilter {
+
+	/**
+	 * @author heifara
+	 *
+	 */
+	public class AuthenticationSecurityContext implements SecurityContext {
+
+		Profile profile;
+
+		public AuthenticationSecurityContext(final Profile aProfile) {
+			this.profile = aProfile;
+		}
+
+		@Override
+		public String getAuthenticationScheme() {
+			return SecurityContext.FORM_AUTH;
+		}
+
+		@Override
+		public Principal getUserPrincipal() {
+			return this.profile;
+		}
+
+		@Override
+		public boolean isSecure() {
+			return false;
+		}
+
+		@Override
+		public boolean isUserInRole(final String aRole) {
+			if (this.profile.getRole().equals(aRole)) {
+				return true;
+			}
+
+			return false;
+		}
+
+	}
 
 	private static final String AUTHORIZATION_PROPERTY = "Authorization";
 	private static final String AUTHENTICATION_SCHEME = "Basic";
 	private static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED).build();
 	private static final Response ACCESS_FORBIDDEN = Response.status(Response.Status.FORBIDDEN).build();
-	private static List<String> registeredToken = new ArrayList<>();
+	private static Map<String, Profile> registeredToken = new HashMap<>();
 
-	public static void add(final String aToken) {
-		registeredToken.add(aToken);
+	public static void put(final String aToken, final Profile aProfile) {
+		registeredToken.put(aToken, aProfile);
 	}
 
 	@Context
@@ -70,17 +114,23 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 
 			// Split username and password tokens
 			final StringTokenizer tokenizer = new StringTokenizer(tokenAndRole, ":");
+
+			// Check Token if not empty
 			final String iToken = tokenizer.nextToken();
 			if (iToken.isEmpty()) {
 				iRequestContext.abortWith(ACCESS_DENIED);
 				return;
 			}
-			if (!registeredToken.contains(iToken)) {
+
+			// Check if Token has not expired
+			final Profile iProfile = registeredToken.get(iToken);
+			if (iProfile == null) {
 				iRequestContext.abortWith(ACCESS_DENIED);
 				return;
 			}
+			iRequestContext.setSecurityContext(new AuthenticationSecurityContext(iProfile));
 
-			// Verify user access
+			// Check Role
 			final String iRole = tokenizer.nextToken();
 			if (iMethod.isAnnotationPresent(RolesAllowed.class)) {
 				final RolesAllowed rolesAnnotation = iMethod.getAnnotation(RolesAllowed.class);
@@ -89,6 +139,7 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 					iRequestContext.abortWith(ACCESS_DENIED);
 					return;
 				}
+
 			}
 		}
 	}
