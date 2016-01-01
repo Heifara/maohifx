@@ -52,6 +52,13 @@ function InvoiceController() {
 	PaymentMode.search(paymentModeAutoCompletion);
 
 	this.fireEditable();
+
+	this.onSucces = new Runnable({
+		run : function() {
+			controller.addInvoiceLineEvent();
+			controller.addInvoicePaymentLineEvent();
+		}
+	})
 }
 
 InvoiceController.prototype.addInvoiceLineEvent = function(aEvent) {
@@ -101,10 +108,7 @@ InvoiceController.prototype.saveEvent = function() {
 		this.invoice.removeLastInvoicePaymentLine();
 	}
 
-	this.invoice.save();
-
-	this.addInvoiceLineEvent();
-	this.addInvoicePaymentLineEvent();
+	this.invoice.save(this.onSucces);
 }
 
 InvoiceController.prototype.validEvent = function() {

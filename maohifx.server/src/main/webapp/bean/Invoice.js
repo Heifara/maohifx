@@ -3,7 +3,7 @@ Invoice.search = function(aCollection, aPattern) {
 	if (typeof (aPattern) != 'undefined') {
 		iPattern = aPattern.replaceAll(" ", "+");
 	}
-	
+
 	$http.ajax({
 		url : "@maohifx.server/webapi/invoice/search?pattern=" + iPattern,
 		type : "get",
@@ -226,7 +226,15 @@ Invoice.prototype.getInvoicePaymentLines = function() {
 	return iArrayList;
 }
 
-Invoice.prototype.save = function() {
+/**
+ * Persist data
+ * 
+ * @param onSucces
+ *            Executed when save succes
+ * @param onError
+ *            Executed when save error
+ */
+Invoice.prototype.save = function(onSucces, onError) {
 	if (this.isValid()) {
 		$http.ajax({
 			source : this,
@@ -239,9 +247,17 @@ Invoice.prototype.save = function() {
 				this.source.parseJSON($result);
 
 				alert("Save success!");
+
+				if (typeof (onSucces) != 'undefined') {
+					onSucces.run()
+				}
 			},
-			error : function($result, $status) {
-				error("Erreur lors de l'enregistrement de la facture", $result, $status);
+			error : function($error, $status) {
+				error("Erreur lors de l'enregistrement de la facture", $error, $status);
+
+				if (typeof (onError) != 'undefined') {
+					onError.run()
+				}
 			}
 		});
 	}
