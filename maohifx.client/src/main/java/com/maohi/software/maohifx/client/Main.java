@@ -30,6 +30,8 @@ public class Main extends Application {
 
 	@Override
 	public void start(final Stage aStage) throws Exception {
+		this.config = "./config.xml";
+
 		try {
 			final CmdLineParser iParser = new CmdLineParser(this);
 			iParser.parseArgument(this.getParameters().getRaw());
