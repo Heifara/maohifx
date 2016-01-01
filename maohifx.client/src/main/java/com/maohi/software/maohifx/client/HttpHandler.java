@@ -11,9 +11,11 @@ import java.net.URL;
 import javax.script.ScriptException;
 import javax.ws.rs.core.Response.Status;
 
+import com.maohi.software.maohifx.client.event.AuthentificationEvent;
 import com.maohi.software.maohifx.client.event.ExceptionEvent;
 import com.maohi.software.maohifx.client.event.SuccesEvent;
 
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import jdk.nashorn.api.scripting.JSObject;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
@@ -27,17 +29,21 @@ import jdk.nashorn.internal.runtime.ScriptObject;
 @SuppressWarnings("restriction")
 public class HttpHandler {
 
-	private final URLHandler urlHandler;
 	private final URL location;
+	private EventHandler<Event> onStart;
+	private EventHandler<AuthentificationEvent> onAuthentification;
+	private EventHandler<Event> onEnd;
 
-	public HttpHandler(final URLHandler urlHandler, final URL aLocation) {
-		this.urlHandler = urlHandler;
-
+	public HttpHandler(final URL aLocation) {
 		this.location = aLocation;
 	}
 
 	public void ajax(final JSObject aJsObject) {
-		this.urlHandler.setOnSucces(new EventHandler<SuccesEvent>() {
+		final URLHandler iURLHandler = new URLHandler();
+		iURLHandler.setOnStart(this.onStart);
+		iURLHandler.setOnAuthentification(this.onAuthentification);
+		iURLHandler.setOnEnd(this.onEnd);
+		iURLHandler.setOnSucces(new EventHandler<SuccesEvent>() {
 
 			@Override
 			public void handle(final SuccesEvent aEvent) {
@@ -46,7 +52,7 @@ public class HttpHandler {
 				iSuccessMethod.call(iScriptObject, aEvent.getItem(), Status.OK);
 			}
 		});
-		this.urlHandler.setOnExceptionThrown(new EventHandler<ExceptionEvent>() {
+		iURLHandler.setOnExceptionThrown(new EventHandler<ExceptionEvent>() {
 
 			@Override
 			public void handle(final ExceptionEvent aEvent) {
@@ -64,7 +70,7 @@ public class HttpHandler {
 			@Override
 			public void run() {
 				try {
-					HttpHandler.this.urlHandler.process(HttpHandler.this.location, aJsObject);
+					iURLHandler.process(HttpHandler.this.location, aJsObject);
 				} catch (final IOException aException) {
 					aException.printStackTrace();
 				}
@@ -97,5 +103,29 @@ public class HttpHandler {
 
 	public void post(final String aUrl) throws NoSuchMethodException, ScriptException, IOException {
 		this.ajax(this.newJSObject(aUrl, "post"));
+	}
+
+	/**
+	 * @param onAuthentification
+	 *            the onAuthentification to set
+	 */
+	public void setOnAuthentification(final EventHandler<AuthentificationEvent> onAuthentification) {
+		this.onAuthentification = onAuthentification;
+	}
+
+	/**
+	 * @param onEnd
+	 *            the onEnd to set
+	 */
+	public void setOnEnd(final EventHandler<Event> onEnd) {
+		this.onEnd = onEnd;
+	}
+
+	/**
+	 * @param onStart
+	 *            the onStart to set
+	 */
+	public void setOnStart(final EventHandler<Event> onStart) {
+		this.onStart = onStart;
 	}
 }

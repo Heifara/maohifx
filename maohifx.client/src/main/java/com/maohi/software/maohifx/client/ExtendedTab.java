@@ -62,12 +62,12 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	private String refreshText;
 
 	private EventHandler<Event> onStart;
+	private EventHandler<AuthentificationEvent> onAuthentification;
 	private EventHandler<SuccesEvent> onSucces;
 	private EventHandler<Event> onEnd;
-
 	private EventHandler<ConnectEvent> onConnectSucces;
-	private EventHandler<ConnectEvent> onConnectError;
 
+	private EventHandler<ConnectEvent> onConnectError;
 	private EventHandler<ExceptionEvent> onExceptionThrown;
 
 	@FXML
@@ -75,9 +75,9 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 	@FXML
 	private BorderPane content;
+
 	@FXML
 	private MenuItem hidShowUrl;
-
 	@FXML
 	private MenuButton menuButton;
 
@@ -201,7 +201,12 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 				try {
 					iLoader.setBuilderFactory(ExtendedTab.this.view.getBuilderFactory());
 					iLoader.getNamespace().put("$tab", ExtendedTab.this);
-					iLoader.getNamespace().put("$http", new HttpHandler(ExtendedTab.this.newUrlHandler(), iLoader.getLocation()));
+
+					final HttpHandler iHandler = new HttpHandler(iLoader.getLocation());
+					iHandler.setOnStart(ExtendedTab.this.getOnStart());
+					iHandler.setOnAuthentification(ExtendedTab.this.onAuthentification);
+					iHandler.setOnEnd(ExtendedTab.this.getOnEnd());
+					iLoader.getNamespace().put("$http", iHandler);
 
 					ExtendedTab.this.view.populateNamespace(iLoader);
 
@@ -239,6 +244,22 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 				ExtendedTab.this.progressIndicator.setVisible(aRunning);
 			}
 		});
+	}
+
+	public EventHandler<AuthentificationEvent> getOnAuthentification() {
+		if (this.onAuthentification == null) {
+			this.onAuthentification = new EventHandler<AuthentificationEvent>() {
+
+				@Override
+				public void handle(final AuthentificationEvent aEvent) {
+					final Profile iProfile = ExtendedTab.this.controller.getProfile();
+					if (iProfile != null) {
+						aEvent.getWebTarget().register(HttpAuthenticationFeature.basic(iProfile.getToken(), iProfile.getRole()));
+					}
+				}
+			};
+		}
+		return this.onAuthentification;
 	}
 
 	public EventHandler<ConnectEvent> getOnConnectError() {
@@ -358,16 +379,7 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	protected URLHandler newUrlHandler() {
 		final URLHandler iUrlHandler = new URLHandler();
 		iUrlHandler.setOnStart(this.getOnStart());
-		iUrlHandler.setOnAuthentification(new EventHandler<AuthentificationEvent>() {
-
-			@Override
-			public void handle(final AuthentificationEvent aEvent) {
-				final Profile iProfile = ExtendedTab.this.controller.getProfile();
-				if (iProfile != null) {
-					aEvent.getWebTarget().register(HttpAuthenticationFeature.basic(iProfile.getToken(), iProfile.getRole()));
-				}
-			}
-		});
+		iUrlHandler.setOnAuthentification(this.getOnAuthentification());
 		iUrlHandler.setOnSucces(this.getOnSucces());
 		iUrlHandler.setOnEnd(this.getOnEnd());
 		iUrlHandler.setOnExceptionThrown(this.getOnExceptionThrown());
