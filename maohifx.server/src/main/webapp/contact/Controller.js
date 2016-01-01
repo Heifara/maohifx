@@ -1,8 +1,3 @@
-load("http://localhost:8080/maohifx.server/common.js");
-load("http://localhost:8080/maohifx.server/bean/Contact.js");
-load("http://localhost:8080/maohifx.server/bean/Email.js");
-load("http://localhost:8080/maohifx.server/bean/Phone.js");
-
 function ContactController() {
 	this.emailRowIndex = 0;
 	this.phoneRowIndex = 0;

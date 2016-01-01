@@ -13,6 +13,9 @@
 	<stylesheets>
 		<URL value="@../app.css" />
 	</stylesheets>
+	<fx:script source="../common.js" />
+	<fx:script source="../bean/Product.js" />
+	<fx:script source="../bean/Tva.js" />
 	<fx:script source="../products/Controller.js" />
 	<top>
 		<GridPane BorderPane.alignment="CENTER">

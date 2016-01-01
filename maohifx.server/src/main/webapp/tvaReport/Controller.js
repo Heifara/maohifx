@@ -13,5 +13,5 @@ function TvaReportController() {
 }
 
 TvaReportController.prototype.searchEvent = function(aEvent) {
-	tvaReports.setItems(TvaReport.search(start.getValue(), end.getValue()));
+	TvaReport.search(tvaReports.getItems(), start.getValue(), end.getValue());
 }

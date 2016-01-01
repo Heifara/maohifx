@@ -1,27 +1,26 @@
-Tva.search = function(aPattern) {
+Tva.search = function(aCollection, aPattern) {
 	iPattern = "";
 	if (typeof (aPattern) != 'undefined') {
 		iPattern = aPattern.replaceAll(" ", "+");
 	}
 
-	iSearchResult = FXCollections.observableArrayList();
 	$http.ajax({
 		url : "@maohifx.server/webapi/tva/search?pattern=" + iPattern,
 		type : "get",
 		contentType : "application/x-www-form-urlencoded",
 		dataType : "application/json",
 		success : function($result, $status) {
+			aCollection.clear();
 			for ( var iItem in $result) {
 				iElement = new Tva();
 				iElement.parseJSON($result[iItem]);
-				iSearchResult.add(iElement);
+				aCollection.add(iElement);
 			}
 		},
 		error : function($result, $stackTrace) {
 			error("Erreur durant la recherche", $error, $stackTrace);
 		}
 	});
-	return iSearchResult;
 }
 
 function Tva() {

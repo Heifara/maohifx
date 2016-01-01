@@ -11,5 +11,5 @@ function SalesmanController() {
 }
 
 SalesmanController.prototype.searchEvent = function(aEvent) {
-	tableView.setItems(Salesman.search(pattern.getText()));
+	Salesman.search(tableView.getItems(), pattern.getText())
 }

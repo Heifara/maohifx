@@ -1,7 +1,3 @@
-load("http://localhost:8080/maohifx.server/common.js");
-load("http://localhost:8080/maohifx.server/bean/Product.js");
-load("http://localhost:8080/maohifx.server/bean/Tva.js");
-
 function ProductsController() {
 	if (typeof ($tab) != 'undefined') {
 		$tab.setText("Produits");
@@ -13,14 +9,9 @@ function ProductsController() {
 		}
 	}));
 
-	// AutoCompletion
-	iResults = Product.search();
-	for (iIndex in iResults) {
-		iProduct = iResults.get(iIndex);
-		patternAutoCompletion.add(iProduct.designation.get());
-	}
+	Product.search(patternAutoCompletion)
 }
 
 ProductsController.prototype.searchEvent = function(aEvent) {
-	tableView.setItems(Product.search(pattern.getText()));
+	Product.search(tableView.getItems(), pattern.getText());
 }

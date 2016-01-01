@@ -1,7 +1,3 @@
-load("http://localhost:8080/maohifx.server/common.js");
-load("http://localhost:8080/maohifx.server/bean/Product.js");
-load("http://localhost:8080/maohifx.server/bean/Tva.js");
-
 function ProductController() {
 	this.product = new Product();
 	if (typeof ($item) != "undefined") {
@@ -27,8 +23,8 @@ function ProductController() {
 	}));
 
 	// AutoCompletion
-	designationAutoCompletion.addAll(Product.search());
-	tvaAutoCompletion.addAll(Tva.search());
+	Product.search(designationAutoCompletion);
+	Tva.search(tvaAutoCompletion);
 
 	runLater(new Runnable({
 		run : function() {

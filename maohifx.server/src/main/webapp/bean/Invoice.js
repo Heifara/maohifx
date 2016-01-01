@@ -1,28 +1,26 @@
-Invoice.search = function(aPattern) {
+Invoice.search = function(aCollection, aPattern) {
 	iPattern = "";
 	if (typeof (aPattern) != 'undefined') {
 		iPattern = aPattern.replaceAll(" ", "+");
 	}
-
-	iSearchResult = FXCollections.observableArrayList();
+	
 	$http.ajax({
 		url : "@maohifx.server/webapi/invoice/search?pattern=" + iPattern,
 		type : "get",
 		contentType : "application/x-www-form-urlencoded",
 		dataType : "application/json",
 		success : function($result, $status) {
+			aCollection.clear()
 			for ( var item in $result) {
 				iInvoice = new Invoice();
 				iInvoice.parseJSON($result[item]);
-				iSearchResult.add(iInvoice);
+				aCollection.add(iInvoice);
 			}
 		},
-		error : function($result, $stackTrace) {
+		error : function($error, $stackTrace) {
 			error("Erreur durant la recherche", $error, $stackTrace);
 		}
 	});
-
-	return iSearchResult;
 }
 
 function Invoice() {
@@ -170,7 +168,6 @@ Invoice.prototype.getTabTitle = function() {
 }
 
 Invoice.prototype.print = function() {
-	System.out.println(this.uuid.get());
 	$http.ajax({
 		url : "@maohifx.server/webapi/invoice/pdf?uuid=" + this.uuid.get(),
 		type : "get",
@@ -179,7 +176,7 @@ Invoice.prototype.print = function() {
 			print($status);
 			java.lang.Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + $result);
 		},
-		error : function($result, $stackTrace) {
+		error : function($error, $stackTrace) {
 			error("Erreur durant la recherche", $error, $stackTrace);
 		}
 	});

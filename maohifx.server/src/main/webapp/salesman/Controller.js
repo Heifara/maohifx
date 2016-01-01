@@ -11,7 +11,7 @@ function SalesmanController() {
 	this.bindChildren();
 
 	// Auto Completion
-	contactAutoCompletion.addAll(Contact.search());
+	Contact.search(contactAutoCompletion);
 }
 
 SalesmanController.prototype.bindChildren = function() {

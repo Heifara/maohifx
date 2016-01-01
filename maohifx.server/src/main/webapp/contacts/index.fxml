@@ -10,10 +10,14 @@
 <?import com.maohi.software.maohifx.control.cell.LinkCellFactory?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
-	<fx:script source="../contacts/Controller.js" />
 	<stylesheets>
 		<URL value="@../app.css" />
 	</stylesheets>
+	<fx:script source="../common.js" />
+	<fx:script source="../bean/Contact.js" />
+	<fx:script source="../bean/Email.js" />
+	<fx:script source="../bean/Phone.js" />
+	<fx:script source="../contacts/Controller.js" />
 	<top>
 		<GridPane BorderPane.alignment="CENTER">
 			<columnConstraints>

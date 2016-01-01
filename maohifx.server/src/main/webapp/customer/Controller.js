@@ -1,5 +1,3 @@
-load("http://localhost:8080/maohifx.server/common.js");
-
 function CustomerController() {
 	this.customer = new Customer();
 	if (typeof ($item) != 'undefined') {
@@ -13,7 +11,7 @@ function CustomerController() {
 	this.bindChildren();
 
 	// Auto Completion
-	contactAutoCompletion.addAll(Contact.search());
+	Contact.search(contactAutoCompletion);
 }
 
 CustomerController.prototype.bindChildren = function() {

@@ -22,6 +22,9 @@
 	<stylesheets>
 		<URL value="@../app.css" />
 	</stylesheets>
+	<fx:script source="../common.js" />
+	<fx:script source="../bean/Product.js" />
+	<fx:script source="../bean/Tva.js" />
 	<fx:script source="../product/Controller.js" />
 	<top>
 		<ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">

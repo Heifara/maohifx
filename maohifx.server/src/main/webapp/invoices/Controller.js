@@ -1,5 +1,3 @@
-load("http://localhost:8080/maohifx.server/common.js");
-
 function InvoicesController() {
 	if (typeof ($tab) != 'undefined') {
 		$tab.setText("Factures");
@@ -13,5 +11,5 @@ function InvoicesController() {
 }
 
 InvoicesController.prototype.searchEvent = function(aEvent) {
-	tableView.setItems(Invoice.search(pattern.getText()));
+	Invoice.search(tableView.getItems(), pattern.getText());
 }

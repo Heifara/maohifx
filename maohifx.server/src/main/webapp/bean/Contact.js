@@ -1,27 +1,25 @@
-Contact.search = function(aPattern) {
+Contact.search = function(aCollection, aPattern) {
 	iPattern = "";
 	if (typeof (aPattern) != 'undefined') {
 		iPattern = aPattern.replaceAll(" ", "+");
 	}
-
-	iSearchResult = FXCollections.observableArrayList();
 	$http.ajax({
 		url : "@maohifx.server/webapi/contact/search?pattern=" + iPattern,
 		type : "get",
 		contentType : "application/x-www-form-urlencoded",
 		dataType : "application/json",
 		success : function($result, $status) {
+			aCollection.clear();
 			for ( var iItem in $result) {
 				iElement = new Contact();
 				iElement.parseJSON($result[iItem]);
-				iSearchResult.add(iElement);
+				aCollection.add(iElement);
 			}
 		},
 		error : function($error, $status, $stackTrace) {
 			error("Erreur durant la recherche", $error, $stackTrace);
 		}
 	});
-	return iSearchResult;
 }
 
 function Contact() {
@@ -92,10 +90,8 @@ Contact.prototype.save = function() {
 
 			alert("Sauvegarde réussi");
 		},
-		error : function($error, $status, $stackTrace) {
-			alert($error + "\n" + $stackTrace);
-			System.out.println($status)
-			System.out.println($stackTrace)
+		error : function($result, $stackTrace) {
+			error("Erreur lors de la sauvegarde", $error, $stackTrace);
 		}
 
 	});

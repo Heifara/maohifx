@@ -1,13 +1,3 @@
-load("http://localhost:8080/maohifx.server/common.js");
-load("http://localhost:8080/maohifx.server/bean/Invoice.js");
-load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
-load("http://localhost:8080/maohifx.server/bean/InvoicePaymentLine.js");
-load("http://localhost:8080/maohifx.server/bean/PaymentMode.js");
-load("http://localhost:8080/maohifx.server/bean/Product.js");
-load("http://localhost:8080/maohifx.server/bean/Tva.js");
-load("http://localhost:8080/maohifx.server/bean/Contact.js");
-load("http://localhost:8080/maohifx.server/bean/Customer.js");
-
 function InvoiceController() {
 	this.autoCompletedProduct = null;
 
@@ -57,11 +47,11 @@ function InvoiceController() {
 	});
 	invoicePaymentLines.getContextMenu().getItems().add(iRemoveInvoicePaymentLineMenuItem);
 
-	autoCompletion.addAll(Product.search());
-	customerAutoCompletion.addAll(Customer.search());
-	paymentModeAutoCompletion.addAll(PaymentMode.search());
+	Product.search(autoCompletion);
+	Contact.search(customerAutoCompletion);
+	PaymentMode.search(paymentModeAutoCompletion);
 
-	//this.fireEditable();
+	this.fireEditable();
 }
 
 InvoiceController.prototype.addInvoiceLineEvent = function(aEvent) {
@@ -122,7 +112,7 @@ InvoiceController.prototype.validEvent = function() {
 		this.invoice.validDate.setDate(System.currentTimeMillis());
 
 		this.saveEvent();
-		
+
 		this.fireEditable();
 	}
 }
@@ -143,8 +133,8 @@ InvoiceController.prototype.removeInvoicePaymentLineEvent = function(aEvent) {
 InvoiceController.prototype.fireEditable = function() {
 	if (!this.invoice.isEditable()) {
 		disableControls(view);
-		
-		//Handle exceptions
+
+		// Handle exceptions
 		printButton.setDisable(false);
 	}
 }

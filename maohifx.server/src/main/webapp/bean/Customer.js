@@ -1,27 +1,25 @@
-Customer.search = function(aPattern) {
+Customer.search = function(aCollection, aPattern) {
 	iPattern = "";
 	if (typeof (aPattern) != 'undefined') {
 		iPattern = aPattern.replaceAll(" ", "+");
 	}
-
-	iSearchResult = FXCollections.observableArrayList();
 	$http.ajax({
-		url : "http://localhost:8080/maohifx.server/webapi/customer/search?pattern=" + iPattern,
+		url : "@maohifx.server/webapi/customer/search?pattern=" + iPattern,
 		type : "get",
 		contentType : "application/x-www-form-urlencoded",
 		dataType : "application/json",
 		success : function($result, $status) {
+			aCollection.clear();
 			for ( var iItem in $result) {
 				iElement = new Customer();
 				iElement.parseJSON($result[iItem]);
-				iSearchResult.add(iElement);
+				aCollection.add(iElement);
 			}
 		},
 		error : function($error, $stackTrace) {
 			error("Erreur durant la recherche", $error, $stackTrace);
 		}
 	});
-	return iSearchResult;
 }
 
 function Customer() {
