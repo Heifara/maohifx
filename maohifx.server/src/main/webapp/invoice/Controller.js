@@ -48,7 +48,7 @@ function InvoiceController() {
 	invoicePaymentLines.getContextMenu().getItems().add(iRemoveInvoicePaymentLineMenuItem);
 
 	Product.search(autoCompletion);
-	Contact.search(customerAutoCompletion);
+	Customer.search(customerAutoCompletion);
 	PaymentMode.search(paymentModeAutoCompletion);
 
 	this.fireEditable();
