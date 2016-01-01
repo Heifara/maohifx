@@ -203,6 +203,7 @@ public class MaohiFXView extends BorderPane implements BuilderFactory, Callback<
 		aLoader.getNamespace().put("$stage", this.stage);
 		aLoader.getNamespace().put("$tabpane", this.tabPane);
 		aLoader.getNamespace().put("$scene", this.scene);
+		aLoader.getNamespace().put("$profile", this.controller.getProfile());
 	}
 
 	public void show() {
