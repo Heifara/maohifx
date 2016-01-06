@@ -1,5 +1,3 @@
-load("http://localhost:8080/maohifx.server/common.js");
-
 function SupplierController() {
 	this.supplier = new Supplier();
 	if (typeof ($item) != 'undefined') {

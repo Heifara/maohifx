@@ -6,22 +6,6 @@ load("fx:controls.js");
 load("fx:graphics.js");
 
 /**
- * Load all bean files
- */
-load("http://localhost:8080/maohifx.server/bean/Contact.js");
-load("http://localhost:8080/maohifx.server/bean/Customer.js");
-load("http://localhost:8080/maohifx.server/bean/Email.js");
-load("http://localhost:8080/maohifx.server/bean/Invoice.js");
-load("http://localhost:8080/maohifx.server/bean/InvoiceLine.js");
-load("http://localhost:8080/maohifx.server/bean/InvoicePaymentLine.js");
-load("http://localhost:8080/maohifx.server/bean/PaymentMode.js");
-load("http://localhost:8080/maohifx.server/bean/Phone.js");
-load("http://localhost:8080/maohifx.server/bean/Product.js");
-load("http://localhost:8080/maohifx.server/bean/Supplier.js");
-load("http://localhost:8080/maohifx.server/bean/Tva.js");
-load("http://localhost:8080/maohifx.server/bean/TvaReport.js");
-
-/**
  * 
  */
 var Application = javafx.application.Application;

@@ -24,13 +24,12 @@ Email.prototype.parseJSON = function(aJSONObject) {
 Email.prototype.save = function() {
 	$http.ajax({
 		source : this,
-		url : "http://localhost:8080/maohifx.server/webapi/contact",
+		url : "@maohifx.server/webapi/contact",
 		type : "post",
 		contentType : "application/x-www-form-urlencoded",
 		dataType : "application/json",
 		data : this.toJSON(),
 		success : function($result, $status) {
-			load("http://localhost:8080/maohifx.server/common.js");
 			this.source.parseJSON($result);
 
 			alert("Sauvegarde réussi");

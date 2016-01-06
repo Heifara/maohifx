@@ -1,5 +1,3 @@
-load("http://localhost:8080/maohifx.server/common.js");
-
 function TvaReportController() {
 	if (typeof ($tab) != 'undefined') {
 		$tab.setText("Déclaration TVA");
