@@ -3,6 +3,8 @@
  */
 package com.maohi.software.maohifx.common.server;
 
+import java.net.URL;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -16,11 +18,12 @@ public class HibernateUtil {
 
 	private static final Configuration configuration = new Configuration();
 	private static SessionFactory sessionFactory;
+	private static URL configFileUrl;
 
 	private static SessionFactory buildSessionFactory() {
 		try {
 			System.out.println(System.getProperty("user.dir"));
-			configuration.configure();
+			configuration.configure(configFileUrl);
 			final ServiceRegistry iServiceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
 			return configuration.buildSessionFactory(iServiceRegistry);
 		} catch (final Throwable aThrowable) {
@@ -38,5 +41,9 @@ public class HibernateUtil {
 			sessionFactory = buildSessionFactory();
 		}
 		return sessionFactory;
+	}
+
+	public static void setConfigurationURL(URL url) {
+		configFileUrl = url;
 	}
 }

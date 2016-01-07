@@ -3,6 +3,8 @@
  */
 package com.maohi.software.maohifx.server.webapi.listener;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
 
 import javax.servlet.ServletContextEvent;
@@ -26,12 +28,13 @@ import com.maohi.software.maohifx.invoice.bean.Tva;
 import com.maohi.software.maohifx.invoice.dao.PaymentModeDAO;
 import com.maohi.software.maohifx.invoice.dao.TvaDAO;
 import com.maohi.software.maohifx.product.bean.Product;
+import com.maohi.software.maohifx.server.webapi.MyApplication;
 
 /**
  * @author heifara
  *
  */
-public class HibernateConfiguration implements ServletContextListener {
+public class HibernateConfiguration implements ServletContextListener, Runnable {
 
 	@Override
 	public void contextDestroyed(final ServletContextEvent aServletContextEvent) {
@@ -40,6 +43,8 @@ public class HibernateConfiguration implements ServletContextListener {
 	@Override
 	public void contextInitialized(final ServletContextEvent aServletContextEvent) {
 		try {
+			HibernateUtil.setConfigurationURL(new URL("http://localhost:8080/maohifx.configure/hibernate.cfg.xml"));
+
 			HibernateUtil.getConfiguration().addAnnotatedClass(Invoice.class);
 			HibernateUtil.getConfiguration().addAnnotatedClass(InvoiceLine.class);
 			HibernateUtil.getConfiguration().addAnnotatedClass(InvoicePaymentLine.class);
@@ -53,21 +58,8 @@ public class HibernateConfiguration implements ServletContextListener {
 			HibernateUtil.getConfiguration().addAnnotatedClass(Phone.class);
 			HibernateUtil.getConfiguration().addAnnotatedClass(Salesman.class);
 
-			final Session iSession = HibernateUtil.getSessionFactory().openSession();
-			AbstractDAO.setSession(iSession);
-
-			this.insertPaymentMode(0, "CASH");
-			this.insertPaymentMode(1, "CHEQUE");
-			this.insertPaymentMode(2, "CARTE DE CREDIT");
-
-			this.insertTva(0, "PPN", 0.0);
-			this.insertTva(1, "Service", 13.0);
-			this.insertTva(2, "Produits 1", 6.0);
-			this.insertTva(3, "Produits 2", 16.0);
-
-			AbstractDAO.setSession(null);
-			iSession.close();
-		} catch (Throwable aException) {
+			MyApplication.runLater(this);
+		} catch (MalformedURLException aException) {
 			aException.printStackTrace();
 		}
 	}
@@ -93,5 +85,23 @@ public class HibernateConfiguration implements ServletContextListener {
 		iDao.beginTransaction();
 		iDao.replace(iTva);
 		iDao.commit();
+	}
+
+	@Override
+	public void run() {
+		final Session iSession = HibernateUtil.getSessionFactory().openSession();
+		AbstractDAO.setSession(iSession);
+
+		this.insertPaymentMode(0, "CASH");
+		this.insertPaymentMode(1, "CHEQUE");
+		this.insertPaymentMode(2, "CARTE DE CREDIT");
+
+		this.insertTva(0, "PPN", 0.0);
+		this.insertTva(1, "Service", 13.0);
+		this.insertTva(2, "Produits 1", 6.0);
+		this.insertTva(3, "Produits 2", 16.0);
+
+		AbstractDAO.setSession(null);
+		iSession.close();
 	}
 }

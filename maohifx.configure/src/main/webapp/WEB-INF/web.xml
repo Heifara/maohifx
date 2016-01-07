@@ -9,6 +9,6 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>MaohiFX-Config</servlet-name>
-		<url-pattern>/</url-pattern>
+		<url-pattern>/configure</url-pattern>
 	</servlet-mapping>
 </web-app>

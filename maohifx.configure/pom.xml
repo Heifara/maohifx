@@ -10,14 +10,6 @@
 	<packaging>war</packaging>
 	<name>maohifx.configure</name>
 	<url>http://maven.apache.org</url>
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
 	<build>
 		<finalName>maohifx.configure</finalName>
 		<directory>target</directory>
@@ -49,7 +41,7 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<url>http://localhost:8080/manager/text</url>
+					<url>http://192.168.10.135:8080/manager/text</url>
 					<username>tomcat</username>
 					<password>s3cret</password>
 					<path>/${artifactId}</path>
@@ -59,4 +51,11 @@
 			</plugin>
 		</plugins>
 	</build>
+	<dependencies>
+		<dependency>
+			<groupId>com.maohi.software</groupId>
+			<artifactId>maohifx.common.server</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+	</dependencies>
 </project>
