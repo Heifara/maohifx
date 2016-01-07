@@ -5,7 +5,7 @@
 <hibernate-configuration>
 	<session-factory name="org.hibernate.transaction.JDBCTransactionFactory">
 		<property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
-		<property name="hibernate.connection.password">jpqclmmd</property>
+		<property name="hibernate.connection.password">jpqclmmdp</property>
 		<property name="hibernate.connection.url">jdbc:mysql://192.168.10.51/maohifx</property>
 		<property name="hibernate.connection.username">micropolsu</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
