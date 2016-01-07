@@ -71,6 +71,8 @@ public class HttpHandler {
 			public void run() {
 				try {
 					iURLHandler.process(HttpHandler.this.location, aJsObject);
+				} catch (final InterruptedException aException) {
+					System.err.println(aException.getMessage());
 				} catch (final IOException aException) {
 					aException.printStackTrace();
 				}

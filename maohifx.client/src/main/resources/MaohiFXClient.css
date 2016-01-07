@@ -79,6 +79,10 @@
 	-fx-graphic: url("refresh.png");
 }
 
+#stop {
+	-fx-graphic: url("stop.png");
+}
+
 #config {
 	-fx-graphic: url("config.png");
 }

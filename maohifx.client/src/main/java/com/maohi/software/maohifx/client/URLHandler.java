@@ -75,6 +75,12 @@ public class URLHandler {
 		};
 	}
 
+	private void checkInterrupted() throws InterruptedException {
+		if (Thread.currentThread().isInterrupted()) {
+			throw new InterruptedException("Thread interrupted by user " + Thread.currentThread().getName());
+		}
+	}
+
 	private Entity<?> getEntity(final String aDataType, final Object aData) {
 		switch (aDataType) {
 		case MediaType.APPLICATION_JSON:
@@ -88,7 +94,7 @@ public class URLHandler {
 		}
 	}
 
-	public void process(final URL aLocation, final JSObject aJsObject) throws MalformedURLException, IOException {
+	public void process(final URL aLocation, final JSObject aJsObject) throws MalformedURLException, IOException, InterruptedException {
 		final ScriptObjectMirror iScriptObject = (ScriptObjectMirror) aJsObject;
 
 		if (!iScriptObject.hasMember("type")) {
@@ -121,7 +127,7 @@ public class URLHandler {
 		this.process(new URL(iUrl), iRequestType, iEntity);
 	}
 
-	public void process(final URL aUrl, final String aRequestType, final Entity<?> aEntity) throws IOException {
+	public void process(final URL aUrl, final String aRequestType, final Entity<?> aEntity) throws IOException, InterruptedException {
 		this.onStart.handle(new Event(Event.ANY));
 
 		URL iUrl = aUrl;
@@ -140,10 +146,12 @@ public class URLHandler {
 		this.onEnd.handle(new Event(Event.ANY));
 	}
 
-	protected Response processHttp(final URL iUrl, final String aRequestType, final Entity<?> aEntity) {
+	protected Response processHttp(final URL iUrl, final String aRequestType, final Entity<?> aEntity) throws InterruptedException {
 		try {
+			// Initialize Jersey client
 			final WebTarget iTarget = ClientBuilder.newClient().target(iUrl.toURI());
 			this.onAuthentification.handle(new AuthentificationEvent(Event.ANY, this, iTarget));
+			this.checkInterrupted();
 
 			// Handle QueryParam
 			if ((iUrl.getQuery() != null) && !iUrl.getQuery().isEmpty()) {
@@ -164,71 +172,45 @@ public class URLHandler {
 					}
 				}
 			}
+			this.checkInterrupted();
 
 			// Request the server
+			Response iResponse = null;
 			switch (aRequestType) {
 			case "get":
-				return iTarget.request().get();
+				iResponse = iTarget.request().get();
+				break;
 
 			case "post":
 				if (aEntity == null) {
 					throw new IllegalArgumentException("Can not post with null Entity");
 				}
-
-				return iTarget.request().post(aEntity);
+				iResponse = iTarget.request().post(aEntity);
+				break;
 
 			default:
 				throw new IllegalArgumentException();
 			}
+			this.checkInterrupted();
+			return iResponse;
+
+		} catch (final InterruptedException aException) {
+			throw aException;
+
 		} catch (final Exception aException) {
+			this.checkInterrupted();
+
 			this.onExceptionThrown.handle(new ExceptionEvent(this, aException, -1));
 			return null;
 		}
 	}
 
-	private void processResponse(final Response iResponse, final URL aUrl) throws IOException {
+	private void processResponse(final Response iResponse, final URL aUrl) throws IOException, InterruptedException {
 		try {
 			switch (Status.fromStatusCode(iResponse.getStatus())) {
 			case OK:
-				final String iContentType = iResponse.getHeaderString("Content-Type");
-				if (iContentType != null) {
-					if (iContentType.contains(MediaType.TEXT_HTML)) {
-						this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".html"), aUrl, this.toHttp(aUrl)));
-					} else {
-						switch (iContentType) {
-						case MediaType.APPLICATION_JSON:
-							final Object iObject = iResponse.readEntity(Object.class);
-							this.onSucces.handle(new SuccesEvent(this, iObject, aUrl, this.toHttp(aUrl)));
-							break;
-
-						case MediaType.APPLICATION_XML:
-							this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".xml"), aUrl, this.toHttp(aUrl)));
-							break;
-
-						case MediaType.TEXT_HTML:
-							this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".html"), aUrl, this.toHttp(aUrl)));
-							break;
-
-						case MediaType.TEXT_PLAIN:
-							this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".txt"), aUrl, this.toHttp(aUrl)));
-							break;
-
-						case "image/jpeg":
-							this.onSucces.handle(new SuccesEvent(this, new Image(iResponse.readEntity(InputStream.class)), aUrl, this.toHttp(aUrl)));
-							break;
-
-						case "application/pdf":
-							this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".pdf"), aUrl, this.toHttp(aUrl)));
-							break;
-
-						default:
-							throw new MediaException(iResponse.readEntity(String.class));
-						}
-						break;
-					}
-				} else {
-					this.onSucces.handle(new SuccesEvent(this, null, aUrl, this.toHttp(aUrl)));
-				}
+				this.checkInterrupted();
+				this.processResponseOk(iResponse, aUrl);
 				break;
 
 			case FORBIDDEN:
@@ -249,8 +231,59 @@ public class URLHandler {
 			default:
 				throw new NotSupportedException(iResponse);
 			}
+		} catch (final InterruptedException aException) {
+			throw aException;
+
 		} catch (final Exception aException) {
+			this.checkInterrupted();
+
 			this.onExceptionThrown.handle(new ExceptionEvent(this, aException, iResponse.getStatus()));
+		}
+	}
+
+	private void processResponseOk(final Response iResponse, final URL aUrl) throws MalformedURLException, IOException, InterruptedException {
+		final String iContentType = iResponse.getHeaderString("Content-Type");
+		if (iContentType != null) {
+			if (iContentType.contains(MediaType.TEXT_HTML)) {
+				this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".html"), aUrl, this.toHttp(aUrl)));
+			} else {
+				switch (iContentType) {
+				case MediaType.APPLICATION_JSON:
+					this.checkInterrupted();
+					this.onSucces.handle(new SuccesEvent(this, iResponse.readEntity(Object.class), aUrl, this.toHttp(aUrl)));
+					break;
+
+				case MediaType.APPLICATION_XML:
+					this.checkInterrupted();
+					this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".xml"), aUrl, this.toHttp(aUrl)));
+					break;
+
+				case MediaType.TEXT_HTML:
+					this.checkInterrupted();
+					this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".html"), aUrl, this.toHttp(aUrl)));
+					break;
+
+				case MediaType.TEXT_PLAIN:
+					this.checkInterrupted();
+					this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".txt"), aUrl, this.toHttp(aUrl)));
+					break;
+
+				case "image/jpeg":
+					this.checkInterrupted();
+					this.onSucces.handle(new SuccesEvent(this, new Image(iResponse.readEntity(InputStream.class)), aUrl, this.toHttp(aUrl)));
+					break;
+
+				case "application/pdf":
+					this.checkInterrupted();
+					this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".pdf"), aUrl, this.toHttp(aUrl)));
+					break;
+
+				default:
+					throw new MediaException(iResponse.readEntity(String.class));
+				}
+			}
+		} else {
+			this.onSucces.handle(new SuccesEvent(this, null, aUrl, this.toHttp(aUrl)));
 		}
 	}
 

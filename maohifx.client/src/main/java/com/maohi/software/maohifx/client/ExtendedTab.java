@@ -58,11 +58,10 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 	private final MaohiFXView view;
 	private final MaohiFXController controller;
-	private final URLHandler urlHandler;
 
-	private boolean refreshing;
 	private Parent refreshTarget;
 	private String refreshText;
+	private Thread runningThread;
 
 	private EventHandler<Event> onStart;
 	private EventHandler<AuthentificationEvent> onAuthentification;
@@ -110,8 +109,6 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 		this.controller = this.view.getController();
 		this.controller.addEventHandler(ConnectEvent.CONNECT_SUCCES, this.getOnConnectSucces());
 		this.controller.addEventHandler(ConnectEvent.CONNECT_ERROR, this.getOnConnectError());
-
-		this.urlHandler = this.newUrlHandler();
 
 		try {
 			final FXMLLoader iLoader = new FXMLLoader();
@@ -275,12 +272,16 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	}
 
 	protected void displayRunning(final boolean aRunning) {
-		ExtendedTab.this.refreshing = aRunning;
 		Platform.runLater(new Runnable() {
 
 			@Override
 			public void run() {
 				ExtendedTab.this.progressIndicator.setVisible(aRunning);
+				if (aRunning) {
+					ExtendedTab.this.refreshButton.setId("stop");
+				} else {
+					ExtendedTab.this.refreshButton.setId("refresh");
+				}
 			}
 		});
 	}
@@ -435,16 +436,6 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 		this.view.newTab();
 	}
 
-	protected URLHandler newUrlHandler() {
-		final URLHandler iUrlHandler = new URLHandler();
-		iUrlHandler.setOnStart(this.getOnStart());
-		iUrlHandler.setOnAuthentification(this.getOnAuthentification());
-		iUrlHandler.setOnSucces(this.getOnSucces());
-		iUrlHandler.setOnEnd(this.getOnEnd());
-		iUrlHandler.setOnExceptionThrown(this.getOnExceptionThrown());
-		return iUrlHandler;
-	}
-
 	@Override
 	public void onChanged(final javafx.collections.ListChangeListener.Change<? extends String> aChange) {
 		final Configuration iConfiguration = this.controller.getConfiguration();
@@ -469,18 +460,28 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 		this.refreshTarget = aTarget;
 		this.refreshText = aText;
 
-		final Thread iThread = new Thread(new Runnable() {
+		this.runningThread = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				try {
-					ExtendedTab.this.urlHandler.process(new URL(aUrl), "get", null);
+					final URLHandler iUrlHandler = new URLHandler();
+					iUrlHandler.setOnStart(ExtendedTab.this.getOnStart());
+					iUrlHandler.setOnAuthentification(ExtendedTab.this.getOnAuthentification());
+					iUrlHandler.setOnSucces(ExtendedTab.this.getOnSucces());
+					iUrlHandler.setOnEnd(ExtendedTab.this.getOnEnd());
+					iUrlHandler.setOnExceptionThrown(ExtendedTab.this.getOnExceptionThrown());
+
+					iUrlHandler.process(new URL(aUrl), "get", null);
+				} catch (final InterruptedException aException) {
+					System.err.println(aException.getMessage());
 				} catch (final IOException aException) {
 					ExtendedTab.this.displayException(aException);
 				}
 			}
 		});
-		iThread.start();
+		this.runningThread.setName(this.url.getText());
+		this.runningThread.start();
 	}
 
 	public void refreshTab(final String aUrl, final String aText) {
@@ -489,11 +490,16 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 	@FXML
 	public void refreshTabEvent(final ActionEvent aEvent) {
-		if (!this.refreshing && (this.url.textProperty() != null) && (this.url.textProperty().get() != null) && !this.url.textProperty().get().isEmpty()) {
+		if ((this.runningThread != null) && (this.runningThread.isAlive() && !this.runningThread.isInterrupted())) {
+			this.displayRunning(false);
+			this.runningThread.interrupt();
+		} else {
+			if ((this.url.textProperty() != null) && (this.url.textProperty().get() != null) && !this.url.textProperty().get().isEmpty()) {
 
-			this.content.setCenter(null);
+				this.content.setCenter(null);
 
-			this.refreshTab(this.url.getText(), this.content, "");
+				this.refreshTab(this.url.getText(), this.content, "");
+			}
 		}
 	}
 
