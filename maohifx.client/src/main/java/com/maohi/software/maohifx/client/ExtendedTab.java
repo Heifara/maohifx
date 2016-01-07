@@ -47,8 +47,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -181,44 +179,6 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 		}
 	}
 
-	protected void displayImage(final Image aImage) {
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				ExtendedTab.this.content.setCenter(new ImageView(aImage));
-			}
-		});
-	}
-
-	protected void displayHtml(final URL aUrl) {
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				WebView iView = new WebView();
-				WebEngine webEngine = iView.getEngine();
-				webEngine.load(aUrl.toExternalForm());
-
-				content.setCenter(iView);
-			}
-		});
-	}
-
-	protected void displayFile(final File iFile) {
-		String iText = Files.toString(iFile);
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				final TextArea iStackTrace = new TextArea();
-				iStackTrace.setText(iText);
-				iStackTrace.setEditable(false);
-				ExtendedTab.this.content.setCenter(iStackTrace);
-			}
-		});
-	}
-
 	protected void displayException(final Throwable aException) {
 		Platform.runLater(new Runnable() {
 
@@ -232,6 +192,42 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 				iStackTrace.setText(iStringWriter.toString());
 				iStackTrace.setEditable(false);
 				ExtendedTab.this.content.setCenter(iStackTrace);
+			}
+		});
+	}
+
+	protected void displayFile(final File iFile) {
+		final String iText = Files.toString(iFile);
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				final TextArea iStackTrace = new TextArea();
+				iStackTrace.setText(iText);
+				iStackTrace.setEditable(false);
+				ExtendedTab.this.content.setCenter(iStackTrace);
+			}
+		});
+	}
+
+	protected void displayHtml(final URL aUrl) {
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				final Browser iBrowser = new Browser();
+				iBrowser.load(aUrl.toString());
+				ExtendedTab.this.content.setCenter(iBrowser);
+			}
+		});
+	}
+
+	protected void displayImage(final Image aImage) {
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				ExtendedTab.this.content.setCenter(new ImageView(aImage));
 			}
 		});
 	}
@@ -376,24 +372,24 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 				@Override
 				public void handle(final SuccesEvent aEvent) {
-					Object iItem = aEvent.getItem();
+					final Object iItem = aEvent.getItem();
 					if (iItem instanceof File) {
-						File iFile = (File) iItem;
+						final File iFile = (File) iItem;
 						if (iFile.getName().endsWith(".pdf")) {
 							try {
 								Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + iFile);
-							} catch (IOException aException) {
+							} catch (final IOException aException) {
 								aException.printStackTrace();
 							}
 						} else if (iFile.getName().endsWith(".html")) {
-							displayHtml(aEvent.getUrl());
+							ExtendedTab.this.displayHtml(aEvent.getUrl());
 						} else if (iFile.getName().endsWith(".xml")) {
-							displayFile(iFile);
+							ExtendedTab.this.displayFile(iFile);
 						} else if (iFile.getName().endsWith(".txt")) {
-							displayFile(iFile);
+							ExtendedTab.this.displayFile(iFile);
 						}
 					} else if (iItem instanceof Image) {
-						displayImage((Image) iItem);
+						ExtendedTab.this.displayImage((Image) iItem);
 					} else {
 						final FXMLLoader iLoader = new FXMLLoader(aEvent.getProcessesdUrl());
 						if (aEvent.getItem() != null) {
