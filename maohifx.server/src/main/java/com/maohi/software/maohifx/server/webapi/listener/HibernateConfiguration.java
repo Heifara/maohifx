@@ -39,33 +39,37 @@ public class HibernateConfiguration implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(final ServletContextEvent aServletContextEvent) {
-		HibernateUtil.getConfiguration().addAnnotatedClass(Invoice.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(InvoiceLine.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(InvoicePaymentLine.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(PaymentMode.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(Product.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(Tva.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(Customer.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(Supplier.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(Contact.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(Email.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(Phone.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(Salesman.class);
+		try {
+			HibernateUtil.getConfiguration().addAnnotatedClass(Invoice.class);
+			HibernateUtil.getConfiguration().addAnnotatedClass(InvoiceLine.class);
+			HibernateUtil.getConfiguration().addAnnotatedClass(InvoicePaymentLine.class);
+			HibernateUtil.getConfiguration().addAnnotatedClass(PaymentMode.class);
+			HibernateUtil.getConfiguration().addAnnotatedClass(Product.class);
+			HibernateUtil.getConfiguration().addAnnotatedClass(Tva.class);
+			HibernateUtil.getConfiguration().addAnnotatedClass(Customer.class);
+			HibernateUtil.getConfiguration().addAnnotatedClass(Supplier.class);
+			HibernateUtil.getConfiguration().addAnnotatedClass(Contact.class);
+			HibernateUtil.getConfiguration().addAnnotatedClass(Email.class);
+			HibernateUtil.getConfiguration().addAnnotatedClass(Phone.class);
+			HibernateUtil.getConfiguration().addAnnotatedClass(Salesman.class);
 
-		final Session iSession = HibernateUtil.getSessionFactory().openSession();
-		AbstractDAO.setSession(iSession);
+			final Session iSession = HibernateUtil.getSessionFactory().openSession();
+			AbstractDAO.setSession(iSession);
 
-		this.insertPaymentMode(0, "CASH");
-		this.insertPaymentMode(1, "CHEQUE");
-		this.insertPaymentMode(2, "CARTE DE CREDIT");
+			this.insertPaymentMode(0, "CASH");
+			this.insertPaymentMode(1, "CHEQUE");
+			this.insertPaymentMode(2, "CARTE DE CREDIT");
 
-		this.insertTva(0, "PPN", 0.0);
-		this.insertTva(1, "Service", 13.0);
-		this.insertTva(2, "Produits 1", 6.0);
-		this.insertTva(3, "Produits 2", 16.0);
+			this.insertTva(0, "PPN", 0.0);
+			this.insertTva(1, "Service", 13.0);
+			this.insertTva(2, "Produits 1", 6.0);
+			this.insertTva(3, "Produits 2", 16.0);
 
-		AbstractDAO.setSession(null);
-		iSession.close();
+			AbstractDAO.setSession(null);
+			iSession.close();
+		} catch (Throwable aException) {
+			aException.printStackTrace();
+		}
 	}
 
 	public void insertPaymentMode(final int aId, final String aLabel) {
