@@ -47,6 +47,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -185,6 +187,20 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 			@Override
 			public void run() {
 				ExtendedTab.this.content.setCenter(new ImageView(aImage));
+			}
+		});
+	}
+
+	protected void displayHtml(final URL aUrl) {
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				WebView iView = new WebView();
+				WebEngine webEngine = iView.getEngine();
+				webEngine.load(aUrl.toExternalForm());
+
+				content.setCenter(iView);
 			}
 		});
 	}
@@ -369,6 +385,8 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 							} catch (IOException aException) {
 								aException.printStackTrace();
 							}
+						} else if (iFile.getName().endsWith(".html")) {
+							displayHtml(aEvent.getUrl());
 						} else if (iFile.getName().endsWith(".xml")) {
 							displayFile(iFile);
 						} else if (iFile.getName().endsWith(".txt")) {
