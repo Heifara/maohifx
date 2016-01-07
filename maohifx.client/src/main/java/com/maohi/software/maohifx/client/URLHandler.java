@@ -3,11 +3,8 @@
  */
 package com.maohi.software.maohifx.client;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -28,10 +25,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.maohi.software.maohifx.client.event.AuthentificationEvent;
 import com.maohi.software.maohifx.client.event.ExceptionEvent;
 import com.maohi.software.maohifx.client.event.SuccesEvent;
+import com.maohi.software.maohifx.common.Files;
 import com.sun.media.jfxmedia.MediaException;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.image.Image;
 import jdk.nashorn.api.scripting.JSObject;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
@@ -74,24 +73,6 @@ public class URLHandler {
 			public void handle(final AuthentificationEvent event) {
 			}
 		};
-	}
-
-	private File generatePDFFile(final InputStream aInputStream) throws IOException {
-		final File iFile = File.createTempFile("maohifx", ".pdf");
-
-		final OutputStream iOutputStream = new FileOutputStream(iFile);
-
-		int iRead = 0;
-		final byte[] iBytes = new byte[1024];
-
-		while ((iRead = aInputStream.read(iBytes)) != -1) {
-			iOutputStream.write(iBytes, 0, iRead);
-		}
-
-		iOutputStream.close();
-		iFile.createNewFile();
-
-		return iFile;
 	}
 
 	private Entity<?> getEntity(final String aDataType, final Object aData) {
@@ -217,9 +198,24 @@ public class URLHandler {
 						this.onSucces.handle(new SuccesEvent(this, iObject, aUrl, this.toHttp(aUrl)));
 						break;
 
+					case MediaType.APPLICATION_XML:
+						this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".xml"), aUrl, this.toHttp(aUrl)));
+						break;
+
+					case MediaType.TEXT_HTML:
+						this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".html"), aUrl, this.toHttp(aUrl)));
+						break;
+
+					case MediaType.TEXT_PLAIN:
+						this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".txt"), aUrl, this.toHttp(aUrl)));
+						break;
+
+					case "image/jpeg":
+						this.onSucces.handle(new SuccesEvent(this, new Image(iResponse.readEntity(InputStream.class)), aUrl, this.toHttp(aUrl)));
+						break;
+
 					case "application/pdf":
-						final File iFile = this.generatePDFFile(iResponse.readEntity(InputStream.class));
-						this.onSucces.handle(new SuccesEvent(this, iFile, aUrl, this.toHttp(aUrl)));
+						this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".pdf"), aUrl, this.toHttp(aUrl)));
 						break;
 
 					default:

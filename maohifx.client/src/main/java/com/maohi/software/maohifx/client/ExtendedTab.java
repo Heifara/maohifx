@@ -3,6 +3,7 @@
  */
 package com.maohi.software.maohifx.client;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -18,6 +19,7 @@ import com.maohi.software.maohifx.client.event.ConnectEvent;
 import com.maohi.software.maohifx.client.event.ExceptionEvent;
 import com.maohi.software.maohifx.client.event.SuccesEvent;
 import com.maohi.software.maohifx.client.jaxb2.Configuration;
+import com.maohi.software.maohifx.common.Files;
 import com.maohi.software.maohifx.common.Profile;
 import com.maohi.software.maohifx.control.Link;
 
@@ -42,6 +44,7 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -174,6 +177,30 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 			iPopOver.setArrowLocation(ArrowLocation.TOP_RIGHT);
 			iPopOver.show(this.profileButton);
 		}
+	}
+
+	protected void displayImage(final Image aImage) {
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				ExtendedTab.this.content.setCenter(new ImageView(aImage));
+			}
+		});
+	}
+
+	protected void displayFile(final File iFile) {
+		String iText = Files.toString(iFile);
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				final TextArea iStackTrace = new TextArea();
+				iStackTrace.setText(iText);
+				iStackTrace.setEditable(false);
+				ExtendedTab.this.content.setCenter(iStackTrace);
+			}
+		});
 	}
 
 	protected void displayException(final Throwable aException) {
@@ -333,15 +360,33 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 				@Override
 				public void handle(final SuccesEvent aEvent) {
-					final FXMLLoader iLoader = new FXMLLoader(aEvent.getProcessesdUrl());
-					if (aEvent.getItem() != null) {
-						iLoader.getNamespace().put("$item", aEvent.getItem());
-					}
-					ExtendedTab.this.displayNode(iLoader, ExtendedTab.this.refreshTarget, ExtendedTab.this.refreshText);
+					Object iItem = aEvent.getItem();
+					if (iItem instanceof File) {
+						File iFile = (File) iItem;
+						if (iFile.getName().endsWith(".pdf")) {
+							try {
+								Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + iFile);
+							} catch (IOException aException) {
+								aException.printStackTrace();
+							}
+						} else if (iFile.getName().endsWith(".xml")) {
+							displayFile(iFile);
+						} else if (iFile.getName().endsWith(".txt")) {
+							displayFile(iFile);
+						}
+					} else if (iItem instanceof Image) {
+						displayImage((Image) iItem);
+					} else {
+						final FXMLLoader iLoader = new FXMLLoader(aEvent.getProcessesdUrl());
+						if (aEvent.getItem() != null) {
+							iLoader.getNamespace().put("$item", aEvent.getItem());
+						}
+						ExtendedTab.this.displayNode(iLoader, ExtendedTab.this.refreshTarget, ExtendedTab.this.refreshText);
 
-					final URL iUrl = aEvent.getUrl();
-					if (!ExtendedTab.this.urlAutoCompletion.contains(iUrl.toExternalForm())) {
-						ExtendedTab.this.urlAutoCompletion.add(iUrl.toExternalForm());
+						final URL iUrl = aEvent.getUrl();
+						if (!ExtendedTab.this.urlAutoCompletion.contains(iUrl.toExternalForm())) {
+							ExtendedTab.this.urlAutoCompletion.add(iUrl.toExternalForm());
+						}
 					}
 				}
 			};
