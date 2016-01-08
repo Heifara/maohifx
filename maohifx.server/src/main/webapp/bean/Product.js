@@ -82,7 +82,7 @@ Product.prototype.save = function() {
 
 			alert("Save success");
 		},
-		error : function($result, $stackTrace) {
+		error : function($error, $stackTrace) {
 			error("Erreur lors de la sauvegarde", $error, $stackTrace);
 		}
 	});
