@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?language javascript?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import com.maohi.software.maohifx.control.*?>
+<?import com.maohi.software.maohifx.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40">
+	<stylesheets>
+		<URL value="@../app.css" />
+	</stylesheets>
+	<fx:script source="../common.js" />
+	<fx:script source="../sampleReport/Controller.js" />
+	<top>
+		<GridPane BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints hgrow="NEVER" minWidth="-Infinity" />
+				<ColumnConstraints halignment="CENTER" minWidth="-Infinity" prefWidth="200.0" />
+				<ColumnConstraints hgrow="NEVER" minWidth="-Infinity" />
+				<ColumnConstraints halignment="CENTER" minWidth="-Infinity" prefWidth="200.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+				<Button id="search-button" mnemonicParsing="false" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="1" onAction="controller.searchEvent(event)" />
+				<Label text="Du" />
+				<Label text="au" GridPane.columnIndex="2" />
+				<DatePicker minWidth="100.0" GridPane.columnIndex="1" />
+				<DatePicker GridPane.columnIndex="3" />
+			</children>
+		</GridPane>
+	</top>
+	<center>
+		<TableView fx:id="results" BorderPane.alignment="CENTER">
+			<columns>
+				<TableColumn text="Column 1">
+					<cellValueFactory>
+						<JSObjectPropertyValueFactory property="label" />
+					</cellValueFactory>
+				</TableColumn>
+				<TableColumn text="Column 2">
+					<cellValueFactory>
+						<JSObjectPropertyValueFactory property="date" />
+					</cellValueFactory>
+				</TableColumn>
+				<TableColumn text="Column 3">
+					<cellValueFactory>
+						<JSObjectPropertyValueFactory property="" />
+					</cellValueFactory>
+				</TableColumn>
+			</columns>
+		</TableView>
+	</center>
+	<fx:script>
+		controller = new ReportController();
+	</fx:script>
+</BorderPane>

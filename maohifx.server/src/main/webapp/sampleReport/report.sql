@@ -1,0 +1,1 @@
+SELECT "Ceci est un exemple", DATE(NOW());
