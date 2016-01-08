@@ -4,6 +4,7 @@
 package com.maohi.software.maohifx.server.webapi;
 
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Path;
@@ -19,9 +20,11 @@ import com.maohi.software.maohifx.contact.dao.SupplierDAO;
 @Path("supplier")
 public class SupplierService extends AnnotatedClassService<SupplierDAO, Supplier> {
 
+	private boolean insertContact;
+
 	public SupplierService() throws InstantiationException, IllegalAccessException {
 		super();
-
+		this.insertContact = false;
 	}
 
 	@Override
@@ -51,6 +54,12 @@ public class SupplierService extends AnnotatedClassService<SupplierDAO, Supplier
 
 	@Override
 	public void onInserting(final Supplier iElement) {
+		if (this.insertContact) {
+			new ContactDAO().insert(iElement.getContact());
+		}
+
+		iElement.getContact().setCreationDate(new Date());
+		iElement.getContact().setUpdateDate(new Date());
 	}
 
 	@Override
@@ -60,7 +69,7 @@ public class SupplierService extends AnnotatedClassService<SupplierDAO, Supplier
 
 	@Override
 	public void onSaving(final Supplier iElement) {
-
+		this.insertContact = iElement.getUuid() == null ? true : false;
 	}
 
 	@Override

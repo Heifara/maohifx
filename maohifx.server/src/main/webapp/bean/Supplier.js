@@ -17,7 +17,7 @@ Supplier.search = function(aPattern) {
 				iSearchResult.add(iElement);
 			}
 		},
-		error : function($result, $stackTrace) {
+		error : function($error, $stackTrace) {
 			error("Erreur durant la recherche", $error, $stackTrace);
 		}
 	});
@@ -68,7 +68,7 @@ Supplier.prototype.save = function() {
 
 			alert("Save success");
 		},
-		error : function($result, $stackTrace) {
+		error : function($error, $stackTrace) {
 			error("Erreur durant la recherche", $error, $stackTrace);
 		}
 	});

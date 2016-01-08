@@ -16,6 +16,12 @@
 	<stylesheets>
 		<URL value="@../app.css" />
 	</stylesheets>
+	<fx:script source="../common.js" />
+	<fx:script source="../bean/Contact.js" />
+	<fx:script source="../bean/Email.js" />
+	<fx:script source="../bean/Phone.js" />
+	<fx:script source="../bean/Supplier.js" />
+	<fx:script source="../suppliers/Controller.js" />
 	<top>
 		<ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<items>
