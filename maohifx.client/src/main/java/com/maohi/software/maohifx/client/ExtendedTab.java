@@ -70,10 +70,9 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	private EventHandler<SuccesEvent> onSucces;
 	private EventHandler<Event> onEnd;
 	private EventHandler<ConnectEvent> onConnectSucces;
-
 	private EventHandler<ConnectEvent> onConnectError;
-	private EventHandler<ExceptionEvent> onExceptionThrown;
 
+	private EventHandler<ExceptionEvent> onExceptionThrown;
 	@FXML
 	private TextField url;
 
@@ -82,9 +81,9 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 	@FXML
 	private MenuItem hidShowUrl;
+
 	@FXML
 	private MenuButton menuButton;
-
 	@FXML
 	private ProgressIndicator progressIndicator;
 
@@ -239,6 +238,7 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 				try {
 					iLoader.setBuilderFactory(ExtendedTab.this.view.getBuilderFactory());
 					iLoader.getNamespace().put("$tab", ExtendedTab.this);
+					iLoader.getNamespace().put("$menuButton", ExtendedTab.this.menuButton);
 
 					final HttpHandler iHandler = new HttpHandler(iLoader.getLocation());
 					iHandler.setOnStart(ExtendedTab.this.getOnStart());
@@ -523,6 +523,26 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	@FXML
 	public void selectTabEvent() {
 		this.getTabPane().getSelectionModel().select(this);
+	}
+
+	public void setIcon(final String aUrl) {
+		String iUrl = aUrl;
+		if (iUrl.startsWith("@/")) {
+			iUrl = iUrl.replace("@/", "@");
+		}
+		if (iUrl.startsWith("@")) {
+			final StringBuilder iBaseUrl = new StringBuilder();
+			iBaseUrl.append("http");
+			iBaseUrl.append("://");
+			iBaseUrl.append("localhost");
+			iBaseUrl.append(":");
+			iBaseUrl.append("8080");
+			iBaseUrl.append("/");
+
+			iUrl = iUrl.replace("@", iBaseUrl.toString());
+		}
+
+		this.menuButton.setGraphic(new ImageView(new Image(iUrl)));
 	}
 
 	public void setUrl(final String aUrl) {

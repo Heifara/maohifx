@@ -23,7 +23,7 @@
 				<ColumnConstraints hgrow="NEVER" />
 			</columnConstraints>
 			<children>
-				<MenuButton id="menuButton" fx:id="menuButton" prefWidth="50" focusTraversable="false" onMouseClicked="#selectTabEvent">
+				<MenuButton id="menuButton" fx:id="menuButton" focusTraversable="false" onMouseClicked="#selectTabEvent">
 					<graphic>
 						<ProgressIndicator fx:id="progressIndicator" visible="false" GridPane.columnIndex="1" />
 					</graphic>

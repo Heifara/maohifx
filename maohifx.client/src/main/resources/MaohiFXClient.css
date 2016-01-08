@@ -13,6 +13,11 @@
 .root {
 }
 
+.tab-pane {
+    -fx-tab-min-height: 35.0;
+    -fx-tab-max-height: 35.0;
+}
+
 .tab-pane .tab-header-background {
 	-fx-background-color: -fx-base-color;
 }
