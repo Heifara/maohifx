@@ -50,6 +50,7 @@ function InvoiceController() {
 	Product.search(autoCompletion);
 	Customer.search(customerAutoCompletion);
 	PaymentMode.search(paymentModeAutoCompletion);
+	Salesman.search(salesmanAutoCompletion);
 
 	this.fireEditable();
 
@@ -81,6 +82,10 @@ InvoiceController.prototype.addInvoicePaymentLineEvent = function(aEvent) {
 
 InvoiceController.prototype.customerNameAutoCompletionEvent = function(aAutoCompletionEvent) {
 	this.invoice.customer = aAutoCompletionEvent.getCompletion();
+}
+
+InvoiceController.prototype.salesmanAutoCompletionEvent = function(aAutoCompletionEvent) {
+	this.invoice.salesman = aAutoCompletionEvent.getCompletion();
 }
 
 InvoiceController.prototype.labelAutoCompletionEvent = function(aAutoCompletionEvent) {

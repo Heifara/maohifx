@@ -11,7 +11,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Tab?>
-
 <BorderPane fx:id="view" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<stylesheets>
 		<URL value="@../app.css" />
@@ -36,7 +35,6 @@
 				<ColumnConstraints hgrow="NEVER" />
 				<ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="100.0" />
 				<ColumnConstraints hgrow="NEVER" />
-				<ColumnConstraints hgrow="NEVER" />
 				<ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="100.0" />
 			</columnConstraints>
 			<rowConstraints>
@@ -48,15 +46,22 @@
 			<children>
 				<Label text="Date" />
 				<DatePicker fx:id="invoiceDate" GridPane.columnIndex="1" />
+				<Label text="Numéro de facture" GridPane.columnIndex="2" />
+				<TextField fx:id="invoiceNumber" editable="false" GridPane.columnIndex="3" />
+				<Label text="Client" GridPane.rowIndex="1" />
 				<TextField fx:id="customerName" onAutoCompletion="controller.customerNameAutoCompletionEvent(event)" GridPane.columnIndex="1" GridPane.rowIndex="1">
 					<autoCompletion>
 						<FXCollections fx:id="customerAutoCompletion" fx:factory="observableArrayList">
 						</FXCollections>
 					</autoCompletion>
 				</TextField>
-				<Label text="Client" GridPane.rowIndex="1" />
-				<Label text="Numéro de facture" GridPane.columnIndex="3" />
-				<TextField fx:id="invoiceNumber" editable="false" GridPane.columnIndex="4" />
+				<Label text="Vendeur" GridPane.rowIndex="1" GridPane.columnIndex="2" />
+				<TextField fx:id="salesman" onAutoCompletion="controller.salesmanAutoCompletionEvent(event)" GridPane.rowIndex="1" GridPane.columnIndex="3">
+					<autoCompletion>
+						<FXCollections fx:id="salesmanAutoCompletion" fx:factory="observableArrayList">
+						</FXCollections>
+					</autoCompletion>
+				</TextField>
 				<TableView fx:id="invoiceLines" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
 					<columns>
 						<TableColumn maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Code barre">
@@ -189,7 +194,6 @@
 			</BorderPane.margin>
 		</GridPane>
 	</bottom>
-	<fx:script>
-		controller = new InvoiceController();
+	<fx:script> controller = new InvoiceController();
 	</fx:script>
 </BorderPane>

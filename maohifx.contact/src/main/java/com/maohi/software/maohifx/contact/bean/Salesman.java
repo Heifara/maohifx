@@ -199,6 +199,10 @@ public class Salesman implements java.io.Serializable, AnnotatedClass {
 	@Override
 	public void setUuid(final String uuid) {
 		this.uuid = uuid;
+
+		if (this.contact != null) {
+			this.contact.setUuid(this.uuid);
+		}
 	}
 
 }

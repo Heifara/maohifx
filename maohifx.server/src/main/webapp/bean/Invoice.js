@@ -30,6 +30,7 @@ function Invoice() {
 	this.validDate = new SimpleLocalDateProperty();
 	this.customerName = new SimpleStringProperty();
 	this.customer = null;
+	this.salesman = null;
 	this.href = new SimpleStringProperty();
 
 	this.totalWithNoTaxes = new SimpleDoubleProperty();
@@ -51,6 +52,7 @@ Invoice.prototype.toJSON = function() {
 		validDate : this.validDate.getDate(),
 		customerName : this.customerName.get(),
 		customer : this.customer.toJSON(),
+		salesman : this.salesman.toJSON(),
 		invoiceLines : this.getInvoiceLines(),
 		invoicePaymentLines : this.getInvoicePaymentLines(),
 	}
