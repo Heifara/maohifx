@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.maohi.software.maohifx.common;
 
@@ -9,7 +9,9 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.URL;
 
 /**
  * @author heifara
@@ -17,11 +19,11 @@ import java.io.OutputStream;
  */
 public class Files {
 
-	public static File createTmpFile(InputStream aInputStream, String aPrefix, String aSuffixe) throws IOException {
+	public static File createTmpFile(final InputStream aInputStream, final String aPrefix, final String aSuffixe) throws IOException {
 		File iFile = null;
 		try {
 			iFile = File.createTempFile(aPrefix, aSuffixe);
-		} catch (IllegalArgumentException aException) {
+		} catch (final IllegalArgumentException aException) {
 			iFile = File.createTempFile("MLI", aSuffixe);
 		}
 
@@ -40,8 +42,8 @@ public class Files {
 		return iFile;
 	}
 
-	public static String toString(File iFile) {
-		StringBuilder iResult = new StringBuilder();
+	public static String toString(final File iFile) {
+		final StringBuilder iResult = new StringBuilder();
 		BufferedReader br = null;
 
 		try {
@@ -55,16 +57,34 @@ public class Files {
 				iResult.append("\n");
 			}
 
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (br != null)
+				if (br != null) {
 					br.close();
-			} catch (IOException ex) {
+				}
+			} catch (final IOException ex) {
 				ex.printStackTrace();
 			}
 		}
+		return iResult.toString();
+	}
+
+	public static String toString(final URL aUrl) throws IOException {
+		final StringBuilder iResult = new StringBuilder();
+
+		final InputStream aInputStream = aUrl.openStream();
+		final BufferedReader iBufferedReader = new BufferedReader(new InputStreamReader(aInputStream, "UTF8"));
+		String iLine;
+
+		while ((iLine = iBufferedReader.readLine()) != null) {
+			iResult.append(iLine);
+			iResult.append("\n");
+		}
+
+		aInputStream.close();
+
 		return iResult.toString();
 	}
 
