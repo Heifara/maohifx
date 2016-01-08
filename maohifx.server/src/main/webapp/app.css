@@ -183,7 +183,7 @@
 }
 
 #module #product-button {
-	-fx-graphic: url("product-icon.png");
+	-fx-graphic: url("product/icon.png");
 }
 
 #module #contact-button {

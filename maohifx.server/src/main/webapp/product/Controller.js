@@ -6,6 +6,7 @@ function ProductController() {
 
 	if (typeof ($tab) != 'undefined') {
 		$tab.textProperty().bindBidirectional(this.product.designation);
+		$tab.setIcon("@maohifx.server/product/tab.png")
 	}
 
 	tvaRate.setText(this.product.tva.toString());
