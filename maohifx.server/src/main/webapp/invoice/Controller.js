@@ -19,6 +19,7 @@ function InvoiceController() {
 	invoiceNumber.textProperty().bindBidirectional(this.invoice.invoiceNumber, new NumberStringConverter());
 	invoiceDate.valueProperty().bindBidirectional(this.invoice.invoiceDate);
 	customerName.textProperty().bindBidirectional(this.invoice.customerName);
+	salesman.textProperty().bindBidirectional(this.invoice.salesman.contact.lastname);
 	totalWithNoTaxes.textProperty().bindBidirectional(this.invoice.totalWithNoTaxes, new ExtStringConverter());
 	totalTva.textProperty().bindBidirectional(this.invoice.totalTva, new ExtStringConverter());
 	totalDiscount.textProperty().bindBidirectional(this.invoice.totalDiscount, new ExtStringConverter());

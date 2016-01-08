@@ -66,6 +66,8 @@ Invoice.prototype.parseJSON = function(aJSONObject) {
 	this.customerName.set(aJSONObject.get("customerName"));
 	this.customer = new Customer();
 	this.customer.parseJSON(aJSONObject.get("customer"));
+	this.salesman = new Salesman();
+	this.salesman.parseJSON(aJSONObject.get("salesman"));
 	this.href.set(aJSONObject.get("href"));
 
 	this.invoiceLines.clear();
