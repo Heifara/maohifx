@@ -5,6 +5,8 @@ package com.maohi.software.maohifx.client.event;
 
 import java.net.URL;
 
+import javax.ws.rs.core.Response;
+
 import javafx.event.Event;
 import javafx.event.EventType;
 
@@ -19,6 +21,8 @@ public class SuccesEvent extends Event {
 	private final Object item;
 	private final URL url;
 	private final URL processesdUrl;
+	private final boolean fxml;
+	private final String contentType;
 
 	public SuccesEvent(final Object aSource, final Object aItem, final URL aUrl, final URL aProcessesdUrl) {
 		super(SUCCES);
@@ -27,6 +31,41 @@ public class SuccesEvent extends Event {
 		this.item = aItem;
 		this.url = aUrl;
 		this.processesdUrl = aProcessesdUrl;
+		this.fxml = true;
+		this.contentType = "";
+	}
+
+	public SuccesEvent(final Object aSource, final Response aResponse, final URL aUrl, final URL aProcessesdUrl) {
+		super(SUCCES);
+
+		this.source = aSource;
+
+		this.item = aResponse.readEntity(Object.class);
+		this.url = aUrl;
+		this.processesdUrl = aProcessesdUrl;
+
+		this.contentType = aResponse.getHeaderString("Content-Type");
+		if (aResponse.getHeaderString("fxml") == null) {
+			this.fxml = true;
+		} else {
+			this.fxml = Boolean.parseBoolean(aResponse.getHeaderString("fxml"));
+		}
+	}
+
+	public SuccesEvent(final Object aSource, final URL aUrl, final URL aProcessesdUrl) {
+		super(SUCCES);
+
+		this.source = aSource;
+		this.item = null;
+		this.url = aUrl;
+		this.processesdUrl = aProcessesdUrl;
+		this.fxml = true;
+		this.contentType = "";
+
+	}
+
+	public String getContentType() {
+		return this.contentType;
 	}
 
 	public Object getItem() {
@@ -39,6 +78,10 @@ public class SuccesEvent extends Event {
 
 	public URL getUrl() {
 		return this.url;
+	}
+
+	public boolean isFxml() {
+		return this.fxml;
 	}
 
 }

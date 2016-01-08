@@ -252,7 +252,7 @@ public class URLHandler {
 			} else if (iContentType.contains("image")) {
 				this.onSucces.handle(new SuccesEvent(this, new Image(iResponse.readEntity(InputStream.class)), aUrl, this.toHttp(aUrl)));
 			} else if (iContentType.contains(MediaType.APPLICATION_JSON)) {
-				this.onSucces.handle(new SuccesEvent(this, iResponse.readEntity(Object.class), aUrl, this.toHttp(aUrl)));
+				this.onSucces.handle(new SuccesEvent(this, iResponse, aUrl, this.toHttp(aUrl)));
 			} else if (iContentType.contains(MediaType.TEXT_PLAIN)) {
 				this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".txt"), aUrl, this.toHttp(aUrl)));
 			} else if (iContentType.contains(MediaType.APPLICATION_XML)) {
@@ -261,7 +261,7 @@ public class URLHandler {
 				throw new MediaException(iResponse.readEntity(String.class));
 			}
 		} else {
-			this.onSucces.handle(new SuccesEvent(this, null, aUrl, this.toHttp(aUrl)));
+			this.onSucces.handle(new SuccesEvent(this, aUrl, this.toHttp(aUrl)));
 		}
 	}
 

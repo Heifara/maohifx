@@ -10,6 +10,8 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javax.ws.rs.core.MediaType;
+
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.PopOver.ArrowLocation;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
@@ -286,6 +288,19 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 		});
 	}
 
+	protected void displayText(final String aText) {
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				final TextArea iStackTrace = new TextArea();
+				iStackTrace.setText(aText);
+				iStackTrace.setEditable(false);
+				ExtendedTab.this.content.setCenter(iStackTrace);
+			}
+		});
+	}
+
 	public EventHandler<AuthentificationEvent> getOnAuthentification() {
 		if (this.onAuthentification == null) {
 			this.onAuthentification = new EventHandler<AuthentificationEvent>() {
@@ -391,7 +406,7 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 						}
 					} else if (iItem instanceof Image) {
 						ExtendedTab.this.displayImage((Image) iItem);
-					} else {
+					} else if (aEvent.isFxml()) {
 						final FXMLLoader iLoader = new FXMLLoader(aEvent.getProcessesdUrl());
 						if (aEvent.getItem() != null) {
 							iLoader.getNamespace().put("$item", aEvent.getItem());
@@ -402,6 +417,8 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 						if (!ExtendedTab.this.urlAutoCompletion.contains(iUrl.toExternalForm())) {
 							ExtendedTab.this.urlAutoCompletion.add(iUrl.toExternalForm());
 						}
+					} else if (aEvent.getContentType().equals(MediaType.APPLICATION_JSON)) {
+						ExtendedTab.this.displayText(iItem.toString());
 					}
 				}
 			};
