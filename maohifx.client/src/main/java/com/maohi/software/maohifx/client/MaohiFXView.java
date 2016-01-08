@@ -6,6 +6,8 @@ package com.maohi.software.maohifx.client;
 import java.io.IOException;
 import java.util.List;
 
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
 
 import com.maohi.software.maohifx.client.event.ExceptionEvent;
@@ -82,6 +84,18 @@ public class MaohiFXView extends BorderPane implements BuilderFactory, Callback<
 	@Override
 	public void changed(final ObservableValue<? extends Tab> aObservable, final Tab aOldValue, final Tab aNewValue) {
 		this.currentTab = (ExtendedTab) aNewValue;
+	}
+
+	public void closeApplication() {
+		final Action response = Dialogs.create().owner(this.stage).title("Fermer l'application ?").masthead("L'application est sur le point de se fermer").message("Voulez vous vraiment fermer l'application ?").actions(Dialog.ACTION_YES, Dialog.ACTION_NO).showConfirm();
+
+		if (response == Dialog.ACTION_YES) {
+			this.stage.close();
+		} else if (response == Dialog.ACTION_NO) {
+			if (this.tabPane.getTabs().size() == 0) {
+				this.newTab();
+			}
+		}
 	}
 
 	public void closeCurrentTab() {
@@ -186,7 +200,7 @@ public class MaohiFXView extends BorderPane implements BuilderFactory, Callback<
 		if (aChange.next()) {
 			if (aChange.wasRemoved()) {
 				if (this.tabPane.getTabs().size() == 0) {
-					this.stage.close();
+					this.closeApplication();
 				}
 			} else if (aChange.wasAdded()) {
 				final List<? extends Tab> iSelectedItems = aChange.getAddedSubList();
