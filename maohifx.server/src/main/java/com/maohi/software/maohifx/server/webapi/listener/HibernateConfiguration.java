@@ -122,6 +122,7 @@ public class HibernateConfiguration implements ServletContextListener, Runnable 
 		this.insertTva(2, "Produits 1", 6.0);
 		this.insertTva(3, "Produits 2", 16.0);
 
+		this.insertPackaging("UNT");
 		this.insertPackaging("PCE");
 		this.insertPackaging("M2");
 		this.insertPackaging("CARTON");
