@@ -82,6 +82,13 @@ public class Product implements java.io.Serializable, AnnotatedClass {
 		return null;
 	}
 
+	public void bindChildren() {
+		for (final ProductPackaging iProductPackaging : this.productPackagings) {
+			iProductPackaging.setProduct(this);
+			iProductPackaging.getId().setProductUuid(this.uuid);
+		}
+	}
+
 	public boolean contains(final String aPackaging) {
 		if (this.indexOfPackaging(aPackaging) != -1) {
 			return true;
