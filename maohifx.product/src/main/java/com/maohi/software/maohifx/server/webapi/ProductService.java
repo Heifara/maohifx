@@ -51,7 +51,7 @@ public class ProductService extends AnnotatedClassService<ProductDAO, Product> {
 
 	@Override
 	public void onInserting(final Product iElement) {
-
+		iElement.bindChildren();
 	}
 
 	@Override
@@ -61,7 +61,6 @@ public class ProductService extends AnnotatedClassService<ProductDAO, Product> {
 
 	@Override
 	public void onSaving(final Product iElement) {
-		iElement.bindChildren();
 	}
 
 	@Override
@@ -71,7 +70,7 @@ public class ProductService extends AnnotatedClassService<ProductDAO, Product> {
 
 	@Override
 	public void onUpdating(final Product iElement) {
-
+		iElement.bindChildren();
 	}
 
 	@Override
