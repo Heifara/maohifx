@@ -1,14 +1,19 @@
 package com.maohi.software.maohifx.product.bean;
-// Generated 15 d�c. 2015 21:01:28 by Hibernate Tools 4.0.0
+// Generated 8 janv. 2016 12:27:52 by Hibernate Tools 4.0.0
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,7 +36,8 @@ public class Product implements java.io.Serializable, AnnotatedClass {
 	private Date creationDate;
 	private Date updateDate;
 	private String designation;
-	private Double sellingPrice;
+	private Set<ProductPackaging> productPackagings = new HashSet<>(0);
+
 	private String href;
 
 	public Product() {
@@ -42,63 +48,46 @@ public class Product implements java.io.Serializable, AnnotatedClass {
 		this.tva = tva;
 	}
 
-	public Product(final String uuid, final Tva tva, final Date creationDate, final Date updateDate, final String designation, final Double sellingPrice) {
+	public Product(final String uuid, final Tva tva, final Date creationDate, final Date updateDate, final String designation, final Set<ProductPackaging> productPackagings) {
 		this.uuid = uuid;
 		this.tva = tva;
 		this.creationDate = creationDate;
 		this.updateDate = updateDate;
 		this.designation = designation;
-		this.sellingPrice = sellingPrice;
+		this.productPackagings = productPackagings;
 	}
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
+	public ProductPackagingBarcode add(final Barcode aBarcode, final String aPackaging) {
+		if (this.contains(aPackaging)) {
+			final ProductPackaging iProductPackaging = this.getProductPackaging(aPackaging);
+			return iProductPackaging.add(aBarcode);
+		}
+		return null;
+	}
+
+	public ProductPackaging add(final Packaging aPackaging) {
+		if (!this.contains(aPackaging.getCode())) {
+			final ProductPackaging iProductPackaging = new ProductPackaging();
+			iProductPackaging.setId(new ProductPackagingId(this.uuid, aPackaging.getCode()));
+			iProductPackaging.setProduct(this);
+			iProductPackaging.setPackaging(aPackaging);
+			iProductPackaging.setMain(false);
+			iProductPackaging.setSellingPrice(0.0);
+			iProductPackaging.setCreationDate(new Date());
+			iProductPackaging.setUpdateDate(new Date());
+			this.productPackagings.add(iProductPackaging);
+			return iProductPackaging;
+		}
+
+		return null;
+	}
+
+	public boolean contains(final String aPackaging) {
+		if (this.indexOfPackaging(aPackaging) != -1) {
 			return true;
-		}
-		if (obj == null) {
+		} else {
 			return false;
 		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final Product other = (Product) obj;
-		if (this.creationDate == null) {
-			if (other.creationDate != null) {
-				return false;
-			}
-		} else if (!this.creationDate.equals(other.creationDate)) {
-			return false;
-		}
-		if (this.designation == null) {
-			if (other.designation != null) {
-				return false;
-			}
-		} else if (!this.designation.equals(other.designation)) {
-			return false;
-		}
-		if (this.sellingPrice == null) {
-			if (other.sellingPrice != null) {
-				return false;
-			}
-		} else if (!this.sellingPrice.equals(other.sellingPrice)) {
-			return false;
-		}
-		if (this.updateDate == null) {
-			if (other.updateDate != null) {
-				return false;
-			}
-		} else if (!this.updateDate.equals(other.updateDate)) {
-			return false;
-		}
-		if (this.uuid == null) {
-			if (other.uuid != null) {
-				return false;
-			}
-		} else if (!this.uuid.equals(other.uuid)) {
-			return false;
-		}
-		return true;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -117,9 +106,30 @@ public class Product implements java.io.Serializable, AnnotatedClass {
 		return this.href;
 	}
 
-	@Column(name = "selling_price", precision = 22, scale = 0)
-	public Double getSellingPrice() {
-		return this.sellingPrice;
+	@Transient
+	public Packaging getPackaging(final String aPackaging) {
+		final ProductPackaging iProductPackaging = this.getProductPackaging(aPackaging);
+		if (iProductPackaging != null) {
+			return iProductPackaging.getPackaging();
+		}
+		return null;
+	}
+
+	@Transient
+	public ProductPackaging getProductPackaging(final String aPackaging) {
+		final Iterator<ProductPackaging> iIterator = this.productPackagings.iterator();
+		while (iIterator.hasNext()) {
+			final ProductPackaging iProductPackaging = iIterator.next();
+			if (iProductPackaging.getPackaging().getCode().equals(aPackaging)) {
+				return iProductPackaging;
+			}
+		}
+		return null;
+	}
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+	public Set<ProductPackaging> getProductPackagings() {
+		return this.productPackagings;
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -136,22 +146,42 @@ public class Product implements java.io.Serializable, AnnotatedClass {
 
 	@Override
 	@Id
-
 	@Column(name = "uuid", unique = true, nullable = false)
 	public String getUuid() {
 		return this.uuid;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = (prime * result) + ((this.creationDate == null) ? 0 : this.creationDate.hashCode());
-		result = (prime * result) + ((this.designation == null) ? 0 : this.designation.hashCode());
-		result = (prime * result) + ((this.sellingPrice == null) ? 0 : this.sellingPrice.hashCode());
-		result = (prime * result) + ((this.updateDate == null) ? 0 : this.updateDate.hashCode());
-		result = (prime * result) + ((this.uuid == null) ? 0 : this.uuid.hashCode());
-		return result;
+	public int indexOfPackaging(final String aPackaging) {
+		int iCount = -1;
+		final Iterator<ProductPackaging> iIterator = this.productPackagings.iterator();
+		while (iIterator.hasNext()) {
+			iCount++;
+			final ProductPackaging iProductPackaging = iIterator.next();
+			if (iProductPackaging.getPackaging().getCode().equals(aPackaging)) {
+				return iCount;
+			}
+		}
+		return iCount;
+	}
+
+	public ProductPackagingBarcode remove(final Barcode aBarcode, final Packaging aPackaging) {
+		final ProductPackaging iProductPackaging = this.getProductPackaging(aPackaging.getCode());
+		if (iProductPackaging != null) {
+			final ProductPackagingBarcode iProductPackagingBarcode = iProductPackaging.remove(aBarcode);
+			return iProductPackagingBarcode;
+		} else {
+			return null;
+		}
+	}
+
+	public ProductPackaging remove(final Packaging aPackaging) {
+		final ProductPackaging iProductPackaging = this.getProductPackaging(aPackaging.getCode());
+		if (iProductPackaging != null) {
+			this.productPackagings.remove(iProductPackaging);
+			return iProductPackaging;
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -168,8 +198,8 @@ public class Product implements java.io.Serializable, AnnotatedClass {
 		this.href = href;
 	}
 
-	public void setSellingPrice(final Double sellingPrice) {
-		this.sellingPrice = sellingPrice;
+	public void setProductPackagings(final Set<ProductPackaging> productPackagings) {
+		this.productPackagings = productPackagings;
 	}
 
 	public void setTva(final Tva tva) {
@@ -184,23 +214,6 @@ public class Product implements java.io.Serializable, AnnotatedClass {
 	@Override
 	public void setUuid(final String uuid) {
 		this.uuid = uuid;
-	}
-
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("Product [uuid=");
-		builder.append(this.uuid);
-		builder.append(", creationDate=");
-		builder.append(this.creationDate);
-		builder.append(", updateDate=");
-		builder.append(this.updateDate);
-		builder.append(", designation=");
-		builder.append(this.designation);
-		builder.append(", sellingPrice=");
-		builder.append(this.sellingPrice);
-		builder.append("]");
-		return builder.toString();
 	}
 
 }

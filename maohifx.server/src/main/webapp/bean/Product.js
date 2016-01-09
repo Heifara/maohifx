@@ -41,7 +41,6 @@ Product.prototype.toJSON = function() {
 	return {
 		uuid : this.uuid.get(),
 		designation : this.designation.get(),
-		sellingPrice : this.sellingPrice.get(),
 		tva : this.tva.toJSON(),
 	}
 }

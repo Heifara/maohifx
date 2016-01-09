@@ -27,7 +27,11 @@ import com.maohi.software.maohifx.invoice.bean.PaymentMode;
 import com.maohi.software.maohifx.invoice.bean.Tva;
 import com.maohi.software.maohifx.invoice.dao.PaymentModeDAO;
 import com.maohi.software.maohifx.invoice.dao.TvaDAO;
+import com.maohi.software.maohifx.product.bean.Barcode;
+import com.maohi.software.maohifx.product.bean.Packaging;
 import com.maohi.software.maohifx.product.bean.Product;
+import com.maohi.software.maohifx.product.bean.ProductPackaging;
+import com.maohi.software.maohifx.product.bean.ProductPackagingBarcode;
 import com.maohi.software.maohifx.server.webapi.MyApplication;
 
 /**
@@ -49,7 +53,11 @@ public class HibernateConfiguration implements ServletContextListener, Runnable 
 			HibernateUtil.getConfiguration().addAnnotatedClass(InvoiceLine.class);
 			HibernateUtil.getConfiguration().addAnnotatedClass(InvoicePaymentLine.class);
 			HibernateUtil.getConfiguration().addAnnotatedClass(PaymentMode.class);
+			HibernateUtil.getConfiguration().addAnnotatedClass(Barcode.class);
+			HibernateUtil.getConfiguration().addAnnotatedClass(Packaging.class);
 			HibernateUtil.getConfiguration().addAnnotatedClass(Product.class);
+			HibernateUtil.getConfiguration().addAnnotatedClass(ProductPackaging.class);
+			HibernateUtil.getConfiguration().addAnnotatedClass(ProductPackagingBarcode.class);
 			HibernateUtil.getConfiguration().addAnnotatedClass(Tva.class);
 			HibernateUtil.getConfiguration().addAnnotatedClass(Customer.class);
 			HibernateUtil.getConfiguration().addAnnotatedClass(Supplier.class);
@@ -59,7 +67,7 @@ public class HibernateConfiguration implements ServletContextListener, Runnable 
 			HibernateUtil.getConfiguration().addAnnotatedClass(Salesman.class);
 
 			MyApplication.runLater(this);
-		} catch (MalformedURLException aException) {
+		} catch (final MalformedURLException aException) {
 			aException.printStackTrace();
 		}
 	}
