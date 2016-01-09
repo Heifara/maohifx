@@ -17,7 +17,7 @@ Tva.search = function(aCollection, aPattern) {
 				aCollection.add(iElement);
 			}
 		},
-		error : function($result, $stackTrace) {
+		error : function($error, $stackTrace) {
 			error("Erreur durant la recherche", $error, $stackTrace);
 		}
 	});
