@@ -223,3 +223,15 @@
 	-fx-border-width: 0.0px;
 	-fx-background-color: null;
 }
+
+#add-packaging {
+	-fx-graphic: url("product/add-packaging.png");
+	-fx-border-width: 0.0px;
+	-fx-background-color: null;
+}
+
+#remove-packaging {
+	-fx-graphic: url("product/remove-packaging.png");
+	-fx-border-width: 0.0px;
+	-fx-background-color: null;
+}

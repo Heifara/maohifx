@@ -29,12 +29,24 @@ function Product() {
 	this.sellingPrice = new SimpleDoubleProperty();
 	this.tva = new Tva();
 	this.href = new SimpleStringProperty();
-
-	// Calculated item see calc methods
-	this.sellingPriceWithTaxes = new SimpleDoubleProperty();
+	this.productPackagings = FXCollections.observableArrayList();
 
 	// Calculated item using bindings
 	this.tvaAmount = Bindings.multiply(this.sellingPrice, this.tva.rate.divide(100));
+}
+
+Product.prototype.addPackaging = function(aPackaging, aMain) {
+	iProductPackaging = new ProductPackaging();
+	iProductPackaging.productUuid.set(this.uuid.get());
+	iProductPackaging.packagingCode.set(aPackaging.code.get());
+	iProductPackaging.packaging = aPackaging;
+	iProductPackaging.main.set(aMain);
+	iProductPackaging.sellingPrice.set(0.0);
+	this.productPackagings.add(iProductPackaging);
+}
+
+Product.prototype.removeProductPackaging = function(aProductPackaging) {
+	this.productPackagings.remove(aProductPackaging);
 }
 
 Product.prototype.toJSON = function() {
@@ -42,7 +54,17 @@ Product.prototype.toJSON = function() {
 		uuid : this.uuid.get(),
 		designation : this.designation.get(),
 		tva : this.tva.toJSON(),
+		productPackagings : this.getProductPackagings(),
 	}
+}
+
+Product.prototype.getProductPackagings = function() {
+	iArrayList = new java.util.ArrayList();
+	for ( var index in this.productPackagings) {
+		iArrayList.add(this.productPackagings.get(index).toJSON());
+	}
+
+	return iArrayList;
 }
 
 Product.prototype.parseJSON = function(aJSONObject) {
@@ -52,7 +74,13 @@ Product.prototype.parseJSON = function(aJSONObject) {
 	this.tva.parseJSON(aJSONObject.get("tva"));
 	this.href.set(aJSONObject.get("href"));
 
-	this.sellingPriceWithTaxes.set(this.sellingPrice.multiply(this.tva.rate.divide(100).add(1)).get());
+	this.productPackagings.clear();
+	iArray = aJSONObject.get("productPackagings");
+	for ( var iIndex in iArray) {
+		iProductPackaging = new ProductPackaging();
+		iProductPackaging.parseJSON(iArray[iIndex]);
+		this.productPackagings.add(iProductPackaging);
+	}
 }
 
 Product.prototype.parseTva = function(aTva) {

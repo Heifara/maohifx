@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?language javascript?>
-
+<?import javafx.scene.shape.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
-
 <?import com.maohi.software.maohifx.control.*?>
-
 <?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
@@ -23,7 +21,9 @@
 		<URL value="@../app.css" />
 	</stylesheets>
 	<fx:script source="../common.js" />
+	<fx:script source="../bean/Packaging.js" />
 	<fx:script source="../bean/Product.js" />
+	<fx:script source="../bean/ProductPackaging.js" />
 	<fx:script source="../bean/Tva.js" />
 	<fx:script source="../product/Controller.js" />
 	<top>
@@ -53,34 +53,40 @@
 				<TextField fx:id="availableQuantity" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 				<Label text="Quantité en cours" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 				<TextField fx:id="currentQuantity" editable="false" focusTraversable="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-				<BorderPane GridPane.columnSpan="2147483647" GridPane.rowIndex="2" GridPane.rowSpan="2147483647">
+				<Label text="Taux de Tva" GridPane.rowIndex="2" />
+				<TextField fx:id="tvaRate" onAutoCompletion="controller.tvaAutoCompletionEvent(event)" GridPane.columnIndex="1" GridPane.rowIndex="2">
+					<autoCompletion>
+						<FXCollections fx:id="tvaAutoCompletion" fx:factory="observableArrayList">
+						</FXCollections>
+					</autoCompletion>
+				</TextField>
+				<BorderPane GridPane.columnSpan="2147483647" GridPane.rowIndex="3" GridPane.rowSpan="2147483647">
 					<center>
 						<TabPane fx:id="recipe" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
 							<tabs>
-								<Tab closable="false" text="Tarifs">
+								<Tab text="Tarifs &amp; Conditionnement">
 									<content>
 										<GridPane>
 											<columnConstraints>
-												<ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
-												<ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
+												<ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="150.0" />
+												<ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" minWidth="10.0" />
+												<ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="10.0" />
+												<ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="10.0" />
 											</columnConstraints>
 											<rowConstraints>
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+												<RowConstraints minHeight="10.0" vgrow="NEVER" />
+												<RowConstraints minHeight="10.0" vgrow="NEVER" />
+												<RowConstraints minHeight="10.0" vgrow="NEVER" />
 											</rowConstraints>
 											<children>
-												<Label text="Prix Unitaire H.T" />
-												<TextField fx:id="sellingPrice" editable="false" GridPane.columnIndex="1" />
-												<Label text="Taux de Tva" GridPane.rowIndex="1" />
-												<TextField fx:id="tvaRate" onAutoCompletion="controller.tvaAutoCompletionEvent(event)" GridPane.columnIndex="1" GridPane.rowIndex="1">
-													<autoCompletion>
-														<FXCollections fx:id="tvaAutoCompletion" fx:factory="observableArrayList">
-														</FXCollections>
-													</autoCompletion>
-												</TextField>
-												<Label text="Prix Unitaire T.T.C" GridPane.rowIndex="2" />
-												<TextField fx:id="sellingPriceWithTaxes" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+												<Label text="Choisir conditionnement" />
+												<ComboBox fx:id="packagings" onAction="controller.packagingSelectedEvent(event)" prefWidth="200.0" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
+												<Button id="remove-packaging" mnemonicParsing="false" onAction="controller.removePackagingEvent(event)" GridPane.columnIndex="3" />
+												<Button id="add-packaging" mnemonicParsing="false" onAction="controller.addPackagingEvent(event)" GridPane.columnIndex="2" />
+												<Label text="Prix HT" GridPane.rowIndex="1" />
+												<TextField fx:id="sellingPrice" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+												<Label text="Prix TTC" GridPane.rowIndex="2" />
+												<TextField fx:id="sellingPriceWithTaxes" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
 											</children>
 										</GridPane>
 									</content>
@@ -91,6 +97,7 @@
 				</BorderPane>
 			</children>
 			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" />
 				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" />
 				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" />
 				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
