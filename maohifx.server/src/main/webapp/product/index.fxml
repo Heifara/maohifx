@@ -80,7 +80,7 @@
 											</rowConstraints>
 											<children>
 												<Label text="Choisir conditionnement" />
-												<ComboBox fx:id="packagings" onAction="controller.packagingSelectedEvent(event)" prefWidth="200.0" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
+												<ComboBox fx:id="productPackagings" onAction="controller.packagingSelectedEvent(event)" prefWidth="200.0" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
 												<Button id="remove-packaging" mnemonicParsing="false" onAction="controller.removePackagingEvent(event)" GridPane.columnIndex="3" />
 												<Button id="add-packaging" mnemonicParsing="false" onAction="controller.addPackagingEvent(event)" GridPane.columnIndex="2" />
 												<Label text="Prix HT" GridPane.rowIndex="1" />

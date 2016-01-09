@@ -1,8 +1,10 @@
 function ProductController() {
+	this.packagings = FXCollections.observableArrayList();
+	Packaging.search(this.packagings);
+
 	this.product = new Product();
 	if (typeof ($item) != "undefined") {
 		this.product.parseJSON($item);
-		this.fireProductPackagingChanged();
 	}
 
 	if (typeof ($tab) != 'undefined') {
@@ -16,7 +18,8 @@ function ProductController() {
 	designation.textProperty().bindBidirectional(this.product.designation);
 
 	// Fill packagings with product_packagin list
-	packagings.setConverter(new ExtStringConverter());
+	productPackagings.setConverter(new ExtStringConverter());
+	this.fireProductPackagingChanged();
 
 	// AutoCompletion
 	Product.search(designationAutoCompletion);
@@ -25,13 +28,13 @@ function ProductController() {
 	runLater(new Runnable({
 		run : function() {
 			designation.requestFocus();
-			packagings.getSelectionModel().select(0);
+			productPackagings.getSelectionModel().select(0);
 		}
 	}));
 }
 
 ProductController.prototype.packagingSelectedEvent = function(aEvent) {
-	iProductPackaging = packagings.getValue();
+	iProductPackaging = productPackagings.getValue();
 	if (iProductPackaging != null) {
 		sellingPrice.setText(iProductPackaging.sellingPrice.get());
 		sellingPriceWithTaxes.setText(iProductPackaging.sellingPrice.multiply(this.product.tva.rate.divide(100).add(1)).get());
@@ -42,10 +45,7 @@ ProductController.prototype.packagingSelectedEvent = function(aEvent) {
 }
 
 ProductController.prototype.addPackagingEvent = function(aEvent) {
-	iChoices = new java.util.ArrayList();
-	Packaging.search(iChoices);
-	Thread.sleep(1000);// Because ajax is executed in a thread
-	iResponse = choice("Conditionnement", "Choisir un conditionnement", iChoices);
+	iResponse = choice("Conditionnement", "Choisir un conditionnement", this.packagings);
 
 	if (iResponse.isPresent()) {
 		iPackaging = iResponse.get();
@@ -57,15 +57,15 @@ ProductController.prototype.addPackagingEvent = function(aEvent) {
 ProductController.prototype.fireProductPackagingChanged = function(aEvent) {
 	runLater(new Runnable({
 		run : function() {
-			packagings.getItems().clear();
-			packagings.getItems().addAll(controller.product.productPackagings);
-			packagings.getSelectionModel().select(0);
+			productPackagings.getItems().clear();
+			productPackagings.getItems().addAll(controller.product.productPackagings);
+			productPackagings.getSelectionModel().select(0);
 		}
 	}));
 }
 
 ProductController.prototype.removePackagingEvent = function(aEvent) {
-	this.product.removeProductPackaging(packagings.getValue());
+	this.product.removeProductPackaging(productPackagings.getValue());
 
 	this.fireProductPackagingChanged();
 }

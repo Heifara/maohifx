@@ -29,7 +29,11 @@ function Product() {
 	this.sellingPrice = new SimpleDoubleProperty();
 	this.tva = new Tva();
 	this.href = new SimpleStringProperty();
+
 	this.productPackagings = FXCollections.observableArrayList();
+	iPackaging = new Packaging();
+	iPackaging.code.set("UNT");
+	this.addPackaging(iPackaging, true);
 
 	// Calculated item using bindings
 	this.tvaAmount = Bindings.multiply(this.sellingPrice, this.tva.rate.divide(100));
@@ -85,8 +89,6 @@ Product.prototype.parseJSON = function(aJSONObject) {
 
 Product.prototype.parseTva = function(aTva) {
 	this.tva = aTva;
-
-	this.calcSellingPrice();
 }
 
 Product.prototype.parseProduct = function(aProduct) {
@@ -117,9 +119,4 @@ Product.prototype.save = function() {
 
 Product.prototype.toString = function() {
 	return this.designation.get();
-}
-
-Product.prototype.calcSellingPrice = function() {
-	iSellingPrice = this.sellingPriceWithTaxes.divide(this.tva.rate.divide(100).add(1)).get()
-	this.sellingPrice.set(iSellingPrice);
 }
