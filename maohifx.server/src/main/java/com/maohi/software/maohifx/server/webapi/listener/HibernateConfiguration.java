@@ -32,6 +32,7 @@ import com.maohi.software.maohifx.product.bean.Packaging;
 import com.maohi.software.maohifx.product.bean.Product;
 import com.maohi.software.maohifx.product.bean.ProductPackaging;
 import com.maohi.software.maohifx.product.bean.ProductPackagingBarcode;
+import com.maohi.software.maohifx.product.dao.PackagingDAO;
 import com.maohi.software.maohifx.server.webapi.MyApplication;
 
 /**
@@ -72,6 +73,18 @@ public class HibernateConfiguration implements ServletContextListener, Runnable 
 		}
 	}
 
+	private void insertPackaging(final String aPackagingCode) {
+		final Packaging iPackaging = new Packaging();
+		iPackaging.setCode(aPackagingCode);
+		iPackaging.setCreationDate(new Date());
+		iPackaging.setUpdateDate(new Date());
+
+		final PackagingDAO iDAO = new PackagingDAO();
+		iDAO.beginTransaction();
+		iDAO.replace(iPackaging);
+		iDAO.commit();
+	}
+
 	public void insertPaymentMode(final int aId, final String aLabel) {
 		final PaymentMode iPaymentMode = new PaymentMode();
 		iPaymentMode.setId(aId);
@@ -108,6 +121,10 @@ public class HibernateConfiguration implements ServletContextListener, Runnable 
 		this.insertTva(1, "Service", 13.0);
 		this.insertTva(2, "Produits 1", 6.0);
 		this.insertTva(3, "Produits 2", 16.0);
+
+		this.insertPackaging("PCE");
+		this.insertPackaging("M2");
+		this.insertPackaging("CARTON");
 
 		AbstractDAO.setSession(null);
 		iSession.close();
