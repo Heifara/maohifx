@@ -33,6 +33,10 @@ function ProductController() {
 	}));
 }
 
+ProductController.prototype.sellingPriceWithTaxesEvent = function(aEvent) {
+	this.fireSellingPriceValue();
+}
+
 ProductController.prototype.packagingSelectedEvent = function(aEvent) {
 	iProductPackaging = productPackagings.getValue();
 	if (iProductPackaging != null) {
@@ -54,6 +58,13 @@ ProductController.prototype.addPackagingEvent = function(aEvent) {
 	this.fireProductPackagingChanged();
 }
 
+ProductController.prototype.fireSellingPriceValue = function(aEvent) {
+	iSellingPriceWithTaxes = new SimpleDoubleProperty(sellingPriceWithTaxes.getText());
+	iProductPackaging = productPackagings.getValue();
+	iProductPackaging.sellingPrice.set(iSellingPriceWithTaxes.get() / ((this.product.tva.rate.get() / 100) + 1));
+	sellingPrice.setText(iProductPackaging.sellingPrice.get());
+}
+
 ProductController.prototype.fireProductPackagingChanged = function(aEvent) {
 	runLater(new Runnable({
 		run : function() {
@@ -72,6 +83,8 @@ ProductController.prototype.removePackagingEvent = function(aEvent) {
 
 ProductController.prototype.tvaAutoCompletionEvent = function(aEvent) {
 	this.product.parseTva(aEvent.getCompletion());
+
+	this.fireSellingPriceValue();
 }
 
 ProductController.prototype.designationAutoCompletionEvent = function(aEvent) {
