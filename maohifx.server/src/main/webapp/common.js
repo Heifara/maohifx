@@ -61,6 +61,17 @@ function error(aTitle, aErreur, aStackTrace) {
 	}));
 }
 
+/**
+ * 
+ * @param aTitle
+ * @param aMessage
+ * @param aChoices
+ * @returns Optional<String> response
+ */
+function choice(aTitle, aMessage, aChoices) {
+	return org.controlsfx.dialog.Dialogs.create().title(aTitle).message(aMessage).showChoices(aChoices);
+}
+
 function runLater(aRunnable) {
 	Platform.runLater(aRunnable);
 }
