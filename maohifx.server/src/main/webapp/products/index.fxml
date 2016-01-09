@@ -8,13 +8,14 @@
 <?import javafx.collections.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
-
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<stylesheets>
 		<URL value="@../app.css" />
 	</stylesheets>
 	<fx:script source="../common.js" />
+	<fx:script source="../bean/Packaging.js" />
 	<fx:script source="../bean/Product.js" />
+	<fx:script source="../bean/ProductPackaging.js" />
 	<fx:script source="../bean/Tva.js" />
 	<fx:script source="../products/Controller.js" />
 	<top>
@@ -76,7 +77,6 @@
 			</children>
 		</GridPane>
 	</center>
-	<fx:script>
-		controller = new ProductsController();
+	<fx:script> controller = new ProductsController();
 	</fx:script>
 </BorderPane>
