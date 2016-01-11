@@ -27,8 +27,10 @@ public class ExtStringConverter<T> extends StringConverter<T> {
 			return (T) Double.valueOf(aString);
 		} else if (this.type == Float.class) {
 			return (T) Float.valueOf(aString);
+		} else if (aString.isEmpty()) {
+			return null;
 		} else {
-			throw new IllegalArgumentException(String.format("The type of %s is illegal", aString));
+			return (T) aString;
 		}
 	}
 
