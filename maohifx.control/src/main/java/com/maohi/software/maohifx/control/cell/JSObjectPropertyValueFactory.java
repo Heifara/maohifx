@@ -8,7 +8,6 @@ import com.sun.javafx.event.EventHandlerManager;
 import javafx.application.Platform;
 import javafx.beans.NamedArg;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -63,7 +62,7 @@ public class JSObjectPropertyValueFactory<T> extends PropertyValueFactory<JSObje
 			return this.getObservableValue(iPropertyValue);
 		} else if (aValue instanceof ObservableValue) {
 			final ObservableValue<T> iObservableValue = (ObservableValue<T>) aValue;
-			return new ReadOnlyObjectWrapper<T>(iObservableValue.getValue());
+			return iObservableValue;
 		} else if (aValue instanceof Undefined) {
 			System.err.println(this.getProperty() + " is undefined");
 			return (ObservableValue<T>) new SimpleStringProperty("");
