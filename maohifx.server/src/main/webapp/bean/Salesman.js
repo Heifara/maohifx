@@ -76,5 +76,8 @@ Salesman.prototype.save = function() {
 }
 
 Salesman.prototype.toString = function() {
+	if (this.code.get() == null) {
+		return "";
+	}
 	return this.code.get() + " " + this.lastname.get() + " " + this.firstname.get();
 }

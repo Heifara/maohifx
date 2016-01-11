@@ -25,37 +25,40 @@ Invoice.search = function(aCollection, aPattern) {
 
 function Invoice() {
 	this.uuid = new SimpleStringProperty();
-	this.invoiceNumber = new SimpleIntegerProperty();
+	this.invoiceNumber = new SimpleIntegerProperty("");
 	this.invoiceDate = new SimpleLocalDateProperty();
 	this.validDate = new SimpleLocalDateProperty();
-	this.customerName = new SimpleStringProperty();
-	this.customer = null;
-	this.salesman = new Salesman();
-	this.href = new SimpleStringProperty();
+	this.customer = new SimpleObjectProperty(new Customer());
+	this.salesman = new SimpleObjectProperty(new Salesman());
+	this.href = new SimpleStringProperty("");
 
-	this.totalWithNoTaxes = new SimpleDoubleProperty();
-	this.totalTva = new SimpleDoubleProperty();
-	this.totalDiscount = new SimpleDoubleProperty();
-	this.totalWithTaxes = new SimpleDoubleProperty();
-	this.totalPaidAmount = new SimpleDoubleProperty();
-	this.totalChange = new SimpleDoubleProperty();
+	this.totalWithNoTaxes = new SimpleDoubleProperty(0.0);
+	this.totalTva = new SimpleDoubleProperty(0.0);
+	this.totalDiscount = new SimpleDoubleProperty(0.0);
+	this.totalWithTaxes = new SimpleDoubleProperty(0.0);
+	this.totalPaidAmount = new SimpleDoubleProperty(0.0);
+	this.totalChange = new SimpleDoubleProperty(0.0);
 
 	this.invoiceLines = FXCollections.observableArrayList();
 	this.invoicePaymentLines = FXCollections.observableArrayList();
 }
 
-Invoice.prototype.toJSON = function() {
-	return {
-		uuid : this.uuid.get(),
-		number : this.invoiceNumber.get(),
-		date : this.invoiceDate.getDate(),
-		validDate : this.validDate.getDate(),
-		customerName : this.customerName.get(),
-		customer : this.customer.toJSON(),
-		salesman : this.salesman.toJSON(),
-		invoiceLines : this.getInvoiceLines(),
-		invoicePaymentLines : this.getInvoicePaymentLines(),
+Invoice.prototype.toJSON = function(aObject) {
+	if (typeof (aObject) == 'undefined') {
+		return {
+			uuid : this.uuid.get(),
+			number : this.invoiceNumber.get(),
+			date : this.invoiceDate.getDate(),
+			validDate : this.validDate.getDate(),
+			customer : this.toJSON(this.customer.get()),
+			salesman : this.toJSON(this.salesman.get()),
+			invoiceLines : this.getInvoiceLines(),
+			invoicePaymentLines : this.getInvoicePaymentLines(),
+		}
+	} else if (aObject != null) {
+		return aObject.toJSON();
 	}
+
 }
 
 Invoice.prototype.parseJSON = function(aJSONObject) {
@@ -63,11 +66,15 @@ Invoice.prototype.parseJSON = function(aJSONObject) {
 	this.invoiceNumber.set(aJSONObject.get("number"));
 	this.invoiceDate.setDate(aJSONObject.get("date"));
 	this.validDate.setDate(aJSONObject.get("validDate"));
-	this.customerName.set(aJSONObject.get("customerName"));
-	this.customer = new Customer();
-	this.customer.parseJSON(aJSONObject.get("customer"));
-	this.salesman = new Salesman();
-	this.salesman.parseJSON(aJSONObject.get("salesman"));
+
+	var iCustomer = new Customer();
+	iCustomer.parseJSON(aJSONObject.get("customer"));
+	this.customer.set(iCustomer);
+
+	var iSalesman = new Salesman();
+	iSalesman.parseJSON(aJSONObject.get("salesman"));
+	this.salesman.set(iSalesman);
+
 	this.href.set(aJSONObject.get("href"));
 
 	this.invoiceLines.clear();
@@ -268,19 +275,9 @@ Invoice.prototype.save = function(onSucces, onError) {
 }
 
 Invoice.prototype.isValid = function() {
-	if (this.customerName.get() == null) {
-		alert("Le nom de client est vide");
+	if (this.customer.get() == null) {
+		alert("Veuillez sélectionner un client");
 		return false;
-	}
-
-	if (this.customer == null) {
-		if (!this.customerName.get().isEmpty()) {
-			alert("Le nom de client ne correspond à aucun client");
-			return false;
-		} else {
-			alert("Veuillez sélectionner un client");
-			return false;
-		}
 	}
 
 	return true;
