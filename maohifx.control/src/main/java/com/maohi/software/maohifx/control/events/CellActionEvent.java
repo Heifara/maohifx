@@ -20,7 +20,7 @@ public class CellActionEvent<S, T> extends ActionEvent {
 	private final int index;
 
 	public CellActionEvent(final Object aSource, final ActionEvent aEvent, final TableRow<T> aTableRow, final TableColumn<S, T> aTableColumn, final Object aItem, final int aIndex) {
-		super(aSource, aEvent.getTarget());
+		super(aSource, aEvent != null ? aEvent.getTarget() : null);
 
 		this.tableRow = aTableRow;
 		this.tableColumn = aTableColumn;

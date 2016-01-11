@@ -18,6 +18,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import netscape.javascript.JSObject;
 
 /**
@@ -55,7 +56,13 @@ public class JSObjectPropertyValueFactory<T> extends PropertyValueFactory<JSObje
 	private ObservableValue<T> getObservableValue(final TableColumn<JSObject, T> aTableColumn, final CellDataFeatures<JSObject, T> aCellDataFeatures) {
 		if (aCellDataFeatures.getValue() instanceof Map) {
 			final Map<?, ?> iData = (Map<?, ?>) aCellDataFeatures.getValue();
-			return (ObservableValue<T>) iData.get(this.getProperty());
+			final Object iPropertyValue = iData.get(this.getProperty());
+			if (iPropertyValue instanceof ScriptObjectMirror) {
+				final ScriptObjectMirror iScriptObject = (ScriptObjectMirror) iPropertyValue;
+				return new ReadOnlyObjectWrapper<T>((T) iScriptObject);
+			} else {
+				return (ObservableValue<T>) iData.get(this.getProperty());
+			}
 		} else {
 			final JSObject iData = aCellDataFeatures.getValue();
 			return new ReadOnlyObjectWrapper<T>(iData.getMember(this.getProperty()) != null ? (T) iData.getMember(this.getProperty()) : null);

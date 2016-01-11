@@ -39,6 +39,17 @@ function Product() {
 	this.tvaAmount = Bindings.multiply(this.sellingPrice, this.tva.rate.divide(100));
 }
 
+Product.prototype.getMainProductPackaging = function() {
+	for (iIndex in this.productPackagings) {
+		iProductPackaging = this.productPackagings.get(iIndex);
+		if (iProductPackaging.main.get()) {
+			return iProductPackaging;
+		}
+	}
+
+	return null;
+}
+
 Product.prototype.addPackaging = function(aPackaging, aMain) {
 	iProductPackaging = new ProductPackaging();
 	iProductPackaging.productUuid.set(this.uuid.get());

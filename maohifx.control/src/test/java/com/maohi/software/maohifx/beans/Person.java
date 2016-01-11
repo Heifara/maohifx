@@ -2,6 +2,8 @@ package com.maohi.software.maohifx.beans;
 
 import java.util.Date;
 
+import com.maohi.software.maohifx.enumeration.Gender;
+
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -12,6 +14,7 @@ public class Person {
 	private SimpleStringProperty email = new SimpleStringProperty();
 	private SimpleObjectProperty age = new SimpleObjectProperty();
 	private Date birthdate = new Date();
+	private Gender gender;
 
 	public Person() {
 	}
@@ -40,6 +43,10 @@ public class Person {
 		return firstName.get();
 	}
 
+	public Gender getGender() {
+		return gender;
+	}
+
 	public String getLastName() {
 		return lastName.get();
 	}
@@ -58,6 +65,10 @@ public class Person {
 
 	public void setFirstName(String firstName) {
 		this.firstName.set(firstName);
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
 	}
 
 	public void setLastName(String lastName) {

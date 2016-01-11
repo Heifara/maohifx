@@ -63,6 +63,30 @@ function InvoiceController() {
 	})
 }
 
+InvoiceController.prototype.packagingCodeCommitEvent = function(aCellActionEvent) {
+	var iProductPackaging = aCellActionEvent.getItem();
+	if (iProductPackaging != '' && iProductPackaging != null) {
+		var iInvoiceLine = invoiceLines.getItems().get(aCellActionEvent.getTableRow().getIndex());
+		if (iInvoiceLine != null) {
+			if (iProductPackaging != null) {
+				iInvoiceLine.parseProductPackaging(iProductPackaging);
+			}
+		}
+	}
+}
+
+InvoiceController.prototype.packagingCodeUpdateItem = function(aCellActionEvent) {
+	var iInvoiceLine = invoiceLines.getItems().get(aCellActionEvent.getTableRow().getIndex());
+	if (iInvoiceLine != null) {
+		iComboBoxTableCell = aCellActionEvent.getSource();
+
+		iComboBox = iComboBoxTableCell.getComboBox();
+		iComboBox.getItems().clear();
+		iComboBox.getItems().addAll(iInvoiceLine.productPackagings);
+		iComboBox.getSelectionModel().select(iInvoiceLine.packaging);
+	}
+}
+
 InvoiceController.prototype.addInvoiceLineEvent = function(aEvent) {
 	iInvoiceLine = this.invoice.getLastInvoiceLine();
 	if (iInvoiceLine == null) {

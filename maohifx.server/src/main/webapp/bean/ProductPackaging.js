@@ -63,3 +63,14 @@ ProductPackaging.prototype.parseJSON = function(aJSONObject) {
 ProductPackaging.prototype.toString = function() {
 	return this.packagingCode.get();
 }
+
+ProductPackaging.prototype.showLog = function() {
+	iShowLog = new StringBuilder();
+	iShowLog.append("ProductPackaging[");
+	iShowLog.append("productUuid: " + this.productUuid);
+	iShowLog.append(", packagingCode: " + this.packagingCode);
+	iShowLog.append(", main: " + this.main);
+	iShowLog.append(", sellingPrice: " + this.sellingPrice);
+	iShowLog.append("]");
+	System.out.println(iShowLog.toString());
+}

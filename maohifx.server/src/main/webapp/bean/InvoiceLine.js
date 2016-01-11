@@ -4,6 +4,9 @@ function InvoiceLine() {
 	this.barCode = new SimpleStringProperty();
 	this.label = new SimpleStringProperty();
 	this.quantity = new SimpleDoubleProperty();
+	this.packaging = new ProductPackaging();
+	this.packagingCode = new SimpleStringProperty("");
+	this.productPackagings = FXCollections.observableArrayList();
 	this.sellingPrice = new SimpleDoubleProperty();
 	this.discountRate = new SimpleDoubleProperty();
 	this.tvaRate = new SimpleDoubleProperty();
@@ -40,6 +43,19 @@ InvoiceLine.prototype.parseJSON = function(aJSONObject) {
 	this.discountRate.set(aJSONObject.get("discountRate"));
 	this.tva.parseJSON(aJSONObject.get("tva"));
 	this.tvaRate.set(aJSONObject.get("tvaRate"));
+}
+
+InvoiceLine.prototype.parseProductPackaging = function(aProductPackaging) {
+	System.out.println(aProductPackaging);
+	
+	this.packaging = aProductPackaging;
+
+	if (typeof (this.packaging != 'undefined') && this.packaging != '') {
+		this.packagingCode.set(this.packaging.packagingCode.get());
+		this.sellingPrice.set(this.packaging.sellingPrice.get());
+
+		this.packaging.showLog();
+	}
 }
 
 InvoiceLine.prototype.toConsole = function() {

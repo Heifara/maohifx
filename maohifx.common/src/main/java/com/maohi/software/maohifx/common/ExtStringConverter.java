@@ -62,7 +62,7 @@ public class ExtStringConverter<T> extends StringConverter<T> {
 
 				return (String) iToStringMethod.call(iScriptObject);
 			} else {
-				throw new IllegalArgumentException(String.format("The type of %s is illegal", aObject.toString()));
+				return aObject.toString();
 			}
 		}
 		return null;

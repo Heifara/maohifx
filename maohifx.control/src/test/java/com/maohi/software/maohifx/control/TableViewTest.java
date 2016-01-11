@@ -4,6 +4,8 @@
 package com.maohi.software.maohifx.control;
 
 import com.maohi.software.maohifx.beans.Person;
+import com.maohi.software.maohifx.control.cell.ComboBoxCellFactory;
+import com.maohi.software.maohifx.enumeration.Gender;
 
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -75,6 +77,12 @@ public class TableViewTest extends Application {
 		emailCol.setMinWidth(200);
 		emailCol.setCellValueFactory(new PropertyValueFactory<Person, String>("email"));
 		emailCol.setCellFactory(TextFieldTableCell.forTableColumn());
+
+		final TableColumn<Person, Gender> testComboBox = new TableColumn<>();
+		this.table.getColumns().add(testComboBox);
+		testComboBox.setText("Genre");
+		testComboBox.setCellValueFactory(new PropertyValueFactory<>("gender"));
+		testComboBox.setCellFactory(new ComboBoxCellFactory<>());
 
 		this.table.setEditable(true);
 		this.table.setItems(this.data);

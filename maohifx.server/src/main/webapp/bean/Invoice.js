@@ -30,7 +30,7 @@ function Invoice() {
 	this.validDate = new SimpleLocalDateProperty();
 	this.customerName = new SimpleStringProperty();
 	this.customer = null;
-	this.salesman = null;
+	this.salesman = new Salesman();
 	this.href = new SimpleStringProperty();
 
 	this.totalWithNoTaxes = new SimpleDoubleProperty();
@@ -150,9 +150,9 @@ Invoice.prototype.addInvoicePaymentLine = function() {
 
 Invoice.prototype.updateInvoiceLine = function(aIndex, aProduct) {
 	iInvoiceLine = this.invoiceLines.get(aIndex);
-	iInvoiceLine.sellingPrice.set(aProduct.sellingPrice.get());
 	iInvoiceLine.tvaRate.set(aProduct.tva.rate.get())
 	iInvoiceLine.tva = aProduct.tva;
+	iInvoiceLine.productPackagings = aProduct.productPackagings;
 
 	this.updateTotals();
 }
