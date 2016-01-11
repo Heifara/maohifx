@@ -3,8 +3,6 @@
  */
 package com.maohi.software.maohifx.control.cell;
 
-import java.util.Map;
-
 import com.sun.javafx.event.EventHandlerManager;
 
 import javafx.application.Platform;
@@ -12,6 +10,7 @@ import javafx.beans.NamedArg;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.control.TableColumn;
@@ -19,6 +18,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import jdk.nashorn.internal.runtime.Undefined;
 import netscape.javascript.JSObject;
 
 /**
@@ -49,23 +49,26 @@ public class JSObjectPropertyValueFactory<T> extends PropertyValueFactory<JSObje
 			this.added = true;
 		}
 
-		final ObservableValue<T> iObservableValue = this.getObservableValue(iTableColumn, aCellDataFeatures);
+		final ObservableValue<T> iObservableValue = this.getObservableValue(aCellDataFeatures.getValue());
 		return iObservableValue;
 	}
 
-	private ObservableValue<T> getObservableValue(final TableColumn<JSObject, T> aTableColumn, final CellDataFeatures<JSObject, T> aCellDataFeatures) {
-		if (aCellDataFeatures.getValue() instanceof Map) {
-			final Map<?, ?> iData = (Map<?, ?>) aCellDataFeatures.getValue();
-			final Object iPropertyValue = iData.get(this.getProperty());
-			if (iPropertyValue instanceof ScriptObjectMirror) {
-				final ScriptObjectMirror iScriptObject = (ScriptObjectMirror) iPropertyValue;
-				return new ReadOnlyObjectWrapper<T>((T) iScriptObject);
-			} else {
-				return (ObservableValue<T>) iData.get(this.getProperty());
-			}
+	private ObservableValue<T> getObservableValue(final Object aValue) {
+		if (aValue == null) {
+			System.err.println(this.getProperty() + " is null");
+			return null;
+		} else if (aValue instanceof ScriptObjectMirror) {
+			final ScriptObjectMirror iScriptObject = (ScriptObjectMirror) aValue;
+			final Object iPropertyValue = iScriptObject.getMember(this.getProperty());
+			return this.getObservableValue(iPropertyValue);
+		} else if (aValue instanceof ObservableValue) {
+			final ObservableValue<T> iObservableValue = (ObservableValue<T>) aValue;
+			return new ReadOnlyObjectWrapper<T>(iObservableValue.getValue());
+		} else if (aValue instanceof Undefined) {
+			System.err.println(this.getProperty() + " is undefined");
+			return (ObservableValue<T>) new SimpleStringProperty("");
 		} else {
-			final JSObject iData = aCellDataFeatures.getValue();
-			return new ReadOnlyObjectWrapper<T>(iData.getMember(this.getProperty()) != null ? (T) iData.getMember(this.getProperty()) : null);
+			return new SimpleObjectProperty<T>((T) aValue);
 		}
 	}
 
