@@ -10,8 +10,8 @@ import java.util.List;
 import javax.swing.JTextArea;
 
 /**
- * @author heifara
- *
+ * @author Lawrence Dol
+ * @see http://stackoverflow.com/users/8946/lawrence-dol
  */
 public class TextAreaOutputStream extends OutputStream {
 
