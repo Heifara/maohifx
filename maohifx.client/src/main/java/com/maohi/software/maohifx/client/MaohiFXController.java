@@ -3,19 +3,9 @@
  */
 package com.maohi.software.maohifx.client;
 
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Response.Status;
-
 import org.controlsfx.dialog.Dialogs;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maohi.software.maohifx.client.event.ConnectEvent;
-import com.maohi.software.maohifx.client.event.ExceptionEvent;
-import com.maohi.software.maohifx.client.event.SuccesEvent;
 import com.maohi.software.maohifx.client.jaxb2.Configuration;
 import com.maohi.software.maohifx.client.jaxb2.Configuration.Authentication;
 import com.maohi.software.maohifx.common.Profile;
@@ -71,14 +61,22 @@ public class MaohiFXController {
 
 	private final EventHandlerManager eventDispatcher;
 
-	private Profile profile;
-
 	public MaohiFXController() {
 		this.eventDispatcher = new EventHandlerManager(this);
 	}
 
 	public <T extends Event> void addEventHandler(final EventType<T> aEventType, final EventHandler<? super T> aEventHandler) {
 		this.eventDispatcher.addEventFilter(aEventType, aEventHandler);
+	}
+
+	private void autoConnect() {
+		final Configuration iConfiguration = this.getConfiguration();
+		if ((iConfiguration.getAuthentication() != null) && (iConfiguration.getAuthentication().getUsername() != null) && !iConfiguration.getAuthentication().getUsername().isEmpty()) {
+			final Authentication iAuthentication = iConfiguration.getAuthentication();
+			if (!this.connect(iAuthentication.getUsername(), iAuthentication.getPassword())) {
+				this.getView().displayException(new Exception("Erreur lors de la connection au serveur"));
+			}
+		}
 	}
 
 	public ObjectProperty<Configuration> configurationProperty() {
@@ -102,54 +100,7 @@ public class MaohiFXController {
 				return false;
 			}
 
-			final Profile iProfile = new Profile(aUsername, aPassword);
-
-			final URLHandler iHandler = new URLHandler();
-			iHandler.setOnSucces(new EventHandler<SuccesEvent>() {
-
-				@SuppressWarnings("unchecked")
-				@Override
-				public void handle(final SuccesEvent aEvent) {
-					try {
-						final Map<String, String> iMap = (Map<String, String>) aEvent.getItem();
-
-						final Map<String, String> iParsedMap = new HashMap<>();
-						for (final String iKey : iMap.keySet()) {
-							iParsedMap.put('"' + iKey + '"', '"' + iMap.get(iKey) + '"');
-						}
-
-						MaohiFXController.this.profile = new ObjectMapper().readValue(iParsedMap.toString().replace("=", ":"), Profile.class);
-						MaohiFXController.this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_SUCCES, this), new NotImplementedEventDispatchChain());
-					} catch (final Exception aException) {
-						MaohiFXController.this.getView().displayException(aException);
-					}
-				}
-			});
-			iHandler.setOnExceptionThrown(new EventHandler<ExceptionEvent>() {
-
-				@Override
-				public void handle(final ExceptionEvent aEvent) {
-					MaohiFXController.this.profile = null;
-
-					final Status iStatus = Status.fromStatusCode(aEvent.getStatusCode());
-					if (iStatus != null) {
-						switch (iStatus) {
-						case NOT_ACCEPTABLE:
-							Dialogs.create().title("Erreur d'authentification").message("Le nom d'utilisateur ou le mot de passe sont incorrecte").showError();
-							break;
-
-						default:
-							MaohiFXController.this.getView().displayException(aEvent.getException());
-							MaohiFXController.this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_ERROR, this), new NotImplementedEventDispatchChain());
-							break;
-						}
-					} else {
-						MaohiFXController.this.getView().displayException(aEvent.getException());
-						MaohiFXController.this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_ERROR, this), new NotImplementedEventDispatchChain());
-					}
-				}
-			});
-			iHandler.process(new URL(this.getConfiguration().getAuthentication().getServer() + "maohifx.server/webapi/authentication/connect"), "post", Entity.json(iProfile));
+			this.getModel().connect(new Profile(aUsername, aPassword));
 			return true;
 		} catch (final Exception aException) {
 			this.getView().displayException(aException);
@@ -168,24 +119,7 @@ public class MaohiFXController {
 				this.getModel().save(iConfiguration);
 			}
 
-			final URLHandler iHandler = new URLHandler();
-			iHandler.setOnSucces(new EventHandler<SuccesEvent>() {
-
-				@Override
-				public void handle(final SuccesEvent event) {
-					MaohiFXController.this.profile = null;
-					MaohiFXController.this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_SUCCES, this), new NotImplementedEventDispatchChain());
-				}
-			});
-			iHandler.setOnExceptionThrown(new EventHandler<ExceptionEvent>() {
-
-				@Override
-				public void handle(final ExceptionEvent aEvent) {
-					MaohiFXController.this.getView().displayException(aEvent.getException());
-					MaohiFXController.this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_ERROR, this), new NotImplementedEventDispatchChain());
-				}
-			});
-			iHandler.process(new URL(this.getConfiguration().getAuthentication().getServer() + "maohifx.server/webapi/authentication/disconnect"), "post", Entity.json(this.profile));
+			this.getModel().disconnect();
 		} catch (final Exception aException) {
 			this.getView().displayException(aException);
 			this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_ERROR, this), new NotImplementedEventDispatchChain());
@@ -215,7 +149,7 @@ public class MaohiFXController {
 	}
 
 	public Profile getProfile() {
-		return this.profile;
+		return this.getModel().getProfile();
 	}
 
 	public MaohiFXView getView() {
@@ -262,15 +196,9 @@ public class MaohiFXController {
 	}
 
 	public void show() {
-		this.getView().show();
+		this.autoConnect();
 
-		final Configuration iConfiguration = this.getConfiguration();
-		if ((iConfiguration.getAuthentication() != null) && (iConfiguration.getAuthentication().getUsername() != null) && !iConfiguration.getAuthentication().getUsername().isEmpty()) {
-			final Authentication iAuthentication = iConfiguration.getAuthentication();
-			if (!this.connect(iAuthentication.getUsername(), iAuthentication.getPassword())) {
-				this.getView().displayException(new Exception("Erreur lors de la connection au serveur"));
-			}
-		}
+		this.getView().show();
 	}
 
 	public ObjectProperty<MaohiFXView> viewProperty() {

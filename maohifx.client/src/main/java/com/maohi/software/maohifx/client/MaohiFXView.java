@@ -15,6 +15,7 @@ import com.maohi.software.maohifx.control.Link;
 import com.maohi.software.maohifx.control.Link.LinkTarget;
 import com.maohi.software.maohifx.control.enumerations.HrefTarget;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
@@ -103,7 +104,13 @@ public class MaohiFXView extends BorderPane implements BuilderFactory, Callback<
 	}
 
 	public void displayException(final Throwable aException) {
-		Dialogs.create().owner(this.stage).title(aException.getClass().getSimpleName()).masthead("Une erreur inattendue est survenue").message(aException.getMessage()).showException(aException);
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				Dialogs.create().owner(MaohiFXView.this.stage).title(aException.getClass().getSimpleName()).masthead("Une erreur inattendue est survenue").message(aException.getMessage()).showException(aException);
+			}
+		});
 	}
 
 	@Override
@@ -223,7 +230,13 @@ public class MaohiFXView extends BorderPane implements BuilderFactory, Callback<
 	}
 
 	public void show() {
-		this.stage.show();
-		this.newTab();
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				MaohiFXView.this.stage.show();
+				MaohiFXView.this.newTab();
+			}
+		});
 	}
 }

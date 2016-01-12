@@ -108,8 +108,8 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	public ExtendedTab(final MaohiFXView aView) {
 		this.view = aView;
 		this.controller = this.view.getController();
-		this.controller.addEventHandler(ConnectEvent.CONNECT_SUCCES, this.getOnConnectSucces());
-		this.controller.addEventHandler(ConnectEvent.CONNECT_ERROR, this.getOnConnectError());
+		this.controller.getModel().addEventHandler(ConnectEvent.CONNECT_SUCCES, this.getOnConnectSucces());
+		this.controller.getModel().addEventHandler(ConnectEvent.CONNECT_ERROR, this.getOnConnectError());
 
 		try {
 			final FXMLLoader iLoader = new FXMLLoader();
@@ -462,11 +462,17 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	}
 
 	protected void profileConnected() {
-		if (this.controller.isConnected()) {
-			this.profileButton.setText(this.controller.getProfile().getUsername());
-		} else {
-			this.profileButton.setText("Se connecter");
-		}
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				if (ExtendedTab.this.controller.isConnected()) {
+					ExtendedTab.this.profileButton.setText(ExtendedTab.this.controller.getProfile().getUsername());
+				} else {
+					ExtendedTab.this.profileButton.setText("Se connecter");
+				}
+			}
+		});
 	}
 
 	public void refreshTab(final String aText) {
