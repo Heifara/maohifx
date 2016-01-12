@@ -105,6 +105,12 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	@FXML
 	private ObservableList<String> urlAutoCompletion;
 
+	@FXML
+	private Console consolePane;
+
+	@FXML
+	private MenuItem hidShowConsole;
+
 	public ExtendedTab(final MaohiFXView aView) {
 		this.view = aView;
 		this.controller = this.view.getController();
@@ -245,6 +251,8 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 					iHandler.setOnAuthentification(ExtendedTab.this.onAuthentification);
 					iHandler.setOnEnd(ExtendedTab.this.getOnEnd());
 					iLoader.getNamespace().put("$http", iHandler);
+
+					iLoader.getNamespace().put("console", ExtendedTab.this.consolePane);
 
 					ExtendedTab.this.view.populateNamespace(iLoader);
 
@@ -431,10 +439,15 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 		this.refreshTabEvent(aEvent);
 	}
 
+	private void initConsolePane() {
+		this.showHideConsole(new ActionEvent());
+	}
+
 	@Override
 	public void initialize(final URL aLocation, final ResourceBundle aResources) {
 		this.profileConnected();
 		this.initUrlAutoCompletion();
+		this.initConsolePane();
 	}
 
 	private void initUrlAutoCompletion() {
@@ -556,13 +569,39 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	}
 
 	@FXML
-	public void showHideUrl(final ActionEvent aEvent) {
-		if (this.url.isVisible()) {
-			this.url.setVisible(false);
-			this.hidShowUrl.setText("Afficher la barre d'adresse");
-		} else {
-			this.url.setVisible(true);
-			this.hidShowUrl.setText("Masquer la barre d'adresse");
-		}
+	public void showHideConsole(final ActionEvent aEvent) {
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				if (ExtendedTab.this.consolePane.isVisible()) {
+					ExtendedTab.this.consolePane.setVisible(false);
+					ExtendedTab.this.content.setBottom(null);
+					ExtendedTab.this.hidShowConsole.setText("Afficher la console");
+				} else {
+					ExtendedTab.this.consolePane.setVisible(true);
+					ExtendedTab.this.content.setBottom(ExtendedTab.this.consolePane);
+					ExtendedTab.this.hidShowConsole.setText("Masquer la console");
+				}
+			}
+		});
 	}
+
+	@FXML
+	public void showHideUrl(final ActionEvent aEvent) {
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				if (ExtendedTab.this.url.isVisible()) {
+					ExtendedTab.this.url.setVisible(false);
+					ExtendedTab.this.hidShowUrl.setText("Afficher la barre d'adresse");
+				} else {
+					ExtendedTab.this.url.setVisible(true);
+					ExtendedTab.this.hidShowUrl.setText("Masquer la barre d'adresse");
+				}
+			}
+		});
+	}
+
 }

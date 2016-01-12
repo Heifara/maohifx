@@ -15,6 +15,7 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import com.maohi.software.maohifx.client.Console?>
 
 <fx:root type="javafx.scene.control.Tab" xmlns:fx="http://javafx.com/fxml">
 	<graphic>
@@ -44,6 +45,8 @@
 							</accelerator>
 						</MenuItem>
 						<MenuItem fx:id="hidShowUrl" mnemonicParsing="false" text="Masquer la barre d'adresse" onAction="#showHideUrl">
+						</MenuItem>
+						<MenuItem fx:id="hidShowConsole" mnemonicParsing="false" text="Afficher la console" onAction="#showHideConsole">
 						</MenuItem>
 					</items>
 				</MenuButton>
@@ -84,7 +87,7 @@
 		</top>
 		<center />
 		<bottom>
-			<StatusBar fx:id="statusBar" BorderPane.alignment="CENTER" text="" />
+			<Console fx:id="consolePane" />
 		</bottom>
 		<right />
 	</BorderPane>

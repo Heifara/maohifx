@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<fx:root type="BorderPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40">
+	<top>
+		<ToolBar BorderPane.alignment="CENTER">
+			<items>
+				<Button fx:id="resetButton" onAction="#resetEvent" mnemonicParsing="false" text="Reset" />
+			</items>
+		</ToolBar>
+	</top>
+	<center>
+		<TextArea fx:id="textArea" editable="false" BorderPane.alignment="CENTER" />
+	</center>
+</fx:root>
