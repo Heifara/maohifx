@@ -6,6 +6,7 @@ function SalesmanController() {
 
 	if (typeof ($tab) != 'undefined') {
 		$tab.textProperty().bindBidirectional(this.element.contact.lastname);
+		$tab.setIcon("@maohifx.server/salesman/tab.png")
 	}
 
 	this.bindChildren();
