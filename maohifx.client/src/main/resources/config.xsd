@@ -4,7 +4,14 @@
   <xs:element name="Configuration">
     <xs:complexType>
       <xs:all>
-        <xs:element name="homeUrl" type="xs:string" />
+        <xs:element name="Home">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="url" type="xs:string" />
+              <xs:element name="autoLoad" type="xs:boolean" />
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
         <xs:element name="historyUrl">
           <xs:complexType>
             <xs:sequence>

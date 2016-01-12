@@ -27,6 +27,7 @@ import com.maohi.software.maohifx.client.event.SuccesEvent;
 import com.maohi.software.maohifx.client.jaxb2.Configuration;
 import com.maohi.software.maohifx.client.jaxb2.Configuration.Authentication;
 import com.maohi.software.maohifx.client.jaxb2.Configuration.HistoryUrl;
+import com.maohi.software.maohifx.client.jaxb2.Configuration.Home;
 import com.maohi.software.maohifx.common.JaxbUtils;
 import com.maohi.software.maohifx.common.Profile;
 import com.sun.javafx.event.EventHandlerManager;
@@ -86,8 +87,10 @@ public class MaohiFXModel {
 		final File iFile = new File(this.configFilePathProperty().get());
 		if (!iFile.exists()) {
 			final Configuration iConfiguration = new Configuration();
+			iConfiguration.setHome(new Home());
 			iConfiguration.setHistoryUrl(new HistoryUrl());
-			iConfiguration.setHomeUrl("");
+			iConfiguration.getHome().setUrl("");
+			iConfiguration.getHome().setAutoLoad(false);
 			iConfiguration.setAuthentication(new Authentication());
 			this.save(iConfiguration);
 		}

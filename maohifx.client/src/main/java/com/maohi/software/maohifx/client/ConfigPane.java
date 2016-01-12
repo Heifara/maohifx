@@ -15,10 +15,12 @@ import javax.xml.bind.Marshaller;
 import com.maohi.software.maohifx.client.jaxb2.Configuration;
 import com.maohi.software.maohifx.client.jaxb2.Configuration.Authentication;
 import com.maohi.software.maohifx.client.jaxb2.Configuration.HistoryUrl;
+import com.maohi.software.maohifx.client.jaxb2.Configuration.Home;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -37,6 +39,9 @@ public class ConfigPane extends BorderPane implements Initializable {
 
 	@FXML
 	private TextField authenticationServer;
+
+	@FXML
+	private CheckBox autoLoad;
 
 	public ConfigPane(final MaohiFXView aView) {
 		this.view = aView;
@@ -66,9 +71,9 @@ public class ConfigPane extends BorderPane implements Initializable {
 	@Override
 	public void initialize(final URL aLocation, final ResourceBundle aResources) {
 		final Configuration iConfiguration = this.view.getController().getConfiguration();
-		this.homeUrl.setText(iConfiguration.getHomeUrl());
+		this.homeUrl.setText(iConfiguration.getHome().getUrl());
 		this.authenticationServer.setText(iConfiguration.getAuthentication() != null ? iConfiguration.getAuthentication().getServer() : "");
-
+		this.autoLoad.setSelected(iConfiguration.getHome().isAutoLoad());
 	}
 
 	@FXML
@@ -79,19 +84,23 @@ public class ConfigPane extends BorderPane implements Initializable {
 	}
 
 	private boolean save() {
+		final Configuration iCurrentConfiguration = this.view.getController().getConfiguration();
+
 		final Configuration iConfiguration = new Configuration();
 		iConfiguration.setAuthentication(new Authentication());
 		iConfiguration.setHistoryUrl(new HistoryUrl());
+		iConfiguration.setHome(new Home());
 
 		// Update Home URL
-		iConfiguration.setHomeUrl(this.homeUrl.getText());
+		iConfiguration.setHome(iCurrentConfiguration.getHome());
+		iConfiguration.getHome().setUrl(this.homeUrl.getText());
+		iConfiguration.getHome().setAutoLoad(this.autoLoad.isSelected());
 
 		// Get All current History
-		final Configuration iCurrentConfiguration = this.view.getController().getConfiguration();
 		iConfiguration.setHistoryUrl(iCurrentConfiguration.getHistoryUrl());
 
 		// Update Authentication server
-		if (!this.authenticationServer.getText().endsWith("/")) {
+		if ((this.authenticationServer.getText() != null) && !this.authenticationServer.getText().endsWith("/")) {
 			this.authenticationServer.setText(this.authenticationServer.getText() + "/");
 		}
 		iConfiguration.getAuthentication().setServer(this.authenticationServer.getText());

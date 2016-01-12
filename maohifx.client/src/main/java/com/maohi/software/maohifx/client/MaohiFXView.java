@@ -11,6 +11,7 @@ import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
 
 import com.maohi.software.maohifx.client.event.ExceptionEvent;
+import com.maohi.software.maohifx.client.jaxb2.Configuration;
 import com.maohi.software.maohifx.control.Link;
 import com.maohi.software.maohifx.control.Link.LinkTarget;
 import com.maohi.software.maohifx.control.enumerations.HrefTarget;
@@ -196,12 +197,21 @@ public class MaohiFXView extends BorderPane implements BuilderFactory, Callback<
 	}
 
 	public void newTab() {
-		final ExtendedTab iTab = new ExtendedTab(this);
-		iTab.setText("Nouvelle Onglet");
+		Platform.runLater(new Runnable() {
 
-		iTab.homeEvent(new ActionEvent());
+			@Override
+			public void run() {
+				final ExtendedTab iTab = new ExtendedTab(MaohiFXView.this);
+				iTab.setText("Nouvelle Onglet");
 
-		this.tabPane.getTabs().add(iTab);
+				final Configuration iConfiguration = MaohiFXView.this.controller.getConfiguration();
+				if (iConfiguration.getHome().isAutoLoad()) {
+					iTab.homeEvent(new ActionEvent());
+				}
+
+				MaohiFXView.this.tabPane.getTabs().add(iTab);
+			}
+		});
 	}
 
 	@Override
