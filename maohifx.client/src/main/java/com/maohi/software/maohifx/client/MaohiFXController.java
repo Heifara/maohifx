@@ -17,6 +17,7 @@ import com.maohi.software.maohifx.client.event.ConnectEvent;
 import com.maohi.software.maohifx.client.event.ExceptionEvent;
 import com.maohi.software.maohifx.client.event.SuccesEvent;
 import com.maohi.software.maohifx.client.jaxb2.Configuration;
+import com.maohi.software.maohifx.client.jaxb2.Configuration.Authentication;
 import com.maohi.software.maohifx.common.Profile;
 import com.sun.javafx.event.EventHandlerManager;
 
@@ -148,7 +149,7 @@ public class MaohiFXController {
 					}
 				}
 			});
-			iHandler.process(new URL(this.getConfiguration().getAuthenticationServer() + "maohifx.server/webapi/authentication/connect"), "post", Entity.json(iProfile));
+			iHandler.process(new URL(this.getConfiguration().getAuthentication().getServer() + "maohifx.server/webapi/authentication/connect"), "post", Entity.json(iProfile));
 			return true;
 		} catch (final Exception aException) {
 			this.getView().displayException(aException);
@@ -159,6 +160,14 @@ public class MaohiFXController {
 
 	public void disconnect() {
 		try {
+			final Configuration iConfiguration = this.getConfiguration();
+			if ((iConfiguration.getAuthentication() != null) && (iConfiguration.getAuthentication().getUsername() != null) && !iConfiguration.getAuthentication().getUsername().isEmpty()) {
+				final Authentication iAuthentication = iConfiguration.getAuthentication();
+				iAuthentication.setUsername("");
+				iAuthentication.setPassword("");
+				this.getModel().save(iConfiguration);
+			}
+
 			final URLHandler iHandler = new URLHandler();
 			iHandler.setOnSucces(new EventHandler<SuccesEvent>() {
 
@@ -176,7 +185,7 @@ public class MaohiFXController {
 					MaohiFXController.this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_ERROR, this), new NotImplementedEventDispatchChain());
 				}
 			});
-			iHandler.process(new URL(this.getConfiguration().getAuthenticationServer() + "maohifx.server/webapi/authentication/disconnect"), "post", Entity.json(this.profile));
+			iHandler.process(new URL(this.getConfiguration().getAuthentication().getServer() + "maohifx.server/webapi/authentication/disconnect"), "post", Entity.json(this.profile));
 		} catch (final Exception aException) {
 			this.getView().displayException(aException);
 			this.eventDispatcher.dispatchEvent(new ConnectEvent(ConnectEvent.CONNECT_ERROR, this), new NotImplementedEventDispatchChain());
@@ -254,6 +263,14 @@ public class MaohiFXController {
 
 	public void show() {
 		this.getView().show();
+
+		final Configuration iConfiguration = this.getConfiguration();
+		if ((iConfiguration.getAuthentication() != null) && (iConfiguration.getAuthentication().getUsername() != null) && !iConfiguration.getAuthentication().getUsername().isEmpty()) {
+			final Authentication iAuthentication = iConfiguration.getAuthentication();
+			if (!this.connect(iAuthentication.getUsername(), iAuthentication.getPassword())) {
+				this.getView().displayException(new Exception("Erreur lors de la connection au serveur"));
+			}
+		}
 	}
 
 	public ObjectProperty<MaohiFXView> viewProperty() {

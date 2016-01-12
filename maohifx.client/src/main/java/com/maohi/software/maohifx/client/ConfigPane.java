@@ -13,6 +13,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import com.maohi.software.maohifx.client.jaxb2.Configuration;
+import com.maohi.software.maohifx.client.jaxb2.Configuration.Authentication;
+import com.maohi.software.maohifx.client.jaxb2.Configuration.HistoryUrl;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -65,7 +67,7 @@ public class ConfigPane extends BorderPane implements Initializable {
 	public void initialize(final URL aLocation, final ResourceBundle aResources) {
 		final Configuration iConfiguration = this.view.getController().getConfiguration();
 		this.homeUrl.setText(iConfiguration.getHomeUrl());
-		this.authenticationServer.setText(iConfiguration.getAuthenticationServer());
+		this.authenticationServer.setText(iConfiguration.getAuthentication() != null ? iConfiguration.getAuthentication().getServer() : "");
 
 	}
 
@@ -78,13 +80,23 @@ public class ConfigPane extends BorderPane implements Initializable {
 
 	private boolean save() {
 		final Configuration iConfiguration = new Configuration();
+		iConfiguration.setAuthentication(new Authentication());
+		iConfiguration.setHistoryUrl(new HistoryUrl());
+
+		// Update Home URL
 		iConfiguration.setHomeUrl(this.homeUrl.getText());
 
+		// Get All current History
+		final Configuration iCurrentConfiguration = this.view.getController().getConfiguration();
+		iConfiguration.setHistoryUrl(iCurrentConfiguration.getHistoryUrl());
+
+		// Update Authentication server
 		if (!this.authenticationServer.getText().endsWith("/")) {
 			this.authenticationServer.setText(this.authenticationServer.getText() + "/");
 		}
-		iConfiguration.setAuthenticationServer(this.authenticationServer.getText());
+		iConfiguration.getAuthentication().setServer(this.authenticationServer.getText());
 
+		// Save
 		return this.view.getController().save(iConfiguration);
 	}
 

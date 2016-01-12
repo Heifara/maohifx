@@ -14,6 +14,7 @@ import javax.xml.bind.JAXBException;
 
 import com.maohi.software.maohifx.client.event.ExceptionEvent;
 import com.maohi.software.maohifx.client.jaxb2.Configuration;
+import com.maohi.software.maohifx.client.jaxb2.Configuration.Authentication;
 import com.maohi.software.maohifx.client.jaxb2.Configuration.HistoryUrl;
 import com.maohi.software.maohifx.common.JaxbUtils;
 
@@ -38,7 +39,7 @@ public class MaohiFXModel {
 			final Configuration iConfiguration = new Configuration();
 			iConfiguration.setHistoryUrl(new HistoryUrl());
 			iConfiguration.setHomeUrl("");
-			iConfiguration.setAuthenticationServer("");
+			iConfiguration.setAuthentication(new Authentication());
 			this.save(iConfiguration);
 		}
 	}

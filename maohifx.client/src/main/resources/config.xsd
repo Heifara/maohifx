@@ -12,7 +12,15 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="authenticationServer" type="xs:string" />
+        <xs:element name="Authentication">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="server" type="xs:string" />
+              <xs:element name="username" type="xs:string" />
+              <xs:element name="password" type="xs:string" />
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
       </xs:all>
     </xs:complexType>
   </xs:element>
