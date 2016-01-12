@@ -47,8 +47,6 @@ InvoiceLine.prototype.parseJSON = function(aJSONObject) {
 InvoiceLine.prototype.parseProductPackaging = function(aProductPackaging) {
 	this.packaging = aProductPackaging;
 	this.sellingPrice.set(aProductPackaging.sellingPrice.get());
-
-	this.packaging.showLog();
 }
 
 InvoiceLine.prototype.toConsole = function() {

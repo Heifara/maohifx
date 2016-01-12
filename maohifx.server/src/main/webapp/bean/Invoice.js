@@ -161,6 +161,8 @@ Invoice.prototype.updateInvoiceLine = function(aIndex, aProduct) {
 	iInvoiceLine.tva = aProduct.tva;
 	iInvoiceLine.productPackagings = aProduct.productPackagings;
 
+	iInvoiceLine.parseProductPackaging(aProduct.getMainProductPackaging());
+
 	this.updateTotals();
 }
 
