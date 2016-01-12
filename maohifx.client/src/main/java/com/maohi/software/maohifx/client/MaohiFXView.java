@@ -189,8 +189,10 @@ public class MaohiFXView extends BorderPane implements BuilderFactory, Callback<
 	}
 
 	public void newTab() {
-		final Tab iTab = new ExtendedTab(this);
+		final ExtendedTab iTab = new ExtendedTab(this);
 		iTab.setText("Nouvelle Onglet");
+
+		iTab.homeEvent(new ActionEvent());
 
 		this.tabPane.getTabs().add(iTab);
 	}
