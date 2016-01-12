@@ -55,7 +55,6 @@ public class ComboBoxTableCell<S, T> extends TableCell<S, T>implements EventHand
 		super.startEdit();
 
 		this.setText(null);
-		this.setGraphic(null);
 	}
 
 	@SuppressWarnings("unchecked")
