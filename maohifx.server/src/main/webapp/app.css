@@ -190,6 +190,10 @@
 	-fx-graphic: url("contact-icon.png");
 }
 
+#module #salesman-button {
+	-fx-graphic: url("salesman/icon.png");
+}
+
 #module #customer-button {
 	-fx-graphic: url("customer-icon.png");
 }
