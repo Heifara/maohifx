@@ -6,6 +6,9 @@ package com.maohi.software.maohifx.client;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.maohi.software.maohifx.common.JSonUtils;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -80,7 +83,19 @@ public class Console extends BorderPane implements com.maohi.software.maohifx.co
 		} else if (aObject instanceof ScriptObjectMirror) {
 			final ScriptObjectMirror iScriptObject = (ScriptObjectMirror) aObject;
 			final ScriptObjectMirror iToStringMethod = (ScriptObjectMirror) iScriptObject.get("toString");
-			if (iToStringMethod != null) {
+			if ((iToStringMethod != null) && iToStringMethod.toString().contains("[native code]")) {
+				try {
+					final String iToString = JSonUtils.toString(iScriptObject);
+					if (iToString != null) {
+						this.getPrintStream().println(iToString);
+					} else {
+						this.getPrintStream().println("Parsing ScriptObject Error");
+					}
+				} catch (final JsonProcessingException aException) {
+					this.getPrintStream().println(aException.getMessage());
+					aException.printStackTrace();
+				}
+			} else if (iToStringMethod != null) {
 				iToStringMethod.setMember("this", iScriptObject);
 				final String iToString = (String) iToStringMethod.call(iScriptObject);
 				if (iToString != null) {
