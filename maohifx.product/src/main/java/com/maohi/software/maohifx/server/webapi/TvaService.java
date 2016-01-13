@@ -8,8 +8,8 @@ import java.util.List;
 
 import javax.ws.rs.Path;
 
-import com.maohi.software.maohifx.invoice.bean.Tva;
-import com.maohi.software.maohifx.invoice.dao.TvaDAO;
+import com.maohi.software.maohifx.product.bean.Tva;
+import com.maohi.software.maohifx.product.dao.TvaDAO;
 
 /**
  * @author heifara

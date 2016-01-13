@@ -1,22 +1,16 @@
-package com.maohi.software.maohifx.invoice.bean;
-// Generated 18 d�c. 2015 08:18:04 by Hibernate Tools 4.0.0
+package com.maohi.software.maohifx.product.bean;
+// Generated 12 janv. 2016 16:10:22 by Hibernate Tools 4.0.0
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.maohi.software.maohifx.common.server.AnnotatedClass;
 
 /**
@@ -24,26 +18,26 @@ import com.maohi.software.maohifx.common.server.AnnotatedClass;
  */
 @Entity
 @Table(name = "tva")
-@JsonIgnoreProperties({ "invoiceLines" })
 public class Tva implements java.io.Serializable, AnnotatedClass {
 
 	private static final long serialVersionUID = 1L;
 
-	private Integer type;
+	private int type;
 	private Date creationDate;
 	private Date updateDate;
 	private String label;
 	private Double rate;
-	private Set<InvoiceLine> invoiceLines = new HashSet<>(0);
+
+	private String href;
 
 	public Tva() {
 	}
 
-	public Tva(final Integer type) {
+	public Tva(final int type) {
 		this.type = type;
 	}
 
-	public Tva(final Integer type, final Date creationDate, final Date updateDate, final String label, final Double rate) {
+	public Tva(final int type, final Date creationDate, final Date updateDate, final String label, final Double rate) {
 		this.type = type;
 		this.creationDate = creationDate;
 		this.updateDate = updateDate;
@@ -57,9 +51,9 @@ public class Tva implements java.io.Serializable, AnnotatedClass {
 		return this.creationDate;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tva", cascade = CascadeType.ALL)
-	public Set<InvoiceLine> getInvoiceLines() {
-		return this.invoiceLines;
+	@Transient
+	public String getHref() {
+		return this.href;
 	}
 
 	@Column(name = "label")
@@ -75,7 +69,7 @@ public class Tva implements java.io.Serializable, AnnotatedClass {
 	@Id
 
 	@Column(name = "type", unique = true, nullable = false)
-	public Integer getType() {
+	public int getType() {
 		return this.type;
 	}
 
@@ -98,10 +92,7 @@ public class Tva implements java.io.Serializable, AnnotatedClass {
 
 	@Override
 	public void setHref(final String aHref) {
-	}
-
-	public void setInvoiceLines(final Set<InvoiceLine> invoiceLines) {
-		this.invoiceLines = invoiceLines;
+		this.href = aHref;
 	}
 
 	public void setLabel(final String label) {
@@ -112,7 +103,7 @@ public class Tva implements java.io.Serializable, AnnotatedClass {
 		this.rate = rate;
 	}
 
-	public void setType(final Integer type) {
+	public void setType(final int type) {
 		this.type = type;
 	}
 

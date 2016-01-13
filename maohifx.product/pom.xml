@@ -14,7 +14,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.maohi.software</groupId>
-			<artifactId>maohifx.invoice</artifactId>
+			<artifactId>maohifx.contact</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>

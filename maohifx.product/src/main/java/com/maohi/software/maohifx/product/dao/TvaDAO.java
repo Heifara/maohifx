@@ -1,10 +1,10 @@
 /**
  *
  */
-package com.maohi.software.maohifx.invoice.dao;
+package com.maohi.software.maohifx.product.dao;
 
 import com.maohi.software.maohifx.common.server.AbstractDAO;
-import com.maohi.software.maohifx.invoice.bean.Tva;
+import com.maohi.software.maohifx.product.bean.Tva;
 
 /**
  * @author heifara

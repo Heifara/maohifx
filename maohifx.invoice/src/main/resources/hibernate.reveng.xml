@@ -3,8 +3,8 @@
 
 <hibernate-reverse-engineering>
 	<table-filter match-name="invoice" match-catalog="maohifx" exclude="true"></table-filter>
-	<table-filter match-name="invoice_line" match-catalog="maohifx" exclude="true"></table-filter>
+	<table-filter match-name="invoice_line" match-catalog="maohifx"></table-filter>
 	<table-filter match-name="invoice_payment_line" match-catalog="maohifx" exclude="true"></table-filter>
 	<table-filter match-name="payment_mode" match-catalog="maohifx" exclude="true"></table-filter>
-	<table-filter match-name="tva" match-catalog="maohifx"></table-filter>
+	<table-filter match-name="product_packaging" match-catalog="maohifx"></table-filter>
 </hibernate-reverse-engineering>

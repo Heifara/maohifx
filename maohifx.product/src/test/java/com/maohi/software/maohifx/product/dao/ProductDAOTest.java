@@ -23,16 +23,12 @@ import com.maohi.software.maohifx.contact.bean.Customer;
 import com.maohi.software.maohifx.contact.bean.Email;
 import com.maohi.software.maohifx.contact.bean.Phone;
 import com.maohi.software.maohifx.contact.bean.Salesman;
-import com.maohi.software.maohifx.invoice.bean.Invoice;
-import com.maohi.software.maohifx.invoice.bean.InvoiceLine;
-import com.maohi.software.maohifx.invoice.bean.InvoicePaymentLine;
-import com.maohi.software.maohifx.invoice.bean.PaymentMode;
-import com.maohi.software.maohifx.invoice.bean.Tva;
 import com.maohi.software.maohifx.product.bean.Barcode;
 import com.maohi.software.maohifx.product.bean.Packaging;
 import com.maohi.software.maohifx.product.bean.Product;
 import com.maohi.software.maohifx.product.bean.ProductPackaging;
 import com.maohi.software.maohifx.product.bean.ProductPackagingBarcode;
+import com.maohi.software.maohifx.product.bean.Tva;
 
 /**
  * @author heifara
@@ -56,10 +52,6 @@ public class ProductDAOTest {
 		HibernateUtil.getConfiguration().addAnnotatedClass(Salesman.class);
 
 		HibernateUtil.getConfiguration().addAnnotatedClass(Tva.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(Invoice.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(InvoiceLine.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(InvoicePaymentLine.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(PaymentMode.class);
 
 		HibernateUtil.getConfiguration().addAnnotatedClass(Barcode.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(Packaging.class);

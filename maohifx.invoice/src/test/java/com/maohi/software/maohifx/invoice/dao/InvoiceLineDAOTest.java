@@ -3,7 +3,12 @@
  */
 package com.maohi.software.maohifx.invoice.dao;
 
-import java.util.List;
+import static org.junit.Assert.assertFalse;
+
+import java.net.URL;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.UUID;
 
 import org.hibernate.Session;
 import org.junit.After;
@@ -18,13 +23,21 @@ import com.maohi.software.maohifx.contact.bean.Contact;
 import com.maohi.software.maohifx.contact.bean.Customer;
 import com.maohi.software.maohifx.contact.bean.Email;
 import com.maohi.software.maohifx.contact.bean.Phone;
+import com.maohi.software.maohifx.contact.bean.Salesman;
 import com.maohi.software.maohifx.contact.bean.Supplier;
+import com.maohi.software.maohifx.contact.dao.ContactDAO;
+import com.maohi.software.maohifx.contact.dao.CustomerDAO;
 import com.maohi.software.maohifx.invoice.bean.Invoice;
 import com.maohi.software.maohifx.invoice.bean.InvoiceLine;
 import com.maohi.software.maohifx.invoice.bean.InvoicePaymentLine;
 import com.maohi.software.maohifx.invoice.bean.PaymentMode;
-import com.maohi.software.maohifx.invoice.bean.Tva;
-import com.maohi.software.maohifx.invoice.bean.TvaReport;
+import com.maohi.software.maohifx.product.bean.Barcode;
+import com.maohi.software.maohifx.product.bean.Packaging;
+import com.maohi.software.maohifx.product.bean.Product;
+import com.maohi.software.maohifx.product.bean.ProductPackaging;
+import com.maohi.software.maohifx.product.bean.ProductPackagingBarcode;
+import com.maohi.software.maohifx.product.bean.Tva;
+import com.maohi.software.maohifx.product.dao.ProductDAO;
 
 /**
  * @author heifara
@@ -32,24 +45,36 @@ import com.maohi.software.maohifx.invoice.bean.TvaReport;
  */
 public class InvoiceLineDAOTest {
 
+	private static Session session;
+
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		HibernateUtil.setConfigurationURL(new URL("file:///Conf/Dev/github/maohifx/maohifx.configure/src/main/webapp/hibernate.cfg.xml"));
+
+		HibernateUtil.getConfiguration().addAnnotatedClass(Contact.class);
+		HibernateUtil.getConfiguration().addAnnotatedClass(Customer.class);
+		HibernateUtil.getConfiguration().addAnnotatedClass(Email.class);
+		HibernateUtil.getConfiguration().addAnnotatedClass(Phone.class);
+		HibernateUtil.getConfiguration().addAnnotatedClass(Salesman.class);
+		HibernateUtil.getConfiguration().addAnnotatedClass(Supplier.class);
+
 		HibernateUtil.getConfiguration().addAnnotatedClass(Invoice.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(InvoiceLine.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(InvoicePaymentLine.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(PaymentMode.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(Tva.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(Customer.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(Supplier.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(Contact.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(Email.class);
-		HibernateUtil.getConfiguration().addAnnotatedClass(Phone.class);
 
-		final Session iSession = HibernateUtil.getSessionFactory().openSession();
-		AbstractDAO.setSession(iSession);
+		HibernateUtil.getConfiguration().addAnnotatedClass(Barcode.class);
+		HibernateUtil.getConfiguration().addAnnotatedClass(Packaging.class);
+		HibernateUtil.getConfiguration().addAnnotatedClass(Product.class);
+		HibernateUtil.getConfiguration().addAnnotatedClass(ProductPackaging.class);
+		HibernateUtil.getConfiguration().addAnnotatedClass(ProductPackagingBarcode.class);
+		HibernateUtil.getConfiguration().addAnnotatedClass(Tva.class);
+
+		session = HibernateUtil.getSessionFactory().openSession();
+		AbstractDAO.setSession(session);
 	}
 
 	/**
@@ -66,16 +91,107 @@ public class InvoiceLineDAOTest {
 	public void setUp() throws Exception {
 	}
 
+	@Test
+	public void shouldCRUD() throws Exception {
+		final ProductDAO iProductDao = new ProductDAO();
+
+		final Tva iTva = new Tva(1, new Date(), new Date(), "JUnit Test", 5.0);
+		session.beginTransaction();
+		session.saveOrUpdate(iTva);
+		session.getTransaction().commit();
+
+		final Packaging iPackaging = new Packaging("UNT");
+		iPackaging.setCreationDate(new Date());
+		iPackaging.setUpdateDate(new Date());
+		iPackaging.setProductPackagings(new HashSet<>());
+		session.beginTransaction();
+		session.saveOrUpdate(iPackaging);
+		session.getTransaction().commit();
+
+		final Barcode iBarcode = new Barcode("9990001");
+		iBarcode.setCreationDate(new Date());
+		iBarcode.setUpdateDate(new Date());
+		session.beginTransaction();
+		session.saveOrUpdate(iBarcode);
+		session.getTransaction().commit();
+
+		final Product iProduct = new Product();
+		iProduct.setUuid(UUID.randomUUID().toString());
+		iProduct.setDesignation("JUnit Test");
+		iProduct.setCreationDate(new Date());
+		iProduct.setUpdateDate(new Date());
+		iProduct.setTva(iTva);
+
+		final ProductPackaging iProductPackaging = iProduct.add(iPackaging);
+		iProduct.add(iBarcode, "UNT");
+
+		iProductDao.beginTransaction();
+		iProductDao.insert(iProduct);
+		iProductDao.commit();
+
+		final Product iReadedProduct = (Product) session.get(Product.class, iProduct.getUuid());
+		assertFalse(iReadedProduct == null);
+
+		final Customer iCustomer = new Customer(new Contact());
+		iCustomer.setUuid(UUID.randomUUID().toString());
+		iCustomer.setCode("TEST");
+		iCustomer.getContact().setLastname("JUnit");
+		iCustomer.getContact().setFirstname("Test");
+
+		final ContactDAO iContactDAO = new ContactDAO();
+		iContactDAO.beginTransaction();
+		iContactDAO.replace(iCustomer.getContact());
+		iContactDAO.commit();
+
+		final CustomerDAO iCustomerDAO = new CustomerDAO();
+		iCustomerDAO.beginTransaction();
+		iCustomerDAO.replace(iCustomer);
+		iCustomerDAO.commit();
+
+		final Invoice iInvoice = new Invoice();
+		iInvoice.setUuid(UUID.randomUUID().toString());
+		iInvoice.setCustomer(iCustomer);
+		iInvoice.setCustomerName(iCustomer.getContact().getFullName());
+
+		final InvoiceDAO iInvoiceDAO = new InvoiceDAO();
+		iInvoiceDAO.beginTransaction();
+		iInvoiceDAO.insert(iInvoice);
+		iInvoiceDAO.commit();
+
+		final InvoiceLine iInvoiceLine = iInvoice.add(iProductPackaging, iTva);
+		iInvoiceDAO.beginTransaction();
+		iInvoiceDAO.update(iInvoice);
+		iInvoiceDAO.commit();
+
+		iInvoice.remove(iInvoiceLine);
+		iInvoiceDAO.beginTransaction();
+		iInvoiceDAO.update(iInvoice);
+		iInvoiceDAO.commit();
+
+		iInvoiceDAO.beginTransaction();
+		iInvoiceDAO.delete(iInvoice);
+		iInvoiceDAO.commit();
+
+		iReadedProduct.remove(iBarcode, iPackaging);
+		iProductDao.beginTransaction();
+		iProductDao.update(iProduct);
+		iProductDao.commit();
+
+		iReadedProduct.remove(iPackaging);
+		iProductDao.beginTransaction();
+		iProductDao.update(iProduct);
+		iProductDao.commit();
+
+		iProductDao.beginTransaction();
+		iProductDao.delete(iReadedProduct);
+		iProductDao.commit();
+	}
+
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@After
 	public void tearDown() throws Exception {
-	}
-
-	@Test
-	public void testTvaReport() throws Exception {
-		final List<TvaReport> iTvaReports = new InvoiceLineDAO().tvaReport("2015-12-01", "2015-12-30");
 	}
 
 }
