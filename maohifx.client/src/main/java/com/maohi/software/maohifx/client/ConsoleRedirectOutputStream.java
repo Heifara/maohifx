@@ -6,11 +6,7 @@ package com.maohi.software.maohifx.client;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-
-import javafx.application.Platform;
-import javafx.scene.control.TextArea;
 
 /**
  * Based on the work of Lawrence Dol
@@ -20,77 +16,6 @@ import javafx.scene.control.TextArea;
  *
  */
 public class ConsoleRedirectOutputStream extends OutputStream {
-
-	// *************************************************************************************************
-	// INSTANCE MEMBERS
-	// *************************************************************************************************
-
-	static class Appender implements Runnable {
-		static private final String EOL1 = "\n";
-		static private final String EOL2 = System.getProperty("line.separator", EOL1);
-		private final TextArea textArea;
-		private final int maxLines; // maximum lines allowed in text area
-
-		private final LinkedList<Integer> lengths; // length of lines within text area
-		private final List<String> values; // values waiting to be appended
-		private int curLength; // length of current line
-
-		private boolean clear;
-
-		private boolean queue;
-
-		public Appender(final TextArea aTextArea, final int aMaxlin) {
-			this.textArea = aTextArea;
-			this.maxLines = aMaxlin;
-			this.lengths = new LinkedList<Integer>();
-			this.values = new ArrayList<String>();
-
-			this.curLength = 0;
-			this.clear = false;
-			this.queue = true;
-		}
-
-		synchronized void append(final String val) {
-			this.values.add(val);
-			if (this.queue) {
-				this.queue = false;
-				Platform.runLater(this);
-			}
-		}
-
-		synchronized void clear() {
-			this.clear = true;
-			this.curLength = 0;
-			this.lengths.clear();
-			this.values.clear();
-			if (this.queue) {
-				this.queue = false;
-				Platform.runLater(this);
-			}
-		}
-
-		// MUST BE THE ONLY METHOD THAT TOUCHES textArea!
-		@Override
-		public synchronized void run() {
-			if (this.clear) {
-				this.textArea.setText("");
-			}
-			for (final String val : this.values) {
-				this.curLength += val.length();
-				if (val.endsWith(EOL1) || val.endsWith(EOL2)) {
-					if (this.lengths.size() >= this.maxLines) {
-						this.textArea.replaceText(0, this.lengths.removeFirst(), "");
-					}
-					this.lengths.addLast(this.curLength);
-					this.curLength = 0;
-				}
-				this.textArea.appendText(val);
-			}
-			this.values.clear();
-			this.clear = false;
-			this.queue = true;
-		}
-	}
 
 	static private String bytesToString(final byte[] ba, final int str, final int len) {
 		try {
@@ -102,30 +27,31 @@ public class ConsoleRedirectOutputStream extends OutputStream {
 
 	private final byte[] oneByte; // array for write(int val);
 
-	private Appender appender; // most recent action
+	private final List<ConsoleRedirectAppender> appenders;
 
-	public ConsoleRedirectOutputStream(final TextArea aTextArea) {
-		this(aTextArea, 1000);
-	}
+	// private ConsoleRedirectAppender appender; // most recent action
 
-	public ConsoleRedirectOutputStream(final TextArea aTextArea, final int maxlin) {
-		if (maxlin < 1) {
-			throw new IllegalArgumentException("TextAreaOutputStream maximum lines must be positive (value=" + maxlin + ")");
-		}
+	public ConsoleRedirectOutputStream() {
 		this.oneByte = new byte[1];
-		this.appender = new Appender(aTextArea, maxlin);
+
+		this.appenders = new ArrayList<>();
 	}
 
-	/** Clear the current console text area. */
+	public void add(final ConsoleRedirectAppender aAppender) {
+		this.appenders.add(aAppender);
+	}
+
 	public synchronized void clear() {
-		if (this.appender != null) {
-			this.appender.clear();
+		for (final ConsoleRedirectAppender aConsoleRedirectAppender : this.appenders) {
+			if (aConsoleRedirectAppender != null) {
+				aConsoleRedirectAppender.clear();
+			}
 		}
 	}
 
 	@Override
 	public synchronized void close() {
-		this.appender = null;
+		this.appenders.clear();
 	}
 
 	@Override
@@ -139,14 +65,12 @@ public class ConsoleRedirectOutputStream extends OutputStream {
 
 	@Override
 	public synchronized void write(final byte[] ba, final int str, final int len) {
-		if (this.appender != null) {
-			this.appender.append(bytesToString(ba, str, len));
+		for (final ConsoleRedirectAppender aConsoleRedirectAppender : this.appenders) {
+			if (aConsoleRedirectAppender != null) {
+				aConsoleRedirectAppender.append(bytesToString(ba, str, len));
+			}
 		}
 	}
-
-	// *************************************************************************************************
-	// STATIC MEMBERS
-	// *************************************************************************************************
 
 	@Override
 	public synchronized void write(final int val) {

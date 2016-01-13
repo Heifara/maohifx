@@ -16,6 +16,8 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import com.maohi.software.maohifx.client.Console?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
 
 <fx:root type="javafx.scene.control.Tab" xmlns:fx="http://javafx.com/fxml">
 	<graphic>
@@ -87,7 +89,20 @@
 		</top>
 		<center />
 		<bottom>
-			<Console fx:id="consolePane" />
+			<TabPane fx:id="bottomPane" tabClosingPolicy="UNAVAILABLE">
+				<tabs>
+					<Tab text="Console">
+						<content>
+							<Console fx:id="consolePane" />
+						</content>
+					</Tab>
+					<Tab fx:id="consoleSystemTab" text="Console système">
+						<content>
+							<Console fx:id="consoleSystemPane" />
+						</content>
+					</Tab>
+				</tabs>
+			</TabPane>
 		</bottom>
 		<right />
 	</BorderPane>

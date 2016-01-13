@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?language javascript?>
+<?import javafx.scene.text.*?>
 <?import org.controlsfx.control.*?>
 <?import javafx.scene.web.*?>
 <?import java.lang.*?>
@@ -9,26 +10,60 @@
 
 <fx:root prefHeight="200.0" prefWidth="400.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<center>
-		<GridPane BorderPane.alignment="CENTER">
-			<columnConstraints>
-				<ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="150.0" />
-				<ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="200.0" />
-			</columnConstraints>
-			<rowConstraints>
-				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-			</rowConstraints>
-			<children>
-				<TextField fx:id="homeUrl" GridPane.columnIndex="1" />
-				<Label text="Acceuil" />
-				<Label text="Serveur d'authentification" GridPane.rowIndex="2" />
-				<TextField fx:id="authenticationServer" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-				<CheckBox fx:id="autoLoad" mnemonicParsing="false" text="Charger automatiquement" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
-			</children>
-		</GridPane>
+		<TabPane BorderPane.alignment="CENTER">
+			<tabs>
+				<Tab text="Général">
+					<content>
+						<GridPane>
+							<columnConstraints>
+								<ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="150.0" />
+								<ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="200.0" />
+							</columnConstraints>
+							<rowConstraints>
+								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+							</rowConstraints>
+							<children>
+								<TextField fx:id="homeUrl" GridPane.columnIndex="1" />
+								<Label text="Acceuil" />
+								<Label text="Serveur d'authentification" GridPane.rowIndex="2" />
+								<TextField fx:id="authenticationServer" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+								<CheckBox fx:id="autoLoad" mnemonicParsing="false" text="Charger automatiquement" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+							</children>
+						</GridPane>
+					</content>
+				</Tab>
+				<Tab text="Console">
+					<content>
+						<GridPane>
+							<columnConstraints>
+								<ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+								<ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+							</columnConstraints>
+							<rowConstraints>
+								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+							</rowConstraints>
+							<children>
+								<Label text="Nombre de ligne maximum" />
+								<TextField fx:id="consoleMaxLines" GridPane.columnIndex="1" />
+								<Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+								<Label text="System" GridPane.rowIndex="2" />
+								<Label text="Nombre de ligne maximum" GridPane.rowIndex="3" />
+								<TextField fx:id="consoleSystemMaxLines" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+								<CheckBox fx:id="consoleSystemEnable" mnemonicParsing="false" text="Activer/Désactiver(Redémarrage necessaire)" GridPane.columnSpan="2147483647" GridPane.rowIndex="4" />
+							</children>
+						</GridPane>
+					</content>
+				</Tab>
+			</tabs>
+		</TabPane>
 	</center>
 	<bottom>
 		<ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">

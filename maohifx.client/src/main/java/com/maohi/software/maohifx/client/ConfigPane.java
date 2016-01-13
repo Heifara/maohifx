@@ -14,7 +14,6 @@ import javax.xml.bind.Marshaller;
 
 import com.maohi.software.maohifx.client.jaxb2.Configuration;
 import com.maohi.software.maohifx.client.jaxb2.Configuration.Authentication;
-import com.maohi.software.maohifx.client.jaxb2.Configuration.HistoryUrl;
 import com.maohi.software.maohifx.client.jaxb2.Configuration.Home;
 
 import javafx.fxml.FXML;
@@ -42,6 +41,15 @@ public class ConfigPane extends BorderPane implements Initializable {
 
 	@FXML
 	private CheckBox autoLoad;
+
+	@FXML
+	private TextField consoleMaxLines;
+
+	@FXML
+	private TextField consoleSystemMaxLines;
+
+	@FXML
+	private CheckBox consoleSystemEnable;
 
 	public ConfigPane(final MaohiFXView aView) {
 		this.view = aView;
@@ -74,6 +82,14 @@ public class ConfigPane extends BorderPane implements Initializable {
 		this.homeUrl.setText(iConfiguration.getHome().getUrl());
 		this.authenticationServer.setText(iConfiguration.getAuthentication() != null ? iConfiguration.getAuthentication().getServer() : "");
 		this.autoLoad.setSelected(iConfiguration.getHome().isAutoLoad());
+
+		if (iConfiguration.getConsole() != null) {
+
+			this.consoleMaxLines.setText(String.valueOf(iConfiguration.getConsole().getMaxLines()));
+
+			this.consoleSystemMaxLines.setText(String.valueOf(iConfiguration.getConsole().getSystem().getMaxLines()));
+			this.consoleSystemEnable.setSelected(iConfiguration.getConsole().getSystem().isEnableOnStartup());
+		}
 	}
 
 	@FXML
@@ -87,11 +103,9 @@ public class ConfigPane extends BorderPane implements Initializable {
 		final Configuration iCurrentConfiguration = this.view.getController().getConfiguration();
 
 		final Configuration iConfiguration = new Configuration();
-		iConfiguration.setAuthentication(new Authentication());
-		iConfiguration.setHistoryUrl(new HistoryUrl());
-		iConfiguration.setHome(new Home());
 
 		// Update Home URL
+		iConfiguration.setHome(new Home());
 		iConfiguration.setHome(iCurrentConfiguration.getHome());
 		iConfiguration.getHome().setUrl(this.homeUrl.getText());
 		iConfiguration.getHome().setAutoLoad(this.autoLoad.isSelected());
@@ -100,10 +114,20 @@ public class ConfigPane extends BorderPane implements Initializable {
 		iConfiguration.setHistoryUrl(iCurrentConfiguration.getHistoryUrl());
 
 		// Update Authentication server
+		iConfiguration.setAuthentication(new Authentication());
 		if ((this.authenticationServer.getText() != null) && !this.authenticationServer.getText().endsWith("/")) {
 			this.authenticationServer.setText(this.authenticationServer.getText() + "/");
 		}
 		iConfiguration.getAuthentication().setServer(this.authenticationServer.getText());
+
+		// Update Console
+		iConfiguration.setConsole(new Configuration.Console());
+		iConfiguration.getConsole().setMaxLines(Integer.parseInt(this.consoleMaxLines.getText()));
+
+		// Update Console.System
+		iConfiguration.getConsole().setSystem(new Configuration.Console.System());
+		iConfiguration.getConsole().getSystem().setMaxLines(Integer.parseInt(this.consoleSystemMaxLines.getText()));
+		iConfiguration.getConsole().getSystem().setEnableOnStartup(this.consoleSystemEnable.isSelected());
 
 		// Save
 		return this.view.getController().save(iConfiguration);

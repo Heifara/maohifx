@@ -4,6 +4,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
+<?import com.maohi.software.maohifx.client.TextAreaConsoleRedirectAppender?>
 
 
 <fx:root type="BorderPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40">
@@ -15,6 +16,6 @@
 		</ToolBar>
 	</top>
 	<center>
-		<TextArea fx:id="textArea" editable="false" BorderPane.alignment="CENTER" />
+		<TextAreaConsoleRedirectAppender fx:id="textArea" editable="false" BorderPane.alignment="CENTER" />
 	</center>
 </fx:root>

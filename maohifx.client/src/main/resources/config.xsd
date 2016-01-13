@@ -28,6 +28,21 @@
             </xs:all>
           </xs:complexType>
         </xs:element>
+        <xs:element name="Console">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="System">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="enableOnStartup" type="xs:boolean" />
+                    <xs:element name="maxLines" type="xs:int" />
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="maxLines" type="xs:int" />
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
       </xs:all>
     </xs:complexType>
   </xs:element>

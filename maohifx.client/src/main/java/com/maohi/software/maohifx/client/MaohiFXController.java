@@ -3,6 +3,8 @@
  */
 package com.maohi.software.maohifx.client;
 
+import java.io.PrintStream;
+
 import org.controlsfx.dialog.Dialogs;
 
 import com.maohi.software.maohifx.client.event.ConnectEvent;
@@ -60,6 +62,8 @@ public class MaohiFXController {
 	private EventHandler<Event> onModelChanged;
 
 	private final EventHandlerManager eventDispatcher;
+
+	private ConsoleRedirectOutputStream systemOutputStream;
 
 	public MaohiFXController() {
 		this.eventDispatcher = new EventHandlerManager(this);
@@ -126,6 +130,16 @@ public class MaohiFXController {
 		}
 	}
 
+	private void enableDisableSystemConsole() {
+		final Configuration iConfiguration = this.getConfiguration();
+		if ((iConfiguration.getConsole() != null) && (iConfiguration.getConsole().getSystem() != null) && iConfiguration.getConsole().getSystem().isEnableOnStartup()) {
+			this.systemOutputStream = new ConsoleRedirectOutputStream();
+			final PrintStream iPrintStream = new PrintStream(this.systemOutputStream);
+			System.setOut(iPrintStream);
+			System.setErr(iPrintStream);
+		}
+	}
+
 	public Configuration getConfiguration() {
 		return this.configurationProperty().get();
 	}
@@ -150,6 +164,10 @@ public class MaohiFXController {
 
 	public Profile getProfile() {
 		return this.getModel().getProfile();
+	}
+
+	public ConsoleRedirectOutputStream getSystemOutputStream() {
+		return this.systemOutputStream;
 	}
 
 	public MaohiFXView getView() {
@@ -196,6 +214,8 @@ public class MaohiFXController {
 	}
 
 	public void show() {
+		this.enableDisableSystemConsole();
+
 		this.autoConnect();
 
 		this.getView().show();

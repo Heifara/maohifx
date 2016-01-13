@@ -17,7 +17,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
@@ -37,7 +36,7 @@ public class Console extends BorderPane implements com.maohi.software.maohifx.co
 	private Button resetButton;
 
 	@FXML
-	private TextArea textArea;
+	private TextAreaConsoleRedirectAppender textArea;
 
 	public Console() {
 		try {
@@ -59,11 +58,14 @@ public class Console extends BorderPane implements com.maohi.software.maohifx.co
 
 				@Override
 				public void changed(final ObservableValue<? extends ConsoleRedirectOutputStream> aObservable, final ConsoleRedirectOutputStream aOldValue, final ConsoleRedirectOutputStream aNewValue) {
+					aNewValue.add(Console.this.textArea);
+
 					final PrintStream iPrintStream = new PrintStream(aNewValue);
 					Console.this.printStreamProperty().set(iPrintStream);
 				}
 			});
-			this.consoleRedirectOutputStream.set(new ConsoleRedirectOutputStream(this.textArea));
+			this.consoleRedirectOutputStream.set(new ConsoleRedirectOutputStream());
+			this.consoleRedirectOutputStream.get().add(this.textArea);
 		}
 		return this.consoleRedirectOutputStream;
 	}
@@ -127,8 +129,12 @@ public class Console extends BorderPane implements com.maohi.software.maohifx.co
 		this.getConsoleRedirectOutputStream().clear();
 	}
 
-	public void setPrintStream(final PrintStream aPrintStream) {
-		this.printStreamProperty().set(aPrintStream);
+	public void setConsoleRedirectOutputStream(final ConsoleRedirectOutputStream aConsoleRedirectOutputStream) {
+		this.consoleRedirectOutputStreamProperty().set(aConsoleRedirectOutputStream);
+	}
+
+	public void setMaxLines(final int aMaxLines) {
+		this.textArea.setMaxLines(aMaxLines);
 	}
 
 }

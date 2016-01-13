@@ -106,7 +106,16 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	private ObservableList<String> urlAutoCompletion;
 
 	@FXML
+	private TabPane bottomPane;
+
+	@FXML
 	private Console consolePane;
+
+	@FXML
+	private Tab consoleSystemTab;
+
+	@FXML
+	private Console consoleSystemPane;
 
 	@FXML
 	private MenuItem hidShowConsole;
@@ -440,7 +449,26 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	}
 
 	private void initConsolePane() {
+		final Configuration iConfiguration = this.controller.getConfiguration();
+		if ((iConfiguration.getConsole() != null)) {
+			this.consolePane.setMaxLines(iConfiguration.getConsole().getMaxLines());
+		}
 		this.showHideConsole(new ActionEvent());
+	}
+
+	private void initConsoleSystemPane() {
+		final Configuration iConfiguration = this.controller.getConfiguration();
+
+		// Hide or show System console tab
+		if ((iConfiguration.getConsole() != null) && (iConfiguration.getConsole().getSystem() != null) && iConfiguration.getConsole().getSystem().isEnableOnStartup()) {
+			// Configure System console
+			if (iConfiguration.getConsole() != null) {
+				this.consoleSystemPane.setMaxLines(iConfiguration.getConsole().getMaxLines());
+			}
+			this.consoleSystemPane.setConsoleRedirectOutputStream(this.controller.getSystemOutputStream());
+		} else {
+			this.bottomPane.getTabs().remove(this.consoleSystemTab);
+		}
 	}
 
 	@Override
@@ -448,6 +476,7 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 		this.profileConnected();
 		this.initUrlAutoCompletion();
 		this.initConsolePane();
+		this.initConsoleSystemPane();
 	}
 
 	private void initUrlAutoCompletion() {
@@ -526,6 +555,8 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 	@FXML
 	public void refreshTabEvent(final ActionEvent aEvent) {
+		System.out.println("Refresh Tab Event");
+
 		if ((this.runningThread != null) && (this.runningThread.isAlive() && !this.runningThread.isInterrupted())) {
 			this.displayRunning(false);
 			this.runningThread.interrupt();
@@ -574,13 +605,13 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 			@Override
 			public void run() {
-				if (ExtendedTab.this.consolePane.isVisible()) {
-					ExtendedTab.this.consolePane.setVisible(false);
+				if (ExtendedTab.this.bottomPane.isVisible()) {
+					ExtendedTab.this.bottomPane.setVisible(false);
 					ExtendedTab.this.content.setBottom(null);
 					ExtendedTab.this.hidShowConsole.setText("Afficher la console");
 				} else {
-					ExtendedTab.this.consolePane.setVisible(true);
-					ExtendedTab.this.content.setBottom(ExtendedTab.this.consolePane);
+					ExtendedTab.this.bottomPane.setVisible(true);
+					ExtendedTab.this.content.setBottom(ExtendedTab.this.bottomPane);
 					ExtendedTab.this.hidShowConsole.setText("Masquer la console");
 				}
 			}
