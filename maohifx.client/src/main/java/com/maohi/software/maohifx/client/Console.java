@@ -65,7 +65,6 @@ public class Console extends BorderPane implements com.maohi.software.maohifx.co
 				}
 			});
 			this.consoleRedirectOutputStream.set(new ConsoleRedirectOutputStream());
-			this.consoleRedirectOutputStream.get().add(this.textArea);
 		}
 		return this.consoleRedirectOutputStream;
 	}
