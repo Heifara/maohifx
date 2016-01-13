@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.script.ScriptException;
 import javax.ws.rs.core.Response.Status;
@@ -27,15 +29,31 @@ import jdk.nashorn.internal.runtime.ScriptObject;
  *
  */
 @SuppressWarnings("restriction")
-public class HttpHandler {
+public class HttpHandler implements Runnable {
+
+	public class JSURLHandler {
+		private final URLHandler urlHandler;
+		private final JSObject jsObject;
+
+		public JSURLHandler(final URLHandler aUrlHandler, final JSObject aJsObject) {
+			super();
+			this.urlHandler = aUrlHandler;
+			this.jsObject = aJsObject;
+		}
+
+	}
 
 	private final URL location;
 	private EventHandler<Event> onStart;
 	private EventHandler<AuthentificationEvent> onAuthentification;
 	private EventHandler<Event> onEnd;
 
+	private final List<JSURLHandler> pendingUrlHandlers;
+
 	public HttpHandler(final URL aLocation) {
 		this.location = aLocation;
+
+		this.pendingUrlHandlers = new ArrayList<>();
 	}
 
 	public void ajax(final JSObject aJsObject) {
@@ -65,20 +83,8 @@ public class HttpHandler {
 				iSuccessMethod.call(iScriptObject, aEvent.getException().getMessage(), aEvent.getStatusCode(), iStringWriter.toString());
 			}
 		});
-		final Thread iThread = new Thread(new Runnable() {
 
-			@Override
-			public void run() {
-				try {
-					iURLHandler.process(HttpHandler.this.location, aJsObject);
-				} catch (final InterruptedException aException) {
-					System.err.println(aException.getMessage());
-				} catch (final IOException aException) {
-					aException.printStackTrace();
-				}
-			}
-		});
-		iThread.start();
+		this.runLater(new JSURLHandler(iURLHandler, aJsObject));
 	}
 
 	public void get(final JSObject aJsObject) throws NoSuchMethodException, ScriptException, IOException {
@@ -105,6 +111,32 @@ public class HttpHandler {
 
 	public void post(final String aUrl) throws NoSuchMethodException, ScriptException, IOException {
 		this.ajax(this.newJSObject(aUrl, "post"));
+	}
+
+	@Override
+	public synchronized void run() {
+		try {
+			if (!this.pendingUrlHandlers.isEmpty()) {
+				final List<JSURLHandler> iRunningURLHandlers = new ArrayList<>();
+				iRunningURLHandlers.addAll(this.pendingUrlHandlers);
+				for (final JSURLHandler iJSURLHandler : iRunningURLHandlers) {
+					iJSURLHandler.urlHandler.process(HttpHandler.this.location, iJSURLHandler.jsObject);
+				}
+				this.pendingUrlHandlers.removeAll(iRunningURLHandlers);
+			}
+		} catch (final InterruptedException aException) {
+			System.err.println(aException.getMessage());
+		} catch (final IOException aException) {
+			aException.printStackTrace();
+		}
+	}
+
+	private void runLater(final JSURLHandler aJsurlHandler) {
+		this.pendingUrlHandlers.add(aJsurlHandler);
+
+		final Thread iThread = new Thread(this);
+		iThread.setName(this.getClass().getSimpleName());
+		iThread.start();
 	}
 
 	/**
