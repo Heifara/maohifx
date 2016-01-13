@@ -79,7 +79,7 @@ InvoiceController.prototype.packagingCodeUpdateItem = function(aCellActionEvent)
 	var iInvoiceLine = invoiceLines.getItems().get(aCellActionEvent.getTableRow().getIndex());
 	if (iInvoiceLine != null) {
 		console.log(iInvoiceLine.productPackagings);
-		
+
 		iComboBoxTableCell = aCellActionEvent.getSource();
 
 		iComboBox = iComboBoxTableCell.getComboBox();
@@ -108,11 +108,11 @@ InvoiceController.prototype.addInvoicePaymentLineEvent = function(aEvent) {
 }
 
 InvoiceController.prototype.customerNameAutoCompletionEvent = function(aAutoCompletionEvent) {
-	this.invoice.customer = aAutoCompletionEvent.getCompletion();
+	this.invoice.customer.set(aAutoCompletionEvent.getCompletion());
 }
 
 InvoiceController.prototype.salesmanAutoCompletionEvent = function(aAutoCompletionEvent) {
-	this.invoice.salesman = aAutoCompletionEvent.getCompletion();
+	this.invoice.salesman.set(aAutoCompletionEvent.getCompletion());
 }
 
 InvoiceController.prototype.labelAutoCompletionEvent = function(aAutoCompletionEvent) {
@@ -136,7 +136,7 @@ InvoiceController.prototype.saveEvent = function() {
 	}
 
 	iInvoicePaymentLine = this.invoice.getLastInvoicePaymentLine();
-	if (iInvoicePaymentLine.mode.get().isEmpty()) {
+	if (iInvoicePaymentLine != null && iInvoicePaymentLine.mode.get().isEmpty()) {
 		this.invoice.removeLastInvoicePaymentLine();
 	}
 
