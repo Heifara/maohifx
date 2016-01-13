@@ -1,10 +1,10 @@
 function InvoiceLine() {
 	this.uuid = new SimpleStringProperty();
+	this.packaging = new ProductPackaging();
 	this.position = new SimpleIntegerProperty();
 	this.barCode = new SimpleStringProperty();
 	this.label = new SimpleStringProperty();
 	this.quantity = new SimpleDoubleProperty();
-	this.packaging = new ProductPackaging();
 	this.productPackagings = FXCollections.observableArrayList();
 	this.sellingPrice = new SimpleDoubleProperty();
 	this.discountRate = new SimpleDoubleProperty();
@@ -21,19 +21,27 @@ function InvoiceLine() {
 InvoiceLine.prototype.toJSON = function() {
 	return {
 		uuid : this.uuid.get(),
+		productPackaging : this.packaging.toJSON(),
 		position : this.position.get(),
 		barCode : this.barCode.get(),
 		label : this.label.get(),
 		quantity : this.quantity.get(),
 		sellingPrice : this.sellingPrice.get(),
 		discountRate : this.discountRate.get(),
+		tvaRate : this.tvaRate.get(),
 		tva : this.tva.toJSON(),
-		tvaRate : this.tvaRate.get()
 	};
 }
 
 InvoiceLine.prototype.parseJSON = function(aJSONObject) {
 	this.uuid.set(aJSONObject.get("uuid"));
+
+	if (aJSONObject.get("productPackaging")) {
+		iProductPackaging = new ProductPackaging();
+		iProductPackaging.parseJSON(aJSONObject.get("productPackaging"));
+		this.packaging = iProductPackaging;
+	}
+
 	this.position.set(aJSONObject.get("position"));
 	this.barCode.set(aJSONObject.get("barCode"));
 	this.label.set(aJSONObject.get("label"));

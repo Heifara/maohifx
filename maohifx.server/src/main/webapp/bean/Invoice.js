@@ -28,8 +28,8 @@ function Invoice() {
 	this.invoiceNumber = new SimpleIntegerProperty("");
 	this.invoiceDate = new SimpleLocalDateProperty();
 	this.validDate = new SimpleLocalDateProperty();
-	this.customer = new SimpleObjectProperty(new Customer());
-	this.salesman = new SimpleObjectProperty(new Salesman());
+	this.customer = new SimpleObjectProperty();
+	this.salesman = new SimpleObjectProperty();
 	this.href = new SimpleStringProperty("");
 
 	this.totalWithNoTaxes = new SimpleDoubleProperty(0.0);
@@ -67,13 +67,17 @@ Invoice.prototype.parseJSON = function(aJSONObject) {
 	this.invoiceDate.setDate(aJSONObject.get("date"));
 	this.validDate.setDate(aJSONObject.get("validDate"));
 
-	var iCustomer = new Customer();
-	iCustomer.parseJSON(aJSONObject.get("customer"));
-	this.customer.set(iCustomer);
+	if (aJSONObject.get("customer") != null) {
+		var iCustomer = new Customer();
+		iCustomer.parseJSON(aJSONObject.get("customer"));
+		this.customer.set(iCustomer);
+	}
 
-	var iSalesman = new Salesman();
-	iSalesman.parseJSON(aJSONObject.get("salesman"));
-	this.salesman.set(iSalesman);
+	if (aJSONObject.get("salesman") != null) {
+		var iSalesman = new Salesman();
+		iSalesman.parseJSON(aJSONObject.get("salesman"));
+		this.salesman.set(iSalesman);
+	}
 
 	this.href.set(aJSONObject.get("href"));
 

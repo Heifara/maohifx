@@ -78,6 +78,8 @@ InvoiceController.prototype.packagingCodeCommitEvent = function(aCellActionEvent
 InvoiceController.prototype.packagingCodeUpdateItem = function(aCellActionEvent) {
 	var iInvoiceLine = invoiceLines.getItems().get(aCellActionEvent.getTableRow().getIndex());
 	if (iInvoiceLine != null) {
+		console.log(iInvoiceLine.productPackagings);
+		
 		iComboBoxTableCell = aCellActionEvent.getSource();
 
 		iComboBox = iComboBoxTableCell.getComboBox();

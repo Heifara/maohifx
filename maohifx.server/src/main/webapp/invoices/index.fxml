@@ -22,9 +22,11 @@
 	<fx:script source="../bean/Invoice.js" />
 	<fx:script source="../bean/InvoiceLine.js" />
 	<fx:script source="../bean/InvoicePaymentLine.js" />
+	<fx:script source="../bean/Packaging.js" />
 	<fx:script source="../bean/PaymentMode.js" />
 	<fx:script source="../bean/Phone.js" />
 	<fx:script source="../bean/Product.js" />
+	<fx:script source="../bean/ProductPackaging.js" />
 	<fx:script source="../bean/Salesman.js" />
 	<fx:script source="../bean/Supplier.js" />
 	<fx:script source="../bean/Tva.js" />
