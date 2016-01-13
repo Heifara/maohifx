@@ -24,15 +24,15 @@ import com.maohi.software.maohifx.invoice.bean.Invoice;
 import com.maohi.software.maohifx.invoice.bean.InvoiceLine;
 import com.maohi.software.maohifx.invoice.bean.InvoicePaymentLine;
 import com.maohi.software.maohifx.invoice.bean.PaymentMode;
-import com.maohi.software.maohifx.invoice.bean.Tva;
 import com.maohi.software.maohifx.invoice.dao.PaymentModeDAO;
-import com.maohi.software.maohifx.invoice.dao.TvaDAO;
 import com.maohi.software.maohifx.product.bean.Barcode;
 import com.maohi.software.maohifx.product.bean.Packaging;
 import com.maohi.software.maohifx.product.bean.Product;
 import com.maohi.software.maohifx.product.bean.ProductPackaging;
 import com.maohi.software.maohifx.product.bean.ProductPackagingBarcode;
+import com.maohi.software.maohifx.product.bean.Tva;
 import com.maohi.software.maohifx.product.dao.PackagingDAO;
+import com.maohi.software.maohifx.product.dao.TvaDAO;
 import com.maohi.software.maohifx.server.webapi.MyApplication;
 
 /**
