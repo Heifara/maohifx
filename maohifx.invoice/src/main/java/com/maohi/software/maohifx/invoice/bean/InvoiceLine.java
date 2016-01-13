@@ -187,7 +187,7 @@ public class InvoiceLine implements java.io.Serializable {
 		return this.position;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumns({ @JoinColumn(name = "product_packaging_product_uuid", referencedColumnName = "product_uuid"), @JoinColumn(name = "product_packaging_packaging_code", referencedColumnName = "packaging_code") })
 	public ProductPackaging getProductPackaging() {
 		return this.productPackaging;
