@@ -27,10 +27,23 @@ public class ConsoleTest extends Application {
 		aPrimaryStage.setScene(new Scene(iConsole, 800, 600));
 		aPrimaryStage.show();
 
-		for (int iI = 0; iI < 1000; iI++) {
-			System.out.println("Hello World");
-			System.err.println("Im an error");
-		}
+		final Thread iThread = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(1000);
+				} catch (final InterruptedException aException) {
+					aException.printStackTrace();
+				}
+				for (int iI = 0; iI < 1000; iI++) {
+					System.out.println("Hello World");
+					System.err.println("Im an error");
+				}
+			}
+		});
+		iThread.start();
+
 	}
 
 }
