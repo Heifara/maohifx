@@ -3,8 +3,6 @@
  */
 package com.maohi.software.maohifx.client;
 
-import java.io.PrintStream;
-
 import org.controlsfx.dialog.Dialogs;
 
 import com.maohi.software.maohifx.client.event.ConnectEvent;
@@ -134,9 +132,8 @@ public class MaohiFXController {
 		final Configuration iConfiguration = this.getConfiguration();
 		if ((iConfiguration.getConsole() != null) && (iConfiguration.getConsole().getSystem() != null) && iConfiguration.getConsole().getSystem().isEnableOnStartup()) {
 			this.systemOutputStream = new ConsoleRedirectOutputStream();
-			final PrintStream iPrintStream = new PrintStream(this.systemOutputStream);
-			System.setOut(iPrintStream);
-			System.setErr(iPrintStream);
+			System.setOut(new PrintStreamQueue(this.systemOutputStream, false));
+			System.setErr(new PrintStreamQueue(this.systemOutputStream, true));
 		}
 	}
 
