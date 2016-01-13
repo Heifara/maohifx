@@ -205,7 +205,7 @@ public class MaohiFXView extends BorderPane implements BuilderFactory, Callback<
 				iTab.setText("Nouvelle Onglet");
 
 				final Configuration iConfiguration = MaohiFXView.this.controller.getConfiguration();
-				if (iConfiguration.getHome().isAutoLoad()) {
+				if ((iConfiguration.getHome() != null) && iConfiguration.getHome().isAutoLoad()) {
 					iTab.homeEvent(new ActionEvent());
 				}
 

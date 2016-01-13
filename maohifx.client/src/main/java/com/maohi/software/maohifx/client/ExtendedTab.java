@@ -444,8 +444,10 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	}
 
 	public void homeEvent(final ActionEvent aEvent) {
-		this.url.textProperty().set(this.controller.getConfiguration().getHome().getUrl());
-		this.refreshTabEvent(aEvent);
+		if (this.controller.getConfiguration().getHome() != null) {
+			this.url.textProperty().set(this.controller.getConfiguration().getHome().getUrl());
+			this.refreshTabEvent(aEvent);
+		}
 	}
 
 	private void initConsolePane() {

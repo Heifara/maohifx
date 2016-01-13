@@ -100,37 +100,45 @@ public class ConfigPane extends BorderPane implements Initializable {
 	}
 
 	private boolean save() {
-		final Configuration iCurrentConfiguration = this.view.getController().getConfiguration();
+		try {
+			final Configuration iCurrentConfiguration = this.view.getController().getConfiguration();
 
-		final Configuration iConfiguration = new Configuration();
+			final Configuration iConfiguration = new Configuration();
 
-		// Update Home URL
-		iConfiguration.setHome(new Home());
-		iConfiguration.setHome(iCurrentConfiguration.getHome());
-		iConfiguration.getHome().setUrl(this.homeUrl.getText());
-		iConfiguration.getHome().setAutoLoad(this.autoLoad.isSelected());
+			// Update Home URL
+			iConfiguration.setHome(new Home());
+			iConfiguration.setHome(iCurrentConfiguration.getHome());
+			iConfiguration.getHome().setUrl(this.homeUrl.getText());
+			iConfiguration.getHome().setAutoLoad(this.autoLoad.isSelected());
 
-		// Get All current History
-		iConfiguration.setHistoryUrl(iCurrentConfiguration.getHistoryUrl());
+			// Get All current History
+			iConfiguration.setHistoryUrl(iCurrentConfiguration.getHistoryUrl());
 
-		// Update Authentication server
-		iConfiguration.setAuthentication(new Authentication());
-		if ((this.authenticationServer.getText() != null) && !this.authenticationServer.getText().endsWith("/")) {
-			this.authenticationServer.setText(this.authenticationServer.getText() + "/");
+			// Update Authentication server
+			iConfiguration.setAuthentication(new Authentication());
+			if ((this.authenticationServer.getText() != null) && !this.authenticationServer.getText().endsWith("/")) {
+				this.authenticationServer.setText(this.authenticationServer.getText() + "/");
+			}
+			iConfiguration.getAuthentication().setServer(this.authenticationServer.getText());
+
+			// Update Console
+			iConfiguration.setConsole(new Configuration.Console());
+			if (this.consoleMaxLines.getText().isEmpty()) {
+				iConfiguration.getConsole().setMaxLines(Integer.parseInt(this.consoleMaxLines.getText()));
+			}
+
+			// Update Console.System
+			iConfiguration.getConsole().setSystem(new Configuration.Console.System());
+			iConfiguration.getConsole().getSystem().setMaxLines(Integer.parseInt(this.consoleSystemMaxLines.getText()));
+			iConfiguration.getConsole().getSystem().setEnableOnStartup(this.consoleSystemEnable.isSelected());
+
+			// Save
+			return this.view.getController().save(iConfiguration);
+		} catch (final Exception aException) {
+			aException.printStackTrace(System.err);
+			this.view.displayException(aException);
+			return false;
 		}
-		iConfiguration.getAuthentication().setServer(this.authenticationServer.getText());
-
-		// Update Console
-		iConfiguration.setConsole(new Configuration.Console());
-		iConfiguration.getConsole().setMaxLines(Integer.parseInt(this.consoleMaxLines.getText()));
-
-		// Update Console.System
-		iConfiguration.getConsole().setSystem(new Configuration.Console.System());
-		iConfiguration.getConsole().getSystem().setMaxLines(Integer.parseInt(this.consoleSystemMaxLines.getText()));
-		iConfiguration.getConsole().getSystem().setEnableOnStartup(this.consoleSystemEnable.isSelected());
-
-		// Save
-		return this.view.getController().save(iConfiguration);
 	}
 
 	public void writeXML(final Object aElement, final OutputStream aOutputStream, final String aPackage, final ClassLoader aClassLoader) {
