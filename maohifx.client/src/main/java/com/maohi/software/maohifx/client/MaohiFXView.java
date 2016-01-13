@@ -25,12 +25,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.util.Builder;
 import javafx.util.BuilderFactory;
@@ -172,7 +172,7 @@ public class MaohiFXView extends BorderPane implements BuilderFactory, Callback<
 			break;
 
 		case FRAMENAME:
-			this.currentTab.refreshTab(aLink.getHref(), (Parent) this.currentTab.getContent().lookup(aRecipeId), aLink.getText());
+			this.currentTab.refreshTab(aLink.getHref(), (Region) this.currentTab.getContent().lookup(aRecipeId), aLink.getText());
 			break;
 
 		default:

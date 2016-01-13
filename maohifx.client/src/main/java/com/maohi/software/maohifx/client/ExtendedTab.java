@@ -26,6 +26,8 @@ import com.maohi.software.maohifx.common.Profile;
 import com.maohi.software.maohifx.control.Link;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -34,12 +36,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
@@ -48,6 +51,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -61,7 +65,7 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	private final MaohiFXView view;
 	private final MaohiFXController controller;
 
-	private Parent refreshTarget;
+	private Region refreshTarget;
 	private String refreshText;
 	private Thread runningThread;
 
@@ -77,7 +81,10 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	private TextField url;
 
 	@FXML
-	private BorderPane content;
+	private BorderPane contentPane;
+
+	@FXML
+	private ScrollPane content;
 
 	@FXML
 	private MenuItem hidShowUrl;
@@ -204,7 +211,7 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 				final TextArea iStackTrace = new TextArea();
 				iStackTrace.setText(iStringWriter.toString());
 				iStackTrace.setEditable(false);
-				ExtendedTab.this.content.setCenter(iStackTrace);
+				ExtendedTab.this.content.setContent(iStackTrace);
 			}
 		});
 	}
@@ -218,7 +225,7 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 				final TextArea iStackTrace = new TextArea();
 				iStackTrace.setText(iText);
 				iStackTrace.setEditable(false);
-				ExtendedTab.this.content.setCenter(iStackTrace);
+				ExtendedTab.this.content.setContent(iStackTrace);
 			}
 		});
 	}
@@ -230,7 +237,7 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 			public void run() {
 				final Browser iBrowser = new Browser();
 				iBrowser.load(aUrl.toString());
-				ExtendedTab.this.content.setCenter(iBrowser);
+				ExtendedTab.this.content.setContent(iBrowser);
 			}
 		});
 	}
@@ -240,54 +247,95 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 			@Override
 			public void run() {
-				ExtendedTab.this.content.setCenter(new ImageView(aImage));
+				ExtendedTab.this.content.setContent(new ImageView(aImage));
 			}
 		});
 	}
 
-	protected void displayNode(final FXMLLoader iLoader, final Parent aTarget, final String aText) {
-		Platform.runLater(new Runnable() {
+	protected void displayNode(final FXMLLoader iLoader, final Region aTarget, final String aText) {
+		try {
+			iLoader.setBuilderFactory(ExtendedTab.this.view.getBuilderFactory());
+			iLoader.getNamespace().put("$tab", ExtendedTab.this);
+			iLoader.getNamespace().put("$menuButton", ExtendedTab.this.menuButton);
 
-			@Override
-			public void run() {
-				try {
-					iLoader.setBuilderFactory(ExtendedTab.this.view.getBuilderFactory());
-					iLoader.getNamespace().put("$tab", ExtendedTab.this);
-					iLoader.getNamespace().put("$menuButton", ExtendedTab.this.menuButton);
+			final HttpHandler iHandler = new HttpHandler(iLoader.getLocation());
+			iHandler.setOnStart(ExtendedTab.this.getOnStart());
+			iHandler.setOnAuthentification(ExtendedTab.this.onAuthentification);
+			iHandler.setOnEnd(ExtendedTab.this.getOnEnd());
+			iLoader.getNamespace().put("$http", iHandler);
 
-					final HttpHandler iHandler = new HttpHandler(iLoader.getLocation());
-					iHandler.setOnStart(ExtendedTab.this.getOnStart());
-					iHandler.setOnAuthentification(ExtendedTab.this.onAuthentification);
-					iHandler.setOnEnd(ExtendedTab.this.getOnEnd());
-					iLoader.getNamespace().put("$http", iHandler);
+			iLoader.getNamespace().put("console", ExtendedTab.this.consolePane);
 
-					iLoader.getNamespace().put("console", ExtendedTab.this.consolePane);
+			ExtendedTab.this.view.populateNamespace(iLoader);
 
-					ExtendedTab.this.view.populateNamespace(iLoader);
+			Platform.runLater(new Runnable() {
 
-					if (aTarget instanceof BorderPane) {
-						final BorderPane iBorderPane = (BorderPane) aTarget;
-						iBorderPane.setCenter(iLoader.load());
+				private Node node;
+				private final ChangeListener<Number> onHeightWidthChange = new ChangeListener<Number>() {
 
-					} else if (aTarget instanceof TabPane) {
-						final Tab iTab = new Tab();
-						iTab.setText(aText);
-						iTab.setClosable(true);
-						iTab.setContent(iLoader.load());
-
-						final TabPane iTabPane = (TabPane) aTarget;
-						iTabPane.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
-						iTabPane.getTabs().add(iTab);
-						iTabPane.getSelectionModel().select(iTabPane.getTabs().indexOf(iTab));
-					} else {
-						throw new IllegalArgumentException();
+					@Override
+					public void changed(final ObservableValue<? extends Number> aObservable, final Number aOldValue, final Number aNewValue) {
+						fireHeightWidthChanged();
 					}
-				} catch (final Exception aException) {
-					ExtendedTab.this.displayException(aException);
-				}
-			}
+				};
 
-		});
+				public void fireHeightWidthChanged() {
+					if (this.node instanceof Region) {
+						final Region aRegion = (Region) this.node;
+						if (aRegion.getHeight() < aRegion.getMinHeight()) {
+							aRegion.setPrefHeight(aRegion.getMinHeight());
+						} else {
+							aRegion.setPrefHeight(aTarget.getHeight() - 10);
+						}
+						if ((aRegion.getWidth() > 0) && (aRegion.getWidth() < aRegion.getMinWidth())) {
+							aRegion.setPrefWidth(aRegion.getMinWidth());
+						} else {
+							aRegion.setPrefWidth(aTarget.getWidth() - 10);
+						}
+					}
+				}
+
+				@Override
+				public void run() {
+					try {
+						this.node = iLoader.load();
+
+						aTarget.heightProperty().addListener(this.onHeightWidthChange);
+						aTarget.widthProperty().addListener(this.onHeightWidthChange);
+
+						if (aTarget instanceof BorderPane) {
+							final BorderPane iBorderPane = (BorderPane) aTarget;
+							iBorderPane.setCenter(this.node);
+
+						} else if (aTarget instanceof TabPane) {
+							final Tab iTab = new Tab();
+							iTab.setText(aText);
+							iTab.setClosable(true);
+							iTab.setContent(this.node);
+
+							final TabPane iTabPane = (TabPane) aTarget;
+							iTabPane.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
+							iTabPane.getTabs().add(iTab);
+							iTabPane.getSelectionModel().select(iTabPane.getTabs().indexOf(iTab));
+						} else if (aTarget instanceof ScrollPane) {
+							final ScrollPane iScrollPane = (ScrollPane) aTarget;
+							iScrollPane.setContent(this.node);
+						} else {
+							throw new IllegalArgumentException();
+						}
+
+						this.fireHeightWidthChanged();
+
+					} catch (final Exception aException) {
+						ExtendedTab.this.displayException(aException);
+					}
+				}
+			});
+		} catch (final Exception aException) {
+			this.displayException(aException);
+
+		}
+
 	}
 
 	protected void displayRunning(final boolean aRunning) {
@@ -313,7 +361,7 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 				final TextArea iStackTrace = new TextArea();
 				iStackTrace.setText(aText);
 				iStackTrace.setEditable(false);
-				ExtendedTab.this.content.setCenter(iStackTrace);
+				ExtendedTab.this.content.setContent(iStackTrace);
 			}
 		});
 	}
@@ -523,7 +571,7 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 		this.refreshTab(this.url.getText(), this.content, aText);
 	}
 
-	public void refreshTab(final String aUrl, final Parent aTarget, final String aText) {
+	public void refreshTab(final String aUrl, final Region aTarget, final String aText) {
 		this.refreshTarget = aTarget;
 		this.refreshText = aText;
 
@@ -565,7 +613,7 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 		} else {
 			if ((this.url.textProperty() != null) && (this.url.textProperty().get() != null) && !this.url.textProperty().get().isEmpty()) {
 
-				this.content.setCenter(null);
+				this.content.setContent(null);
 
 				this.refreshTab(this.url.getText(), this.content, "");
 			}
@@ -609,11 +657,11 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 			public void run() {
 				if (ExtendedTab.this.bottomPane.isVisible()) {
 					ExtendedTab.this.bottomPane.setVisible(false);
-					ExtendedTab.this.content.setBottom(null);
+					ExtendedTab.this.contentPane.setBottom(null);
 					ExtendedTab.this.hidShowConsole.setText("Afficher la console");
 				} else {
 					ExtendedTab.this.bottomPane.setVisible(true);
-					ExtendedTab.this.content.setBottom(ExtendedTab.this.bottomPane);
+					ExtendedTab.this.contentPane.setBottom(ExtendedTab.this.bottomPane);
 					ExtendedTab.this.hidShowConsole.setText("Masquer la console");
 				}
 			}
