@@ -24,13 +24,6 @@ function ProductController() {
 	// AutoCompletion
 	Product.search(designationAutoCompletion);
 	Tva.search(tvaAutoCompletion);
-
-	runLater(new Runnable({
-		run : function() {
-			designation.requestFocus();
-			productPackagings.getSelectionModel().select(0);
-		}
-	}));
 }
 
 ProductController.prototype.sellingPriceWithTaxesEvent = function(aEvent) {
@@ -70,7 +63,13 @@ ProductController.prototype.fireProductPackagingChanged = function(aEvent) {
 		run : function() {
 			productPackagings.getItems().clear();
 			productPackagings.getItems().addAll(controller.product.productPackagings);
-			productPackagings.getSelectionModel().select(0);
+
+			var iMainProductPackaging = controller.product.getMainProductPackaging();
+			if (iMainProductPackaging != null) {
+				productPackagings.getSelectionModel().select(iMainProductPackaging);
+			}
+
+			controller.packagingSelectedEvent();
 		}
 	}));
 }
