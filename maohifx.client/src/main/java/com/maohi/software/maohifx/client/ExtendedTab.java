@@ -4,9 +4,13 @@
 package com.maohi.software.maohifx.client;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -606,31 +610,60 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	}
 
 	public void refreshTab(final String aUrl, final Region aTarget, final String aText) {
-		this.refreshTarget = aTarget;
-		this.refreshText = aText;
+		try {
+			this.refreshTarget = aTarget;
+			this.refreshText = aText;
 
-		this.runningThread = new Thread(new Runnable() {
+			final URL iURL = new URL(aUrl);
+			if (iURL.getProtocol().equals("http") || iURL.getProtocol().equals("https")) {
+				this.runningThread = new Thread(new Runnable() {
 
-			@Override
-			public void run() {
-				try {
-					final URLHandler iUrlHandler = new URLHandler();
-					iUrlHandler.setOnStart(ExtendedTab.this.getOnStart());
-					iUrlHandler.setOnAuthentification(ExtendedTab.this.getOnAuthentification());
-					iUrlHandler.setOnSucces(ExtendedTab.this.getOnSucces());
-					iUrlHandler.setOnEnd(ExtendedTab.this.getOnEnd());
-					iUrlHandler.setOnExceptionThrown(ExtendedTab.this.getOnExceptionThrown());
+					@Override
+					public void run() {
+						try {
+							final URLHandler iUrlHandler = new URLHandler();
+							iUrlHandler.setOnStart(ExtendedTab.this.getOnStart());
+							iUrlHandler.setOnAuthentification(ExtendedTab.this.getOnAuthentification());
+							iUrlHandler.setOnSucces(ExtendedTab.this.getOnSucces());
+							iUrlHandler.setOnEnd(ExtendedTab.this.getOnEnd());
+							iUrlHandler.setOnExceptionThrown(ExtendedTab.this.getOnExceptionThrown());
 
-					iUrlHandler.process(new URL(aUrl), "get", null);
-				} catch (final InterruptedException aException) {
-					System.err.println(aException.getMessage());
-				} catch (final IOException aException) {
-					ExtendedTab.this.displayException(aException);
+							iUrlHandler.process(iURL, "get", null);
+						} catch (final InterruptedException aException) {
+							System.err.println(aException.getMessage());
+						} catch (final IOException aException) {
+							ExtendedTab.this.displayException(aException);
+						}
+					}
+				});
+				this.runningThread.setName(this.url.getText());
+				this.runningThread.start();
+			} else if (iURL.getProtocol().equals("file")) {
+				final File iFile = new File(iURL.toURI());
+				if (Files.isImage(iFile)) {
+					this.displayImage(new Image(new FileInputStream(iFile)));
+				} else if (iFile.getPath().endsWith(".fxml")) {
+					final FXMLLoader iLoader = new FXMLLoader(iURL);
+					this.displayNode(iLoader, this.content, "");
+				} else if (iFile.isDirectory()) {
+					URL iURLCompletedWithFXML = null;
+					if (iURL.getPath().endsWith("/")) {
+						iURLCompletedWithFXML = new URL(aUrl + "index.fxml");
+					} else {
+						iURLCompletedWithFXML = new URL(aUrl + "/index.fxml");
+					}
+					final File iFileCompletedWithFXML = new File(iURLCompletedWithFXML.toURI());
+					if (iFileCompletedWithFXML.exists()) {
+						final FXMLLoader iLoader = new FXMLLoader(iURLCompletedWithFXML);
+						this.displayNode(iLoader, this.content, "");
+					}
 				}
+
+				this.urlHistories.add(aUrl);
 			}
-		});
-		this.runningThread.setName(this.url.getText());
-		this.runningThread.start();
+		} catch (final MalformedURLException | URISyntaxException | FileNotFoundException aException) {
+			this.displayException(aException);
+		}
 	}
 
 	public void refreshTab(final String aUrl, final String aText) {
