@@ -20,6 +20,10 @@ public class LinkCellFactory<S, T> implements Callback<TableColumn<S, T>, TableC
 	private final String property;
 	private final HrefTarget target;
 
+	public LinkCellFactory(@NamedArg("property") final String aProperty) {
+		this(aProperty, HrefTarget.SELF.name());
+	}
+
 	public LinkCellFactory(@NamedArg("property") final String aProperty, @NamedArg("target") final String aTarget) {
 		this.property = aProperty;
 		this.target = HrefTarget.valueOf(aTarget);
