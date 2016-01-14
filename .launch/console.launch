@@ -7,7 +7,7 @@
 <listEntry value="4"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="maohifx.server"/>
-<stringAttribute key="org.hibernate.eclipse.launch.CFG_XML_FILE" value="\maohifx\hibernate.cfg.xml"/>
+<stringAttribute key="org.hibernate.eclipse.launch.CFG_XML_FILE" value="\maohifx\maohifx.configure\src\main\webapp\hibernate.cfg.xml"/>
 <stringAttribute key="org.hibernate.eclipse.launch.CONFIGURATION_FACTORY" value="ANNOTATIONS"/>
 <listAttribute key="org.hibernate.eclipse.launch.FILE_MAPPINGS"/>
 <stringAttribute key="org.hibernate.eclipse.launch.HIBERNATE_VERSION" value="4.0"/>
