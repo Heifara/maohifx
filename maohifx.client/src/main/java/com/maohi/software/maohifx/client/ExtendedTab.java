@@ -59,8 +59,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 /**
  * @author heifara
@@ -70,19 +72,18 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 	private final MaohiFXView view;
 	private final MaohiFXController controller;
-
 	private Region refreshTarget;
+
 	private String refreshText;
 	private Thread runningThread;
-
 	private EventHandler<Event> onStart;
+
 	private EventHandler<AuthentificationEvent> onAuthentification;
 	private EventHandler<SuccesEvent> onSucces;
 	private EventHandler<Event> onEnd;
 	private EventHandler<ConnectEvent> onConnectSucces;
 	private EventHandler<ConnectEvent> onConnectError;
 	private EventHandler<ExceptionEvent> onExceptionThrown;
-
 	private final List<String> urlHistories;
 
 	@FXML
@@ -99,9 +100,9 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 	@FXML
 	private MenuButton menuButton;
+
 	@FXML
 	private ProgressIndicator progressIndicator;
-
 	@FXML
 	private Button refreshButton;
 
@@ -591,6 +592,24 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 		this.controller.save(iConfiguration);
 	}
 
+	@FXML
+	public void openFileEvent(final ActionEvent aEvent) {
+		final Window iOwner = this.getTabPane().getScene().getWindow();
+
+		final FileChooser iFileChooser = new FileChooser();
+		iFileChooser.setTitle("Ouvrir un fichier");
+		final File iFile = iFileChooser.showOpenDialog(iOwner);
+		if (iFile != null) {
+			try {
+				final URL iUrl = iFile.toURI().toURL();
+				this.setUrl(iUrl.toString());
+				this.refreshTab("");
+			} catch (final Exception aException) {
+				this.displayException(aException);
+			}
+		}
+	}
+
 	protected void profileConnected() {
 		Platform.runLater(new Runnable() {
 
@@ -642,6 +661,8 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 				final File iFile = new File(iURL.toURI());
 				if (Files.isImage(iFile)) {
 					this.displayImage(new Image(new FileInputStream(iFile)));
+				} else if (iFile.getPath().endsWith(".html")) {
+					this.displayHtml(iURL);
 				} else if (iFile.getPath().endsWith(".fxml")) {
 					final FXMLLoader iLoader = new FXMLLoader(iURL);
 					this.displayNode(iLoader, this.content, "");
@@ -657,6 +678,8 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 						final FXMLLoader iLoader = new FXMLLoader(iURLCompletedWithFXML);
 						this.displayNode(iLoader, this.content, "");
 					}
+				} else {
+					this.displayFile(iFile);
 				}
 
 				this.urlHistories.add(aUrl);

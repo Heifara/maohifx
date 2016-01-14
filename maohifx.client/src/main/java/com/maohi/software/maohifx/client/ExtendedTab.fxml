@@ -19,7 +19,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.ScrollPane?>
-
+<?import javafx.scene.control.SeparatorMenuItem?>
 <fx:root type="javafx.scene.control.Tab" xmlns:fx="http://javafx.com/fxml">
 	<graphic>
 		<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0">
@@ -32,6 +32,9 @@
 						<ProgressIndicator fx:id="progressIndicator" visible="false" GridPane.columnIndex="1" />
 					</graphic>
 					<items>
+						<MenuItem text="Ouvrir un fichier" onAction="#openFileEvent">
+						</MenuItem>
+						<SeparatorMenuItem />
 						<MenuItem mnemonicParsing="false" text="Nouvelle onglet" onAction="#newTabEvent">
 							<accelerator>
 								<KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
@@ -42,15 +45,15 @@
 								<KeyCodeCombination alt="UP" code="W" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 							</accelerator>
 						</MenuItem>
+						<SeparatorMenuItem />
 						<MenuItem mnemonicParsing="false" text="Actualiser" onAction="#refreshTabEvent">
 							<accelerator>
 								<KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 							</accelerator>
 						</MenuItem>
-						<MenuItem fx:id="hidShowUrl" mnemonicParsing="false" text="Masquer la barre d'adresse" onAction="#showHideUrl">
-						</MenuItem>
-						<MenuItem fx:id="hidShowConsole" mnemonicParsing="false" text="Afficher la console" onAction="#showHideConsole">
-						</MenuItem>
+						<SeparatorMenuItem />
+						<MenuItem fx:id="hidShowUrl" mnemonicParsing="false" text="Masquer la barre d'adresse" onAction="#showHideUrl" />
+						<MenuItem fx:id="hidShowConsole" mnemonicParsing="false" text="Afficher la console" onAction="#showHideConsole" />
 					</items>
 				</MenuButton>
 			</children>
