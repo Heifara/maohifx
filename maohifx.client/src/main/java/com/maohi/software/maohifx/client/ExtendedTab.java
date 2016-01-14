@@ -613,6 +613,7 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 	public void refreshTab(final String aUrl, final String aText) {
 		this.refreshTab(aUrl, this.content, aText);
+		this.setUrl(aUrl);
 	}
 
 	@FXML
