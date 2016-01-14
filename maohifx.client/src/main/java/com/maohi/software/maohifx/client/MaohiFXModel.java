@@ -158,8 +158,17 @@ public class MaohiFXModel {
 				@Override
 				public void run() {
 					try {
+						final Configuration iConfiguration = MaohiFXModel.this.getConfiguration();
+						if (iConfiguration.getAuthentication() == null) {
+							throw new Exception("Les informations d'authentifiaction sont manquantes");
+						}
+						if ((iConfiguration.getAuthentication().getServer() == null) || iConfiguration.getAuthentication().getServer().isEmpty()) {
+							throw new Exception("Les informations sur le serveur d'authentification sont manquantes");
+						}
 						iHandler.process(new URL(MaohiFXModel.this.getConfiguration().getAuthentication().getServer() + "maohifx.server/webapi/authentication/connect"), "post", Entity.json(aProfile));
 					} catch (IOException | InterruptedException aException) {
+						MaohiFXModel.this.onExceptionThrown.handle(new ExceptionEvent(this, aException, -1));
+					} catch (final Exception aException) {
 						MaohiFXModel.this.onExceptionThrown.handle(new ExceptionEvent(this, aException, -1));
 					}
 				}

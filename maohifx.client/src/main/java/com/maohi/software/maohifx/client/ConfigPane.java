@@ -116,7 +116,7 @@ public class ConfigPane extends BorderPane implements Initializable {
 
 			// Update Authentication server
 			iConfiguration.setAuthentication(new Authentication());
-			if ((this.authenticationServer.getText() != null) && !this.authenticationServer.getText().endsWith("/")) {
+			if ((this.authenticationServer.getText() != null) && !this.authenticationServer.getText().isEmpty() && !this.authenticationServer.getText().endsWith("/")) {
 				this.authenticationServer.setText(this.authenticationServer.getText() + "/");
 			}
 			iConfiguration.getAuthentication().setServer(this.authenticationServer.getText());
