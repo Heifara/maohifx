@@ -61,7 +61,7 @@
 								<JSObjectPropertyValueFactory property="lastname" />
 							</cellValueFactory>
 							<cellFactory>
-								<LinkCellFactory property="href" target="BLANK" />
+								<LinkCellFactory property="href"  />
 							</cellFactory>
 						</TableColumn>
 						<TableColumn prefWidth="75.0" text="Prénom">
@@ -69,7 +69,7 @@
 								<JSObjectPropertyValueFactory property="firstname" />
 							</cellValueFactory>
 							<cellFactory>
-								<LinkCellFactory property="href" target="BLANK" />
+								<LinkCellFactory property="href"  />
 							</cellFactory>
 						</TableColumn>
 					</columns>

@@ -58,7 +58,7 @@
 								<JSObjectPropertyValueFactory property="designation" />
 							</cellValueFactory>
 							<cellFactory>
-								<LinkCellFactory property="href" target="BLANK" />
+								<LinkCellFactory property="href" />
 							</cellFactory>
 						</TableColumn>
 						<TableColumn prefWidth="75.0" text="Taux de Tva">
@@ -73,7 +73,7 @@
 						</TableColumn>
 					</columns>
 				</TableView>
-				<Link href="@../product" target="BLANK" text="Nouveau" GridPane.columnIndex="0" />
+				<Link href="@../product" text="Nouveau" GridPane.columnIndex="0" />
 			</children>
 		</GridPane>
 	</center>

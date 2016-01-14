@@ -16,20 +16,20 @@ public class MyApplication extends ResourceConfig {
 
 	private static List<Runnable> runLater = new ArrayList<>();
 
+	public static void runLater(final Runnable aRunnable) {
+		runLater.add(aRunnable);
+	}
+
 	public MyApplication() {
-		System.setProperty("java.io.tmpdir", "C:\\temp");
+		System.setProperty("java.io.tmpdir", "E:\\Temp");
 
 		this.fireRunLater();
 	}
 
 	private void fireRunLater() {
-		for (Runnable iRunnable : runLater) {
-			Thread iThread = new Thread(iRunnable);
+		for (final Runnable iRunnable : runLater) {
+			final Thread iThread = new Thread(iRunnable);
 			iThread.start();
 		}
-	}
-
-	public static void runLater(Runnable aRunnable) {
-		runLater.add(aRunnable);
 	}
 }

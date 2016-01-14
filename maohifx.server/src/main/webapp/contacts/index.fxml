@@ -53,7 +53,7 @@
 								<JSObjectPropertyValueFactory property="lastname" />
 							</cellValueFactory>
 							<cellFactory>
-								<LinkCellFactory property="href" target="BLANK" />
+								<LinkCellFactory property="href"  />
 							</cellFactory>
 						</TableColumn>
 						<TableColumn prefWidth="75.0" text="Prénom">
@@ -68,7 +68,7 @@
 						</TableColumn>
 					</columns>
 				</TableView>
-				<Link href="@../contact" text="Nouveau" target="BLANK" GridPane.columnIndex="0" />
+				<Link href="@../contact" text="Nouveau"  GridPane.columnIndex="0" />
 			</children>
 		</GridPane>
 	</center>

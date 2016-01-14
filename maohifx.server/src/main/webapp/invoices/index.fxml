@@ -76,13 +76,13 @@
 								<JSObjectPropertyValueFactory property="invoiceNumber" />
 							</cellValueFactory>
 							<cellFactory>
-								<LinkCellFactory property="href" target="BLANK" />
+								<LinkCellFactory property="href"  />
 							</cellFactory>
 						</TableColumn>
 						<TableColumn prefWidth="75.0" text="Nom du client" />
 					</columns>
 				</TableView>
-				<Link href="@../invoice" text="Nouveau" target="BLANK" GridPane.columnIndex="0" />
+				<Link href="@../invoice" text="Nouveau" GridPane.columnIndex="0" />
 			</children>
 		</GridPane>
 	</center>
