@@ -79,6 +79,8 @@ public class MaohiFXModel {
 
 	private Profile profile;
 
+	private Configuration configuration;
+
 	public MaohiFXModel(final String aConfigFilePath) {
 		this.configFilePathProperty().set(aConfigFilePath);
 
@@ -86,13 +88,22 @@ public class MaohiFXModel {
 
 		final File iFile = new File(this.configFilePathProperty().get());
 		if (!iFile.exists()) {
-			final Configuration iConfiguration = new Configuration();
-			iConfiguration.setHome(new Home());
-			iConfiguration.setHistoryUrl(new HistoryUrl());
-			iConfiguration.getHome().setUrl("");
-			iConfiguration.getHome().setAutoLoad(false);
-			iConfiguration.setAuthentication(new Authentication());
-			this.save(iConfiguration);
+			this.configuration = new Configuration();
+			this.configuration.setHome(new Home());
+			this.configuration.setHistoryUrl(new HistoryUrl());
+			this.configuration.getHome().setUrl("");
+			this.configuration.getHome().setAutoLoad(false);
+			this.configuration.setAuthentication(new Authentication());
+			this.save(this.configuration);
+		} else {
+			try {
+				final InputStream iInputStream = new FileInputStream(this.configFilePathProperty().get());
+				if (iInputStream != null) {
+					this.configuration = (Configuration) JaxbUtils.readXML(iInputStream, "com.maohi.software.maohifx.client.jaxb2", this.getClass().getClassLoader());
+				}
+			} catch (final FileNotFoundException | JAXBException aException) {
+				this.onExceptionThrown.handle(new ExceptionEvent(this, aException, -1));
+			}
 		}
 	}
 
@@ -207,20 +218,7 @@ public class MaohiFXModel {
 	}
 
 	public Configuration getConfiguration() {
-		Configuration iConfiguration = null;
-		try {
-			final InputStream iInputStream = new FileInputStream(this.configFilePathProperty().get());
-			if (iInputStream != null) {
-				iConfiguration = (Configuration) JaxbUtils.readXML(iInputStream, "com.maohi.software.maohifx.client.jaxb2", this.getClass().getClassLoader());
-				if (iConfiguration.getHistoryUrl() == null) {
-					iConfiguration.setHistoryUrl(new HistoryUrl());
-				}
-			}
-		} catch (final FileNotFoundException | JAXBException aException) {
-			this.onExceptionThrown.handle(new ExceptionEvent(this, aException, -1));
-		}
-
-		return iConfiguration;
+		return this.configuration;
 	}
 
 	public EventHandler<ExceptionEvent> getOnExceptionThrown() {
