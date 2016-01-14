@@ -42,6 +42,20 @@ public class Files {
 		return iFile;
 	}
 
+	public static boolean isImage(final File aFile) {
+		if (aFile.getPath().endsWith(".png")) {
+			return true;
+		} else if (aFile.getPath().endsWith(".jpg")) {
+			return true;
+		} else if (aFile.getPath().endsWith(".jpeg")) {
+			return true;
+		} else if (aFile.getPath().endsWith(".gif")) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public static String toString(final File iFile) {
 		final StringBuilder iResult = new StringBuilder();
 		BufferedReader br = null;
