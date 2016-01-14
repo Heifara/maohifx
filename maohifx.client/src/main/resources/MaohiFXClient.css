@@ -13,37 +13,37 @@
 .root {
 }
 
-.tab-pane {
+#tab-pane {
     -fx-tab-min-height: 35.0;
     -fx-tab-max-height: 35.0;
 }
 
-.tab-pane .tab-header-background {
+#tab-pane .tab-header-background {
 	-fx-background-color: -fx-base-color;
 }
 
-.tab-pane .tab { 
+#tab-pane .tab { 
    	-fx-background-color: -fx-base-color;
 }
 
-.tab-pane .tab-label { 
+#tab-pane .tab-label { 
     -fx-font-size: 14.0;
     -fx-font-family: -fx-police;
 }
 
-.tab-pane .tab .tab-close-button {
+#tab-pane .tab .tab-close-button {
 }
 
-.tab-pane .tab .tab-close-button:hover {
+#tab-pane .tab .tab-close-button:hover {
 	-fx-background-color: white;
 }
 
-.tab-pane .tab:selected {
+#tab-pane .tab:selected {
    	-fx-background-color: -fx-secondary-color;
    	-fx-border-color: -fx-secondary-color;
 }
 
-.tab-pane .tab:selected .tab-label {
+#tab-pane .tab:selected .tab-label {
     -fx-font-weight: bold;
 }
 
