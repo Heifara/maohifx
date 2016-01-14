@@ -65,23 +65,26 @@
 						<columnConstraints>
 							<ColumnConstraints hgrow="NEVER" />
 							<ColumnConstraints hgrow="NEVER" />
+							<ColumnConstraints hgrow="NEVER" />
 							<ColumnConstraints hgrow="ALWAYS" />
 							<ColumnConstraints hgrow="NEVER" />
 						</columnConstraints>
 						<children>
-							<Button id="refresh" fx:id="refreshButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#refreshTabEvent">
+							<Button id="back" fx:id="backButton" mnemonicParsing="false" GridPane.columnIndex="0" onAction="#backEvent">
 							</Button>
-							<Button id="home" fx:id="homeButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" GridPane.columnIndex="1" onAction="#homeEvent">
+							<Button id="refresh" fx:id="refreshButton" mnemonicParsing="false" GridPane.columnIndex="1" onAction="#refreshTabEvent">
 							</Button>
-							<TextField id="url" fx:id="url" GridPane.columnIndex="2" maxHeight="Infinity" onAction="#refreshTabEvent">
+							<Button id="home" fx:id="homeButton" mnemonicParsing="false" GridPane.columnIndex="2" onAction="#homeEvent">
+							</Button>
+							<TextField id="url" fx:id="url" GridPane.columnIndex="3" maxHeight="Infinity" onAction="#refreshTabEvent">
 								<autoCompletion>
 									<FXCollections fx:id="urlAutoCompletion" fx:factory="observableArrayList">
 									</FXCollections>
 								</autoCompletion>
 							</TextField>
-							<Button id="config" fx:id="configButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" GridPane.columnIndex="3" onAction="#configEvent">
+							<Button id="config" fx:id="configButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" GridPane.columnIndex="4" onAction="#configEvent">
 							</Button>
-							<Button id="profile" fx:id="profileButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" GridPane.columnIndex="4" onAction="#connectEvent">
+							<Button id="profile" fx:id="profileButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" GridPane.columnIndex="5" onAction="#connectEvent">
 							</Button>
 						</children>
 					</GridPane>

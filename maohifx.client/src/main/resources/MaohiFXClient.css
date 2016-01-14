@@ -76,6 +76,10 @@
 	-fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
 }
 
+#back {
+	-fx-graphic: url("back.png");
+}
+
 #home {
 	-fx-graphic: url("home.png");
 }

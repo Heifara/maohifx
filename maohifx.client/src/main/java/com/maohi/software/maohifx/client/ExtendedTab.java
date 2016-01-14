@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.ws.rs.core.MediaType;
@@ -75,8 +77,10 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	private EventHandler<Event> onEnd;
 	private EventHandler<ConnectEvent> onConnectSucces;
 	private EventHandler<ConnectEvent> onConnectError;
-
 	private EventHandler<ExceptionEvent> onExceptionThrown;
+
+	private final List<String> urlHistories;
+
 	@FXML
 	private TextField url;
 
@@ -128,6 +132,8 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	private MenuItem hidShowConsole;
 
 	public ExtendedTab(final MaohiFXView aView) {
+		this.urlHistories = new ArrayList<>();
+
 		this.view = aView;
 		this.controller = this.view.getController();
 		this.controller.getModel().addEventHandler(ConnectEvent.CONNECT_SUCCES, this.getOnConnectSucces());
@@ -144,6 +150,16 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 			this.getStyleClass().add("extended-tab");
 		} catch (final IOException aException) {
 			throw new RuntimeException(aException);
+		}
+	}
+
+	@FXML
+	public void backEvent(final ActionEvent aEvent) {
+		final int iCurIndex = this.urlHistories.indexOf(this.url.getText());
+		if (iCurIndex > 0) {
+			final String iPreviousUrl = this.urlHistories.get(iCurIndex - 1);
+			this.setUrl(iPreviousUrl);
+			this.refreshTab("");
 		}
 	}
 
@@ -494,6 +510,9 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 						if (!ExtendedTab.this.urlAutoCompletion.contains(iUrl.toExternalForm())) {
 							ExtendedTab.this.urlAutoCompletion.add(iUrl.toExternalForm());
 						}
+
+						ExtendedTab.this.urlHistories.add(iUrl.toExternalForm());
+
 					} else if (aEvent.getContentType().equals(MediaType.APPLICATION_JSON)) {
 						ExtendedTab.this.displayText(iItem.toString());
 					}
