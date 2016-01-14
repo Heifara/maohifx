@@ -54,7 +54,6 @@ public class JSObjectPropertyValueFactory<T> extends PropertyValueFactory<JSObje
 
 	private ObservableValue<T> getObservableValue(final Object aValue) {
 		if (aValue == null) {
-			System.err.println(this.getProperty() + " is null");
 			return null;
 		} else if (aValue instanceof ScriptObjectMirror) {
 			final ScriptObjectMirror iScriptObject = (ScriptObjectMirror) aValue;
@@ -64,7 +63,6 @@ public class JSObjectPropertyValueFactory<T> extends PropertyValueFactory<JSObje
 			final ObservableValue<T> iObservableValue = (ObservableValue<T>) aValue;
 			return iObservableValue;
 		} else if (aValue instanceof Undefined) {
-			System.err.println(this.getProperty() + " is undefined");
 			return (ObservableValue<T>) new SimpleStringProperty("");
 		} else {
 			return new SimpleObjectProperty<T>((T) aValue);
