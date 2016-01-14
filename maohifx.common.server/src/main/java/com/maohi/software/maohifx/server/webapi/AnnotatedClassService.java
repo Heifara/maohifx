@@ -185,16 +185,16 @@ public abstract class AnnotatedClassService<A extends AbstractDAO<T>, T extends 
 				this.dao.beginTransaction();
 				this.onInserting(iElement);
 				this.dao.insert(iElement);
-				this.dao.commit();
 				this.onInserted(iElement);
+				this.dao.commit();
 			} else {
 				iElement.setUpdateDate(new Date());
 
 				this.dao.beginTransaction();
 				this.onUpdating(iElement);
 				this.dao.update(iElement);
-				this.dao.commit();
 				this.onUpdated(iElement);
+				this.dao.commit();
 			}
 
 			this.onSaved(iElement);

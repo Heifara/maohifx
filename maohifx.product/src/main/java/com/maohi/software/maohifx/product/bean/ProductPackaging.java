@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "product_packaging")
-@JsonIgnoreProperties("product")
+@JsonIgnoreProperties({ "product", "productPackagingLots" })
 public class ProductPackaging implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -42,6 +42,7 @@ public class ProductPackaging implements java.io.Serializable {
 	private Boolean main;
 	private Double sellingPrice;
 	private Set<ProductPackagingBarcode> productPackagingBarcodes = new HashSet<>(0);
+	private Set<ProductPackagingLot> productPackagingLots = new HashSet<>(0);
 
 	public ProductPackaging() {
 	}
@@ -52,7 +53,7 @@ public class ProductPackaging implements java.io.Serializable {
 		this.product = product;
 	}
 
-	public ProductPackaging(final ProductPackagingId id, final Packaging packaging, final Product product, final Date creationDate, final Date updateDate, final Boolean default_, final Double sellingPrice, final Set<ProductPackagingBarcode> productPackagingBarcodes) {
+	public ProductPackaging(final ProductPackagingId id, final Packaging packaging, final Product product, final Date creationDate, final Date updateDate, final Boolean default_, final Double sellingPrice, final Set<ProductPackagingBarcode> productPackagingBarcodes, final Set<ProductPackagingLot> productPackagingLots) {
 		this.id = id;
 		this.packaging = packaging;
 		this.product = product;
@@ -61,6 +62,7 @@ public class ProductPackaging implements java.io.Serializable {
 		this.main = default_;
 		this.sellingPrice = sellingPrice;
 		this.productPackagingBarcodes = productPackagingBarcodes;
+		this.productPackagingLots = productPackagingLots;
 	}
 
 	public ProductPackagingBarcode add(final Barcode aBarcode) {
@@ -128,6 +130,11 @@ public class ProductPackaging implements java.io.Serializable {
 		return this.productPackagingBarcodes;
 	}
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "productPackaging")
+	public Set<ProductPackagingLot> getProductPackagingLots() {
+		return this.productPackagingLots;
+	}
+
 	@Column(name = "selling_price", precision = 22, scale = 0)
 	public Double getSellingPrice() {
 		return this.sellingPrice;
@@ -176,6 +183,10 @@ public class ProductPackaging implements java.io.Serializable {
 
 	public void setProductPackagingBarcodes(final Set<ProductPackagingBarcode> productPackagingBarcodes) {
 		this.productPackagingBarcodes = productPackagingBarcodes;
+	}
+
+	public void setProductPackagingLots(final Set<ProductPackagingLot> productPackagingLots) {
+		this.productPackagingLots = productPackagingLots;
 	}
 
 	public void setSellingPrice(final Double sellingPrice) {

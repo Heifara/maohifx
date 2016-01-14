@@ -302,15 +302,24 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `maohifx`.`product_lot`
+-- Table `maohifx`.`product_packaging_lot`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`product_lot` (
-  `id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `maohifx`.`product_packaging_lot` (
+  `product_packaging_product_uuid` VARCHAR(255) NOT NULL,
+  `product_packaging_packaging_code` VARCHAR(45) NOT NULL,
+  `lot` INT NOT NULL,
   `creation_date` DATETIME NULL,
   `update_date` DATETIME NULL,
   `cost_price` DOUBLE NULL,
   `weighted_average_cost_price` DOUBLE NULL,
-  PRIMARY KEY (`id`))
+  `best_before` DATETIME NULL,
+  PRIMARY KEY (`lot`, `product_packaging_packaging_code`, `product_packaging_product_uuid`),
+  INDEX `fk_product_lot_product_packaging1_idx` (`product_packaging_product_uuid` ASC, `product_packaging_packaging_code` ASC),
+  CONSTRAINT `fk_product_lot_product_packaging1`
+    FOREIGN KEY (`product_packaging_product_uuid` , `product_packaging_packaging_code`)
+    REFERENCES `maohifx`.`product_packaging` (`product_uuid` , `packaging_code`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 

@@ -4,8 +4,9 @@
 <hibernate-reverse-engineering>
 	<table-filter match-name="barcode" match-catalog="maohifx" exclude="true"></table-filter>
 	<table-filter match-name="packaging" match-catalog="maohifx" exclude="true"></table-filter>
-	<table-filter match-name="product" match-catalog="maohifx" exclude="true"></table-filter>
-	<table-filter match-name="product_packaging" match-catalog="maohifx" exclude="true"></table-filter>
-	<table-filter match-name="product_packaging_barcode" match-catalog="maohifx" exclude="true"></table-filter>
-	<table-filter match-name="tva" match-catalog="maohifx"></table-filter>
+	<table-filter match-name="product" match-catalog="maohifx"></table-filter>
+	<table-filter match-name="product_packaging" match-catalog="maohifx"></table-filter>
+	<table-filter match-name="product_packaging_barcode" match-catalog="maohifx"></table-filter>
+	<table-filter match-name="tva" match-catalog="maohifx" exclude="true"></table-filter>
+	<table-filter match-name="product_packaging_lot" match-catalog="maohifx"></table-filter>
 </hibernate-reverse-engineering>

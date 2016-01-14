@@ -54,6 +54,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -198,8 +199,10 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 			iPopOver.setArrowSize(10.0);
 			iPopOver.setArrowLocation(ArrowLocation.TOP_RIGHT);
 
-			final Link iLink = new Link("Se déconnecter");
-			iLink.setOnAction(new EventHandler<ActionEvent>() {
+			final ToolBar iToolBar = new ToolBar();
+
+			final Link iDisconnectLink = new Link("Se déconnecter");
+			iDisconnectLink.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(final ActionEvent aEvent) {
@@ -207,7 +210,21 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 					iPopOver.hide();
 				}
 			});
-			iPopOver.setContentNode(iLink);
+			iToolBar.getItems().add(iDisconnectLink);
+
+			final Link iReconnectLink = new Link("Se Reconnecter");
+			iReconnectLink.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(final ActionEvent aEvent) {
+					final Profile iProfile = ExtendedTab.this.controller.getProfile();
+					ExtendedTab.this.controller.connect(iProfile.getUsername(), iProfile.getPassword());
+					iPopOver.hide();
+				}
+			});
+			iToolBar.getItems().add(iReconnectLink);
+
+			iPopOver.setContentNode(iToolBar);
 
 			iPopOver.show(this.profileButton);
 		} else {

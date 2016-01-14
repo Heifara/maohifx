@@ -36,7 +36,7 @@ import com.maohi.software.maohifx.product.bean.Tva;
  * @author heifara
  *
  */
-public class ProductDAOTest {
+public class ProductPackagingLotDAOTest {
 
 	private static Session session;
 
@@ -64,7 +64,6 @@ public class ProductDAOTest {
 
 		session = HibernateUtil.getSessionFactory().openSession();
 		ProductDAO.setSession(session);
-
 	}
 
 	/**
@@ -72,7 +71,6 @@ public class ProductDAOTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		session.close();
 	}
 
 	/**
@@ -99,13 +97,6 @@ public class ProductDAOTest {
 		session.saveOrUpdate(iPackaging);
 		session.getTransaction().commit();
 
-		final Barcode iBarcode = new Barcode("9990001");
-		iBarcode.setCreationDate(new Date());
-		iBarcode.setUpdateDate(new Date());
-		session.beginTransaction();
-		session.saveOrUpdate(iBarcode);
-		session.getTransaction().commit();
-
 		final Product iProduct = new Product();
 		iProduct.setUuid(UUID.randomUUID().toString());
 		iProduct.setDesignation("JUnit Test");
@@ -113,8 +104,7 @@ public class ProductDAOTest {
 		iProduct.setUpdateDate(new Date());
 		iProduct.setTva(iTva);
 
-		iProduct.add(iPackaging);
-		iProduct.add(iBarcode, "UNT");
+		final ProductPackaging iProductPackaging = iProduct.add(iPackaging);
 
 		iProductDao.beginTransaction();
 		iProductDao.insert(iProduct);
@@ -123,10 +113,17 @@ public class ProductDAOTest {
 		final Product iReadedProduct = (Product) session.get(Product.class, iProduct.getUuid());
 		assertFalse(iReadedProduct == null);
 
-		iReadedProduct.remove(iBarcode, iPackaging);
-		iProductDao.beginTransaction();
-		iProductDao.update(iProduct);
-		iProductDao.commit();
+		final ProductPackagingLot iProductPackagingLot = new ProductPackagingLot();
+		iProductPackagingLot.parse(0, iProductPackaging, 0.0, 0.0, null);
+
+		final ProductPackagingLotDAO iProductPackagingLotDAO = new ProductPackagingLotDAO();
+		iProductPackagingLotDAO.beginTransaction();
+		iProductPackagingLotDAO.insert(iProductPackagingLot);
+		iProductPackagingLotDAO.commit();
+
+		iProductPackagingLotDAO.beginTransaction();
+		iProductPackagingLotDAO.delete(iProductPackagingLot);
+		iProductPackagingLotDAO.commit();
 
 		iReadedProduct.remove(iPackaging);
 		iProductDao.beginTransaction();

@@ -10,7 +10,11 @@ import java.util.List;
 import javax.ws.rs.Path;
 
 import com.maohi.software.maohifx.product.bean.Product;
+import com.maohi.software.maohifx.product.bean.ProductPackaging;
+import com.maohi.software.maohifx.product.bean.ProductPackagingLot;
 import com.maohi.software.maohifx.product.dao.ProductDAO;
+import com.maohi.software.maohifx.product.dao.ProductPackagingDAO;
+import com.maohi.software.maohifx.product.dao.ProductPackagingLotDAO;
 
 /**
  * @author heifara
@@ -19,8 +23,17 @@ import com.maohi.software.maohifx.product.dao.ProductDAO;
 @Path("product")
 public class ProductService extends AnnotatedClassService<ProductDAO, Product> {
 
+	private final ProductPackagingDAO productPackagingDAO;
+	private final ProductPackagingLotDAO productPackagingLotDAO;
+	private final ArrayList<ProductPackagingLot> productPackagingLotToInsert;
+
 	public ProductService() throws InstantiationException, IllegalAccessException {
 		super();
+
+		this.productPackagingDAO = new ProductPackagingDAO();
+		this.productPackagingLotDAO = new ProductPackagingLotDAO();
+
+		this.productPackagingLotToInsert = new ArrayList<>();
 	}
 
 	@Override
@@ -46,12 +59,22 @@ public class ProductService extends AnnotatedClassService<ProductDAO, Product> {
 
 	@Override
 	public void onInserted(final Product iElement) {
-
+		for (final ProductPackagingLot iProductPackagingLot : this.productPackagingLotToInsert) {
+			this.productPackagingLotDAO.insert(iProductPackagingLot);
+		}
 	}
 
 	@Override
 	public void onInserting(final Product iElement) {
 		iElement.bindChildren();
+
+		for (final ProductPackaging iProductPackaging : iElement.getProductPackagings()) {
+			if (!this.productPackagingDAO.exists(iProductPackaging.getId())) {
+				final ProductPackagingLot iProductPackagingLot = new ProductPackagingLot();
+				iProductPackagingLot.parse(0, iProductPackaging, 0.0, 0.0, null);
+				this.productPackagingLotToInsert.add(iProductPackagingLot);
+			}
+		}
 	}
 
 	@Override
@@ -65,12 +88,24 @@ public class ProductService extends AnnotatedClassService<ProductDAO, Product> {
 
 	@Override
 	public void onUpdated(final Product iElement) {
-
+		for (final ProductPackagingLot iProductPackagingLot : this.productPackagingLotToInsert) {
+			this.productPackagingLotDAO.insert(iProductPackagingLot);
+		}
 	}
 
 	@Override
 	public void onUpdating(final Product iElement) {
 		iElement.bindChildren();
+
+		for (final ProductPackaging iProductPackaging : iElement.getProductPackagings()) {
+			if (!this.productPackagingDAO.exists(iProductPackaging.getId())) {
+				final int iLot = this.productPackagingLotDAO.next(Integer.class, "id.lot", String.format("WHERE id.productPackagingPackagingCode='%s' AND id.productPackagingProductUuid='%s'", iProductPackaging.getId().getPackagingCode(), iProductPackaging.getId().getProductUuid()));
+
+				final ProductPackagingLot iProductPackagingLot = new ProductPackagingLot();
+				iProductPackagingLot.parse(iLot, iProductPackaging, 0.0, 0.0, null);
+				this.productPackagingLotToInsert.add(iProductPackagingLot);
+			}
+		}
 	}
 
 	@Override
