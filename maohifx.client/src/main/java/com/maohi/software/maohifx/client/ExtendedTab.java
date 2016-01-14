@@ -211,7 +211,8 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 				final TextArea iStackTrace = new TextArea();
 				iStackTrace.setText(iStringWriter.toString());
 				iStackTrace.setEditable(false);
-				ExtendedTab.this.content.setContent(iStackTrace);
+
+				ExtendedTab.this.displayNode(iStackTrace, ExtendedTab.this.content, "");
 			}
 		});
 	}
@@ -225,7 +226,8 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 				final TextArea iStackTrace = new TextArea();
 				iStackTrace.setText(iText);
 				iStackTrace.setEditable(false);
-				ExtendedTab.this.content.setContent(iStackTrace);
+
+				ExtendedTab.this.displayNode(iStackTrace, ExtendedTab.this.content, "");
 			}
 		});
 	}
@@ -237,7 +239,8 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 			public void run() {
 				final Browser iBrowser = new Browser();
 				iBrowser.load(aUrl.toString());
-				ExtendedTab.this.content.setContent(iBrowser);
+
+				ExtendedTab.this.displayNode(iBrowser, ExtendedTab.this.content, "");
 			}
 		});
 	}
@@ -247,7 +250,7 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 			@Override
 			public void run() {
-				ExtendedTab.this.content.setContent(new ImageView(aImage));
+				ExtendedTab.this.displayNode(new ImageView(aImage), ExtendedTab.this.content, "");
 			}
 		});
 	}
@@ -270,72 +273,81 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 			Platform.runLater(new Runnable() {
 
-				private Node node;
-				private final ChangeListener<Number> onHeightWidthChange = new ChangeListener<Number>() {
-
-					@Override
-					public void changed(final ObservableValue<? extends Number> aObservable, final Number aOldValue, final Number aNewValue) {
-						fireHeightWidthChanged();
-					}
-				};
-
-				public void fireHeightWidthChanged() {
-					if (this.node instanceof Region) {
-						final Region aRegion = (Region) this.node;
-						if (aRegion.getHeight() < aRegion.getMinHeight()) {
-							aRegion.setPrefHeight(aRegion.getMinHeight());
-						} else {
-							aRegion.setPrefHeight(aTarget.getHeight() - 10);
-						}
-						if ((aRegion.getWidth() > 0) && (aRegion.getWidth() < aRegion.getMinWidth())) {
-							aRegion.setPrefWidth(aRegion.getMinWidth());
-						} else {
-							aRegion.setPrefWidth(aTarget.getWidth() - 10);
-						}
-					}
-				}
-
 				@Override
 				public void run() {
 					try {
-						this.node = iLoader.load();
-
-						aTarget.heightProperty().addListener(this.onHeightWidthChange);
-						aTarget.widthProperty().addListener(this.onHeightWidthChange);
-
-						if (aTarget instanceof BorderPane) {
-							final BorderPane iBorderPane = (BorderPane) aTarget;
-							iBorderPane.setCenter(this.node);
-
-						} else if (aTarget instanceof TabPane) {
-							final Tab iTab = new Tab();
-							iTab.setText(aText);
-							iTab.setClosable(true);
-							iTab.setContent(this.node);
-
-							final TabPane iTabPane = (TabPane) aTarget;
-							iTabPane.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
-							iTabPane.getTabs().add(iTab);
-							iTabPane.getSelectionModel().select(iTabPane.getTabs().indexOf(iTab));
-						} else if (aTarget instanceof ScrollPane) {
-							final ScrollPane iScrollPane = (ScrollPane) aTarget;
-							iScrollPane.setContent(this.node);
-						} else {
-							throw new IllegalArgumentException();
-						}
-
-						this.fireHeightWidthChanged();
-
-					} catch (final Exception aException) {
+						ExtendedTab.this.displayNode((Node) iLoader.load(), aTarget, aText);
+					} catch (final IOException aException) {
 						ExtendedTab.this.displayException(aException);
 					}
 				}
 			});
 		} catch (final Exception aException) {
 			this.displayException(aException);
-
 		}
+	}
 
+	protected void displayNode(final Node aNode, final Region aTarget, final String aText) {
+		Platform.runLater(new Runnable() {
+
+			private final ChangeListener<Number> onHeightWidthChange = new ChangeListener<Number>() {
+
+				@Override
+				public void changed(final ObservableValue<? extends Number> aObservable, final Number aOldValue, final Number aNewValue) {
+					fireHeightWidthChanged();
+				}
+			};
+
+			public void fireHeightWidthChanged() {
+				if (aNode instanceof Region) {
+					final Region aRegion = (Region) aNode;
+					if (aRegion.getHeight() < aRegion.getMinHeight()) {
+						aRegion.setPrefHeight(aRegion.getMinHeight());
+					} else {
+						aRegion.setPrefHeight(aTarget.getHeight() - 10);
+					}
+					if ((aRegion.getWidth() > 0) && (aRegion.getWidth() < aRegion.getMinWidth())) {
+						aRegion.setPrefWidth(aRegion.getMinWidth());
+					} else {
+						aRegion.setPrefWidth(aTarget.getWidth() - 10);
+					}
+				}
+			}
+
+			@Override
+			public void run() {
+				try {
+					aTarget.heightProperty().addListener(this.onHeightWidthChange);
+					aTarget.widthProperty().addListener(this.onHeightWidthChange);
+
+					if (aTarget instanceof BorderPane) {
+						final BorderPane iBorderPane = (BorderPane) aTarget;
+						iBorderPane.setCenter(aNode);
+
+					} else if (aTarget instanceof TabPane) {
+						final Tab iTab = new Tab();
+						iTab.setText(aText);
+						iTab.setClosable(true);
+						iTab.setContent(aNode);
+
+						final TabPane iTabPane = (TabPane) aTarget;
+						iTabPane.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
+						iTabPane.getTabs().add(iTab);
+						iTabPane.getSelectionModel().select(iTabPane.getTabs().indexOf(iTab));
+					} else if (aTarget instanceof ScrollPane) {
+						final ScrollPane iScrollPane = (ScrollPane) aTarget;
+						iScrollPane.setContent(aNode);
+					} else {
+						throw new IllegalArgumentException();
+					}
+
+					this.fireHeightWidthChanged();
+
+				} catch (final Exception aException) {
+					ExtendedTab.this.displayException(aException);
+				}
+			}
+		});
 	}
 
 	protected void displayRunning(final boolean aRunning) {
