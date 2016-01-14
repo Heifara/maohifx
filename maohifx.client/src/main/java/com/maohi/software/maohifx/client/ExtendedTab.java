@@ -605,8 +605,6 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 	@FXML
 	public void refreshTabEvent(final ActionEvent aEvent) {
-		System.out.println("Refresh Tab Event");
-
 		if ((this.runningThread != null) && (this.runningThread.isAlive() && !this.runningThread.isInterrupted())) {
 			this.displayRunning(false);
 			this.runningThread.interrupt();
