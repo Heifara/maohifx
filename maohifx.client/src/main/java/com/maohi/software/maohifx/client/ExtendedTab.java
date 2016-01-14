@@ -273,6 +273,7 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 	protected void displayNode(final FXMLLoader iLoader, final Region aTarget, final String aText) {
 		try {
+			ExtendedTab.this.setIcon("");
 			iLoader.setBuilderFactory(ExtendedTab.this.view.getBuilderFactory());
 			iLoader.getNamespace().put("$tab", ExtendedTab.this);
 			iLoader.getNamespace().put("$menuButton", ExtendedTab.this.menuButton);
@@ -292,6 +293,8 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 				@Override
 				public void run() {
 					try {
+						ExtendedTab.this.setIcon("");
+
 						ExtendedTab.this.displayNode((Node) iLoader.load(), aTarget, aText);
 					} catch (final IOException aException) {
 						ExtendedTab.this.displayException(aException);
@@ -656,23 +659,33 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 	}
 
 	public void setIcon(final String aUrl) {
-		String iUrl = aUrl;
-		if (iUrl.startsWith("@/")) {
-			iUrl = iUrl.replace("@/", "@");
-		}
-		if (iUrl.startsWith("@")) {
-			final StringBuilder iBaseUrl = new StringBuilder();
-			iBaseUrl.append("http");
-			iBaseUrl.append("://");
-			iBaseUrl.append("localhost");
-			iBaseUrl.append(":");
-			iBaseUrl.append("8080");
-			iBaseUrl.append("/");
+		Platform.runLater(new Runnable() {
 
-			iUrl = iUrl.replace("@", iBaseUrl.toString());
-		}
+			@Override
+			public void run() {
+				if (!aUrl.isEmpty()) {
+					String iUrl = aUrl;
+					if (iUrl.startsWith("@/")) {
+						iUrl = iUrl.replace("@/", "@");
+					}
+					if (iUrl.startsWith("@")) {
+						final StringBuilder iBaseUrl = new StringBuilder();
+						iBaseUrl.append("http");
+						iBaseUrl.append("://");
+						iBaseUrl.append("localhost");
+						iBaseUrl.append(":");
+						iBaseUrl.append("8080");
+						iBaseUrl.append("/");
 
-		this.menuButton.setGraphic(new ImageView(new Image(iUrl)));
+						iUrl = iUrl.replace("@", iBaseUrl.toString());
+					}
+
+					ExtendedTab.this.menuButton.setGraphic(new ImageView(new Image(iUrl)));
+				} else {
+					ExtendedTab.this.menuButton.setGraphic(ExtendedTab.this.progressIndicator);
+				}
+			}
+		});
 	}
 
 	public void setUrl(final String aUrl) {
