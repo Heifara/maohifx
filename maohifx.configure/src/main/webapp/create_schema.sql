@@ -11,8 +11,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema maohifx
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `maohifx`;
-CREATE SCHEMA `maohifx` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `maohifx` DEFAULT CHARACTER SET utf8 ;
 USE `maohifx` ;
 
 -- -----------------------------------------------------
@@ -170,9 +169,9 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `maohifx`.`invoice_line` (
   `uuid` VARCHAR(255) NOT NULL,
   `invoice_uuid` VARCHAR(255) NOT NULL,
-  `product_packaging_product_uuid` VARCHAR(255) NOT NULL,
-  `product_packaging_packaging_code` VARCHAR(45) NOT NULL,
-  `tva_type` INT NOT NULL,
+  `product_packaging_product_uuid` VARCHAR(255) NULL,
+  `product_packaging_packaging_code` VARCHAR(45) NULL,
+  `tva_type` INT NULL,
   `creation_date` DATETIME NULL,
   `update_date` DATETIME NULL,
   `position` INT NULL,
@@ -182,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `maohifx`.`invoice_line` (
   `selling_price` DOUBLE NULL,
   `discount_rate` DOUBLE NULL,
   `tva_rate` DOUBLE NULL,
-  PRIMARY KEY (`uuid`, `product_packaging_product_uuid`, `product_packaging_packaging_code`),
+  PRIMARY KEY (`uuid`),
   INDEX `fk_invoice_line_invoice_idx` (`invoice_uuid` ASC),
   INDEX `fk_invoice_line_tva1_idx` (`tva_type` ASC),
   INDEX `fk_invoice_line_product_packaging1_idx` (`product_packaging_product_uuid` ASC, `product_packaging_packaging_code` ASC),
