@@ -18,12 +18,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 /**
  * @author heifara
  *
  */
-public class Link extends Hyperlink implements Initializable, EventHandler<ActionEvent> {
+public class Link extends Hyperlink implements Initializable, EventHandler<MouseEvent> {
 
 	/**
 	 * @author heifara
@@ -133,26 +135,35 @@ public class Link extends Hyperlink implements Initializable, EventHandler<Actio
 	}
 
 	@Override
-	public void handle(final ActionEvent aEvent) {
+	public void handle(final MouseEvent aEvent) {
 		try {
-			final FXMLLoader iLoader = new FXMLLoader();
-			iLoader.setLocation(new URL(this.href));
+			if (aEvent.getButton().equals(MouseButton.PRIMARY) || aEvent.getButton().equals(MouseButton.MIDDLE)) {
+				final FXMLLoader iLoader = new FXMLLoader();
+				iLoader.setLocation(new URL(this.href));
 
-			switch (this.target) {
-			case BLANK:
-				blankTarget.handle(this, aEvent, iLoader, null);
-				break;
+				final HrefTarget iOldTarget = this.getTarget();
+				if (aEvent.isControlDown() || aEvent.getButton().equals(MouseButton.MIDDLE)) {
+					this.setTarget(HrefTarget.BLANK);
+				}
 
-			case SELF:
-				selfTarget.handle(this, aEvent, iLoader, null);
-				break;
+				switch (this.target) {
+				case BLANK:
+					blankTarget.handle(this, new ActionEvent(), iLoader, null);
+					break;
 
-			case FRAMENAME:
-				framenameTarget.handle(this, aEvent, iLoader, this.recipee);
-				break;
+				case SELF:
+					selfTarget.handle(this, new ActionEvent(), iLoader, null);
+					break;
 
-			default:
-				throw new IllegalArgumentException();
+				case FRAMENAME:
+					framenameTarget.handle(this, new ActionEvent(), iLoader, this.recipee);
+					break;
+
+				default:
+					throw new IllegalArgumentException();
+				}
+
+				this.setTarget(iOldTarget);
 			}
 		} catch (final Throwable aThrowable) {
 			JOptionPane.showMessageDialog(null, aThrowable.getMessage());
@@ -161,7 +172,7 @@ public class Link extends Hyperlink implements Initializable, EventHandler<Actio
 
 	@Override
 	public void initialize(final URL aLocation, final ResourceBundle aResources) {
-		this.setOnAction(this);
+		this.setOnMouseClicked(this);
 	}
 
 	public void setHref(final String aHref) {
