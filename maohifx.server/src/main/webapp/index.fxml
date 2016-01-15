@@ -39,7 +39,7 @@
 						<TextArea editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT" />
 					</center>
 					<left>
-						<Link id="invoice-button" href="@invoices" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="TOP_LEFT" />
+						<Link id="invoice-button" href="@invoices/" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="TOP_LEFT" />
 					</left>
 				</BorderPane>
 				<BorderPane id="module" GridPane.rowIndex="1">
@@ -50,7 +50,7 @@
 						<TextArea editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT" />
 					</center>
 					<left>
-						<Link id="contact-button" href="@contacts" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="TOP_LEFT" />
+						<Link id="contact-button" href="@contacts/" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="TOP_LEFT" />
 					</left>
 				</BorderPane>
 				<BorderPane id="module" GridPane.columnIndex="1">
@@ -61,7 +61,7 @@
 						<TextArea editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT" />
 					</center>
 					<left>
-						<Link id="product-button" href="@products" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="TOP_LEFT" />
+						<Link id="product-button" href="@products/" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="TOP_LEFT" />
 					</left>
 				</BorderPane>
 				<BorderPane id="module" GridPane.rowIndex="2">
@@ -72,7 +72,7 @@
 						<TextArea editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT" />
 					</center>
 					<left>
-						<Link id="salesman-button" href="@salesmans" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="TOP_LEFT" />
+						<Link id="salesman-button" href="@salesmans/" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="TOP_LEFT" />
 					</left>
 				</BorderPane>
 				<BorderPane id="module" GridPane.rowIndex="3">
@@ -83,7 +83,7 @@
 						<TextArea editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" text="Work in progress" BorderPane.alignment="TOP_LEFT" />
 					</center>
 					<left>
-						<Link id="customer-button" href="@customers" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="TOP_LEFT" />
+						<Link id="customer-button" href="@customers/" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="TOP_LEFT" />
 					</left>
 				</BorderPane>
 				<BorderPane id="module" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -94,7 +94,7 @@
 						<TextArea editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT" />
 					</center>
 					<left>
-						<Link id="reports-button" href="@tvaReport" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="TOP_LEFT" />
+						<Link id="reports-button" href="@tvaReport/" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="TOP_LEFT" />
 					</left>
 				</BorderPane>
 			</children>
