@@ -17,6 +17,7 @@ import com.maohi.software.maohifx.client.event.AuthentificationEvent;
 import com.maohi.software.maohifx.client.event.ExceptionEvent;
 import com.maohi.software.maohifx.client.event.SuccesEvent;
 
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import jdk.nashorn.api.scripting.JSObject;
@@ -65,22 +66,34 @@ public class HttpHandler implements Runnable {
 
 			@Override
 			public void handle(final SuccesEvent aEvent) {
-				final ScriptObjectMirror iScriptObject = (ScriptObjectMirror) aJsObject;
-				final ScriptObjectMirror iSuccessMethod = (ScriptObjectMirror) iScriptObject.get("success");
-				iSuccessMethod.call(iScriptObject, aEvent.getItem(), Status.OK);
+				Platform.runLater(new Runnable() {
+
+					@Override
+					public void run() {
+						final ScriptObjectMirror iScriptObject = (ScriptObjectMirror) aJsObject;
+						final ScriptObjectMirror iSuccessMethod = (ScriptObjectMirror) iScriptObject.get("success");
+						iSuccessMethod.call(iScriptObject, aEvent.getItem(), Status.OK);
+					}
+				});
 			}
 		});
 		iURLHandler.setOnExceptionThrown(new EventHandler<ExceptionEvent>() {
 
 			@Override
 			public void handle(final ExceptionEvent aEvent) {
-				final StringWriter iStringWriter = new StringWriter();
-				final PrintWriter iPrintWriter = new PrintWriter(iStringWriter);
-				aEvent.getException().printStackTrace(iPrintWriter);
+				Platform.runLater(new Runnable() {
 
-				final ScriptObjectMirror iScriptObject = (ScriptObjectMirror) aJsObject;
-				final ScriptObjectMirror iSuccessMethod = (ScriptObjectMirror) iScriptObject.get("error");
-				iSuccessMethod.call(iScriptObject, aEvent.getException().getMessage(), aEvent.getStatusCode(), iStringWriter.toString());
+					@Override
+					public void run() {
+						final StringWriter iStringWriter = new StringWriter();
+						final PrintWriter iPrintWriter = new PrintWriter(iStringWriter);
+						aEvent.getException().printStackTrace(iPrintWriter);
+
+						final ScriptObjectMirror iScriptObject = (ScriptObjectMirror) aJsObject;
+						final ScriptObjectMirror iSuccessMethod = (ScriptObjectMirror) iScriptObject.get("error");
+						iSuccessMethod.call(iScriptObject, aEvent.getException().getMessage(), aEvent.getStatusCode(), iStringWriter.toString());
+					}
+				});
 			}
 		});
 
