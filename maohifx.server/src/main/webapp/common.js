@@ -72,6 +72,18 @@ function choice(aTitle, aMessage, aChoices) {
 	return org.controlsfx.dialog.Dialogs.create().title(aTitle).message(aMessage).showChoices(aChoices);
 }
 
+function yesno(aTitle, aMastHead, aMessage) {
+	iResponse = org.controlsfx.dialog.Dialogs.create().title(aTitle).masthead(aMastHead).message(aMessage).showConfirm();
+	console.log(iResponse);
+	if (iResponse == org.controlsfx.dialog.Dialog.ACTION_YES) {
+		console.log("true");
+		return true;
+	} else {
+		console.log("false");
+		return false;
+	}
+}
+
 function runLater(aRunnable) {
 	Platform.runLater(aRunnable);
 }

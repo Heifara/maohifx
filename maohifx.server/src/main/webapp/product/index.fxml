@@ -70,12 +70,13 @@
 										<GridPane>
 											<columnConstraints>
 												<ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="150.0" />
-												<ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
+												<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
 												<ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
 												<ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 											</columnConstraints>
 											<rowConstraints>
 												<RowConstraints minHeight="10.0" vgrow="NEVER" />
+												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
 												<RowConstraints minHeight="10.0" vgrow="NEVER" />
 												<RowConstraints minHeight="10.0" vgrow="NEVER" />
 												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
@@ -87,26 +88,27 @@
 											<children>
 												<Label text="Choisir conditionnement" />
 												<ComboBox fx:id="productPackagings" maxWidth="1.7976931348623157E308" onAction="controller.packagingSelectedEvent(event)" prefWidth="200.0" GridPane.columnIndex="1" />
-												<Label text="Prix HT" GridPane.rowIndex="1" />
-												<TextField fx:id="sellingPrice" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
-												<Label text="Prix TTC" GridPane.rowIndex="2" />
-												<TextField fx:id="sellingPriceWithTaxes" onAction="controller.sellingPriceWithTaxesEvent(event)" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+												<CheckBox fx:id="mainProductPackaging" onAction="controller.mainChangeEvent(event)" mnemonicParsing="false" text="Unité principal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+												<Label text="Prix HT" GridPane.rowIndex="2" />
+												<TextField fx:id="sellingPrice" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+												<Label text="Prix TTC" GridPane.rowIndex="3" />
+												<TextField fx:id="sellingPriceWithTaxes" onAction="controller.sellingPriceWithTaxesEvent(event)" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
 
-												<Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
+												<Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="4" />
 
-												<Label text="Choisir lot" GridPane.rowIndex="4" />
-												<ComboBox fx:id="productPackagingLot" editable="false" maxWidth="99999999" onAction="controller.productPackagingLotSelectedEvent(event)" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-												<Label text="Prix de Revient" GridPane.rowIndex="5" />
-												<TextField fx:id="costPrice" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-												<Label text="PRMP" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-												<TextField fx:id="weightedAverageCostPrice" editable="false" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-												<Label text="A consommer avant le" GridPane.rowIndex="6" />
-												<DatePicker fx:id="bestBefore" disable="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6" />
+												<Label text="Choisir lot" GridPane.rowIndex="5" />
+												<ComboBox fx:id="productPackagingLot" editable="false" maxWidth="99999999" onAction="controller.productPackagingLotSelectedEvent(event)" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+												<Label text="Prix de Revient" GridPane.rowIndex="6" />
+												<TextField fx:id="costPrice" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+												<Label text="PRMP" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+												<TextField fx:id="weightedAverageCostPrice" editable="false" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+												<Label text="A consommer avant le" GridPane.rowIndex="7" />
+												<DatePicker fx:id="bestBefore" disable="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="7" />
 
 
-												<HBox GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4">
+												<HBox GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="5">
 												</HBox>
-												<HBox GridPane.columnIndex="2" GridPane.columnSpan="2">
+												<HBox GridPane.columnIndex="2">
 													<children>
 														<Button id="add-packaging" mnemonicParsing="false" onAction="controller.addPackagingEvent(event)" />
 														<Button id="remove-packaging" mnemonicParsing="false" onAction="controller.removePackagingEvent(event)" />

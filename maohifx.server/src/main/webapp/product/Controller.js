@@ -37,6 +37,16 @@ function ProductController() {
 	Tva.search(tvaAutoCompletion);
 }
 
+ProductController.prototype.mainChangeEvent = function(aEvent) {
+	if (yesno("Changement d'unité principal", "Attention!! le changement d'unité principal peut avoir des conséquences sur les stock", "Voulez vous continuer ?")) {
+		iProductPackaging = productPackagings.getValue();
+		iProductPackaging.main.set(mainProductPackaging.isSelected());
+		console.log(iProductPackaging.main.get());
+	}
+
+	mainProductPackaging.setSelected(iProductPackaging.main.get());
+}
+
 ProductController.prototype.sellingPriceWithTaxesEvent = function(aEvent) {
 	this.fireSellingPriceValue();
 }
@@ -44,6 +54,7 @@ ProductController.prototype.sellingPriceWithTaxesEvent = function(aEvent) {
 ProductController.prototype.packagingSelectedEvent = function(aEvent) {
 	iProductPackaging = productPackagings.getValue();
 	if (iProductPackaging != null) {
+		mainProductPackaging.setSelected(iProductPackaging.main.get());
 		sellingPrice.setText(iProductPackaging.sellingPrice.get());
 		sellingPriceWithTaxes.setText(iProductPackaging.sellingPrice.multiply(this.product.tva.rate.divide(100).add(1)).get());
 
@@ -64,7 +75,7 @@ ProductController.prototype.productPackagingLotSelectedEvent = function(aEvent) 
 	if (iProductPackagingLot != null) {
 		costPrice.setText(iProductPackagingLot.costPrice.get());
 		weightedAverageCostPrice.setText(iProductPackagingLot.weightedAverageCostPrice.get());
-		//bestBefore.setValue(iProductPackagingLot.bestBefore.getDate());
+		// bestBefore.setValue(iProductPackagingLot.bestBefore.getDate());
 	}
 }
 
@@ -118,6 +129,12 @@ ProductController.prototype.designationAutoCompletionEvent = function(aEvent) {
 }
 
 ProductController.prototype.saveEvent = function(aEvent) {
+	var iMainProductPackaging = this.product.getMainProductPackaging();
+	if (iMainProductPackaging == null) {
+		error("Unité principal manquant", "Une unité principal est obligatoire", "");
+		return;
+	}
+	
 	this.product.save();
 }
 
