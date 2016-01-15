@@ -130,16 +130,9 @@ public class URLHandler {
 	public void process(final URL aUrl, final String aRequestType, final Entity<?> aEntity) throws IOException, InterruptedException {
 		this.onStart.handle(new Event(Event.ANY));
 
-		URL iUrl = aUrl;
-		Response iResponse = this.processHttp(iUrl, aRequestType, aEntity);
+		final URL iUrl = aUrl;
+		final Response iResponse = this.processHttp(iUrl, aRequestType, aEntity);
 		if (iResponse != null) {
-			if (Status.fromStatusCode(iResponse.getStatus()).equals(Status.NOT_FOUND)) {
-				iResponse.close();
-
-				iUrl = this.toHttp(aUrl);
-				iResponse = this.processHttp(iUrl, aRequestType, aEntity);
-			}
-
 			this.processResponse(iResponse, aUrl);
 		}
 
@@ -246,22 +239,22 @@ public class URLHandler {
 		if (iContentType != null) {
 			this.checkInterrupted();
 			if (iContentType.contains(MediaType.TEXT_HTML)) {
-				this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".html"), aUrl, this.toHttp(aUrl)));
+				this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".html"), aUrl));
 			} else if (iContentType.contains("application/pdf")) {
-				this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".pdf"), aUrl, this.toHttp(aUrl)));
+				this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".pdf"), aUrl));
 			} else if (iContentType.contains("image")) {
-				this.onSucces.handle(new SuccesEvent(this, new Image(iResponse.readEntity(InputStream.class)), aUrl, this.toHttp(aUrl)));
+				this.onSucces.handle(new SuccesEvent(this, new Image(iResponse.readEntity(InputStream.class)), aUrl));
 			} else if (iContentType.contains(MediaType.APPLICATION_JSON)) {
-				this.onSucces.handle(new SuccesEvent(this, iResponse, aUrl, this.toHttp(aUrl)));
+				this.onSucces.handle(new SuccesEvent(this, iResponse, aUrl));
 			} else if (iContentType.contains(MediaType.TEXT_PLAIN)) {
-				this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".txt"), aUrl, this.toHttp(aUrl)));
+				this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".txt"), aUrl));
 			} else if (iContentType.contains(MediaType.APPLICATION_XML)) {
-				this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".xml"), aUrl, this.toHttp(aUrl)));
+				this.onSucces.handle(new SuccesEvent(this, Files.createTmpFile(iResponse.readEntity(InputStream.class), "", ".xml"), aUrl));
 			} else {
 				throw new MediaException(iResponse.readEntity(String.class));
 			}
 		} else {
-			this.onSucces.handle(new SuccesEvent(this, aUrl, this.toHttp(aUrl)));
+			this.onSucces.handle(new SuccesEvent(this, aUrl));
 		}
 	}
 

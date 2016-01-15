@@ -525,7 +525,7 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 					} else if (iItem instanceof Image) {
 						ExtendedTab.this.displayImage((Image) iItem);
 					} else if (aEvent.isFxml()) {
-						final FXMLLoader iLoader = new FXMLLoader(aEvent.getProcessesdUrl());
+						final FXMLLoader iLoader = new FXMLLoader(aEvent.getUrl());
 						if (aEvent.getItem() != null) {
 							iLoader.getNamespace().put("$item", aEvent.getItem());
 						}

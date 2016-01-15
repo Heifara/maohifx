@@ -20,29 +20,26 @@ public class SuccesEvent extends Event {
 	public static final EventType<ExceptionEvent> SUCCES = new EventType<>("SUCCES");
 	private final Object item;
 	private final URL url;
-	private final URL processesdUrl;
 	private final boolean fxml;
 	private final String contentType;
 
-	public SuccesEvent(final Object aSource, final Object aItem, final URL aUrl, final URL aProcessesdUrl) {
+	public SuccesEvent(final Object aSource, final Object aItem, final URL aUrl) {
 		super(SUCCES);
 
 		this.source = aSource;
 		this.item = aItem;
 		this.url = aUrl;
-		this.processesdUrl = aProcessesdUrl;
 		this.fxml = true;
 		this.contentType = "";
 	}
 
-	public SuccesEvent(final Object aSource, final Response aResponse, final URL aUrl, final URL aProcessesdUrl) {
+	public SuccesEvent(final Object aSource, final Response aResponse, final URL aUrl) {
 		super(SUCCES);
 
 		this.source = aSource;
 
 		this.item = aResponse.readEntity(Object.class);
 		this.url = aUrl;
-		this.processesdUrl = aProcessesdUrl;
 
 		this.contentType = aResponse.getHeaderString("Content-Type");
 		if (aResponse.getHeaderString("fxml") == null) {
@@ -52,13 +49,12 @@ public class SuccesEvent extends Event {
 		}
 	}
 
-	public SuccesEvent(final Object aSource, final URL aUrl, final URL aProcessesdUrl) {
+	public SuccesEvent(final Object aSource, final URL aUrl) {
 		super(SUCCES);
 
 		this.source = aSource;
 		this.item = null;
 		this.url = aUrl;
-		this.processesdUrl = aProcessesdUrl;
 		this.fxml = true;
 		this.contentType = "";
 
@@ -70,10 +66,6 @@ public class SuccesEvent extends Event {
 
 	public Object getItem() {
 		return this.item;
-	}
-
-	public URL getProcessesdUrl() {
-		return this.processesdUrl;
 	}
 
 	public URL getUrl() {
