@@ -35,12 +35,12 @@ public class GenericAnnotatedClassService {
 	@Path("{entity:.*}")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response generic(@PathParam("entity") final String aEntity, @QueryParam("action") final String aAction) {
+	public Response generic(@PathParam("entity") final String aEntity, @QueryParam("action") final String aAction, @QueryParam("where") final String aWhere) {
 		try {
 			if ("getAll".equals(aAction)) {
 				final Session iSession = HibernateUtil.getSessionFactory().openSession();
 
-				final Query iQuery = iSession.createQuery("FROM " + aEntity);
+				final Query iQuery = iSession.createQuery(String.format("FROM %s %s", aEntity, aWhere != null ? "WHERE " + aWhere : ""));
 				final List iElements = iQuery.list();
 
 				final String iJSONObject = new ObjectMapper().writeValueAsString(iElements);

@@ -15,7 +15,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.image.Image?>
-<BorderPane minHeight="800" minWidth="600" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+
+<BorderPane minHeight="600" minWidth="300" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<stylesheets>
 		<URL value="@../app.css" />
 	</stylesheets>
@@ -23,6 +24,7 @@
 	<fx:script source="../bean/Packaging.js" />
 	<fx:script source="../bean/Product.js" />
 	<fx:script source="../bean/ProductPackaging.js" />
+	<fx:script source="../bean/ProductPackagingLot.js" />
 	<fx:script source="../bean/Tva.js" />
 	<fx:script source="../product/Controller.js" />
 	<top>
@@ -68,24 +70,48 @@
 										<GridPane>
 											<columnConstraints>
 												<ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="150.0" />
-												<ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" minWidth="10.0" />
-												<ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="10.0" />
-												<ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="10.0" />
+												<ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
+												<ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
+												<ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 											</columnConstraints>
 											<rowConstraints>
 												<RowConstraints minHeight="10.0" vgrow="NEVER" />
 												<RowConstraints minHeight="10.0" vgrow="NEVER" />
 												<RowConstraints minHeight="10.0" vgrow="NEVER" />
+												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
 											</rowConstraints>
 											<children>
 												<Label text="Choisir conditionnement" />
-												<ComboBox fx:id="productPackagings" onAction="controller.packagingSelectedEvent(event)" prefWidth="200.0" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
-												<Button id="remove-packaging" mnemonicParsing="false" onAction="controller.removePackagingEvent(event)" GridPane.columnIndex="3" />
-												<Button id="add-packaging" mnemonicParsing="false" onAction="controller.addPackagingEvent(event)" GridPane.columnIndex="2" />
+												<ComboBox fx:id="productPackagings" maxWidth="1.7976931348623157E308" onAction="controller.packagingSelectedEvent(event)" prefWidth="200.0" GridPane.columnIndex="1" />
 												<Label text="Prix HT" GridPane.rowIndex="1" />
 												<TextField fx:id="sellingPrice" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
 												<Label text="Prix TTC" GridPane.rowIndex="2" />
 												<TextField fx:id="sellingPriceWithTaxes" onAction="controller.sellingPriceWithTaxesEvent(event)" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+
+												<Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
+
+												<Label text="Choisir lot" GridPane.rowIndex="4" />
+												<ComboBox fx:id="productPackagingLot" editable="false" maxWidth="99999999" onAction="controller.productPackagingLotSelectedEvent(event)" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+												<Label text="Prix de Revient" GridPane.rowIndex="5" />
+												<TextField fx:id="costPrice" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+												<Label text="PRMP" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+												<TextField fx:id="weightedAverageCostPrice" editable="false" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+												<Label text="A consommer avant le" GridPane.rowIndex="6" />
+												<DatePicker fx:id="bestBefore" disable="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6" />
+
+
+												<HBox GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4">
+												</HBox>
+												<HBox GridPane.columnIndex="2" GridPane.columnSpan="2">
+													<children>
+														<Button id="add-packaging" mnemonicParsing="false" onAction="controller.addPackagingEvent(event)" />
+														<Button id="remove-packaging" mnemonicParsing="false" onAction="controller.removePackagingEvent(event)" />
+													</children>
+												</HBox>
 											</children>
 										</GridPane>
 									</content>
@@ -133,6 +159,7 @@
 			</BorderPane.margin>
 		</GridPane>
 	</left>
-	<fx:script> controller = new ProductController();
+	<fx:script>
+		controller = new ProductController();
 	</fx:script>
 </BorderPane>

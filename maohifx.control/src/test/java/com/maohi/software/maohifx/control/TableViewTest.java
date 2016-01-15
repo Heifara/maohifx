@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
@@ -37,6 +38,15 @@ public class TableViewTest extends Application {
 
 	@Override
 	public void start(final Stage aStage) throws Exception {
+		this.table.getItems().addListener(new ListChangeListener<Person>() {
+
+			@Override
+			public void onChanged(final javafx.collections.ListChangeListener.Change<? extends Person> aC) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
 		final TableColumn<Person, String> firstNameCol = new TableColumn<Person, String>("First Name");
 		this.table.getColumns().add(firstNameCol);
 		firstNameCol.setMinWidth(100);

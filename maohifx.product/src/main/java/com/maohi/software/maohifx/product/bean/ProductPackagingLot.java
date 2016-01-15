@@ -74,7 +74,7 @@ public class ProductPackagingLot implements java.io.Serializable {
 		return this.id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumns({ @JoinColumn(name = "product_packaging_product_uuid", referencedColumnName = "product_uuid", nullable = false, insertable = false, updatable = false), @JoinColumn(name = "product_packaging_packaging_code", referencedColumnName = "packaging_code", nullable = false, insertable = false, updatable = false) })
 	public ProductPackaging getProductPackaging() {
 		return this.productPackaging;
