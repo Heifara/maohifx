@@ -84,6 +84,8 @@ InvoiceController.prototype.packagingCodeUpdateItem = function(aCellActionEvent)
 
 		iComboBox = iComboBoxTableCell.getComboBox();
 		iComboBox.getItems().clear();
+
+		ProductPackaging.search(iComboBox.getItems(), iInvoiceLine.packaging.productUuid.get());
 		iComboBox.getItems().addAll(iInvoiceLine.productPackagings);
 		iComboBox.getSelectionModel().select(iInvoiceLine.packaging);
 	}

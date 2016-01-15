@@ -1,6 +1,6 @@
 ProductPackaging.search = function(aCollection, aProductUuid) {
 	$http.ajax({
-		url : "@maohifx.server/webapi/generic/ProductPackaging?action=getAll",
+		url : "@maohifx.server/webapi/generic/ProductPackaging?action=getAll&where=id.productUuid='" + aProductUuid + "'",
 		type : "get",
 		data : aProductUuid,
 		contentType : "application/x-www-form-urlencoded",
