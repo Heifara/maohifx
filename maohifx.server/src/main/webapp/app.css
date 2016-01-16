@@ -10,6 +10,14 @@
 	-fx-linear-gradient-3: darkgray;
 }
 
+.scroll-pane > .viewport {
+	-fx-background-color: rgba(255.0,255.0,255.0,0.8);
+}
+
+.scroll-pane {
+	-fx-background-color: transparent;
+}
+
 .button {
 	-fx-border-width: 0.0px;
 }
@@ -177,28 +185,27 @@
 	-fx-spacing: 8.0;
 }
 
-
-#module #invoice-button {
+#invoice-button {
 	-fx-graphic: url("invoice-icon.png");
 }
 
-#module #product-button {
+#product-button {
 	-fx-graphic: url("product/icon.png");
 }
 
-#module #contact-button {
+#contact-button {
 	-fx-graphic: url("contact-icon.png");
 }
 
-#module #salesman-button {
+#salesman-button {
 	-fx-graphic: url("salesman/icon.png");
 }
 
-#module #customer-button {
+#customer-button {
 	-fx-graphic: url("customer-icon.png");
 }
 
-#module #supplier-button {
+#supplier-button {
 	-fx-graphic: url("supplier-icon.png");
 }
 

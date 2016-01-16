@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?language javascript?>
+
+<?import com.maohi.software.maohifx.control.*?>
+<?import com.maohi.software.maohifx.control.cell.*?>
+
+<?import org.controlsfx.control.*?>
+
+<?import java.lang.*?>
+
+<?import java.net.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<ScrollPane prefWidth="100.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+	<stylesheets>
+		<URL value="@./app.css" />
+	</stylesheets>
+	<content>
+		<VBox>
+			<children>
+				<Link id="invoice-button" href="@invoices/" />
+				<Link id="product-button" href="@products/" />
+				<Link id="customer-button" href="@customers/" />
+			</children>
+		</VBox>
+	</content>
+</ScrollPane>

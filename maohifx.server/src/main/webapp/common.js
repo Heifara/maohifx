@@ -25,6 +25,8 @@ var ExtStringConverter = com.maohi.software.maohifx.common.ExtStringConverter;
 
 var LocalDate = java.time.LocalDate;
 
+var Notifications = org.controlsfx.control.Notifications;
+
 /**
  * Global Method
  */
