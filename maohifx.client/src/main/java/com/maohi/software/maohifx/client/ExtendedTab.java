@@ -506,45 +506,63 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 
 				@Override
 				public void handle(final SuccesEvent aEvent) {
-					final Object iItem = aEvent.getItem();
-					if (iItem instanceof File) {
-						final File iFile = (File) iItem;
-						if (iFile.getName().endsWith(".pdf")) {
-							try {
-								Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + iFile);
-							} catch (final IOException aException) {
-								aException.printStackTrace();
+					try {
+						final Object iItem = aEvent.getItem();
+						if (iItem instanceof File) {
+							final File iFile = (File) iItem;
+							if (iFile.getName().endsWith(".pdf")) {
+								try {
+									Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + iFile);
+								} catch (final IOException aException) {
+									aException.printStackTrace();
+								}
+							} else if (iFile.getName().endsWith(".html")) {
+								ExtendedTab.this.displayHtml(aEvent.getUrl());
+							} else if (iFile.getName().endsWith(".xml")) {
+								ExtendedTab.this.displayFile(iFile);
+							} else if (iFile.getName().endsWith(".txt")) {
+								ExtendedTab.this.displayFile(iFile);
 							}
-						} else if (iFile.getName().endsWith(".html")) {
-							ExtendedTab.this.displayHtml(aEvent.getUrl());
-						} else if (iFile.getName().endsWith(".xml")) {
-							ExtendedTab.this.displayFile(iFile);
-						} else if (iFile.getName().endsWith(".txt")) {
-							ExtendedTab.this.displayFile(iFile);
-						}
-					} else if (iItem instanceof Image) {
-						ExtendedTab.this.displayImage((Image) iItem);
-					} else if (aEvent.isFxml()) {
-						final FXMLLoader iLoader = new FXMLLoader(aEvent.getUrl());
-						if (aEvent.getItem() != null) {
-							iLoader.getNamespace().put("$item", aEvent.getItem());
-						}
-						ExtendedTab.this.displayNode(iLoader, ExtendedTab.this.refreshTarget, ExtendedTab.this.refreshText);
+						} else if (iItem instanceof Image) {
+							ExtendedTab.this.displayImage((Image) iItem);
+						} else if (aEvent.isFxml()) {
+							final URL iUrl = aEvent.getUrl();
+							String iParsedUrl = iUrl.getProtocol();
+							iParsedUrl += "://" + iUrl.getHost();
+							iParsedUrl += ":" + iUrl.getPort();
+							iParsedUrl += iUrl.getPath();
+							if (iParsedUrl.contains("/webapi")) {
+								iParsedUrl = iParsedUrl.replace("/webapi", "");
+							}
+							if (!iParsedUrl.endsWith(".fxml") && !iParsedUrl.endsWith("/")) {
+								iParsedUrl += "/";
+							}
 
-						final URL iUrl = aEvent.getUrl();
-						if (!ExtendedTab.this.urlAutoCompletion.contains(iUrl.toExternalForm())) {
-							ExtendedTab.this.urlAutoCompletion.add(iUrl.toExternalForm());
+							final FXMLLoader iLoader = new FXMLLoader(new URL(iParsedUrl));
+
+							if (aEvent.getItem() != null) {
+								iLoader.getNamespace().put("$item", aEvent.getItem());
+							}
+
+							ExtendedTab.this.displayNode(iLoader, ExtendedTab.this.refreshTarget, ExtendedTab.this.refreshText);
+
+							if (!ExtendedTab.this.urlAutoCompletion.contains(iUrl.toExternalForm())) {
+								ExtendedTab.this.urlAutoCompletion.add(iUrl.toExternalForm());
+							}
+
+							ExtendedTab.this.urlHistories.add(iUrl.toExternalForm());
+
+						} else if (aEvent.getContentType().equals(MediaType.APPLICATION_JSON)) {
+							ExtendedTab.this.displayText(iItem.toString());
 						}
-
-						ExtendedTab.this.urlHistories.add(iUrl.toExternalForm());
-
-					} else if (aEvent.getContentType().equals(MediaType.APPLICATION_JSON)) {
-						ExtendedTab.this.displayText(iItem.toString());
+					} catch (final MalformedURLException aException) {
+						ExtendedTab.this.displayException(aException);
 					}
 				}
 			};
 		}
 		return this.onSucces;
+
 	}
 
 	public void homeEvent(final ActionEvent aEvent) {
