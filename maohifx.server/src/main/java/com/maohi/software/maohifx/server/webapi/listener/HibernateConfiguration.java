@@ -31,6 +31,7 @@ import com.maohi.software.maohifx.product.bean.Product;
 import com.maohi.software.maohifx.product.bean.ProductPackaging;
 import com.maohi.software.maohifx.product.bean.ProductPackagingBarcode;
 import com.maohi.software.maohifx.product.bean.ProductPackagingLot;
+import com.maohi.software.maohifx.product.bean.ProductPackagingMovement;
 import com.maohi.software.maohifx.product.bean.Tva;
 import com.maohi.software.maohifx.product.dao.PackagingDAO;
 import com.maohi.software.maohifx.product.dao.TvaDAO;
@@ -61,6 +62,7 @@ public class HibernateConfiguration implements ServletContextListener, Runnable 
 			HibernateUtil.getConfiguration().addAnnotatedClass(ProductPackaging.class);
 			HibernateUtil.getConfiguration().addAnnotatedClass(ProductPackagingBarcode.class);
 			HibernateUtil.getConfiguration().addAnnotatedClass(ProductPackagingLot.class);
+			HibernateUtil.getConfiguration().addAnnotatedClass(ProductPackagingMovement.class);
 			HibernateUtil.getConfiguration().addAnnotatedClass(Tva.class);
 			HibernateUtil.getConfiguration().addAnnotatedClass(Customer.class);
 			HibernateUtil.getConfiguration().addAnnotatedClass(Supplier.class);

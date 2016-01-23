@@ -30,6 +30,7 @@ import com.maohi.software.maohifx.product.bean.Product;
 import com.maohi.software.maohifx.product.bean.ProductPackaging;
 import com.maohi.software.maohifx.product.bean.ProductPackagingBarcode;
 import com.maohi.software.maohifx.product.bean.ProductPackagingLot;
+import com.maohi.software.maohifx.product.bean.ProductPackagingMovement;
 import com.maohi.software.maohifx.product.bean.Tva;
 
 /**
@@ -59,6 +60,7 @@ public class ProductPackagingLotDAOTest {
 		HibernateUtil.getConfiguration().addAnnotatedClass(Product.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(ProductPackaging.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(ProductPackagingLot.class);
+		HibernateUtil.getConfiguration().addAnnotatedClass(ProductPackagingMovement.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(ProductPackagingBarcode.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(Tva.class);
 
@@ -119,6 +121,14 @@ public class ProductPackagingLotDAOTest {
 		final ProductPackagingLotDAO iProductPackagingLotDAO = new ProductPackagingLotDAO();
 		iProductPackagingLotDAO.beginTransaction();
 		iProductPackagingLotDAO.insert(iProductPackagingLot);
+		iProductPackagingLotDAO.commit();
+
+		iProductPackagingLot.add(1, 10.0);
+		iProductPackagingLot.add(2, 5.0);
+		iProductPackagingLot.add(3, 7.0);
+
+		iProductPackagingLotDAO.beginTransaction();
+		iProductPackagingLotDAO.update(iProductPackagingLot);
 		iProductPackagingLotDAO.commit();
 
 		iProductPackagingLotDAO.beginTransaction();

@@ -212,6 +212,9 @@ public class URLHandler {
 			case UNAUTHORIZED:
 				throw new NotAuthorizedException(iResponse);
 
+			case METHOD_NOT_ALLOWED:
+				throw new NotAuthorizedException(iResponse);
+
 			case INTERNAL_SERVER_ERROR:
 				throw new InternalServerErrorException(iResponse);
 

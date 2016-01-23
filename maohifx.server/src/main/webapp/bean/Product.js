@@ -23,12 +23,33 @@ Product.search = function(aCollection, aPattern) {
 	});
 }
 
+Product.readQuantities = function(aProduct) {
+	$http.ajax({
+		url : "@maohifx.server/webapi/product/quantities?uuid=" + aProduct.uuid.get(),
+		type : "get",
+		contentType : "application/x-www-form-urlencoded",
+		dataType : "application/json",
+		success : function($result, $status) {
+			aProduct.availableQuantity.set($result.get("availableQuantity"));
+			aProduct.currentQuantity.set($result.get("currentQuantity"));
+		},
+		error : function($error, $status, $stackTrace) {
+			error("Erreur durant la recherche", $error, "");
+			System.err.println($stackTrace);
+		}
+	});
+
+}
+
 function Product() {
 	this.uuid = new SimpleStringProperty();
 	this.designation = new SimpleStringProperty();
 	this.sellingPrice = new SimpleDoubleProperty();
 	this.tva = new Tva();
 	this.href = new SimpleStringProperty();
+
+	this.availableQuantity = new SimpleDoubleProperty();
+	this.currentQuantity = new SimpleDoubleProperty();
 
 	this.productPackagings = FXCollections.observableArrayList();
 	iPackaging = new Packaging();
@@ -96,6 +117,8 @@ Product.prototype.parseJSON = function(aJSONObject) {
 		iProductPackaging.parseJSON(iArray[iIndex]);
 		this.productPackagings.add(iProductPackaging);
 	}
+
+	Product.readQuantities(this);
 }
 
 Product.prototype.parseTva = function(aTva) {

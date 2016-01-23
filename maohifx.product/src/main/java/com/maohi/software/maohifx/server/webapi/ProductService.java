@@ -3,18 +3,30 @@
  */
 package com.maohi.software.maohifx.server.webapi;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.annotation.security.PermitAll;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maohi.software.maohifx.product.bean.Product;
 import com.maohi.software.maohifx.product.bean.ProductPackaging;
 import com.maohi.software.maohifx.product.bean.ProductPackagingLot;
 import com.maohi.software.maohifx.product.dao.ProductDAO;
 import com.maohi.software.maohifx.product.dao.ProductPackagingDAO;
 import com.maohi.software.maohifx.product.dao.ProductPackagingLotDAO;
+import com.maohi.software.maohifx.product.dao.ProductPackagingMovementDAO;
 
 /**
  * @author heifara
@@ -25,6 +37,7 @@ public class ProductService extends AnnotatedClassService<ProductDAO, Product> {
 
 	private final ProductPackagingDAO productPackagingDAO;
 	private final ProductPackagingLotDAO productPackagingLotDAO;
+	private final ProductPackagingMovementDAO productPackagingMovementDAO;
 	private final ArrayList<ProductPackagingLot> productPackagingLotToInsert;
 
 	public ProductService() throws InstantiationException, IllegalAccessException {
@@ -32,6 +45,7 @@ public class ProductService extends AnnotatedClassService<ProductDAO, Product> {
 
 		this.productPackagingDAO = new ProductPackagingDAO();
 		this.productPackagingLotDAO = new ProductPackagingLotDAO();
+		this.productPackagingMovementDAO = new ProductPackagingMovementDAO();
 
 		this.productPackagingLotToInsert = new ArrayList<>();
 	}
@@ -105,6 +119,28 @@ public class ProductService extends AnnotatedClassService<ProductDAO, Product> {
 				iProductPackagingLot.parse(iLot, iProductPackaging, 0.0, 0.0, null);
 				this.productPackagingLotToInsert.add(iProductPackagingLot);
 			}
+		}
+	}
+
+	@Path("/quantities")
+	@PermitAll
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response readQuantities(@QueryParam("uuid") final String aUuid) {
+		try {
+			final Product iProduct = this.dao.read(aUuid);
+			if (iProduct == null) {
+				throw new NullPointerException(aUuid + " does not match any record in product");
+			}
+
+			final Map<String, Object> iObject = new HashMap<>();
+			iObject.put("availableQuantity", this.productPackagingMovementDAO.getQuantities(iProduct, null, null));
+			iObject.put("currentQuantity", this.productPackagingMovementDAO.getQuantities(iProduct, null, 0));
+			final String iJSONObject = new ObjectMapper().writeValueAsString(iObject);
+			return Response.ok(iJSONObject).build();
+		} catch (final IOException aException) {
+			aException.printStackTrace();
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 

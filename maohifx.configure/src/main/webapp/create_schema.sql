@@ -7,6 +7,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema maohifx
 -- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `maohifx` ;
 
 -- -----------------------------------------------------
 -- Schema maohifx
@@ -15,9 +16,9 @@ CREATE SCHEMA IF NOT EXISTS `maohifx` DEFAULT CHARACTER SET utf8 ;
 USE `maohifx` ;
 
 -- -----------------------------------------------------
--- Table `maohifx`.`contact`
+-- Table `contact`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`contact` (
+CREATE TABLE IF NOT EXISTS `contact` (
   `uuid` VARCHAR(255) NOT NULL,
   `creation_date` DATETIME NULL,
   `update_date` DATETIME NULL,
@@ -29,9 +30,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `maohifx`.`customer`
+-- Table `customer`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`customer` (
+CREATE TABLE IF NOT EXISTS `customer` (
   `uuid` VARCHAR(255) NOT NULL,
   `creation_date` DATETIME NULL,
   `update_date` DATETIME NULL,
@@ -40,16 +41,16 @@ CREATE TABLE IF NOT EXISTS `maohifx`.`customer` (
   PRIMARY KEY (`uuid`),
   CONSTRAINT `fk_customer_contact`
     FOREIGN KEY (`uuid`)
-    REFERENCES `maohifx`.`contact` (`uuid`)
+    REFERENCES `contact` (`uuid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `maohifx`.`salesman`
+-- Table `salesman`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`salesman` (
+CREATE TABLE IF NOT EXISTS `salesman` (
   `uuid` VARCHAR(255) NOT NULL,
   `creation_date` DATETIME NULL,
   `update_date` DATETIME NULL,
@@ -59,16 +60,16 @@ CREATE TABLE IF NOT EXISTS `maohifx`.`salesman` (
   PRIMARY KEY (`uuid`),
   CONSTRAINT `fk_salesman_contact1`
     FOREIGN KEY (`uuid`)
-    REFERENCES `maohifx`.`contact` (`uuid`)
+    REFERENCES `contact` (`uuid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `maohifx`.`invoice`
+-- Table `invoice`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`invoice` (
+CREATE TABLE IF NOT EXISTS `invoice` (
   `uuid` VARCHAR(255) NOT NULL,
   `customer_uuid` VARCHAR(255) NOT NULL,
   `salesman_uuid` VARCHAR(255) NULL,
@@ -83,21 +84,21 @@ CREATE TABLE IF NOT EXISTS `maohifx`.`invoice` (
   INDEX `fk_invoice_salesman1_idx` (`salesman_uuid` ASC),
   CONSTRAINT `fk_invoice_customer1`
     FOREIGN KEY (`customer_uuid`)
-    REFERENCES `maohifx`.`customer` (`uuid`)
+    REFERENCES `customer` (`uuid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_invoice_salesman1`
     FOREIGN KEY (`salesman_uuid`)
-    REFERENCES `maohifx`.`salesman` (`uuid`)
+    REFERENCES `salesman` (`uuid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `maohifx`.`tva`
+-- Table `tva`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`tva` (
+CREATE TABLE IF NOT EXISTS `tva` (
   `type` INT NOT NULL,
   `creation_date` DATETIME NULL,
   `update_date` DATETIME NULL,
@@ -108,9 +109,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `maohifx`.`product`
+-- Table `product`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`product` (
+CREATE TABLE IF NOT EXISTS `product` (
   `uuid` VARCHAR(255) NOT NULL,
   `tva_type` INT NOT NULL,
   `creation_date` DATETIME NULL,
@@ -120,16 +121,16 @@ CREATE TABLE IF NOT EXISTS `maohifx`.`product` (
   INDEX `fk_product_tva1_idx` (`tva_type` ASC),
   CONSTRAINT `fk_product_tva1`
     FOREIGN KEY (`tva_type`)
-    REFERENCES `maohifx`.`tva` (`type`)
+    REFERENCES `tva` (`type`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `maohifx`.`packaging`
+-- Table `packaging`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`packaging` (
+CREATE TABLE IF NOT EXISTS `packaging` (
   `code` VARCHAR(45) NOT NULL,
   `creation_date` DATETIME NULL,
   `update_date` DATETIME NULL,
@@ -138,9 +139,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `maohifx`.`product_packaging`
+-- Table `product_packaging`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`product_packaging` (
+CREATE TABLE IF NOT EXISTS `product_packaging` (
   `product_uuid` VARCHAR(255) NOT NULL,
   `packaging_code` VARCHAR(45) NOT NULL,
   `creation_date` DATETIME NULL,
@@ -152,21 +153,21 @@ CREATE TABLE IF NOT EXISTS `maohifx`.`product_packaging` (
   PRIMARY KEY (`product_uuid`, `packaging_code`),
   CONSTRAINT `fk_product_packaging_product1`
     FOREIGN KEY (`product_uuid`)
-    REFERENCES `maohifx`.`product` (`uuid`)
+    REFERENCES `product` (`uuid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_product_packaging_packaging1`
     FOREIGN KEY (`packaging_code`)
-    REFERENCES `maohifx`.`packaging` (`code`)
+    REFERENCES `packaging` (`code`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `maohifx`.`invoice_line`
+-- Table `invoice_line`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`invoice_line` (
+CREATE TABLE IF NOT EXISTS `invoice_line` (
   `uuid` VARCHAR(255) NOT NULL,
   `invoice_uuid` VARCHAR(255) NOT NULL,
   `product_packaging_product_uuid` VARCHAR(255) NULL,
@@ -187,26 +188,26 @@ CREATE TABLE IF NOT EXISTS `maohifx`.`invoice_line` (
   INDEX `fk_invoice_line_product_packaging1_idx` (`product_packaging_product_uuid` ASC, `product_packaging_packaging_code` ASC),
   CONSTRAINT `fk_invoice_line_invoice`
     FOREIGN KEY (`invoice_uuid`)
-    REFERENCES `maohifx`.`invoice` (`uuid`)
+    REFERENCES `invoice` (`uuid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_invoice_line_tva1`
     FOREIGN KEY (`tva_type`)
-    REFERENCES `maohifx`.`tva` (`type`)
+    REFERENCES `tva` (`type`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_invoice_line_product_packaging1`
     FOREIGN KEY (`product_packaging_product_uuid` , `product_packaging_packaging_code`)
-    REFERENCES `maohifx`.`product_packaging` (`product_uuid` , `packaging_code`)
+    REFERENCES `product_packaging` (`product_uuid` , `packaging_code`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `maohifx`.`payment_mode`
+-- Table `payment_mode`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`payment_mode` (
+CREATE TABLE IF NOT EXISTS `payment_mode` (
   `id` INT NOT NULL,
   `creation_date` DATETIME NULL,
   `update_date` DATETIME NULL,
@@ -216,9 +217,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `maohifx`.`invoice_payment_line`
+-- Table `invoice_payment_line`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`invoice_payment_line` (
+CREATE TABLE IF NOT EXISTS `invoice_payment_line` (
   `uuid` VARCHAR(255) NOT NULL,
   `invoice_uuid` VARCHAR(255) NOT NULL,
   `payment_mode` INT NOT NULL,
@@ -232,21 +233,21 @@ CREATE TABLE IF NOT EXISTS `maohifx`.`invoice_payment_line` (
   INDEX `fk_payment_mode_line_payment_mode1_idx` (`payment_mode` ASC),
   CONSTRAINT `fk_payment_line_invoice1`
     FOREIGN KEY (`invoice_uuid`)
-    REFERENCES `maohifx`.`invoice` (`uuid`)
+    REFERENCES `invoice` (`uuid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_payment_mode_line_payment_mode1`
     FOREIGN KEY (`payment_mode`)
-    REFERENCES `maohifx`.`payment_mode` (`id`)
+    REFERENCES `payment_mode` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `maohifx`.`phone`
+-- Table `phone`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`phone` (
+CREATE TABLE IF NOT EXISTS `phone` (
   `uuid` VARCHAR(255) NOT NULL,
   `contact_uuid` VARCHAR(255) NOT NULL,
   `creation_date` DATETIME NULL,
@@ -257,16 +258,16 @@ CREATE TABLE IF NOT EXISTS `maohifx`.`phone` (
   INDEX `fk_phone_contact1_idx` (`contact_uuid` ASC),
   CONSTRAINT `fk_phone_contact1`
     FOREIGN KEY (`contact_uuid`)
-    REFERENCES `maohifx`.`contact` (`uuid`)
+    REFERENCES `contact` (`uuid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `maohifx`.`email`
+-- Table `email`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`email` (
+CREATE TABLE IF NOT EXISTS `email` (
   `uuid` VARCHAR(255) NOT NULL,
   `contact_uuid` VARCHAR(255) NOT NULL,
   `creation_date` DATETIME NULL,
@@ -277,16 +278,16 @@ CREATE TABLE IF NOT EXISTS `maohifx`.`email` (
   INDEX `fk_email_contact1_idx` (`contact_uuid` ASC),
   CONSTRAINT `fk_email_contact1`
     FOREIGN KEY (`contact_uuid`)
-    REFERENCES `maohifx`.`contact` (`uuid`)
+    REFERENCES `contact` (`uuid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `maohifx`.`supplier`
+-- Table `supplier`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`supplier` (
+CREATE TABLE IF NOT EXISTS `supplier` (
   `uuid` VARCHAR(255) NOT NULL,
   `creation_date` DATETIME NULL,
   `update_date` DATETIME NULL,
@@ -295,16 +296,16 @@ CREATE TABLE IF NOT EXISTS `maohifx`.`supplier` (
   PRIMARY KEY (`uuid`),
   CONSTRAINT `fk_supplier_contact1`
     FOREIGN KEY (`uuid`)
-    REFERENCES `maohifx`.`contact` (`uuid`)
+    REFERENCES `contact` (`uuid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `maohifx`.`product_packaging_lot`
+-- Table `product_packaging_lot`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`product_packaging_lot` (
+CREATE TABLE IF NOT EXISTS `product_packaging_lot` (
   `product_packaging_product_uuid` VARCHAR(255) NOT NULL,
   `product_packaging_packaging_code` VARCHAR(45) NOT NULL,
   `lot` INT NOT NULL,
@@ -313,32 +314,41 @@ CREATE TABLE IF NOT EXISTS `maohifx`.`product_packaging_lot` (
   `cost_price` DOUBLE NULL,
   `weighted_average_cost_price` DOUBLE NULL,
   `best_before` DATETIME NULL,
-  PRIMARY KEY (`lot`, `product_packaging_packaging_code`, `product_packaging_product_uuid`),
+  PRIMARY KEY (`product_packaging_product_uuid`, `product_packaging_packaging_code`, `lot`),
   INDEX `fk_product_lot_product_packaging1_idx` (`product_packaging_product_uuid` ASC, `product_packaging_packaging_code` ASC),
   CONSTRAINT `fk_product_lot_product_packaging1`
     FOREIGN KEY (`product_packaging_product_uuid` , `product_packaging_packaging_code`)
-    REFERENCES `maohifx`.`product_packaging` (`product_uuid` , `packaging_code`)
+    REFERENCES `product_packaging` (`product_uuid` , `packaging_code`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `maohifx`.`product_movement`
+-- Table `product_packaging_movement`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`product_movement` (
+CREATE TABLE IF NOT EXISTS `product_packaging_movement` (
+  `product_uuid` VARCHAR(255) NOT NULL,
+  `packaging_code` VARCHAR(45) NOT NULL,
+  `lot` INT NOT NULL,
   `id` INT NOT NULL,
   `creation_date` DATETIME NULL,
   `update_date` DATETIME NULL,
   `quantity` DOUBLE NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`product_uuid`, `packaging_code`, `lot`, `id`),
+  INDEX `fk_product_packaging_movement_product_packaging_lot1_idx` (`product_uuid` ASC, `packaging_code` ASC, `lot` ASC),
+  CONSTRAINT `fk_product_packaging_movement_product_packaging_lot1`
+    FOREIGN KEY (`product_uuid` , `packaging_code` , `lot`)
+    REFERENCES `product_packaging_lot` (`product_packaging_product_uuid` , `product_packaging_packaging_code` , `lot`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `maohifx`.`barcode`
+-- Table `barcode`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`barcode` (
+CREATE TABLE IF NOT EXISTS `barcode` (
   `code` VARCHAR(255) NOT NULL,
   `creation_date` DATETIME NULL,
   `update_date` DATETIME NULL,
@@ -347,9 +357,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `maohifx`.`product_packaging_barcode`
+-- Table `product_packaging_barcode`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `maohifx`.`product_packaging_barcode` (
+CREATE TABLE IF NOT EXISTS `product_packaging_barcode` (
   `product_packaging_product_uuid` VARCHAR(255) NOT NULL,
   `product_packaging_packaging_code` VARCHAR(45) NOT NULL,
   `barcode_code` VARCHAR(255) NOT NULL,
@@ -360,12 +370,12 @@ CREATE TABLE IF NOT EXISTS `maohifx`.`product_packaging_barcode` (
   PRIMARY KEY (`product_packaging_product_uuid`, `product_packaging_packaging_code`, `barcode_code`),
   CONSTRAINT `fk_product_packaging_barcode_product_packaging1`
     FOREIGN KEY (`product_packaging_product_uuid` , `product_packaging_packaging_code`)
-    REFERENCES `maohifx`.`product_packaging` (`product_uuid` , `packaging_code`)
+    REFERENCES `product_packaging` (`product_uuid` , `packaging_code`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_product_packaging_barcode_barcode1`
     FOREIGN KEY (`barcode_code`)
-    REFERENCES `maohifx`.`barcode` (`code`)
+    REFERENCES `barcode` (`code`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

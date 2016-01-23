@@ -16,6 +16,8 @@ function ProductController() {
 
 	// Controls Binding
 	designation.textProperty().bindBidirectional(this.product.designation);
+	availableQuantity.textProperty().bindBidirectional(this.product.availableQuantity, new ExtStringConverter());
+	currentQuantity.textProperty().bindBidirectional(this.product.currentQuantity, new ExtStringConverter());
 
 	// Fill packagings with product_packagin list
 	productPackagings.setConverter(new ExtStringConverter());
@@ -134,7 +136,7 @@ ProductController.prototype.saveEvent = function(aEvent) {
 		error("Unité principal manquant", "Une unité principal est obligatoire", "");
 		return;
 	}
-	
+
 	this.product.save();
 }
 
