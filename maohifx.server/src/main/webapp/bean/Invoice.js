@@ -96,6 +96,8 @@ Invoice.prototype.parseJSON = function(aJSONObject) {
 		iInvoicePaymentLine.parseJSON(iArray[iIndex]);
 		this.invoicePaymentLines.add(iInvoicePaymentLine);
 	}
+
+	console.log(this.toJSON());
 }
 
 Invoice.prototype.updateTotals = function() {
@@ -180,10 +182,6 @@ Invoice.prototype.removeInvoicePaymentLine = function(aIndex) {
 	this.invoicePaymentLines.remove(aIndex);
 }
 
-Invoice.prototype.getTabTitle = function() {
-	return "Facture n°" + this.invoiceNumber.get();
-}
-
 Invoice.prototype.print = function() {
 	$http.ajax({
 		url : "@maohifx.server/webapi/invoice/pdf?uuid=" + this.uuid.get(),
@@ -264,6 +262,35 @@ Invoice.prototype.save = function(onSucces, onError) {
 				this.source.parseJSON($result);
 
 				alert("Save success!");
+
+				if (typeof (onSucces) != 'undefined') {
+					onSucces.run()
+				}
+			},
+			error : function($error, $status) {
+				error("Erreur lors de l'enregistrement de la facture", $error, $status);
+
+				if (typeof (onError) != 'undefined') {
+					onError.run()
+				}
+			}
+		});
+	}
+}
+
+Invoice.prototype.valid = function(onSucces, onError) {
+	if (this.isValid()) {
+		$http.ajax({
+			source : this,
+			url : "@maohifx.server/webapi/invoice/valid",
+			type : "post",
+			contentType : "application/x-www-form-urlencoded",
+			dataType : "application/json",
+			data : this.toJSON(),
+			success : function($result, $status) {
+				this.source.parseJSON($result);
+
+				alert("Valid success!");
 
 				if (typeof (onSucces) != 'undefined') {
 					onSucces.run()

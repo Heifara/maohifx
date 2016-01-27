@@ -7,10 +7,6 @@ function InvoiceController() {
 		this.invoice.parseJSON($item);
 	}
 
-	if (typeof ($tab) != 'undefined') {
-		$tab.setText(this.invoice.getTabTitle());
-	}
-
 	this.addInvoiceLineEvent();
 	this.addInvoicePaymentLineEvent();
 
@@ -59,6 +55,8 @@ function InvoiceController() {
 		run : function() {
 			controller.addInvoiceLineEvent();
 			controller.addInvoicePaymentLineEvent();
+
+			controller.fireEditable();
 		}
 	})
 }
@@ -147,11 +145,17 @@ InvoiceController.prototype.saveEvent = function() {
 
 InvoiceController.prototype.validEvent = function() {
 	if (this.invoice.isValid()) {
-		this.invoice.validDate.setDate(System.currentTimeMillis());
+		iInvoiceLine = this.invoice.getLastInvoiceLine();
+		if (iInvoiceLine.label.get().isEmpty()) {
+			this.invoice.removeLastInvoiceLine();
+		}
 
-		this.saveEvent();
+		iInvoicePaymentLine = this.invoice.getLastInvoicePaymentLine();
+		if (iInvoicePaymentLine != null && iInvoicePaymentLine.mode.get().isEmpty()) {
+			this.invoice.removeLastInvoicePaymentLine();
+		}
 
-		this.fireEditable();
+		this.invoice.valid(this.onSucces);
 	}
 }
 
@@ -169,6 +173,10 @@ InvoiceController.prototype.removeInvoicePaymentLineEvent = function(aEvent) {
 }
 
 InvoiceController.prototype.fireEditable = function() {
+	if (typeof ($tab) != 'undefined') {
+		$tab.setText("Facture n°" + this.invoice.invoiceNumber.get());
+	}
+
 	if (!this.invoice.isEditable()) {
 		disableControls(view);
 
