@@ -25,6 +25,8 @@ public class ProductPackagingMovementEntryEvent implements Runnable {
 
 	@Override
 	public void run() {
+		System.out.println("ProductUuid: " + this.productUuid + " PackagagingCode: " + this.packagingCode + " Quantities: " + this.quantities);
+
 		this.manager.beginTransaction();
 
 		final ProductPackagingLot iCurrentLot = this.manager.getCurrentProductPackagingLot(this.productUuid, this.packagingCode);

@@ -56,6 +56,11 @@ public class ProductPackagingMovementManager implements Runnable {
 		this.currentProductPackagingLot = new HashMap<>();
 		this.runnables = new ArrayList<>();
 		this.session = HibernateUtil.getSessionFactory().openSession();
+
+		final Thread iThread = new Thread(this);
+		iThread.setName("Movement Spooler");
+		iThread.setDaemon(true);
+		iThread.start();
 	}
 
 	public void beginTransaction() {
@@ -77,20 +82,26 @@ public class ProductPackagingMovementManager implements Runnable {
 
 	@Override
 	synchronized public void run() {
-		this.running = true;
-		final List<Runnable> iRunningRunnables = new ArrayList<>();
-		iRunningRunnables.addAll(this.runnables);
-		for (final Runnable iRunnable : iRunningRunnables) {
-			iRunnable.run();
+		while (true) {
+			this.running = true;
+			final List<Runnable> iRunningRunnables = new ArrayList<>();
+			iRunningRunnables.addAll(this.runnables);
+			for (final Runnable iRunnable : iRunningRunnables) {
+				iRunnable.run();
+			}
+			this.runnables.removeAll(iRunningRunnables);
+			this.running = false;
+
+			try {
+				Thread.sleep(100);
+			} catch (final InterruptedException aException) {
+				aException.printStackTrace();
+			}
 		}
-		this.runnables.removeAll(iRunningRunnables);
-		this.running = false;
 	}
 
 	public void runLater(final Runnable aRunnable) {
 		this.runnables.add(aRunnable);
-		final Thread iThread = new Thread(this);
-		iThread.start();
 	}
 
 	public void update(final Object aElement) {

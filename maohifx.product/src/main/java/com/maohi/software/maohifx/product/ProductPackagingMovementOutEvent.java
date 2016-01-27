@@ -18,6 +18,8 @@ public class ProductPackagingMovementOutEvent extends ProductPackagingMovementEn
 
 	@Override
 	public void run() {
+		System.out.println("ProductUuid: " + this.productUuid + " PackagagingCode: " + this.packagingCode + " Quantities: " + this.quantities);
+
 		double iQuantities = this.quantities;
 
 		while (iQuantities > 0) {
