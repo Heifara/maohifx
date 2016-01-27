@@ -76,16 +76,15 @@ InvoiceController.prototype.packagingCodeCommitEvent = function(aCellActionEvent
 InvoiceController.prototype.packagingCodeUpdateItem = function(aCellActionEvent) {
 	var iInvoiceLine = invoiceLines.getItems().get(aCellActionEvent.getTableRow().getIndex());
 	if (iInvoiceLine != null) {
-		console.log(iInvoiceLine.productPackagings);
+		if (!iInvoiceLine.productPackagings.isEmpty()) {
+			iComboBoxTableCell = aCellActionEvent.getSource();
 
-		iComboBoxTableCell = aCellActionEvent.getSource();
+			iComboBox = iComboBoxTableCell.getComboBox();
+			iComboBox.getItems().clear();
 
-		iComboBox = iComboBoxTableCell.getComboBox();
-		iComboBox.getItems().clear();
-
-		ProductPackaging.search(iComboBox.getItems(), iInvoiceLine.packaging.productUuid.get());
-		iComboBox.getItems().addAll(iInvoiceLine.productPackagings);
-		iComboBox.getSelectionModel().select(iInvoiceLine.packaging);
+			ProductPackaging.search(iComboBox.getItems(), iInvoiceLine.packaging.productUuid.get());
+			iComboBox.getSelectionModel().select(iInvoiceLine.packaging);
+		}
 	}
 }
 
