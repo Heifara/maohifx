@@ -33,7 +33,7 @@ public class ProductPackagingMovementEntryEvent implements Runnable {
 		if (iCurrentLot == null) {
 			throw new NullPointerException("Current Lot can never be null");
 		}
-		iCurrentLot.add(this.quantities);
+		iCurrentLot.add(Math.abs(this.quantities));
 
 		this.manager.update(iCurrentLot);
 		this.manager.commit();
