@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.maohi.software.maohifx.product.dao;
+package com.maohi.software.maohifx.product;
 
 import static org.junit.Assert.assertFalse;
 
@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.maohi.software.maohifx.common.server.AbstractDAO;
 import com.maohi.software.maohifx.common.server.HibernateUtil;
 import com.maohi.software.maohifx.contact.bean.Contact;
 import com.maohi.software.maohifx.contact.bean.Customer;
@@ -32,12 +33,13 @@ import com.maohi.software.maohifx.product.bean.ProductPackagingBarcode;
 import com.maohi.software.maohifx.product.bean.ProductPackagingLot;
 import com.maohi.software.maohifx.product.bean.ProductPackagingMovement;
 import com.maohi.software.maohifx.product.bean.Tva;
+import com.maohi.software.maohifx.product.dao.ProductDAO;
 
 /**
  * @author heifara
  *
  */
-public class ProductPackagingLotDAOTest {
+public class ProductPackagingMovementManagerTest {
 
 	private static Session session;
 
@@ -65,7 +67,7 @@ public class ProductPackagingLotDAOTest {
 		HibernateUtil.getConfiguration().addAnnotatedClass(Tva.class);
 
 		session = HibernateUtil.getSessionFactory().openSession();
-		ProductDAO.setSession(session);
+		AbstractDAO.setSession(session);
 	}
 
 	/**
@@ -75,62 +77,46 @@ public class ProductPackagingLotDAOTest {
 	public static void tearDownAfterClass() throws Exception {
 	}
 
+	private final String productUuid = UUID.randomUUID().toString();
+	private final String packagingCode = "UNT";
+
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-	}
+		Tva iTva = (Tva) session.get(Tva.class, 1);
+		if (iTva == null) {
+			iTva = new Tva(1, new Date(), new Date(), "JUnit Test", 5.0);
+			session.beginTransaction();
+			session.saveOrUpdate(iTva);
+			session.getTransaction().commit();
+		}
 
-	@Test
-	public void shouldCRUD() throws Exception {
-		final ProductDAO iProductDao = new ProductDAO();
-
-		final Tva iTva = new Tva(1, new Date(), new Date(), "JUnit Test", 5.0);
-		session.beginTransaction();
-		session.saveOrUpdate(iTva);
-		session.getTransaction().commit();
-
-		final Packaging iPackaging = new Packaging("UNT");
-		iPackaging.setCreationDate(new Date());
-		iPackaging.setUpdateDate(new Date());
-		iPackaging.setProductPackagings(new HashSet<>());
-		session.beginTransaction();
-		session.saveOrUpdate(iPackaging);
-		session.getTransaction().commit();
+		Packaging iPackaging = (Packaging) session.get(Packaging.class, this.packagingCode);
+		if (iPackaging == null) {
+			iPackaging = new Packaging(this.packagingCode);
+			iPackaging.setCreationDate(new Date());
+			iPackaging.setUpdateDate(new Date());
+			iPackaging.setProductPackagings(new HashSet<>());
+			session.beginTransaction();
+			session.saveOrUpdate(iPackaging);
+			session.getTransaction().commit();
+		}
 
 		final Product iProduct = new Product();
-		iProduct.setUuid(UUID.randomUUID().toString());
+		iProduct.setUuid(this.productUuid);
 		iProduct.setDesignation("JUnit Test");
 		iProduct.setCreationDate(new Date());
 		iProduct.setUpdateDate(new Date());
 		iProduct.setTva(iTva);
+		iProduct.add(iPackaging).add(0.0, 0.0, null, 0);
+		iProduct.getProductPackaging(this.packagingCode).add(0.0, 0.0, null, 10);
 
-		iProduct.add(iPackaging);
-		iProduct.getProductPackaging("UNT").add(0.0, 0.0, null, 0.0);
-		iProduct.getProductPackaging("UNT").getProductPackagingLot(0).add(10.0);
-		iProduct.getProductPackaging("UNT").getProductPackagingLot(0).add(5.0);
-		iProduct.getProductPackaging("UNT").getProductPackagingLot(0).add(6.0);
-
-		iProduct.getProductPackaging("UNT").add(0.0, 0.0, null, 10.0);
-		iProduct.getProductPackaging("UNT").getProductPackagingLot(1).add(-5.0);
-		iProduct.getProductPackaging("UNT").getProductPackagingLot(1).add(-5.0);
-
+		final ProductDAO iProductDao = new ProductDAO();
 		iProductDao.beginTransaction();
 		iProductDao.insert(iProduct);
 		iProductDao.commit();
-
-		final Product iReadedProduct = (Product) session.get(Product.class, iProduct.getUuid());
-		assertFalse(iReadedProduct == null);
-
-		iProductDao.beginTransaction();
-		iProductDao.update(iProduct);
-		iProductDao.commit();
-
-		iProductDao.beginTransaction();
-		iProductDao.delete(iReadedProduct);
-		iProductDao.commit();
-
 	}
 
 	/**
@@ -138,6 +124,45 @@ public class ProductPackagingLotDAOTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
+		final ProductDAO iProductDao = new ProductDAO();
+		final Product iProduct = iProductDao.read(this.productUuid);
+		session.refresh(iProduct);
+		assertFalse(iProduct == null);
+
+		iProductDao.beginTransaction();
+		iProductDao.delete(iProduct);
+		iProductDao.commit();
+	}
+
+	@Test
+	public void testEntry() throws Exception {
+		for (int iI = 0; iI < 1000; iI++) {
+			ProductPackagingMovementManager.entry(this.productUuid, this.packagingCode, 1.0);
+		}
+		while (ProductPackagingMovementManager.isRunning()) {
+			Thread.sleep(10);
+		}
+	}
+
+	@Test
+	public void testEntryOut() throws Exception {
+		for (int iI = 0; iI < 1000; iI++) {
+			ProductPackagingMovementManager.entry(this.productUuid, this.packagingCode, 1.0);
+			ProductPackagingMovementManager.out(this.productUuid, this.packagingCode, 1.0);
+		}
+		while (ProductPackagingMovementManager.isRunning()) {
+			Thread.sleep(10);
+		}
+	}
+
+	@Test
+	public void testOut() throws Exception {
+		for (int iI = 0; iI < 1000; iI++) {
+			ProductPackagingMovementManager.out(this.productUuid, this.packagingCode, 1.0);
+		}
+		while (ProductPackagingMovementManager.isRunning()) {
+			Thread.sleep(10);
+		}
 	}
 
 }

@@ -63,7 +63,7 @@ ProductController.prototype.packagingSelectedEvent = function(aEvent) {
 		var iPackagingCode = iProductPackaging.packagingCode.get();
 		var iProductUuid = iProductPackaging.productUuid.get();
 		productPackagingLot.getItems().clear();
-		ProductPackagingLot.search(productPackagingLot.getItems(), iPackagingCode, iProductUuid);
+		ProductPackagingLot.search(productPackagingLot.getItems(), iProductPackaging);
 	} else {
 		sellingPrice.setText("");
 		sellingPriceWithTaxes.setText("");

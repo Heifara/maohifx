@@ -1,5 +1,5 @@
-ProductPackagingLot.search = function(aCollection, aPackagingCode, aProductUuid) {
-	var iUrl = "@maohifx.server/webapi/generic/ProductPackagingLot?action=getAll&where=id.productPackagingPackagingCode='" + aPackagingCode + "'+AND+id.productPackagingProductUuid='" + aProductUuid + "'";
+ProductPackagingLot.search = function(aCollection, aProductPackaging) {
+	var iUrl = "@maohifx.server/webapi/generic/ProductPackagingLot?action=getAll&where=id.productPackagingPackagingCode='" + aProductPackaging.packagingCode.get() + "'+AND+id.productPackagingProductUuid='" + aProductPackaging.productUuid.get() + "'";
 
 	$http.ajax({
 		url : iUrl,
@@ -10,7 +10,7 @@ ProductPackagingLot.search = function(aCollection, aPackagingCode, aProductUuid)
 			aCollection.clear();
 			for ( var iItem in $result) {
 				iElement = new ProductPackagingLot();
-				iElement.parseJSON($result[iItem]);
+				iElement.parseJSON($result[iItem], aProductPackaging);
 				aCollection.add(iElement);
 			}
 		},
@@ -49,14 +49,18 @@ ProductPackagingLot.prototype.toJSON = function(aObject) {
 	}
 }
 
-ProductPackagingLot.prototype.parseJSON = function(aJSONObject) {
+ProductPackagingLot.prototype.parseJSON = function(aJSONObject, aProductPackaging) {
 	this.lot.set(aJSONObject.get("id").get("lot"));
 	this.productPackagingPackagingCode.set(aJSONObject.get("id").get("productPackagingPackagingCode"));
 	this.productPackagingProductUuid.set(aJSONObject.get("id").get("productPackagingProductUuid"));
 
-	var iProductPackaging = new ProductPackaging();
-	iProductPackaging.parseJSON(aJSONObject.get("productPackaging"));
-	this.productPackaging.set(iProductPackaging);
+	if (typeof (aProductPackaging) == 'undefined') {
+		var iProductPackaging = new ProductPackaging();
+		iProductPackaging.parseJSON(aJSONObject.get("productPackaging"));
+		this.productPackaging.set(iProductPackaging);
+	} else {
+		this.productPackaging.set(aProductPackaging);
+	}
 
 	this.costPrice.set(aJSONObject.get("costPrice"));
 	this.weightedAverageCostPrice.set(aJSONObject.get("weightedAverageCostPrice"));

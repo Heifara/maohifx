@@ -20,12 +20,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.maohi.software.maohifx.product.ProductPackagingMovementManager;
 import com.maohi.software.maohifx.product.bean.Product;
 import com.maohi.software.maohifx.product.bean.ProductPackaging;
-import com.maohi.software.maohifx.product.bean.ProductPackagingLot;
 import com.maohi.software.maohifx.product.dao.ProductDAO;
 import com.maohi.software.maohifx.product.dao.ProductPackagingDAO;
-import com.maohi.software.maohifx.product.dao.ProductPackagingLotDAO;
 import com.maohi.software.maohifx.product.dao.ProductPackagingMovementDAO;
 
 /**
@@ -36,18 +35,13 @@ import com.maohi.software.maohifx.product.dao.ProductPackagingMovementDAO;
 public class ProductService extends AnnotatedClassService<ProductDAO, Product> {
 
 	private final ProductPackagingDAO productPackagingDAO;
-	private final ProductPackagingLotDAO productPackagingLotDAO;
 	private final ProductPackagingMovementDAO productPackagingMovementDAO;
-	private final ArrayList<ProductPackagingLot> productPackagingLotToInsert;
 
 	public ProductService() throws InstantiationException, IllegalAccessException {
 		super();
 
 		this.productPackagingDAO = new ProductPackagingDAO();
-		this.productPackagingLotDAO = new ProductPackagingLotDAO();
 		this.productPackagingMovementDAO = new ProductPackagingMovementDAO();
-
-		this.productPackagingLotToInsert = new ArrayList<>();
 	}
 
 	@Override
@@ -71,11 +65,53 @@ public class ProductService extends AnnotatedClassService<ProductDAO, Product> {
 		return null;
 	}
 
+	/**
+	 * @param aProductUuid
+	 * @param aPackagingCode
+	 * @param aQuantities
+	 * @return
+	 * @throws IOException
+	 * @see http://localhost:8080/maohifx.server/webapi/product/entry?productUuid=938d6e11-1d68-41d7-a2cb-75cdc2cc645f&packagingCode=UNT&quantities=1.0
+	 */
+	@Path("/entry")
+	@PermitAll
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response newEntry(@QueryParam("productUuid") final String aProductUuid, @QueryParam("packagingCode") final String aPackagingCode, @QueryParam("quantities") final Double aQuantities) throws IOException {
+		final Product iProduct = this.dao.read(aProductUuid);
+		if (iProduct == null) {
+			throw new NullPointerException(aProductUuid + " does not match any record in product");
+		}
+
+		ProductPackagingMovementManager.entry(aProductUuid, aPackagingCode, aQuantities);
+		return Response.ok().build();
+	}
+
+	/**
+	 *
+	 * @param aProductUuid
+	 * @param aPackagingCode
+	 * @param aQuantities
+	 * @return
+	 * @throws IOException
+	 * @see http://localhost:8080/maohifx.server/webapi/product/out?productUuid=938d6e11-1d68-41d7-a2cb-75cdc2cc645f&packagingCode=UNT&quantities=1.0
+	 */
+	@Path("/out")
+	@PermitAll
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response newOut(@QueryParam("productUuid") final String aProductUuid, @QueryParam("packagingCode") final String aPackagingCode, @QueryParam("quantities") final Double aQuantities) throws IOException {
+		final Product iProduct = this.dao.read(aProductUuid);
+		if (iProduct == null) {
+			throw new NullPointerException(aProductUuid + " does not match any record in product");
+		}
+
+		ProductPackagingMovementManager.out(aProductUuid, aPackagingCode, aQuantities);
+		return Response.ok().build();
+	}
+
 	@Override
 	public void onInserted(final Product iElement) {
-		for (final ProductPackagingLot iProductPackagingLot : this.productPackagingLotToInsert) {
-			this.productPackagingLotDAO.insert(iProductPackagingLot);
-		}
 	}
 
 	@Override
@@ -84,9 +120,7 @@ public class ProductService extends AnnotatedClassService<ProductDAO, Product> {
 
 		for (final ProductPackaging iProductPackaging : iElement.getProductPackagings()) {
 			if (!this.productPackagingDAO.exists(iProductPackaging.getId())) {
-				final ProductPackagingLot iProductPackagingLot = new ProductPackagingLot();
-				iProductPackagingLot.parse(0, iProductPackaging, 0.0, 0.0, null);
-				this.productPackagingLotToInsert.add(iProductPackagingLot);
+				iProductPackaging.add(0.0, 0.0, null, 0.0);
 			}
 		}
 	}
@@ -102,9 +136,6 @@ public class ProductService extends AnnotatedClassService<ProductDAO, Product> {
 
 	@Override
 	public void onUpdated(final Product iElement) {
-		for (final ProductPackagingLot iProductPackagingLot : this.productPackagingLotToInsert) {
-			this.productPackagingLotDAO.insert(iProductPackagingLot);
-		}
 	}
 
 	@Override
@@ -113,11 +144,7 @@ public class ProductService extends AnnotatedClassService<ProductDAO, Product> {
 
 		for (final ProductPackaging iProductPackaging : iElement.getProductPackagings()) {
 			if (!this.productPackagingDAO.exists(iProductPackaging.getId())) {
-				final int iLot = this.productPackagingLotDAO.next(Integer.class, "id.lot", String.format("WHERE id.productPackagingPackagingCode='%s' AND id.productPackagingProductUuid='%s'", iProductPackaging.getId().getPackagingCode(), iProductPackaging.getId().getProductUuid()));
-
-				final ProductPackagingLot iProductPackagingLot = new ProductPackagingLot();
-				iProductPackagingLot.parse(iLot, iProductPackaging, 0.0, 0.0, null);
-				this.productPackagingLotToInsert.add(iProductPackagingLot);
+				iProductPackaging.add(0.0, 0.0, null, 0.0);
 			}
 		}
 	}

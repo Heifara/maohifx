@@ -3,6 +3,7 @@ package com.maohi.software.maohifx.product.bean;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -27,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @Entity
 @Table(name = "product_packaging_lot")
-@JsonIgnoreProperties({ "productPackagingMovements" })
+@JsonIgnoreProperties({ "productPackaging", "productPackagingMovements" })
 public class ProductPackagingLot implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -59,21 +60,20 @@ public class ProductPackagingLot implements java.io.Serializable {
 		this.bestBefore = bestBefore;
 	}
 
-	public ProductPackagingMovement add(final int aId, final double aQuantity) {
-		final ProductPackagingMovementId iProductPackagingMovementId = new ProductPackagingMovementId();
-		iProductPackagingMovementId.setId(aId);
-		iProductPackagingMovementId.setLot(this.id.getLot());
-		iProductPackagingMovementId.setPackagingCode(this.id.getProductPackagingPackagingCode());
-		iProductPackagingMovementId.setProductUuid(this.id.getProductPackagingProductUuid());
-
-		final ProductPackagingMovement iMovement = new ProductPackagingMovement();
-		iMovement.setId(iProductPackagingMovementId);
+	public ProductPackagingMovement add(final double aQuantity) {
+		final ProductPackagingMovement iMovement = new ProductPackagingMovement(new ProductPackagingMovementId(), this);
 		iMovement.setProductPackagingLot(this);
 		iMovement.setQuantity(aQuantity);
 		iMovement.setCreationDate(new Date());
 		iMovement.setUpdateDate(new Date());
 
-		this.productPackagingMovements.add(iMovement);
+		final int iIndexOf = this.getProductPackagingMovements().size();
+		this.getProductPackagingMovements().add(iMovement);
+
+		iMovement.getId().setId(iIndexOf);
+		iMovement.getId().setLot(this.id.getLot());
+		iMovement.getId().setPackagingCode(this.id.getProductPackagingPackagingCode());
+		iMovement.getId().setProductUuid(this.id.getProductPackagingProductUuid());
 
 		return iMovement;
 	}
@@ -123,20 +123,17 @@ public class ProductPackagingLot implements java.io.Serializable {
 		return this.weightedAverageCostPrice;
 	}
 
-	public void parse(final int aLot, final ProductPackaging aProductPackaging, final Double aCostPrice, final Double aWeightedAverageCostPrice, final Date aBestBefore) {
-		this.id = new ProductPackagingLotId();
-		this.id.setLot(aLot);
-		this.id.setProductPackagingPackagingCode(aProductPackaging.getId().getPackagingCode());
-		this.id.setProductPackagingProductUuid(aProductPackaging.getId().getProductUuid());
-
-		this.productPackaging = aProductPackaging;
-		this.creationDate = new Date();
-		this.updateDate = new Date();
-		this.costPrice = aCostPrice;
-		this.weightedAverageCostPrice = aWeightedAverageCostPrice;
-		this.bestBefore = aBestBefore;
-
-		this.add(0, 0.0);
+	public int indexOf(final ProductPackagingMovement aMovement) {
+		int iIndex = -1;
+		final Iterator<ProductPackagingMovement> iIterator = this.getProductPackagingMovements().iterator();
+		while (iIterator.hasNext()) {
+			iIndex++;
+			final ProductPackagingMovement iProductPackagingMovement = iIterator.next();
+			if (aMovement.equals(iProductPackagingMovement)) {
+				return iIndex;
+			}
+		}
+		return -1;
 	}
 
 	public void setBestBefore(final Date bestBefore) {

@@ -15,22 +15,39 @@ import org.hibernate.Session;
  */
 public abstract class AbstractDAO<E> {
 
-	protected static Session session;
+	/**
+	 * Shared {@link Session} between DAO.
+	 */
+	protected static Session sharedSession;
 
+	/**
+	 * Set the shared {@link Session} between DAO
+	 *
+	 * @param aSession
+	 */
 	public static void setSession(final Session aSession) {
-		session = aSession;
+		sharedSession = aSession;
+	}
+
+	/**
+	 * The current {@link Session} of the DAO. Can be different from the SharedSession.
+	 */
+	protected Session session;
+
+	public AbstractDAO() {
+		this.session = sharedSession;
 	}
 
 	public void beginTransaction() {
-		AbstractDAO.session.beginTransaction();
+		this.session.beginTransaction();
 	}
 
 	public void commit() {
-		AbstractDAO.session.getTransaction().commit();
+		this.session.getTransaction().commit();
 	}
 
 	public void delete(final E aEntity) {
-		AbstractDAO.session.delete(aEntity);
+		this.session.delete(aEntity);
 	}
 
 	public boolean exists(final Serializable aId) {
@@ -40,7 +57,7 @@ public abstract class AbstractDAO<E> {
 
 		final E iElement = this.read(aId);
 		if (iElement != null) {
-			session.evict(iElement);
+			this.session.evict(iElement);
 			return true;
 		} else {
 			return false;
@@ -50,7 +67,7 @@ public abstract class AbstractDAO<E> {
 	public abstract Class<E> getAnnotatedClass();
 
 	public void insert(final E aEntity) {
-		AbstractDAO.session.save(aEntity);
+		this.session.save(aEntity);
 	}
 
 	public <T> T next(final Class<T> aType, final String aAttribute) {
@@ -59,7 +76,7 @@ public abstract class AbstractDAO<E> {
 
 	@SuppressWarnings("unchecked")
 	public <T> T next(final Class<T> aType, final String aAttribute, final String aWhere) {
-		final Query iQuery = AbstractDAO.session.createQuery(String.format("SELECT MAX(%s) as max FROM %s %s", aAttribute, this.getAnnotatedClass().getSimpleName(), aWhere));
+		final Query iQuery = this.session.createQuery(String.format("SELECT MAX(%s) as max FROM %s %s", aAttribute, this.getAnnotatedClass().getSimpleName(), aWhere));
 		final T iNext = (T) iQuery.uniqueResult();
 		if (aType.isAssignableFrom(Integer.class)) {
 			return (T) (iNext == null ? new Integer(0) : new Integer((Integer) iNext + 1));
@@ -76,22 +93,22 @@ public abstract class AbstractDAO<E> {
 			return null;
 		}
 
-		return (E) AbstractDAO.session.get(this.getAnnotatedClass(), aId);
+		return (E) this.session.get(this.getAnnotatedClass(), aId);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<E> readAll() {
-		final Query iQuery = AbstractDAO.session.createQuery("FROM " + this.getAnnotatedClass().getSimpleName());
+		final Query iQuery = this.session.createQuery("FROM " + this.getAnnotatedClass().getSimpleName());
 		final List<E> iElements = iQuery.list();
 		return iElements;
 	}
 
 	public void replace(final E aEntity) {
-		AbstractDAO.session.saveOrUpdate(aEntity);
+		this.session.saveOrUpdate(aEntity);
 	}
 
 	public void update(final E aEntity) {
-		AbstractDAO.session.update(aEntity);
+		this.session.update(aEntity);
 	}
 
 }

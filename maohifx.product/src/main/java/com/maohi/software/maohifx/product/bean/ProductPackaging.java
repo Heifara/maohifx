@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "product_packaging")
-@JsonIgnoreProperties({ "product", "productPackagingLots" })
+@JsonIgnoreProperties({ "product" })
 public class ProductPackaging implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -79,6 +79,38 @@ public class ProductPackaging implements java.io.Serializable {
 		return null;
 	}
 
+	/**
+	 * Add a {@link ProductPackagingLot}. The Id is index of the element in the list
+	 *
+	 * @param aCostPrice
+	 *            the cost price
+	 * @param aWeightedAverageCostPrice
+	 *            the average cost price
+	 * @param aBestBefore
+	 *            the best before date
+	 * @param aQuantity
+	 * @return the added item
+	 */
+	public ProductPackagingLot add(final double aCostPrice, final double aWeightedAverageCostPrice, final Date aBestBefore, final double aQuantity) {
+		final ProductPackagingLot iLot = new ProductPackagingLot(new ProductPackagingLotId(), this);
+		iLot.setCostPrice(aCostPrice);
+		iLot.setWeightedAverageCostPrice(aWeightedAverageCostPrice);
+		iLot.setBestBefore(aBestBefore);
+		iLot.setCreationDate(new Date());
+		iLot.setUpdateDate(new Date());
+
+		final int iIndexOf = this.getProductPackagingLots().size();
+		this.getProductPackagingLots().add(iLot);
+
+		iLot.getId().setLot(iIndexOf);
+		iLot.getId().setProductPackagingPackagingCode(this.id.getPackagingCode());
+		iLot.getId().setProductPackagingProductUuid(this.id.getProductUuid());
+
+		iLot.add(aQuantity);
+
+		return iLot;
+	}
+
 	public boolean contains(final Barcode aBarcode) {
 		for (final ProductPackagingBarcode iProductPackagingBarcode : this.productPackagingBarcodes) {
 			if (iProductPackagingBarcode.getBarcode().equals(aBarcode)) {
@@ -106,7 +138,7 @@ public class ProductPackaging implements java.io.Serializable {
 		return this.packaging;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "product_uuid", nullable = false, insertable = false, updatable = false)
 	public Product getProduct() {
 		return this.product;
@@ -130,7 +162,18 @@ public class ProductPackaging implements java.io.Serializable {
 		return this.productPackagingBarcodes;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "productPackaging")
+	public ProductPackagingLot getProductPackagingLot(final int aLotId) {
+		final Iterator<ProductPackagingLot> iIterator = this.getProductPackagingLots().iterator();
+		while (iIterator.hasNext()) {
+			final ProductPackagingLot iProductPackagingLot = iIterator.next();
+			if (aLotId == iProductPackagingLot.getId().getLot()) {
+				return iProductPackagingLot;
+			}
+		}
+		return null;
+	}
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "productPackaging", cascade = CascadeType.ALL, orphanRemoval = true)
 	public Set<ProductPackagingLot> getProductPackagingLots() {
 		return this.productPackagingLots;
 	}
@@ -144,6 +187,27 @@ public class ProductPackaging implements java.io.Serializable {
 	@Column(name = "update_date", length = 19)
 	public Date getUpdateDate() {
 		return this.updateDate;
+	}
+
+	/**
+	 * Return the index of
+	 *
+	 * @param aItem
+	 *            the item to find
+	 * @return -1 if not found
+	 */
+	public int indexOf(final ProductPackagingLot aItem) {
+		final Iterator<ProductPackagingLot> iIterator = this.getProductPackagingLots().iterator();
+
+		int iIndexOf = -1;
+		while (iIterator.hasNext()) {
+			iIndexOf++;
+			final ProductPackagingLot iProductPackagingLot = iIterator.next();
+			if (aItem.equals(iProductPackagingLot)) {
+				return iIndexOf;
+			}
+		}
+		return -1;
 	}
 
 	@Column(name = "main")
