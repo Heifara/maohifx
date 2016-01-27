@@ -87,8 +87,9 @@ public abstract class AnnotatedClassService<A extends AbstractDAO<T>, T extends 
 
 	@SuppressWarnings("static-access")
 	public AnnotatedClassService() throws InstantiationException, IllegalAccessException {
-		this.dao = this.getDAOClass().newInstance();
 		this.dao.setSession(HibernateUtil.getSessionFactory().openSession());
+
+		this.dao = this.getDAOClass().newInstance();
 	}
 
 	abstract Class<T> getAnnotatedClass();
