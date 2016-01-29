@@ -531,9 +531,18 @@ public class ExtendedTab extends Tab implements Initializable, ListChangeListene
 							iParsedUrl += "://" + iUrl.getHost();
 							iParsedUrl += ":" + iUrl.getPort();
 							iParsedUrl += iUrl.getPath();
+							if (iParsedUrl.endsWith("get")) {
+								iParsedUrl = iParsedUrl.replace("get", "");
+							} else if (iParsedUrl.endsWith("getAll")) {
+								iParsedUrl = iParsedUrl.replace("getAll", "");
+							} else if (iParsedUrl.endsWith("save")) {
+								iParsedUrl = iParsedUrl.replace("save", "");
+							}
+
 							if (iParsedUrl.contains("/webapi")) {
 								iParsedUrl = iParsedUrl.replace("/webapi", "");
 							}
+
 							if (!iParsedUrl.endsWith(".fxml") && !iParsedUrl.endsWith("/")) {
 								iParsedUrl += "/";
 							}

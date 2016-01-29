@@ -3,253 +3,284 @@
  */
 package com.maohi.software.maohifx.server.webapi;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Date;
+import java.io.Serializable;
 import java.util.List;
-import java.util.UUID;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.StreamingOutput;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.sax.SAXResult;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.apache.fop.apps.FOPException;
-import org.apache.fop.apps.FOUserAgent;
-import org.apache.fop.apps.Fop;
-import org.apache.fop.apps.FopFactory;
+import org.hibernate.Query;
+import org.hibernate.Session;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.maohi.software.maohifx.common.Strings;
 import com.maohi.software.maohifx.common.server.AbstractDAO;
 import com.maohi.software.maohifx.common.server.AnnotatedClass;
+import com.maohi.software.maohifx.common.server.DAOFactory;
 import com.maohi.software.maohifx.common.server.HibernateUtil;
+import com.maohi.software.maohifx.common.server.PDFBuilderFactory;
 
 /**
  * @author heifara
  *
  */
-public abstract class AnnotatedClassService<A extends AbstractDAO<T>, T extends AnnotatedClass> extends RestService {
+@Path("/")
+public class AnnotatedClassService extends RestService {
 
-	protected class ByteStreamingOutput implements StreamingOutput {
-
-		private final File file;
-
-		public ByteStreamingOutput(final File aFile) {
-			this.file = aFile;
-		}
-
-		@Override
-		public void write(final OutputStream aOutput) throws IOException, WebApplicationException {
-			final InputStream iInputStream = new FileInputStream(this.file);
-
-			try {
-				final OutputStream iOutputStream = new BufferedOutputStream(aOutput);
-
-				int iRead = 0;
-				final byte[] iBytes = new byte[1024];
-
-				while ((iRead = iInputStream.read(iBytes)) != -1) {
-					iOutputStream.write(iBytes, 0, iRead);
-					iOutputStream.flush();
-				}
-
-				iInputStream.close();
-			} catch (final IOException aException) {
-				aException.printStackTrace();
-			}
-		}
-
-	}
-
-	protected final A dao;
-
-	@SuppressWarnings("static-access")
-	public AnnotatedClassService() throws InstantiationException, IllegalAccessException {
-		this.dao.setSession(HibernateUtil.getSessionFactory().openSession());
-
-		this.dao = this.getDAOClass().newInstance();
-	}
-
-	abstract Class<T> getAnnotatedClass();
-
-	abstract Class<A> getDAOClass();
-
-	@RolesAllowed("user")
+	@SuppressWarnings("rawtypes")
+	@PermitAll
+	@Path("{entity}/get")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response getFromQueryParam(@QueryParam("uuid") final String aUuid) {
+	public Response get(@PathParam("entity") final String aEntity, @QueryParam("uuid") final String aUuid) {
+		final Session iSession = HibernateUtil.getSessionFactory().getCurrentSession();
+
 		try {
-			final T iElement = this.dao.read(aUuid);
-			final String iJSONObject = new ObjectMapper().writeValueAsString(iElement);
-			return Response.ok(iJSONObject).build();
-		} catch (final IOException aException) {
+			// Resolve the class from entity name
+			final Class<?> iClass = HibernateUtil.getAnnotatedClass(Strings.toUnderscore(aEntity));
+			if (iClass != null) {
+
+				// Read element from database
+				final AbstractDAO iDAO = DAOFactory.getInstance(iClass);
+				Object iElement = null;
+				if (iDAO != null) {
+					iElement = iDAO.read(aUuid);
+				} else {
+					iElement = iSession.get(iClass, aUuid);
+				}
+
+				if (iElement != null) {
+					final String iJSONObject = new ObjectMapper().writeValueAsString(iElement);
+					return Response.ok(iJSONObject).build();
+				}
+			}
+
+			return Response.status(Status.EXPECTATION_FAILED).build();
+		} catch (final JsonMappingException aException) {
+			System.err.println(aException.getMessage());
+			return Response.serverError().build();
+		} catch (final Exception aException) {
 			aException.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.serverError().build();
+		} finally {
+			iSession.close();
 		}
 	}
 
-	protected abstract String getJaxbPackage();
+	@SuppressWarnings("rawtypes")
+	@PermitAll
+	@Path("{entity}/getAll")
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getAll(@PathParam("entity") final String aEntity, @QueryParam("where") final String aWhere) {
+		final Session iSession = HibernateUtil.getSessionFactory().openSession();
 
-	protected abstract InputStream getXslInputStream(T iElement);
+		List<?> iElements = null;
+		try {
+			final Class<?> iClass = HibernateUtil.getAnnotatedClass(Strings.toUnderscore(aEntity));
+			if (iClass != null) {
+				final AbstractDAO iDAO = DAOFactory.getInstance(iClass);
+				if (iDAO != null) {
+					iElements = iDAO.readAll(aWhere);
+				} else {
+					final Query iQuery = iSession.createQuery(String.format("FROM %s %s", iClass.getName(), aWhere != null ? "WHERE " + aWhere : ""));
+					iElements = iQuery.list();
+				}
 
-	public abstract void onInserted(T iElement);
+				for (final Object iElement : iElements) {
+					if (iElement instanceof AnnotatedClass) {
+						final AnnotatedClass iAnnotatedClass = (AnnotatedClass) iElement;
+						iAnnotatedClass.setHref(this.getLocalContextUri() + "/webapi/" + iClass.getSimpleName().toLowerCase() + "/get?uuid=" + iAnnotatedClass.getUuid());
+					}
+				}
 
-	public abstract void onInserting(T iElement);
+				final String iJSONObject = new ObjectMapper().writeValueAsString(iElements);
+				return Response.ok(iJSONObject).build();
+			}
 
-	public abstract void onSaved(T iElement);
+			return Response.status(Status.EXPECTATION_FAILED).build();
+		} catch (final JsonMappingException aException) {
+			System.err.println(aException.getMessage());
+			return Response.serverError().build();
+		} catch (final Exception aException) {
+			aException.printStackTrace();
+			return Response.serverError().build();
+		} finally {
+			iSession.close();
+		}
+	}
 
-	public abstract void onSaving(T iElement);
-
-	public abstract void onUpdated(T iElement);
-
-	public abstract void onUpdating(T iElement);
-
-	@Path("pdf")
+	@PermitAll
+	@Path("{entity}/pdf")
 	@GET
 	@Produces({ "application/pdf" })
-	public Response pdfFromQueryParam(@QueryParam("uuid") final String aUuid) {
-		final T iElement = this.dao.read(aUuid);
+	public Response pdf(@PathParam("entity") final String aEntity, @QueryParam("uuid") final String aUuid) {
+		if ((this.uriInfo.getPathParameters().size() == 1) && (aUuid != null) && !aUuid.isEmpty()) {
+			return this.pdfFromUuid(aEntity, aUuid);
+		} else {
+			return this.pdfFromId(aEntity);
+		}
+	}
 
+	@PermitAll
+	@Path("{entity}/pdf")
+	@POST
+	@Produces({ "application/pdf" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	public Response pdfFromData(@PathParam("entity") final String aEntity, final String aData) {
 		try {
-			// Generate the data source ".xml" from Element
-			final File iXmlFile = File.createTempFile("maohifx", ".xml");
-			this.writeXML(this.toJaxb(iElement), new FileOutputStream(iXmlFile), this.getJaxbPackage(), this.getClass().getClassLoader());
+			// Resolve the class from the entity name
+			final Class<?> iClass = HibernateUtil.getAnnotatedClass(Strings.toUnderscore(aEntity));
+			if (iClass != null) {
 
-			// Create Transformer
-			final TransformerFactory iTransformerFactory = TransformerFactory.newInstance();
+				// Create the element from data
+				final Object iElement = new ObjectMapper().readValue(aData, iClass);
+				return Response.ok(PDFBuilderFactory.getInstance(aEntity).entity(iElement).output()).build();
+			}
 
-			// Create FO
-			final File iFoFile = File.createTempFile("maohifx", ".fo");
-			final OutputStream iFOOutputStream = new FileOutputStream(iFoFile);
-			final Transformer iFoTransformer = iTransformerFactory.newTransformer(new StreamSource(this.getXslInputStream(iElement)));
-			iFoTransformer.transform(new StreamSource(new FileInputStream(iXmlFile)), new StreamResult(iFOOutputStream));
-			iFOOutputStream.close();
-
-			// Create PDF
-			final File iPdfFile = File.createTempFile("maohifx", ".pdf");
-			final FopFactory iFopFactory = FopFactory.newInstance(new File(".").toURI());
-			final OutputStream aPDFOutputStream = new FileOutputStream(iPdfFile);
-			final FOUserAgent iFOUserAgent = iFopFactory.newFOUserAgent();
-			final Fop iFop = iFopFactory.newFop(org.apache.xmlgraphics.util.MimeConstants.MIME_PDF, iFOUserAgent, aPDFOutputStream);
-			final Transformer iPdfTransformer = iTransformerFactory.newTransformer();
-			iPdfTransformer.transform(new StreamSource(iFoFile), new SAXResult(iFop.getDefaultHandler()));
-			aPDFOutputStream.close();
-
-			return Response.ok(new ByteStreamingOutput(iPdfFile)).build();
-		} catch (FOPException | IOException | TransformerException aException) {
+			return Response.status(Status.EXPECTATION_FAILED).build();
+		} catch (FOPException | IOException | TransformerException | InstantiationException | IllegalAccessException aException) {
 			aException.printStackTrace();
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
 
 	}
 
+	@SuppressWarnings("rawtypes")
+	public Response pdfFromId(@PathParam("entity") final String aEntity) {
+		try {
+			// Resolve the class from entity name
+			final Class<?> iClass = HibernateUtil.getAnnotatedClass(Strings.toUnderscore(aEntity));
+			if (iClass != null) {
+
+				// Resolve the id type from the annotated class
+				final Class<? extends Serializable> iIdClass = HibernateUtil.getAnnotatedClassIdType(iClass);
+				if (iIdClass != null) {
+
+					// Create the id from the query parameter and the id type
+					final Serializable iId = new ObjectMapper().readValue(this.queryParametersToJSON(), iIdClass);
+					if (iId != null) {
+
+						// Get DAO instance from Factory
+						final AbstractDAO iDAO = DAOFactory.getInstance(iClass);
+						if (iDAO != null) {
+
+							// Read element from database
+							final Object iElement = iDAO.read(iId);
+							if (iElement != null) {
+								return Response.ok(PDFBuilderFactory.getInstance(aEntity).entity(iElement).output()).build();
+							}
+						}
+					}
+				}
+			}
+
+			return Response.status(Status.EXPECTATION_FAILED).build();
+		} catch (FOPException | IOException | TransformerException | InstantiationException | IllegalAccessException aException) {
+			aException.printStackTrace();
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
+
+	}
+
+	@SuppressWarnings("rawtypes")
+	public Response pdfFromUuid(final String aEntity, final String aUuid) {
+		final Session iSession = HibernateUtil.getSessionFactory().openSession();
+		try {
+			// Resolve the class from entity name
+			final Class<?> iClass = HibernateUtil.getAnnotatedClass(Strings.toUnderscore(aEntity));
+			if (iClass != null) {
+
+				// Read element from database
+				final AbstractDAO iDAO = DAOFactory.getInstance(iClass);
+				Object iElement = null;
+				if (iDAO != null) {
+					iElement = iDAO.read(aUuid);
+				} else {
+					iElement = iSession.get(iClass, aUuid);
+				}
+
+				if (iElement != null) {
+					return Response.ok(PDFBuilderFactory.getInstance(aEntity).entity(iElement).output()).build();
+				}
+			}
+
+			return Response.status(Status.EXPECTATION_FAILED).build();
+		} catch (FOPException | IOException | TransformerException | InstantiationException | IllegalAccessException aException) {
+			aException.printStackTrace();
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		} finally {
+			iSession.close();
+		}
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RolesAllowed("user")
+	@Path("{entity}/save")
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response save(final String aJSONObject) {
-		T iElement;
+	public Response save(@PathParam("entity") final String aEntity, final String aData) {
+		final Session iSession = HibernateUtil.getSessionFactory().openSession();
+
 		try {
-			iElement = new ObjectMapper().readValue(aJSONObject, this.getAnnotatedClass());
+			// Resolve the class from entity name
+			final Class<?> iClass = HibernateUtil.getAnnotatedClass(Strings.toUnderscore(aEntity));
+			if (iClass != null) {
 
-			this.onSaving(iElement);
-
-			if (!this.dao.exists(iElement.getUuid())) {
-				if (iElement.getUuid() == null) {
-					iElement.setUuid(UUID.randomUUID().toString());
+				// Create the element from data
+				final Object iElement = new ObjectMapper().readValue(aData, iClass);
+				final AbstractDAO iDAO = DAOFactory.getInstance(iClass);
+				if (iDAO != null) {
+					iDAO.beginTransaction();
+					final Serializable iId = HibernateUtil.getAnnotatedClassId(iElement);
+					if (!iDAO.exists(iId)) {
+						iDAO.insert(iElement);
+					} else {
+						iDAO.update(iElement);
+					}
+					iDAO.commit();
+				} else {
+					iSession.beginTransaction();
+					iSession.saveOrUpdate(iElement);
+					iSession.getTransaction().commit();
 				}
-				iElement.setCreationDate(new Date());
-				iElement.setUpdateDate(new Date());
 
-				this.dao.beginTransaction();
-				this.onInserting(iElement);
-				this.dao.insert(iElement);
-				this.onInserted(iElement);
-				this.dao.commit();
+				final String iJSONObject = new ObjectMapper().writeValueAsString(iElement);
+				return Response.ok(iJSONObject).build();
 			} else {
-				iElement.setUpdateDate(new Date());
-
-				this.dao.beginTransaction();
-				this.onUpdating(iElement);
-				this.dao.update(iElement);
-				this.onUpdated(iElement);
-				this.dao.commit();
+				return Response.serverError().build();
 			}
-
-			this.onSaved(iElement);
-
-			final String iJSONObject = new ObjectMapper().writeValueAsString(iElement);
-			return Response.ok(iJSONObject).build();
+		} catch (final JsonMappingException aException) {
+			System.err.println(aException.getMessage());
+			return Response.serverError().build();
 		} catch (final Exception aException) {
 			aException.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.serverError().build();
+		} finally {
+			iSession.close();
 		}
 	}
 
-	abstract public List<T> search(String aPattern);
-
-	@RolesAllowed("user")
-	@Path("search")
+	@PermitAll
+	@Path("{entity}/search")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response searchFromQueryParam(@QueryParam("pattern") final String aPattern) {
-		try {
-			final List<T> iElements = this.search(aPattern);
-			for (final T iElement : iElements) {
-				iElement.setHref(this.getLocalContextUri() + "/webapi/" + this.getAnnotatedClass().getSimpleName().toLowerCase() + "?uuid=" + iElement.getUuid());
-			}
-			final String iJSONObject = new ObjectMapper().writeValueAsString(iElements);
-			return Response.ok(iJSONObject).build();
-		} catch (final Exception aException) {
-			aException.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-		}
+	public Response search(@PathParam("entity") final String aEntity, @QueryParam("pattern") final String aWhere) {
+		return this.getAll(aEntity, aWhere.isEmpty() ? null : aWhere);
 	}
-
-	protected abstract Object toJaxb(final T iElement);
-
-	/**
-	 * Write an xml file
-	 *
-	 * @param aElement
-	 *            the object to export to Xml
-	 * @param aOutputStream
-	 *            the outputstream
-	 * @param aPackage
-	 *            the package where the ObjectFactory is
-	 * @param aClassLoader
-	 *            the ClassLoader use during the newInstance()
-	 */
-	public void writeXML(final Object aElement, final OutputStream aOutputStream, final String aPackage, final ClassLoader aClassLoader) {
-		try {
-			final JAXBContext iJaxbContext = JAXBContext.newInstance(aPackage, aClassLoader);
-			final Marshaller iMarshaller = iJaxbContext.createMarshaller();
-			iMarshaller.marshal(aElement, aOutputStream);
-		} catch (final JAXBException aException) {
-			aException.printStackTrace();
-		}
-	}
-
 }

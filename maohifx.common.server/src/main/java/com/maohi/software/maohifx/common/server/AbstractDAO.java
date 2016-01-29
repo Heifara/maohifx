@@ -25,7 +25,7 @@ public abstract class AbstractDAO<E> {
 	 *
 	 * @param aSession
 	 */
-	public static void setSession(final Session aSession) {
+	public static void setSharedSession(final Session aSession) {
 		sharedSession = aSession;
 	}
 
@@ -35,7 +35,7 @@ public abstract class AbstractDAO<E> {
 	protected Session session;
 
 	public AbstractDAO() {
-		this.session = sharedSession;
+		this.setSession(sharedSession);
 	}
 
 	public void beginTransaction() {
@@ -96,15 +96,23 @@ public abstract class AbstractDAO<E> {
 		return (E) this.session.get(this.getAnnotatedClass(), aId);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<E> readAll() {
-		final Query iQuery = this.session.createQuery("FROM " + this.getAnnotatedClass().getSimpleName());
+		return this.readAll(null);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<E> readAll(final String aWhere) {
+		final Query iQuery = this.session.createQuery(String.format("FROM %s %s", this.getAnnotatedClass().getSimpleName(), aWhere != null ? "WHERE " + aWhere : ""));
 		final List<E> iElements = iQuery.list();
 		return iElements;
 	}
 
 	public void replace(final E aEntity) {
 		this.session.saveOrUpdate(aEntity);
+	}
+
+	public void setSession(final Session aSession) {
+		this.session = aSession;
 	}
 
 	public void update(final E aEntity) {

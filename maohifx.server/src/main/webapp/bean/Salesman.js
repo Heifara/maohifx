@@ -60,7 +60,7 @@ Salesman.prototype.parseJSON = function(aJSONObject) {
 Salesman.prototype.save = function() {
 	$http.ajax({
 		source : this,
-		url : "@maohifx.server/webapi/salesman",
+		url : "@maohifx.server/webapi/salesman/save",
 		type : "post",
 		contentType : "application/x-www-form-urlencoded",
 		dataType : "application/json",

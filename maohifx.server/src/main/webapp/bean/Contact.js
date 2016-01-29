@@ -81,7 +81,7 @@ Contact.prototype.save = function() {
 	$http.ajax({
 		source : this,
 		url : "@maohifx.server/webapi/contact",
-		type : "post",
+		type : "put",
 		contentType : "application/x-www-form-urlencoded",
 		dataType : "application/json",
 		data : this.toJSON(),
@@ -90,7 +90,7 @@ Contact.prototype.save = function() {
 
 			alert("Sauvegarde réussi");
 		},
-		error : function($result, $stackTrace) {
+		error : function($error, $stackTrace) {
 			error("Erreur lors de la sauvegarde", $error, $stackTrace);
 		}
 

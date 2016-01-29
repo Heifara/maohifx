@@ -67,7 +67,7 @@ public class ProductPackagingMovementManagerTest {
 		HibernateUtil.getConfiguration().addAnnotatedClass(Tva.class);
 
 		session = HibernateUtil.getSessionFactory().openSession();
-		AbstractDAO.setSession(session);
+		AbstractDAO.setSharedSession(session);
 	}
 
 	/**

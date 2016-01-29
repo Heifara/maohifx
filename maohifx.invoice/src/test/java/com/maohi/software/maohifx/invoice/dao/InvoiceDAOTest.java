@@ -31,7 +31,7 @@ public class InvoiceDAOTest {
 		HibernateUtil.getConfiguration().addAnnotatedClass(InvoicePaymentLine.class);
 		HibernateUtil.getConfiguration().addAnnotatedClass(PaymentMode.class);
 		final Session iSession = HibernateUtil.getSessionFactory().openSession();
-		AbstractDAO.setSession(iSession);
+		AbstractDAO.setSharedSession(iSession);
 	}
 
 	@AfterClass

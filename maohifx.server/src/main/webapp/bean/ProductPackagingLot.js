@@ -1,5 +1,5 @@
 ProductPackagingLot.search = function(aCollection, aProductPackaging) {
-	var iUrl = "@maohifx.server/webapi/generic/ProductPackagingLot?action=getAll&where=id.productPackagingPackagingCode='" + aProductPackaging.packagingCode.get() + "'+AND+id.productPackagingProductUuid='" + aProductPackaging.productUuid.get() + "'";
+	var iUrl = "@maohifx.server/webapi/ProductPackagingLot/getAll?where=id.productPackagingPackagingCode='" + aProductPackaging.packagingCode.get() + "'+AND+id.productPackagingProductUuid='" + aProductPackaging.productUuid.get() + "'";
 
 	$http.ajax({
 		url : iUrl,

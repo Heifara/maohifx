@@ -9,5 +9,6 @@
 		<property name="hibernate.connection.url">jdbc:mysql://192.168.10.51/maohifx</property>
 		<property name="hibernate.connection.username">micropolsu</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+		<property name="hibernate.current_session_context_class">thread</property>
 	</session-factory>
 </hibernate-configuration>

@@ -65,7 +65,7 @@ public class ProductPackagingLotDAOTest {
 		HibernateUtil.getConfiguration().addAnnotatedClass(Tva.class);
 
 		session = HibernateUtil.getSessionFactory().openSession();
-		ProductDAO.setSession(session);
+		ProductDAO.setSharedSession(session);
 	}
 
 	/**

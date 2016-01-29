@@ -115,7 +115,7 @@ public class HibernateConfiguration implements ServletContextListener, Runnable 
 	@Override
 	public void run() {
 		final Session iSession = HibernateUtil.getSessionFactory().openSession();
-		AbstractDAO.setSession(iSession);
+		AbstractDAO.setSharedSession(iSession);
 
 		this.insertPaymentMode(0, "CASH");
 		this.insertPaymentMode(1, "CHEQUE");
@@ -131,7 +131,7 @@ public class HibernateConfiguration implements ServletContextListener, Runnable 
 		this.insertPackaging("M2");
 		this.insertPackaging("CARTON");
 
-		AbstractDAO.setSession(null);
+		AbstractDAO.setSharedSession(null);
 		iSession.close();
 	}
 }

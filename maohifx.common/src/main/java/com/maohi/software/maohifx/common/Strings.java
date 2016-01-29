@@ -212,4 +212,36 @@ public class Strings {
 	public static String randomNumbers(final int aLength) {
 		return random(aLength, "1234567890");
 	}
+
+	/**
+	 * under_score to camelCase
+	 *
+	 * @param aString
+	 * @return
+	 */
+	public static String toCamelCase(final String aString) {
+		final String[] parts = aString.split("_");
+		String camelCaseString = "";
+		for (final String part : parts) {
+			camelCaseString = camelCaseString + part.substring(0, 1).toUpperCase() + part.substring(1).toLowerCase();
+		}
+		return camelCaseString;
+	}
+
+	public static String toUnderscore(final String aString) {
+		String iResult = "";
+		for (int iIndex = 0; iIndex < aString.length(); iIndex++) {
+			final char iChar = aString.charAt(iIndex);
+			if (Character.isUpperCase(iChar)) {
+				if (iIndex > 0) {
+					iResult += '_';
+				}
+				iResult += Character.toLowerCase(iChar);
+			} else {
+				iResult += iChar;
+			}
+		}
+		return iResult;
+	}
+
 }

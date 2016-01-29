@@ -1,6 +1,6 @@
 Packaging.search = function(aCollection) {
 	$http.ajax({
-		url : "@maohifx.server/webapi/generic/Packaging?action=getAll",
+		url : "@maohifx.server/webapi/Packaging/getAll",
 		type : "get",
 		contentType : "application/x-www-form-urlencoded",
 		dataType : "application/json",
